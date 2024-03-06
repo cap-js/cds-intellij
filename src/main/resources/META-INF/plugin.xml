@@ -1,0 +1,72 @@
+<idea-plugin>
+    <!-- id should not be changed! -->
+    <id>com.sap.cap.cds.intellij</id>
+    <name>CAP CDS Language Support</name>
+    <vendor url="https://sap.com">SAP SE</vendor>
+
+    <description><![CDATA[
+        This plugin adds language support for CAP CDS. It currently supports the following features in commercial JetBrains IDEs including IDEA Ultimate and WebStorm:
+        <ul>
+            <li> Syntax Highlighting
+            <li> Diagnostics
+            <li> Quick Fixes
+            <li> Code Completion
+            <li> Goto Definition
+            <li> Document Formatting
+            <li> Hover documentation
+        </ul>
+        For more information on CAP, visit <a href="https://cap.cloud.sap/docs/">CAPire</a>.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.ultimate</depends>
+    <depends>org.jetbrains.plugins.textmate</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType
+                name="cds"
+                implementationClass="com.sap.cap.cds.intellij.FileType"
+                fieldName="INSTANCE"
+                language="cds"
+                extensions="cds"/>
+        <platform.lsp.serverSupportProvider implementation="com.sap.cap.cds.intellij.lsp.ServerSupportProvider"/>
+    </extensions>
+
+    <applicationListeners>
+        <listener
+                topic="com.intellij.ide.AppLifecycleListener"
+                class="com.sap.cap.cds.intellij.textmate.BundleManager"
+                activeInHeadlessMode="true" activeInTestMode="true"
+        />
+        <listener
+                topic="com.intellij.openapi.startup.StartupActivity"
+                class="com.sap.cap.cds.intellij.textmate.BundleManager"
+                activeInHeadlessMode="true" activeInTestMode="true"
+        />
+        <listener
+                topic="com.intellij.ide.plugins.DynamicPluginListener"
+                class="com.sap.cap.cds.intellij.textmate.BundleManager"
+                activeInHeadlessMode="true" activeInTestMode="true"
+        />
+    </applicationListeners>
+    <projectListeners>
+        <listener
+                topic="com.intellij.openapi.startup.ProjectActivity"
+                class="com.sap.cap.cds.intellij.textmate.BundleManager"
+                activeInHeadlessMode="true" activeInTestMode="true"
+        />
+    </projectListeners>
+
+    <change-notes>
+        <![CDATA[
+    v7.2.1 (05 Mar 2024):
+    <ul>
+      <li>includes @sap/cds-lsp 7.6.1 with:
+          <ul>
+              <li>fix: elements snippet now works when annotating artifacts in namespaces and/or contexts or if the brace after the elements is still missing</li>
+          </ul>
+      </li>
+    </ul>
+    ]]>
+    </change-notes>
+</idea-plugin>
