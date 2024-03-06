@@ -1,0 +1,49 @@
+name: gradle-run
+description: Build the plugin using gradle
+
+inputs:
+  steps:
+    description: 'The run steps to perform'
+    required: true
+
+runs:
+  using: composite
+
+  steps:
+    - name: Install fontconfig
+      # required for headless gradle
+      run: |
+        apt-get -y update
+        apt-get -y install fontconfig
+      shell: bash
+      env:
+        DEBIAN_FRONTEND: noninteractive
+        TZ: Etc/UTC
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - uses: actions/setup-java@v3
+      with:
+        distribution: zulu
+        java-version: 17
+
+    - name: Build
+      if: ${{ contains(inputs.steps, 'build') }}
+      shell: bash
+      run: |
+        ./gradlew buildPlugin
+        ls -la build/distributions
+
+    - name: Test
+      if: ${{ contains(inputs.steps, 'test') }}
+      shell: bash
+      run: |
+        ./gradlew test --info
+
+    - uses: actions/upload-artifact@v3
+      if: ${{ contains(inputs.steps, 'test') }}
+      with:
+        name: test-results
+        path: ./build/test-results/test
