@@ -1,10 +1,6 @@
-node_modules/
-gen/
-out/
-
-# API extractor
-
-dist/
-temp/
-etc/
-tsdoc-metadata.json
+.gradle
+.idea
+.qodana
+local.properties
+build
+lsp/node_modules

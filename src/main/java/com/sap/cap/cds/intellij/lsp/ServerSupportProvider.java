@@ -1,0 +1,23 @@
+package com.sap.cap.cds.intellij.lsp;
+
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.sap.cap.cds.intellij.FileType;
+import com.sap.cap.cds.intellij.Language;
+import com.sap.cap.cds.intellij.textmate.BundleManager;
+import org.jetbrains.annotations.NotNull;
+
+public class ServerSupportProvider implements com.intellij.platform.lsp.api.LspServerSupportProvider {
+
+    ServerSupportProvider() {
+        BundleManager.INSTANCE.registerBundle();
+    }
+
+    @Override
+    public void fileOpened(@NotNull Project project, @NotNull VirtualFile virtualFile, @NotNull LspServerStarter lspServerStarter) {
+        if (!FileType.EXTENSION.equals(virtualFile.getExtension())) {
+            return;
+        }
+        lspServerStarter.ensureServerStarted(new ServerDescriptor(project, Language.LABEL));
+    }
+}

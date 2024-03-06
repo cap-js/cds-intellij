@@ -1,0 +1,139 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij' version '1.17.2'
+}
+
+ext {
+    sandboxPluginDir = "./build/idea-sandbox/plugins/${project.findProperty('pluginName')}"
+    sandboxConfDir = './build/idea-sandbox/config'
+    instrumentedDir = './build/instrumented'
+}
+
+def hasLocalProperties = provider {
+    return file('local.properties').exists()
+}
+
+if (hasLocalProperties.get()) {
+    def props = new Properties()
+    file('local.properties').withInputStream { stream ->
+        props.load(stream)
+    }
+    for (prop in props) {
+        project.ext[prop.key] = prop.value
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:24.1.0'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs('src/main/gen')
+        }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(project.findProperty('javaVersion') as String)
+    }
+}
+
+intellij {
+    pluginName = project.findProperty('pluginName')
+    version = project.findProperty('platformVersion')
+    type = project.findProperty('platformType')
+    updateSinceUntilBuild.set(false)
+    plugins = ['org.jetbrains.plugins.textmate']
+}
+
+tasks {
+    buildSearchableOptions {
+        enabled = false
+    }
+
+    wrapper {
+        gradleVersion = project.findProperty('gradleVersion')
+    }
+
+    patchPluginXml {
+        version = project.findProperty('pluginVersion')
+        sinceBuild = project.findProperty('pluginSinceBuild')
+    }
+
+    runIde {
+        dependsOn 'copyLsp', 'syncSandboxIdeConf'
+        autoReloadPlugins = /* set to true to enable plugin reload on FS changes inside plugin */ false
+        if (project.hasProperty('local.ideDir')) {
+            ideDir = project.file(project.findProperty('local.ideDir'))
+        }
+    }
+
+    buildPlugin {
+        dependsOn 'copyLsp'
+    }
+
+    test {
+        dependsOn 'copyLspToInstrumented'
+    }
+
+    clean {
+        doFirst {
+            delete './lsp/node_modules'
+        }
+    }
+}
+
+tasks.register('syncSandboxIdeConf', Copy) {
+    onlyIf { hasLocalProperties.get() }
+    into sandboxConfDir
+    into('keymaps') {
+        from "${project.findProperty('local.ideConfDir')}/keymaps"
+    }
+    into('options') {
+        from "${project.findProperty('local.ideConfDir')}/options/laf.xml"
+    }
+    into('options/linux') {
+        from "${project.findProperty('local.ideConfDir')}/options/linux"
+    }
+    into('options/mac') {
+        from "${project.findProperty('local.ideConfDir')}/options/mac"
+    }
+    into('options/windows') {
+        from "${project.findProperty('local.ideConfDir')}/options/windows"
+    }
+}
+
+tasks.register('installLsp', Exec) {
+    def noNodeModules = provider {
+        // re-evaluated on each gradle run
+        return !file('lsp/node_modules/@sap/cds-lsp').exists()
+    }
+    onlyIf { noNodeModules.get() }
+    mustRunAfter prepareSandbox
+    workingDir './lsp'
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', 'npm', 'install', '--no-package-lock'
+    } else {
+        commandLine 'sh', '-c', 'npm install --no-package-lock'
+    }
+}
+
+tasks.register('copyLsp', Copy) {
+    dependsOn installLsp
+    mustRunAfter 'buildSearchableOptions'
+    from './lsp'
+    into "${sandboxPluginDir}/lib/cds-lsp"
+}
+
+tasks.register('copyLspToInstrumented', Copy) {
+    dependsOn installLsp
+    from './lsp'
+    into "${instrumentedDir}/cds-lsp"
+}
