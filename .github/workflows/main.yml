@@ -1,0 +1,31 @@
+name: Main
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  main-build:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/gradle-run
+        with:
+          steps: |-
+            build
+            test
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build results
+          path: build/distributions/intellij-cds.zip
+          retention-days: 5

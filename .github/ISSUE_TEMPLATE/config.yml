@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Bug reports and questions on CAP CDS Language Support for IntelliJ
+    url: https://github.com/cap-js/cds-intellij/issues
+    about: Please ask questions here.

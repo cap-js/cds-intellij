@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  push:
+    branches: [release]
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  release-build:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ./.github/actions/gradle-run
+        with:
+          steps: |-
+            build
+            test
+
+      - id: setenv
+        run: |
+          echo RELEASE_TAG=$(awk '/pluginVersion/ { print $3 }' gradle.properties) >> $GITHUB_OUTPUT
+          echo "TODAY_DATE=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
+          echo "CHANGE_LOG=$(awk '/<change-notes>/ { a=1; next } a==1 && /<ul>/ { a=2 } a==2 { gsub(/^[ \t]+/, ""); ORS=" "; print; if (/<\/ul>/) exit }' src/main/resources/META-INF/plugin.xml)" >> $GITHUB_OUTPUT
+
+      - run: |
+          echo "${{ steps.setenv.outputs.RELEASE_TAG }}"
+          echo "${{ steps.setenv.outputs.TODAY_DATE }}"
+          echo "${{ steps.setenv.outputs.CHANGE_LOG }}"
+
+      - uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.setenv.outputs.RELEASE_TAG }}
+          body: Build ${{ github.run_number }}<br>${{ steps.setenv.outputs.CHANGE_LOG }}
+          artifacts: build/distributions/intellij-cds.zip
