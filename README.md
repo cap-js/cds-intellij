@@ -36,18 +36,30 @@ intellij-cds is based on the following components:
 ## Requirements
 
 ### Supported IDEs
-The intellij-cds plugin is compatible with the latest **paid** IntelliJ IDEs including IDEA Ultimate and WebStorm (due to the restricted availability of JetBrains' LSP API).
+
+This plugin is compatible with the latest **paid** IntelliJ IDEs including IDEA Ultimate and WebStorm.  Check https://www.jetbrains.com/ which option is best for you.
+
+> The LSP API is only available in the commercial versions JetBrains' IDEs, which is why the plugin doesn't run in the free variants.
 
 ### Operating Systems
+
 Tested on Windows, macOS, and Linux.
 
 
 ## Download and Installation
 
-Coming soon…
+### As a Zip File
+
+- Dowload the plugin zip file from https://github.com/cap-js/cds-intellij/releases
+- Install it in the IDE like this... TODO
+
+### From JetBrains Marketplace
+
+Coming soon. We are working on it.
 
 
-## How to obtain support
+## How to Obtain Support
+
 [Create an issue](https://github.com/cap-js/cds-intellij/issues) in this repository if you find a bug or have questions about the content.
 
 For additional support, [ask a question in SAP Community](https://answers.sap.com/questions/ask.html).
