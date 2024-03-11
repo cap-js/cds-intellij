@@ -34,8 +34,15 @@ Tested on Windows, macOS, and Linux.
 
 ### As a Zip File
 
-- Dowload the plugin zip file from https://github.com/cap-js/cds-intellij/releases
-- Install it in the IDE like this... TODO
+Prepare your environment:
+
+1. Install [Node.js](https://nodejs.org/en/) on your computer.
+2. Make sure that your IntelliJ IDEA Ultimate (or other commercial IntelliJ IDE) runs with a `PATH` that includes the Node.js executable.
+
+Install or update the plugin:
+
+1. Download the latest [release](https://github.com/cap-js/cds-intellij/releases) from GitHub.
+2. In IntelliJ, go to `File > Settings > Plugins > ⚙ > Install Plugin from Disk…` and select the downloaded .zip file.
 
 ### From JetBrains Marketplace
 
