@@ -41,6 +41,16 @@ body:
       2. I get this error...
   validations:
     required: false
+- type: textarea
+  attributes:
+    label: Versions
+    description: |
+      | Tool | Version |
+      | ---- | ------- |
+      | CDS Language Support for IntelliJ |  |
+      | Node.js |  |
+  validations:
+    required: false
 - type: dropdown
   id: environment
   attributes:
