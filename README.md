@@ -13,7 +13,7 @@ that provides editing and development support for the CAP [CDS](https://cap.clou
 
 ### Features
 
-Find a comprehensive list of features [here](./FEATURES.md).
+Look at our [comprehensive list of features](./FEATURES.md).
 
 ![Code Completion](.assets/code_completion.png)
 
@@ -81,7 +81,7 @@ Depending on the kind of problem encountered, you may want to include the logs f
 #### IDE Logs
 
 Logs produced by the IDE can be found by opening the *Help* menu and selecting *Show Log in <platform-dependent tool>*.
-See [here](https://intellij-support.jetbrains.com/hc/en-us/articles/207241085-Locating-IDE-log-files) for more information.
+See [Locating IDE log files](https://intellij-support.jetbrains.com/hc/en-us/articles/207241085-Locating-IDE-log-files) for more information.
 
 #### LSP Logs
 
