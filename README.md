@@ -71,7 +71,12 @@ cds-intellij is based on the following components:
 
 ### Known Issues
 
-🚫 CDS Language Support for IntelliJ is not compatible with non-commercial IntelliJ IDEs, such as IntelliJ Community Edition. This is due to the fact that intellij-cds relies on the IntelliJ LSP API, which is only available in commercial IDEs.
+#### Installation and Compatibility
+
+| Symptom                                                      | Solution                                                                                                                                                                                                           |
+|--------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| CDS Language Support for IntelliJ is not enabled in the IDE. | 🚫 The plugin is not compatible with the **free** IntelliJ **Community** Edition. Make sure you are using a commercial IntelliJ IDE such as IDEA Ultimate or WebStorm.                                             |
+| CDS file icons are missing and/or no syntax highlighting     | Uninstall any previous versions of the plugin *(File > Settings > Plugins)*. Remove the 'cds' TextMate Bundle *(File > Settings > Editor > TextMate Bundles)*. Restart the IDE. Install the latest plugin version. |
 
 ### Logs
 
