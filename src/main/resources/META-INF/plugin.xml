@@ -61,7 +61,13 @@ The set of features will grow with future releases of the plugin, according to t
 
     <change-notes><![CDATA[<h2>New Features</h2>
 <ul>
-    <li>resize plugin logo as per guidelines</li>
     <li>add plugin logo and file icon for dark themes</li>
+    <li>resize plugin logo as per guidelines</li>
+    <li>include @sap/cds-lsp 7.8.0 with:
+        <ul>
+            <li>formatting logging now includes whitespace even if it may be reduced to empty string, relative alignment positions, and details on inserting delayed items</li>
+            <li>fix: code completion for annotations with `![]` identifiers</li>
+        </ul>
+    </li>
 </ul>]]></change-notes>
 </idea-plugin>
