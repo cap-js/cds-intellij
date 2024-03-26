@@ -1,22 +1,24 @@
 <idea-plugin>
-    <!-- id should not be changed! -->
     <id>com.sap.cap.cds.intellij</id>
     <name>CAP CDS Language Support</name>
+    <category>Custom Language</category>
     <vendor url="https://sap.com">SAP SE</vendor>
+    <description><![CDATA[<p><strong>CAP CDS Language Support for IntelliJ.</strong>
+This plugin provides support for the CDS language in IntelliJ. It enables you to write, edit, and validate CDS files with syntax highlighting, code completion, formatting, diagnostics, and more. Supported IDEs include IntelliJ IDEA, WebStorm, and other commercial IntelliJ products.</p>
+<p><a href="https://cap.cloud.sap/docs/">More information on CAP</a></p>
+<!--<p><br/></p>-->
+<h2>Features:</h2>
+<ul>
+    <li>Syntax highlighting</li>
+    <li>Code completion</li>
+    <li>Goto definition</li>
+    <li>Hover documentation</li>
+    <li>Document formatting</li>
+    <li>Diagnostics</li>
+    <li>Quick fixes</li>
+</ul>
 
-    <description><![CDATA[
-        This plugin adds language support for CAP CDS. It currently supports the following features in commercial JetBrains IDEs including IDEA Ultimate and WebStorm:
-        <ul>
-            <li> Syntax Highlighting
-            <li> Diagnostics
-            <li> Quick Fixes
-            <li> Code Completion
-            <li> Goto Definition
-            <li> Document Formatting
-            <li> Hover documentation
-        </ul>
-        For more information on CAP, visit <a href="https://cap.cloud.sap/docs/">CAPire</a>.
-    ]]></description>
+The set of features will grow with future releases of the plugin, according to the development of the JetBrains IntelliJ LSP API.]]></description>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.ultimate</depends>
@@ -57,16 +59,9 @@
         />
     </projectListeners>
 
-    <change-notes>
-        <![CDATA[
-    v7.2.1 (05 Mar 2024):
-    <ul>
-      <li>includes @sap/cds-lsp 7.6.1 with:
-          <ul>
-              <li>fix: elements snippet now works when annotating artifacts in namespaces and/or contexts or if the brace after the elements is still missing</li>
-          </ul>
-      </li>
-    </ul>
-    ]]>
-    </change-notes>
+    <change-notes><![CDATA[<h2>New Features</h2>
+<ul>
+    <li>resize plugin logo as per guidelines</li>
+    <li>add plugin logo and file icon for dark themes</li>
+</ul>]]></change-notes>
 </idea-plugin>

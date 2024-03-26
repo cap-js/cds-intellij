@@ -1,10 +1,8 @@
-![CDS Language Support for IntelliJ](.assets/logo.png)
+![CDS Language Support for IntelliJ](.assets/logo.png) [![IntelliJ](.assets/IntelliJ_IDEA_icon.svg)](https://www.jetbrains.com/)
 
 # CAP CDS Language Support for IntelliJ
 
-<!--- Register repository https://api.reuse.software/register, then add REUSE badge:
-[![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/REPO-NAME)](https://api.reuse.software/info/github.com/SAP-samples/REPO-NAME)
--->
+[![REUSE status](https://api.reuse.software/badge/github.com/cap-js/cds-intellij)](https://api.reuse.software/info/github.com/cap-js/cds-intellij)
 
 ## Description
 
@@ -71,7 +69,12 @@ cds-intellij is based on the following components:
 
 ### Known Issues
 
-🚫 CDS Language Support for IntelliJ is not compatible with non-commercial IntelliJ IDEs, such as IntelliJ Community Edition. This is due to the fact that intellij-cds relies on the IntelliJ LSP API, which is only available in commercial IDEs.
+#### Installation and Compatibility
+
+| Symptom                                                      | Solution                                                                                                                                                                                                           |
+|--------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| CDS Language Support for IntelliJ is not enabled in the IDE. | 🚫 The plugin is not compatible with the **free** IntelliJ **Community** Edition. Make sure you are using a commercial IntelliJ IDE such as IDEA Ultimate or WebStorm.                                             |
+| CDS file icons are missing and/or no syntax highlighting     | Uninstall any previous versions of the plugin *(File > Settings > Plugins)*. Remove the 'cds' TextMate Bundle *(File > Settings > Editor > TextMate Bundles)*. Restart the IDE. Install the latest plugin version. |
 
 ### Logs
 
@@ -130,3 +133,5 @@ If you wish to contribute code, offer fixes or improvements, please send a pull 
 ## License
 
 Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file.
+
+Copyright © 2024 JetBrains s.r.o. IntelliJ IDEA and the IntelliJ IDEA logo are registered trademarks of JetBrains s.r.o.
