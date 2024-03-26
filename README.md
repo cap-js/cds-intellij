@@ -1,4 +1,4 @@
-![CDS Language Support for IntelliJ](.assets/logo.png)
+![CDS Language Support for IntelliJ](.assets/logo.png) [![IntelliJ](.assets/IntelliJ_IDEA_icon.svg)](https://www.jetbrains.com/)
 
 # CAP CDS Language Support for IntelliJ
 
@@ -133,3 +133,5 @@ If you wish to contribute code, offer fixes or improvements, please send a pull 
 ## License
 
 Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file.
+
+Copyright © 2024 JetBrains s.r.o. IntelliJ IDEA and the IntelliJ IDEA logo are registered trademarks of JetBrains s.r.o.

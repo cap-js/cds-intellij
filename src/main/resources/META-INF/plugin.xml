@@ -61,10 +61,7 @@ The set of features will grow with future releases of the plugin, according to t
 
     <change-notes><![CDATA[<h2>New Features</h2>
 <ul>
-    <li>include @sap/cds-lsp 7.6.1 with:
-          <ul>
-              <li>fix: elements snippet now works when annotating artifacts in namespaces and/or contexts or if the brace after the elements is still missing</li>
-          </ul>
-    </li>
+    <li>resize plugin logo as per guidelines</li>
+    <li>add plugin logo and file icon for dark themes</li>
 </ul>]]></change-notes>
 </idea-plugin>
