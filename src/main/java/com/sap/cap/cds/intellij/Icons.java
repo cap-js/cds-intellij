@@ -8,4 +8,6 @@ public class Icons {
 
     public static final Icon FILE = IconLoader.getIcon("/icons/cap.svg", Icons.class);
 
+    public static final Icon SERVER = Icons.FILE;
+
 }
