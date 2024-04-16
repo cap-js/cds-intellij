@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>com.sap.cap.cds.intellij</id>
+    <id>com.sap.cap.cds</id>
     <name>CAP CDS Language Support</name>
     <category>Custom Language</category>
     <vendor url="https://sap.com">SAP SE</vendor>
