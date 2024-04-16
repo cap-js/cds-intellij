@@ -7,6 +7,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.platform.lsp.api.ProjectWideLspServerDescriptor;
 import com.intellij.platform.lsp.api.customization.LspFormattingSupport;
 import com.sap.cap.cds.intellij.FileType;
+import com.sap.cap.cds.intellij.util.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,6 +25,15 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
 
     public ServerDescriptor(@NotNull Project project, @NotNull String presentableName) {
         super(project, presentableName);
+        validateNodeExecutable();
+    }
+
+    private void validateNodeExecutable() {
+        try {
+            new GeneralCommandLine("node", "-e", "").createProcess();
+        } catch (ExecutionException e) {
+            Logger.PLUGIN.error("Cannot find 'node' executable required for CDS Language Server. Please make sure it is installed and available in the PATH.");
+        }
     }
 
     @NotNull
