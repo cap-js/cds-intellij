@@ -3,6 +3,8 @@
 # CAP CDS Language Support for IntelliJ
 
 [![REUSE status](https://api.reuse.software/badge/github.com/cap-js/cds-intellij)](https://api.reuse.software/info/github.com/cap-js/cds-intellij)
+![Main build passing](https://github.com/cap-js/cds-intellij/actions/workflows/main.yml/badge.svg)
+![Release build passing](https://github.com/cap-js/cds-intellij/actions/workflows/release.yml/badge.svg)
 
 ## Description
 
