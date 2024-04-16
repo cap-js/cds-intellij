@@ -1,4 +1,4 @@
-package com.sap.cap.cds.intellij.textmate;
+package com.sap.cap.cds.textmate;
 
 
 import com.intellij.ide.AppLifecycleListener;
@@ -8,9 +8,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.ProjectActivity;
 import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.util.PathUtil;
-import com.sap.cap.cds.intellij.Language;
-import com.sap.cap.cds.intellij.util.Logger;
-import com.sap.cap.cds.intellij.Plugin;
+import com.sap.cap.cds.Language;
+import com.sap.cap.cds.util.Logger;
+import com.sap.cap.cds.Plugin;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
 import org.jetbrains.annotations.NotNull;
@@ -22,8 +22,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static com.sap.cap.cds.intellij.util.StackUtil.getCaller;
-import static com.sap.cap.cds.intellij.util.StackUtil.getMethod;
+import static com.sap.cap.cds.util.StackUtil.getCaller;
+import static com.sap.cap.cds.util.StackUtil.getMethod;
 
 public class BundleManager implements AppLifecycleListener, /*obsolete*/ StartupActivity, /* replacement*/ ProjectActivity, DynamicPluginListener {
 

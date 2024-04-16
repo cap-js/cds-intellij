@@ -1,4 +1,4 @@
-package com.sap.cap.cds.intellij.lsp;
+package com.sap.cap.cds.lsp;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
@@ -6,7 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.platform.lsp.api.ProjectWideLspServerDescriptor;
 import com.intellij.platform.lsp.api.customization.LspFormattingSupport;
-import com.sap.cap.cds.intellij.FileType;
+import com.sap.cap.cds.FileType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
