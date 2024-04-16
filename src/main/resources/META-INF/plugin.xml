@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>com.sap.cap.cds.intellij</id>
+    <id>com.sap.cap.cds</id>
     <name>CAP CDS Language Support</name>
     <category>Custom Language</category>
     <vendor url="https://sap.com">SAP SE</vendor>
@@ -27,34 +27,34 @@ The set of features will grow with future releases of the plugin, according to t
     <extensions defaultExtensionNs="com.intellij">
         <fileType
                 name="cds"
-                implementationClass="com.sap.cap.cds.intellij.FileType"
+                implementationClass="com.sap.cap.cds.FileType"
                 fieldName="INSTANCE"
                 language="cds"
                 extensions="cds"/>
-        <platform.lsp.serverSupportProvider implementation="com.sap.cap.cds.intellij.lsp.ServerSupportProvider"/>
+        <platform.lsp.serverSupportProvider implementation="com.sap.cap.cds.lsp.ServerSupportProvider"/>
     </extensions>
 
     <applicationListeners>
         <listener
                 topic="com.intellij.ide.AppLifecycleListener"
-                class="com.sap.cap.cds.intellij.textmate.BundleManager"
+                class="com.sap.cap.cds.textmate.BundleManager"
                 activeInHeadlessMode="true" activeInTestMode="true"
         />
         <listener
                 topic="com.intellij.openapi.startup.StartupActivity"
-                class="com.sap.cap.cds.intellij.textmate.BundleManager"
+                class="com.sap.cap.cds.textmate.BundleManager"
                 activeInHeadlessMode="true" activeInTestMode="true"
         />
         <listener
                 topic="com.intellij.ide.plugins.DynamicPluginListener"
-                class="com.sap.cap.cds.intellij.textmate.BundleManager"
+                class="com.sap.cap.cds.textmate.BundleManager"
                 activeInHeadlessMode="true" activeInTestMode="true"
         />
     </applicationListeners>
     <projectListeners>
         <listener
                 topic="com.intellij.openapi.startup.ProjectActivity"
-                class="com.sap.cap.cds.intellij.textmate.BundleManager"
+                class="com.sap.cap.cds.textmate.BundleManager"
                 activeInHeadlessMode="true" activeInTestMode="true"
         />
     </projectListeners>

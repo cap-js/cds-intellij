@@ -79,6 +79,10 @@ tasks {
         dependsOn 'copyLsp'
     }
 
+    verifyPlugin {
+        dependsOn 'copyLsp'
+    }
+
     test {
         dependsOn 'copyLspToInstrumented'
     }

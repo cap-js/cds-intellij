@@ -1,4 +1,4 @@
-package com.sap.cap.cds.intellij.util;
+package com.sap.cap.cds.util;
 
 public class StackUtil {
     public static StackTraceElement getCaller(int depth) {
