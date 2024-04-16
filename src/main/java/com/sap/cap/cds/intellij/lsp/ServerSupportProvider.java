@@ -1,13 +1,13 @@
-package com.sap.cap.cds.lsp;
+package com.sap.cap.cds.intellij.lsp;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.platform.lsp.api.LspServer;
 import com.intellij.platform.lsp.api.lsWidget.LspServerWidgetItem;
-import com.sap.cap.cds.FileType;
-import com.sap.cap.cds.Icons;
-import com.sap.cap.cds.Language;
-import com.sap.cap.cds.textmate.BundleManager;
+import com.sap.cap.cds.intellij.FileType;
+import com.sap.cap.cds.intellij.Icons;
+import com.sap.cap.cds.intellij.Language;
+import com.sap.cap.cds.intellij.textmate.BundleManager;
 import kotlin.jvm.internal.Intrinsics;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -1,7 +1,7 @@
-package com.sap.cap.cds.util;
+package com.sap.cap.cds.intellij.util;
 
-import com.sap.cap.cds.Plugin;
-import com.sap.cap.cds.textmate.Bundle;
+import com.sap.cap.cds.intellij.Plugin;
+import com.sap.cap.cds.intellij.textmate.Bundle;
 
 import static com.intellij.openapi.diagnostic.Logger.*;
 

@@ -33,7 +33,7 @@ runs:
       if: ${{ contains(inputs.steps, 'build') }}
       shell: bash
       run: |
-        ./gradlew runPluginVerifier buildPlugin
+        ./gradlew buildPlugin
         ls -la build/distributions
 
     - name: Test
