@@ -1,4 +1,4 @@
-package com.sap.cap.cds;
+package com.sap.cap.cds.intellij;
 
 public class Language extends com.intellij.lang.Language {
 

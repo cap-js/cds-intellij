@@ -1,10 +1,10 @@
-package com.sap.cap.cds;
+package com.sap.cap.cds.intellij;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.intellij.testFramework.fixtures.TempDirTestFixture;
-import com.sap.cap.cds.lsp.ServerDescriptor;
+import com.sap.cap.cds.intellij.lsp.ServerDescriptor;
 
 import java.io.*;
 import java.util.regex.Pattern;

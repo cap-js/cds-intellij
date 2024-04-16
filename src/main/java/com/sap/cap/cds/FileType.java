@@ -1,4 +1,4 @@
-package com.sap.cap.cds;
+package com.sap.cap.cds.intellij;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.util.NlsContexts;

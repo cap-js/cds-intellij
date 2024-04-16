@@ -1,4 +1,4 @@
-package com.sap.cap.cds.textmate;
+package com.sap.cap.cds.intellij.textmate;
 
 public class Bundle {
 
