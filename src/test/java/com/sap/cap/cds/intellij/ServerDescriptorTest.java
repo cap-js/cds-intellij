@@ -20,7 +20,7 @@ public class ServerDescriptorTest extends BasePlatformTestCase {
         Process process = null;
         try {
             process = new ServerDescriptor(getProject(), "name")
-                    .createCommandLine()
+                    .getCommandLine()
                     .createProcess();
         } catch (ExecutionException e) {
             assertNull("unexpected exception", e.getMessage());
@@ -39,7 +39,7 @@ public class ServerDescriptorTest extends BasePlatformTestCase {
         Process process = null;
         GeneralCommandLine commandLine = null;
         try {
-            commandLine = new ServerDescriptor(getProject(), "name").createCommandLine();
+            commandLine = new ServerDescriptor(getProject(), "name").getCommandLine();
         } catch (ExecutionException e) {
             assertNull("unexpected exception", e.getMessage());
         }
