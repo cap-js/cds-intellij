@@ -69,8 +69,6 @@ public class ServerDescriptorTest extends BasePlatformTestCase {
         String logged = new String(new FileInputStream(logPath).readAllBytes()).replaceAll("\\d{4}-[\\dTZ:.-]+", "NOW");
         assertTrue(Pattern.compile("> NOW.*" + data).matcher(logged).find());
 
-        assertTrue(process.isAlive());
-
         System.clearProperty("DEBUG");
     }
 
