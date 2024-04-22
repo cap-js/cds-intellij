@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.intellij.util.PathUtil.getJarPathForClass;
+import static com.sap.cap.cds.intellij.util.JsonUtil.getPropertyAtPath;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ServerDescriptor extends ProjectWideLspServerDescriptor {
@@ -49,31 +50,22 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
         int exitValue;
         try {
             exitValue = process.exitValue();
-        } catch (RuntimeException e) {
-            // Process is still running
-            return handler;
-        }
-        handleServerError(exitValue);
+            handleServerError(exitValue);
+        } catch (RuntimeException e) { /* process still running */ }
         return handler;
     }
 
     private void handleServerError(int exitValue) {
-        if (exitValue == SERVER_EXIT_NODE_VERSION) {
-            String version;
-            try {
-                version = new String(Files.readAllBytes(Paths.get(resolve(RELATIVE_SERVER_PKG_PATH))));
-                int versionStart = version.indexOf("\"node\": \"") + 9;
-                if (versionStart < 9) {
-                    throw new Exception("Cannot find `engines.node` property in package.json.");
-                }
-                version = version.substring(versionStart, version.indexOf("\"", versionStart));
-            } catch (Exception e) {
-                Logger.PLUGIN.error("Cannot determine version of CDS Language Server. Please make sure the CDS Language Server is installed and available in the PATH.", e);
-                return;
-            }
-            Logger.PLUGIN.error("CDS Language Server requires Node.js version " + version + ". Please update your Node.js installation.");
-        } else {
+        if (exitValue != SERVER_EXIT_NODE_VERSION) {
             Logger.PLUGIN.error("CDS Language Server exited with code " + exitValue);
+            return;
+        }
+        try {
+            String serverPkg = new String(Files.readAllBytes(Paths.get(resolve(RELATIVE_SERVER_PKG_PATH))));
+            String version = getPropertyAtPath(serverPkg, new String[]{"engines", "node"}).toString();
+            Logger.PLUGIN.error("CDS Language Server requires Node.js version " + version + ". Please update your Node.js installation.");
+        } catch (Exception e) {
+            Logger.PLUGIN.error("Cannot determine version of CDS Language Server. Please make sure the CDS Language Server is installed and available in the PATH.", e);
         }
     }
 
