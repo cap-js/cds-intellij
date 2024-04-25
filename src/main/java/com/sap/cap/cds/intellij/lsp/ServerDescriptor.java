@@ -71,7 +71,6 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
 
     public GeneralCommandLine getCommandLine() throws ExecutionException {
         return (isDebugCdsLsp() ? getDebugCommandLine() : getDefaultCommandLine())
-                .withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose")
                 // TODO check if this is really needed:
                 // Suppress ANSI escape sequences in cds-compiler output
                 .withEnvironment("NO_COLOR", "1")
@@ -91,7 +90,7 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
                 "node",
                 resolve(RELATIVE_SERVER_PATH),
                 "--stdio"
-        );
+        ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose");
     }
 
     private static GeneralCommandLine getDebugCommandLine() {
@@ -102,7 +101,7 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
                 "node",
                 resolve(RELATIVE_SERVER_PATH),
                 "--stdio"
-        );
+        ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug");
     }
 
     private static String resolve(String relativePath) {
