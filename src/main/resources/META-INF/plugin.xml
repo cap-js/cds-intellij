@@ -61,6 +61,6 @@ The set of features will grow with future releases of the plugin, according to t
 
     <change-notes><![CDATA[<h2>New Features</h2>
 <ul>
-    <li>log an error when Node.js (required for CDS language server) is not found</li>
+    <li>also enable debug logging in LSP server when setting DEBUG=cds-lsp</li>
 </ul>]]></change-notes>
 </idea-plugin>
