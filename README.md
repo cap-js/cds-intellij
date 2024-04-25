@@ -102,6 +102,8 @@ Alternatively, set the following environment variable for your IDE:
 DEBUG=cds-lsp
 ```
 
+These settings will also enable debug logging for the LSP server.
+
 After restarting the IDE, find the logs in the [plugin directory](https://intellij-support.jetbrains.com/hc/en-us/articles/206544519-Directories-used-by-the-IDE-to-store-settings-caches-plugins-and-logs),
 subdirectory `lib/cds-lsp`, file `stdio.log`.
 
