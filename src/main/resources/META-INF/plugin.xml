@@ -61,16 +61,6 @@ The set of features will grow with future releases of the plugin, according to t
 
     <change-notes><![CDATA[<h2>New Features</h2>
 <ul>
-    <li>build on IntelliJ Platform 2024.1, thus:
-        <ul>
-            <li>enable several Code Actions such as 'Convert to doc comment' or 'Maintain translation' to work</li>
-        </ul>
-    </li>
-    <li>provide CDS icon for LSP-server status-bar widget</li>
-    <li>include @sap/cds-lsp 7.8.2 with:
-        <ul>
-            <li>fix: performance issue with indexing CDS files with many annotations</li>
-        </ul>
-    </li>
+    <li>log an error when Node.js (required for CDS language server) is not found</li>
 </ul>]]></change-notes>
 </idea-plugin>

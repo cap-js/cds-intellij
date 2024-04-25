@@ -29,6 +29,7 @@ repositories {
 
 dependencies {
     implementation 'org.jetbrains:annotations:24.1.0'
+    implementation 'org.json:json:20240205'
 }
 
 sourceSets {

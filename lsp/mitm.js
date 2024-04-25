@@ -90,4 +90,5 @@ child.stderr.pipe(createLogPrefixStream('<[E]'));
 );
 child.on('close', (code) => {
     handle(`child process exited with code ${code}`, '[I]');
+    process.exit(code);
 });
