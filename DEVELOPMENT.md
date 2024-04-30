@@ -9,9 +9,9 @@ Run `./gradlew runIde` to fire up a [sandbox IDE](https://plugins.jetbrains.com/
 In order to use your local IDE settings (such as hotkeys or themes) with the sandbox IDE:
 1. Create a file *local.properties* next to *gradle.properties*.
 2. Write the following line to the file:
-   `local.ideConfDir = /path/to/config/dir/e.g./WebStorm2023.3`
+   `local.ideConfDir = /path/to/config/dir/e.g./WebStorm2024.1`
 
-This will activate the copying of settings (keymaps and options) from that local configuration dir to the corresponding dir of the sandbox IDE.
+From now on, settings (keymaps and various options) will be copied from the local configuration dir to that of the sandbox IDE on each run.
 
 ### Local Gradle settings
 

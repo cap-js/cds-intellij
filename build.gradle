@@ -102,7 +102,13 @@ tasks.register('syncSandboxIdeConf', Copy) {
         from "${project.findProperty('local.ideConfDir')}/keymaps"
     }
     into('options') {
+        from "${project.findProperty('local.ideConfDir')}/options/ide.general.xml"
+    }
+    into('options') {
         from "${project.findProperty('local.ideConfDir')}/options/laf.xml"
+    }
+    into('options') {
+        from "${project.findProperty('local.ideConfDir')}/options/trusted-paths.xml"
     }
     into('options/linux') {
         from "${project.findProperty('local.ideConfDir')}/options/linux"
