@@ -121,13 +121,22 @@ tasks.register('syncSandboxIdeConf', Copy) {
     }
 }
 
+tasks.register('rmLspNodeModules', Delete) {
+    def lspFromTar = provider {
+        return project.findProperty('local.lspFromTar') == 'true'
+    }
+    onlyIf { lspFromTar.get() }
+    mustRunAfter prepareSandbox
+    delete 'lsp/node_modules'
+}
+
 tasks.register('installLsp', Exec) {
     def noNodeModules = provider {
         // re-evaluated on each gradle run
-        return !file('lsp/node_modules/@sap/cds-lsp').exists()
+        return !file('lsp/node_modules/@sap/cds-lsp').exists() || project.findProperty('local.lspFromTar') == 'true'
     }
     onlyIf { noNodeModules.get() }
-    mustRunAfter prepareSandbox
+    dependsOn rmLspNodeModules
     workingDir './lsp'
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine 'cmd', '/c', 'npm', 'install', '--no-package-lock'
