@@ -20,6 +20,15 @@ Note that keys should always start with `local.`. Search in *build.gradle* for t
 
 Any such properties are optional. Remove or comment out an existing entry to disable the corresponding feature.
 
+### Debugging the LSP Server
+
+To enable debugging of the LSP server, add this argument to the corresponding command line in `ServerDescriptor` after `"node"`:
+```
+"--inspect"
+```
+
+Thanks to the source map, you can then attach a debugger and set breakpoints.
+
 ### UI development tools
 
 The [Internal Actions UI Submenu](https://plugins.jetbrains.com/docs/intellij/internal-ui-sub.html) provides a set of tools to develop, debug, and test the plugin UI components.

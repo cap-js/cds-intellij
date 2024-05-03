@@ -145,6 +145,8 @@ tasks.register('installLsp', Exec) {
     }
 }
 
+// TODO copy before install
+
 tasks.register('copyLsp', Copy) {
     dependsOn installLsp
     mustRunAfter 'buildSearchableOptions'
