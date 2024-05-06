@@ -121,13 +121,22 @@ tasks.register('syncSandboxIdeConf', Copy) {
     }
 }
 
+tasks.register('rmLspNodeModules', Delete) {
+    def cdsLspFromTar = provider {
+        return project.findProperty('local.cdsLspFromTar') == 'true'
+    }
+    onlyIf { cdsLspFromTar.get() }
+    mustRunAfter prepareSandbox
+    delete 'lsp/node_modules'
+}
+
 tasks.register('installLsp', Exec) {
     def noNodeModules = provider {
         // re-evaluated on each gradle run
-        return !file('lsp/node_modules/@sap/cds-lsp').exists()
+        return !file('lsp/node_modules/@sap/cds-lsp').exists() || project.findProperty('local.cdsLspFromTar') == 'true'
     }
     onlyIf { noNodeModules.get() }
-    mustRunAfter prepareSandbox
+    dependsOn rmLspNodeModules
     workingDir './lsp'
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine 'cmd', '/c', 'npm', 'install', '--no-package-lock'
@@ -135,6 +144,8 @@ tasks.register('installLsp', Exec) {
         commandLine 'sh', '-c', 'npm install --no-package-lock'
     }
 }
+
+// TODO copy before install
 
 tasks.register('copyLsp', Copy) {
     dependsOn installLsp

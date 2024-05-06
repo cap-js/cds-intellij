@@ -26,7 +26,7 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
     private static final String RELATIVE_SERVER_PATH = "cds-lsp/node_modules/@sap/cds-lsp/dist/main.js";
     private static final String RELATIVE_SERVER_PKG_PATH = "cds-lsp/node_modules/@sap/cds-lsp/package.json";
     private static final String RELATIVE_MITM_PATH = "cds-lsp/mitm.js";
-    private static final String RELATIVE_LOG_PATH = "cds-lsp/stdio.log";
+    private static final String RELATIVE_LOG_PATH = "cds-lsp/stdio.json";
     public static final int SERVER_EXIT_NODE_VERSION = 72;
 
     public ServerDescriptor(@NotNull Project project, @NotNull String presentableName) {
@@ -99,6 +99,7 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
                 resolve(RELATIVE_MITM_PATH),
                 resolve(RELATIVE_LOG_PATH),
                 "node",
+                "--inspect",
                 resolve(RELATIVE_SERVER_PATH),
                 "--stdio"
         ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug");

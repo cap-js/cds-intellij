@@ -88,7 +88,7 @@ Depending on the kind of problem encountered, you may want to include the logs f
 Logs produced by the IDE can be found by opening the *Help* menu and selecting *Show Log in <platform-dependent tool>*.
 See [Locating IDE log files](https://intellij-support.jetbrains.com/hc/en-us/articles/207241085-Locating-IDE-log-files) for more information.
 
-#### LSP Logs
+#### Language Server Protocol (LSP) Logs
 
 Logging of the stdio communication between the LSP client and server (i.e., the protocol messages) can be activated by modifying your IDE's `vmoptions` file:
 - Edit the file specific to your IntelliJ installation by opening the IDE and going to *Help > Edit Custom VM Options...*.
@@ -104,8 +104,7 @@ DEBUG=cds-lsp
 
 These settings will also enable debug logging for the LSP server.
 
-After restarting the IDE, find the logs in the [plugin directory](https://intellij-support.jetbrains.com/hc/en-us/articles/206544519-Directories-used-by-the-IDE-to-store-settings-caches-plugins-and-logs),
-subdirectory `lib/cds-lsp`, file `stdio.log`.
+After restarting the IDE, find the logs in the [plugin directory](https://intellij-support.jetbrains.com/hc/en-us/articles/206544519-Directories-used-by-the-IDE-to-store-settings-caches-plugins-and-logs), at `lib/cds-lsp/stdio.json`.
 
 #### LSP Client Logs
 
