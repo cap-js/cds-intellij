@@ -99,6 +99,7 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
                 resolve(RELATIVE_MITM_PATH),
                 resolve(RELATIVE_LOG_PATH),
                 "node",
+                "--inspect",
                 resolve(RELATIVE_SERVER_PATH),
                 "--stdio"
         ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug");
