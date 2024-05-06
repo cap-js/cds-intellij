@@ -122,10 +122,10 @@ tasks.register('syncSandboxIdeConf', Copy) {
 }
 
 tasks.register('rmLspNodeModules', Delete) {
-    def lspFromTar = provider {
-        return project.findProperty('local.lspFromTar') == 'true'
+    def cdsLspFromTar = provider {
+        return project.findProperty('local.cdsLspFromTar') == 'true'
     }
-    onlyIf { lspFromTar.get() }
+    onlyIf { cdsLspFromTar.get() }
     mustRunAfter prepareSandbox
     delete 'lsp/node_modules'
 }
@@ -133,7 +133,7 @@ tasks.register('rmLspNodeModules', Delete) {
 tasks.register('installLsp', Exec) {
     def noNodeModules = provider {
         // re-evaluated on each gradle run
-        return !file('lsp/node_modules/@sap/cds-lsp').exists() || project.findProperty('local.lspFromTar') == 'true'
+        return !file('lsp/node_modules/@sap/cds-lsp').exists() || project.findProperty('local.cdsLspFromTar') == 'true'
     }
     onlyIf { noNodeModules.get() }
     dependsOn rmLspNodeModules
