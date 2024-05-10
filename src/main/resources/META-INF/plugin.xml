@@ -63,6 +63,11 @@ The set of features will grow with future releases of the plugin, according to t
 
     <change-notes><![CDATA[<h2>New Features</h2>
 <ul>
-    <li>check Node.js version against requirement by LSP server before starting the latter</li>
+    <li>check Node.js version against requirement by LSP server before starting the server</li>
+    <li>include @sap/cds-lsp 7.9.1 with:
+        <ul>
+            <li>annotate elements snippet now functions correctly near annotations to elements</li>
+        </ul>
+    </li>
 </ul>]]></change-notes>
 </idea-plugin>
