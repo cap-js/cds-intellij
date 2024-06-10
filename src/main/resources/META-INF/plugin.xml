@@ -32,6 +32,8 @@ The set of features will grow with future releases of the plugin, according to t
                 language="cds"
                 extensions="cds"/>
         <platform.lsp.serverSupportProvider implementation="com.sap.cap.cds.intellij.lsp.ServerSupportProvider"/>
+        <notificationGroup id="com.sap.cap.cds.intellij.notifications"
+                           displayType="BALLOON"/>
     </extensions>
 
     <applicationListeners>
@@ -61,6 +63,6 @@ The set of features will grow with future releases of the plugin, according to t
 
     <change-notes><![CDATA[<h2>New Features</h2>
 <ul>
-    <li>also enable debug logging in LSP server when setting DEBUG=cds-lsp</li>
+    <li>check Node.js version against requirement by LSP server before starting the latter</li>
 </ul>]]></change-notes>
 </idea-plugin>
