@@ -1,0 +1,23 @@
+name: upload-installable-zip
+description: Upload an installable zip artifact
+
+inputs:
+  steps:
+    description: 'The run steps to perform'
+    required: true
+
+runs:
+  using: composite
+
+  steps:
+    - name: Extract Zip
+      shell: bash
+      run: |
+        mkdir extracted
+        unzip build/distributions/intellij-cds.zip -d extracted
+
+    - name: Upload Extracted Files as Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: extracted-files
+        path: extracted/
