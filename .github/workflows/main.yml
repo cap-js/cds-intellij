@@ -23,9 +23,6 @@ jobs:
             build
             test
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+      - uses: ./.github/actions/upload-installable-zip
         with:
-          name: build results
-          path: build/distributions/intellij-cds.zip
-          retention-days: 5
+          retention-days: 7
