@@ -1,15 +1,23 @@
 name: upload-installable-zip
 description: Upload an installable zip artifact
 
+# Prerequisites: gradle-run with step build must have run before this action
+
 inputs:
-  steps:
-    description: 'The run steps to perform'
-    required: true
+  retention-days:
+    description: 'The number of days to retain the artifact'
+    required: false
+    default: '14'
 
 runs:
   using: composite
 
   steps:
+    - name: Install Unzip
+      shell: bash
+      # apt-get update should have run elsewhere
+      run: apt-get install unzip -y
+
     - name: Extract Zip
       shell: bash
       run: |
@@ -19,5 +27,6 @@ runs:
     - name: Upload Extracted Files as Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: extracted-files
+        name: intellij-cds
         path: extracted/
+        retention-days: ${{ inputs.retention-days }}
