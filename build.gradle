@@ -30,6 +30,7 @@ repositories {
 dependencies {
     implementation 'org.jetbrains:annotations:24.1.0'
     implementation 'org.json:json:20240205'
+    implementation 'org.apache.maven:maven-artifact:3.9.7'
 }
 
 sourceSets {
