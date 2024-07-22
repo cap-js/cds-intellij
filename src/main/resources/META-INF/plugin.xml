@@ -63,10 +63,12 @@ The set of features will grow with future releases of the plugin, according to t
 
     <change-notes><![CDATA[<h2>New Features</h2>
 <ul>
-    <li>check Node.js version against requirement by LSP server before starting the server</li>
-    <li>include @sap/cds-lsp 7.9.1 with:
+    <li>include @sap/cds-lsp 8.0.0 with:
         <ul>
-            <li>annotate elements snippet now functions correctly near annotations to elements</li>
+            <li>use embedded cds-compiler (v5) if compiler in workspace is &lt; v5</li>
+            <li>fix: highlighting of annotations after bracketed expressions and comments in parameter lists</li>
+            <li>fix: exception in graphical file dependency analysis</li>
+            <li>fix: node version check now runs outside bundle</li>
         </ul>
     </li>
 </ul>]]></change-notes>
