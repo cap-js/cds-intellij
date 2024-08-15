@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "@sap/cds-lsp": "8.0.0"
+    "@sap/cds-lsp": "file:../../cds-lsp/sap-cds-lsp-8.0.1.tgz"
   }
 }
