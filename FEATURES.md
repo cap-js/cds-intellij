@@ -7,14 +7,14 @@ The [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-serv
 | Feature                  | API Support | Server Support | LSP Request                     | Remarks                                                                                        |
 |--------------------------|:-----------:|:--------------:|---------------------------------|------------------------------------------------------------------------------------------------|
 | Syntax Highlighting      |      ✔      |       ✔        | (local, based on TextMate)      | TM Bundle is automatically registered on plugin installation (and disabled on uninstallation). |
-| Code Completion          |      ✔      |       ✔        | textDocument/completion         |                                                                                                |
+| Code Completion          |      ✔      |       ✔        | textDocument/completion         | Completing with global identifiers supported with completionItem/resolve (2024.2)              |
 | Goto Definition          |      ✔      |       ✔        | textDocument/definition         |                                                                                                |
 | Hover Documentation      |      ✔      |       ✔        | textDocument/hover              |                                                                                                |
 | Document Formatting      |      ✔      |       ✔        | textDocument/formatting         |                                                                                                |
 | Diagnostics              |      ✔      |       ✔        | textDocument/publishDiagnostics | Problems (errors, warnings).                                                                   |
 | Quick Fixes              |      ✔      |       ✔        | textDocument/codeAction         |                                                                                                |
 | Intention Actions        |      ✔      |       –        | textDocument/codeAction         | E.g. Refactoring or Organize Imports. No server support yet.                                   |
-| Find References          |      –      |       ✔        | textDocument/references         |                                                                                                |
+| Find References          |   2024.2    |       ✔        | textDocument/references         |                                                                                                |
 | Semantic Tokens          |      –      |       ✔        | textDocument/semanticTokens     | Improved highlighting: server dynamically assigns token semantics.                             |
 | Document Highlights etc. |      –      |       ✔        | (various)                       | Requested by us, ETA unclear.                                                                  |
 
