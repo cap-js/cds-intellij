@@ -20,7 +20,7 @@ public class ServerSupportProvider implements com.intellij.platform.lsp.api.LspS
 
     @Override
     public void fileOpened(@NotNull Project project, @NotNull VirtualFile virtualFile, @NotNull LspServerStarter lspServerStarter) {
-        if (!FileType.EXTENSION.equals(virtualFile.getExtension())) {
+        if (!FileType.EXTENSIONS.contains(virtualFile.getExtension())) {
             return;
         }
         lspServerStarter.ensureServerStarted(new ServerDescriptor(project, Language.LABEL));

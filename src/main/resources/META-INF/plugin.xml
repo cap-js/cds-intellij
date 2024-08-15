@@ -30,7 +30,7 @@ The set of features will grow with future releases of the plugin, according to t
                 implementationClass="com.sap.cap.cds.intellij.FileType"
                 fieldName="INSTANCE"
                 language="cds"
-                extensions="cds"/>
+                extensions="cds;properties"/>
         <platform.lsp.serverSupportProvider implementation="com.sap.cap.cds.intellij.lsp.ServerSupportProvider"/>
         <notificationGroup id="com.sap.cap.cds.intellij.notifications"
                            displayType="BALLOON"/>

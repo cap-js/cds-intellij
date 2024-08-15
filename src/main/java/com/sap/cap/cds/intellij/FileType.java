@@ -8,11 +8,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.textmate.TextMateBackedFileType;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class FileType extends LanguageFileType implements TextMateBackedFileType {
 
     public static final FileType INSTANCE = new FileType();
-    public static final String EXTENSION = "cds";
+    public static final List<String> EXTENSIONS = List.of("cds", "properties");
 
     private FileType() {
         super(Language.INSTANCE);
@@ -30,7 +32,7 @@ public final class FileType extends LanguageFileType implements TextMateBackedFi
 
     @Override
     public @NlsSafe @NotNull String getDefaultExtension() {
-        return EXTENSION;
+        return EXTENSIONS.get(0);
     }
 
     @Override

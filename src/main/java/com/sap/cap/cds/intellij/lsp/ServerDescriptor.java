@@ -138,7 +138,7 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
 
     @Override
     public boolean isSupportedFile(@NotNull VirtualFile virtualFile) {
-        return FileType.EXTENSION.equals(virtualFile.getExtension());
+        return FileType.EXTENSIONS.contains(virtualFile.getExtension());
     }
 
     // TODO Remove this in case cds-lsp ever sends a `client/registerCapability` request to the client to register its
@@ -148,7 +148,7 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
         return new LspFormattingSupport() {
             @Override
             public boolean shouldFormatThisFileExclusivelyByServer(@NotNull VirtualFile file, boolean ideCanFormatThisFileItself, boolean serverExplicitlyWantsToFormatThisFile) {
-                return FileType.EXTENSION.equals(file.getExtension());
+                return FileType.EXTENSIONS.contains(file.getExtension());
             }
         };
     }
