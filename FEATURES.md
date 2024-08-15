@@ -1,7 +1,5 @@
 ## Features
 
-![Demo of Syntax Highlighting, Code Completion, Diagnostics](.assets/code_completion.png)
-
 The [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-server-protocol.html#supported-features) already enables a set of useful language features:
 
 | Feature                  | API Support | Server Support | LSP Request                     | Remarks                                                                                        |
@@ -17,6 +15,29 @@ The [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-serv
 | Find References          |   2024.2    |       ✔        | textDocument/references         |                                                                                                |
 | Semantic Tokens          |      –      |       ✔        | textDocument/semanticTokens     | Improved highlighting: server dynamically assigns token semantics.                             |
 | Document Highlights etc. |      –      |       ✔        | (various)                       | Requested by us, ETA unclear.                                                                  |
+
+### Examples
+
+#### Syntax Highlighting, Code Completion, Diagnostics
+
+![Demo of Syntax Highlighting, Code Completion, Diagnostics](.assets/code_completion.png)
+
+#### Quick Fix
+
+![Demo of Quick Fix](.assets/quick_fix.png)
+
+#### Hover Documentation
+
+![Demo of Hover Documentation](.assets/hover_documentation.png)
+
+#### Document Formatting: before…
+
+![Demo of Document Formatting (before)](.assets/document_formatting1.png)
+
+#### … and after
+
+![Demo of Document Formatting (after)](.assets/document_formatting2.png)
+
 
 ### Upcoming
 
