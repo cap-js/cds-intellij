@@ -20,7 +20,7 @@ The [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-serv
 
 #### Syntax Highlighting, Code Completion, Diagnostics
 
-![Demo of Syntax Highlighting, Code Completion, Diagnostics](.assets/code_completion.png)
+![Demo of Syntax Highlighting, Code Completion, Diagnostics](.assets/syntax+completion+diagnostics.png)
 
 #### Quick Fix
 

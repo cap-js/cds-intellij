@@ -15,7 +15,7 @@ that provides editing and development support for the CAP [CDS](https://cap.clou
 
 Look at our [comprehensive list of features](./FEATURES.md).
 
-![Code Completion](.assets/code_completion.png)
+![Code Completion](.assets/syntax+completion+diagnostics.png)
 
 ## Requirements
 
