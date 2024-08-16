@@ -1,10 +1,12 @@
+import org.codehaus.groovy.runtime.GStringImpl
+
 plugins {
     id 'java'
     id 'org.jetbrains.intellij' version '1.17.2'
 }
 
 ext {
-    sandboxPluginDir = "./build/idea-sandbox/plugins/${project.findProperty('pluginName')}"
+    sandboxPluginDir = "./build/idea-sandbox/plugins/${project.findProperty('pluginName')}" as GStringImpl
     sandboxConfDir = './build/idea-sandbox/config'
     instrumentedDir = './build/instrumented'
 }
