@@ -1,15 +1,8 @@
-import org.codehaus.groovy.runtime.GStringImpl
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 plugins {
     id 'java'
     id 'org.jetbrains.intellij.platform' version '2.0.1'
-}
-
-ext {
-    sandboxPluginDir = "./build/idea-sandbox/plugins/${project.findProperty('pluginName')}" as GStringImpl
-    sandboxConfDir = './build/idea-sandbox/config'
-    instrumentedDir = './build/instrumented'
 }
 
 def hasLocalProperties = provider {
@@ -107,7 +100,7 @@ tasks {
 
 tasks.register('syncSandboxIdeConf', Copy) {
     onlyIf { hasLocalProperties.get() }
-    into sandboxConfDir
+    into "${tasks.named('prepareSandbox').map{it.defaultDestinationDirectory}.get().get()}/../config"
     into('keymaps') {
         from "${project.findProperty('local.ideConfDir')}/keymaps"
     }
@@ -161,11 +154,11 @@ tasks.register('copyLsp', Copy) {
     dependsOn installLsp
     mustRunAfter 'buildSearchableOptions'
     from './lsp'
-    into "${sandboxPluginDir}/lib/cds-lsp"
+    into "${tasks.named('prepareSandbox').map{it.pluginDirectory}.get().get()}/lib/cds-lsp"
 }
 
 tasks.register('copyLspToInstrumented', Copy) {
     dependsOn installLsp
     from './lsp'
-    into "${instrumentedDir}/cds-lsp"
+    into './build/instrumented/cds-lsp'
 }
