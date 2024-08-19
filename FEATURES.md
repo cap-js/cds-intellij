@@ -12,7 +12,7 @@ The [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-serv
 | Diagnostics              |      ✔      |       ✔        | textDocument/publishDiagnostics | Problems (errors, warnings).                                                                   |
 | Quick Fixes              |      ✔      |       ✔        | textDocument/codeAction         |                                                                                                |
 | Intention Actions        |      ✔      |       –        | textDocument/codeAction         | E.g. Refactoring or Organize Imports. No server support yet.                                   |
-| Find References          |   2024.2    |       ✔        | textDocument/references         |                                                                                                |
+| Find References          |      ✔      |       ✔        | textDocument/references         |                                                                                                |
 | Semantic Tokens          |      –      |       ✔        | textDocument/semanticTokens     | Improved highlighting: server dynamically assigns token semantics.                             |
 | Document Highlights etc. |      –      |       ✔        | (various)                       | Requested by us, ETA unclear.                                                                  |
 
@@ -29,6 +29,10 @@ The [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-serv
 #### Hover Documentation
 
 ![Demo of Hover Documentation](.assets/hover_documentation.png)
+
+#### Find References
+
+![Demo of Find References](.assets/find_references.png)
 
 #### Document Formatting: before…
 
