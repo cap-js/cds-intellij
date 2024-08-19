@@ -63,6 +63,13 @@ java {
 intellijPlatform {
     buildSearchableOptions = false
     autoReload = /* set to true to enable plugin reload on FS changes inside plugin */ false
+    pluginVerification {
+        ides {
+            String type = project.findProperty('platformType')
+            String version = project.findProperty('platformVersion')
+            ide(type, version)
+        }
+    }
 }
 
 tasks {
