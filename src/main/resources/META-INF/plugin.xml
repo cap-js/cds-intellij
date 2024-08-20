@@ -63,13 +63,9 @@ The set of features will grow with future releases of the plugin, according to t
 
     <change-notes><![CDATA[<h2>New Features</h2>
 <ul>
-    <li>include @sap/cds-lsp 8.0.0 with:
-        <ul>
-            <li>use embedded cds-compiler (v5) if compiler in workspace is &lt; v5</li>
-            <li>fix: highlighting of annotations after bracketed expressions and comments in parameter lists</li>
-            <li>fix: exception in graphical file dependency analysis</li>
-            <li>fix: node version check now runs outside bundle</li>
-        </ul>
-    </li>
+    <li>build on IntelliJ Platform 2024.2, enabling:</li>
+    <ul>
+        <li>Find References</li>
+    </ul>
 </ul>]]></change-notes>
 </idea-plugin>

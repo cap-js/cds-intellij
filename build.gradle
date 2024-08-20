@@ -1,12 +1,8 @@
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '1.17.2'
-}
-
-ext {
-    sandboxPluginDir = "./build/idea-sandbox/plugins/${project.findProperty('pluginName')}"
-    sandboxConfDir = './build/idea-sandbox/config'
-    instrumentedDir = './build/instrumented'
+    id 'org.jetbrains.intellij.platform' version '2.0.1'
 }
 
 def hasLocalProperties = provider {
@@ -25,19 +21,36 @@ if (hasLocalProperties.get()) {
 
 repositories {
     mavenCentral()
+
+    intellijPlatform {
+        defaultRepositories()
+        jetbrainsRuntime()
+    }
 }
 
 dependencies {
     implementation 'org.jetbrains:annotations:24.1.0'
-    implementation 'org.json:json:20240205'
-    implementation 'org.apache.maven:maven-artifact:3.9.7'
-}
+    implementation 'org.json:json:20240303'
+    implementation 'org.apache.maven:maven-artifact:3.9.8'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.3'
+    testCompileOnly 'junit:junit:4.13.2'
 
-sourceSets {
-    main {
-        java {
-            srcDirs('src/main/gen')
-        }
+    intellijPlatform {
+        String type = project.findProperty('platformType')
+        String version = project.findProperty('platformVersion')
+        create(type, version)
+
+        bundledPlugins(['com.intellij.java', 'org.jetbrains.plugins.textmate'])
+
+        instrumentationTools()
+        pluginVerifier()
+        testFramework(TestFrameworkType.Platform.INSTANCE)
+        testFramework(TestFrameworkType.Plugin.Java.INSTANCE)
+
+        // TODO re-enable config of local IDE if still possible
+        //        if (project.hasProperty('local.ideDir')) {
+        //            local(project.file(project.findProperty('local.ideDir')))
+        //        }
     }
 }
 
@@ -47,19 +60,19 @@ java {
     }
 }
 
-intellij {
-    pluginName = project.findProperty('pluginName')
-    version = project.findProperty('platformVersion')
-    type = project.findProperty('platformType')
-    updateSinceUntilBuild.set(false)
-    plugins = ['org.jetbrains.plugins.textmate']
+intellijPlatform {
+    buildSearchableOptions = false
+    autoReload = /* set to true to enable plugin reload on FS changes inside plugin */ false
+    pluginVerification {
+        ides {
+            String type = project.findProperty('platformType')
+            String version = project.findProperty('platformVersion')
+            ide(type, version)
+        }
+    }
 }
 
 tasks {
-    buildSearchableOptions {
-        enabled = false
-    }
-
     wrapper {
         gradleVersion = project.findProperty('gradleVersion')
     }
@@ -71,14 +84,11 @@ tasks {
 
     runIde {
         dependsOn 'copyLsp', 'syncSandboxIdeConf'
-        autoReloadPlugins = /* set to true to enable plugin reload on FS changes inside plugin */ false
-        if (project.hasProperty('local.ideDir')) {
-            ideDir = project.file(project.findProperty('local.ideDir'))
-        }
     }
 
     buildPlugin {
         dependsOn 'copyLsp'
+        archiveFileName = "${project.findProperty('pluginName')}.zip"
     }
 
     verifyPlugin {
@@ -98,7 +108,7 @@ tasks {
 
 tasks.register('syncSandboxIdeConf', Copy) {
     onlyIf { hasLocalProperties.get() }
-    into sandboxConfDir
+    into "${tasks.named('prepareSandbox').map{it.defaultDestinationDirectory}.get().get()}/../config"
     into('keymaps') {
         from "${project.findProperty('local.ideConfDir')}/keymaps"
     }
@@ -152,11 +162,11 @@ tasks.register('copyLsp', Copy) {
     dependsOn installLsp
     mustRunAfter 'buildSearchableOptions'
     from './lsp'
-    into "${sandboxPluginDir}/lib/cds-lsp"
+    into "${tasks.named('prepareSandbox').map{it.pluginDirectory}.get().get()}/lib/cds-lsp"
 }
 
 tasks.register('copyLspToInstrumented', Copy) {
     dependsOn installLsp
     from './lsp'
-    into "${instrumentedDir}/cds-lsp"
+    into './build/instrumented/cds-lsp'
 }
