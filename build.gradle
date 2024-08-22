@@ -88,7 +88,7 @@ tasks {
 
     buildPlugin {
         dependsOn 'copyLsp'
-        archiveFileName = "${project.findProperty('pluginName')}.zip"
+        archiveFileName = project.findProperty('archiveName')
     }
 
     verifyPlugin {

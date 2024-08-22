@@ -1,6 +1,6 @@
-![CDS Language Support for IntelliJ](.assets/logo.png) [![IntelliJ](.assets/IntelliJ_IDEA_icon.svg)](https://www.jetbrains.com/)
+![SAP CDS Language Support for IntelliJ](.assets/logo.png) [![IntelliJ](.assets/IntelliJ_IDEA_icon.svg)](https://www.jetbrains.com/)
 
-# CAP CDS Language Support for IntelliJ
+# SAP CDS Language Support for IntelliJ
 
 [![REUSE status](https://api.reuse.software/badge/github.com/cap-js/cds-intellij)](https://api.reuse.software/info/github.com/cap-js/cds-intellij)
 ![Main build passing](https://github.com/cap-js/cds-intellij/actions/workflows/main.yml/badge.svg)
@@ -8,8 +8,8 @@
 
 ## Description
 
-Welcome to **CDS Language Support for IntelliJ**. It is a plugin for [IntelliJ](https://www.jetbrains.com/idea/) IDEs
-that provides editing and development support for the CAP [CDS](https://cap.cloud.sap/docs/cds/) language.
+Welcome to **SAP CDS Language Support for IntelliJ**. It is a plugin for [IntelliJ](https://www.jetbrains.com/idea/) IDEs
+that provides editing and development support for the [CDS](https://cap.cloud.sap/docs/cds/) language as used in the SAP Cloud Application Programming Model (CAP).
 
 ### Features
 
@@ -64,7 +64,7 @@ cds-intellij is based on the following components:
 
 | Component                                                                                       | Role                                                                             | Publisher              |
 |-------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|------------------------|
-| [CDS Language Server](https://www.npmjs.com/package/@sap/cds-lsp) (cds-lsp, running on Node.js) | CDS language support                                                             | SAP                    |
+| [CDS Language Server](https://www.npmjs.com/package/@sap/cds-lsp) (cds-lsp, running on Node.js) | SAP CDS Language Support                                                             | SAP                    |
 | CDS TextMate bundle                                                                             | CDS syntax highlighting                                                          | (shipped with cds-lsp) |
 | [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-server-protocol.html)   | [LSP](https://microsoft.github.io/language-server-protocol/) support in IntelliJ | JetBrains              |
 
@@ -75,7 +75,7 @@ cds-intellij is based on the following components:
 
 | Symptom                                                      | Solution                                                                                                                                                                                                           |
 |--------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| CDS Language Support for IntelliJ is not enabled in the IDE. | 🚫 The plugin is not compatible with the **free** IntelliJ **Community** Edition. Make sure you are using a commercial IntelliJ IDE such as IDEA Ultimate or WebStorm.                                             |
+| SAP CDS Language Support for IntelliJ is not enabled in the IDE. | 🚫 The plugin is not compatible with the **free** IntelliJ **Community** Edition. Make sure you are using a commercial IntelliJ IDE such as IDEA Ultimate or WebStorm.                                             |
 | CDS file icons are missing and/or no syntax highlighting     | Uninstall any previous versions of the plugin *(File > Settings > Plugins)*. Remove the 'cds' TextMate Bundle *(File > Settings > Editor > TextMate Bundles)*. Restart the IDE. Install the latest plugin version. |
 
 ### Logs

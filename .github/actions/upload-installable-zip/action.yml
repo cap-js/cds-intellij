@@ -22,11 +22,11 @@ runs:
       shell: bash
       run: |
         mkdir extracted
-        unzip build/distributions/intellij-cds.zip -d extracted
+        unzip build/distributions/cds-intellij.zip -d extracted
 
     - name: Upload Extracted Files as Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: intellij-cds
+        name: cds-intellij
         path: extracted/
         retention-days: ${{ inputs.retention-days }}

@@ -45,8 +45,8 @@ The [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-serv
 
 ### Upcoming
 
-We have requested support for various additional LSP requests (functionality already available in server).
-These will enable *intellij-cds* to provide:
+Depending on the IntelliJ platform development roadmap, we expect to see more features available in the near future.
+These will enable *SAP CDS Language Support for IntelliJ* to provide:
 - Code structure
 - Highlighting of occurrences in same file
 - Navigation via import path or symbol name

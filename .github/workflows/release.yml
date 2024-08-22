@@ -41,4 +41,4 @@ jobs:
         with:
           tag: ${{ steps.setenv.outputs.RELEASE_TAG }}
           body: Build ${{ github.run_number }}<br>${{ steps.setenv.outputs.CHANGE_LOG }}
-          artifacts: build/distributions/intellij-cds.zip
+          artifacts: build/distributions/cds-intellij.zip
