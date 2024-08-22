@@ -1,0 +1,13 @@
+version: 2
+
+updates:
+- package-ecosystem: github-actions
+  directory: /
+  versioning-strategy: increase-if-necessary
+  schedule:
+    interval: weekly
+- package-ecosystem: gradle
+  directory: /
+  versioning-strategy: increase-if-necessary
+  schedule:
+    interval: daily
