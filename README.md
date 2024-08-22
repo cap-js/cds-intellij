@@ -9,7 +9,7 @@
 ## Description
 
 Welcome to **SAP CDS Language Support for IntelliJ**. It is a plugin for [IntelliJ](https://www.jetbrains.com/idea/) IDEs
-that provides editing and development support for the CAP [CDS](https://cap.cloud.sap/docs/cds/) language.
+that provides editing and development support for the [CDS](https://cap.cloud.sap/docs/cds/) language as used in the SAP Cloud Application Programming Model (CAP).
 
 ### Features
 
