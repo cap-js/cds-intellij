@@ -8,6 +8,6 @@ public class Plugin {
 
     public static final String PACKAGE = "com.sap.cap.cds.intellij";
 
-    public static final String LABEL = "cds-intellij"; // Used for build subfolder and zip file
+    public static final String LABEL = "cds-intellij"; // Used for logging and other purposes
 
 }
