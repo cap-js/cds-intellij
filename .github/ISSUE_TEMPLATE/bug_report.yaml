@@ -47,7 +47,7 @@ body:
     description: |
       | Tool | Version |
       | ---- | ------- |
-      | CDS Language Support for IntelliJ |  |
+      | SAP CDS Language Support for IntelliJ |  |
       | Node.js |  |
   validations:
     required: false
