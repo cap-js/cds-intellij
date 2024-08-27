@@ -2,14 +2,18 @@
 
 ### Sandbox IDE
 
-Run `./gradlew runIde` to fire up a [sandbox IDE](https://plugins.jetbrains.com/docs/intellij/ide-development-instance.html) with the plugin installed.
+Depending on the type of IntelliJ-based IDE you have installed locally, run one of the following commands:
+- `./gradlew runIde` for IntelliJ IDEA
+- `./gradlew runWebStorm` for WebStorm
+
+This will start the corresponding [sandbox IDEA instance](https://plugins.jetbrains.com/docs/intellij/ide-development-instance.html) with the plugin installed.
 
 #### Synchronize local IDE settings
 
 In order to use your local IDE settings (such as hotkeys or themes) with the sandbox IDE:
 1. Create a file *local.properties* next to *gradle.properties*.
 2. Write the following line to the file:
-   `local.ideConfDir = /path/to/config/dir/e.g./WebStorm2024.1`
+   `local.ideConfDir = /path/to/config/dir/e.g./WebStorm2024.2`
 
 From now on, settings (keymaps and various options) will be copied from the local configuration dir to that of the sandbox IDE on each run.
 
@@ -32,7 +36,7 @@ To test and debug a local version of `@sap/cds-lsp` in the plugin:
    1. Add the following line to `local.properties`:
       `local.cdsLspFromTar = true`
    2. Reference the path of the output `.tgz` file in the `@sap/cds-lsp` dependency in `lsp/package.json`, with a `file:` prefix.
-   3. Run `./gradlew runIde` to start the sandbox IDE with the modified LSP server. Each run will use the newest version of the `.tgz` file.
+   3. Run `./gradlew runIde` (or `./gradlew runWebStorm`)  to start the sandbox IDE with the modified LSP server. Each run will use the newest version of the `.tgz` file.
 
 #### Debugging
 

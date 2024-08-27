@@ -1,4 +1,5 @@
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 
 plugins {
     id 'java'
@@ -46,11 +47,6 @@ dependencies {
         pluginVerifier()
         testFramework(TestFrameworkType.Platform.INSTANCE)
         testFramework(TestFrameworkType.Plugin.Java.INSTANCE)
-
-        // TODO re-enable config of local IDE if still possible
-        //        if (project.hasProperty('local.ideDir')) {
-        //            local(project.file(project.findProperty('local.ideDir')))
-        //        }
     }
 }
 
@@ -72,6 +68,18 @@ intellijPlatform {
     }
 }
 
+intellijPlatformTesting.runIde {
+    runWebStorm {
+        type = IntelliJPlatformType.WebStorm
+        if (project.hasProperty('local.ideDir')) {
+            localPath = project.file(project.findProperty('local.ideDir'))
+        }
+        task {
+            dependsOn 'copyLsp', 'syncSandboxIdeConf'
+        }
+    }
+}
+
 tasks {
     wrapper {
         gradleVersion = project.findProperty('gradleVersion')
@@ -80,10 +88,6 @@ tasks {
     patchPluginXml {
         version = project.findProperty('pluginVersion')
         sinceBuild = project.findProperty('pluginSinceBuild')
-    }
-
-    runIde {
-        dependsOn 'copyLsp', 'syncSandboxIdeConf'
     }
 
     buildPlugin {
@@ -108,7 +112,7 @@ tasks {
 
 tasks.register('syncSandboxIdeConf', Copy) {
     onlyIf { hasLocalProperties.get() }
-    into "${tasks.named('prepareSandbox').map{it.defaultDestinationDirectory}.get().get()}/../config"
+    into "${tasks.named('prepareSandbox_runWebStorm').map{it.defaultDestinationDirectory}.get().get()}/../config"
     into('keymaps') {
         from "${project.findProperty('local.ideConfDir')}/keymaps"
     }
@@ -137,7 +141,7 @@ tasks.register('rmLspNodeModules', Delete) {
         return project.findProperty('local.cdsLspFromTar') == 'true'
     }
     onlyIf { cdsLspFromTar.get() }
-    mustRunAfter prepareSandbox
+    mustRunAfter prepareSandbox, prepareSandbox_runWebStorm
     delete 'lsp/node_modules'
 }
 
@@ -163,6 +167,7 @@ tasks.register('copyLsp', Copy) {
     mustRunAfter 'buildSearchableOptions'
     from './lsp'
     into "${tasks.named('prepareSandbox').map{it.pluginDirectory}.get().get()}/lib/cds-lsp"
+    into "${tasks.named('prepareSandbox_runWebStorm').map{it.pluginDirectory}.get().get()}/lib/cds-lsp"
 }
 
 tasks.register('copyLspToInstrumented', Copy) {
