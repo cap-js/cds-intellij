@@ -84,11 +84,6 @@ public class BundleManager implements AppLifecycleListener, /*obsolete*/ Startup
     }
 
     @Override
-    public void appStarted() {
-        registerBundle();
-    }
-
-    @Override
     public void runActivity(@NotNull Project project) {
         registerBundle();
     }
