@@ -23,9 +23,9 @@ Look at our [comprehensive list of features](./FEATURES.md).
 
 ### Supported IDEs
 
-This plugin is compatible with the latest **paid** IntelliJ IDEs including IDEA Ultimate and WebStorm.  Check https://www.jetbrains.com/ which option is best for you.
+This plugin is compatible with the latest **paid** IntelliJ IDEs including IDEA Ultimate and WebStorm.  Check https://www.jetbrains.com/ to find out which option is best for you.
 
-> The LSP API is only available in the commercial versions JetBrains' IDEs, which is why the plugin doesn't run in the free variants.
+> The LSP API is only available in commercial IntelliJ IDEs, which is why the plugin doesn't run in the free variants (such as IntelliJ Community).
 
 ### Operating Systems
 
