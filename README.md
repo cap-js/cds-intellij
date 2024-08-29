@@ -38,7 +38,8 @@ Tested on Windows, macOS, and Linux.
 
 Prepare your environment:
 
-1. Install [Node.js](https://nodejs.org/en/) on your computer.
+1. Install [![required Node.js version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fwww.unpkg.com%2F%40sap%2Fcds-lsp%2Fpackage.json&query=%24.engines.node&label=Node.js&cacheSeconds=3600)](https://nodejs.org/en/)
+   on your computer.
 2. Make sure that your IntelliJ IDEA Ultimate (or other commercial IntelliJ IDE) runs with a `PATH` that includes the Node.js executable.
 
 Install or update the plugin:
