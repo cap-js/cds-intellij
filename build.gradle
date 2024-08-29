@@ -75,7 +75,7 @@ intellijPlatformTesting.runIde {
             localPath = project.file(project.findProperty('local.ideDir'))
         }
         task {
-            dependsOn 'copyLsp', 'syncSandboxIdeConf'
+            dependsOn 'copyLspToRunWebStorm', 'syncSandboxIdeConf'
         }
     }
 }
@@ -167,6 +167,12 @@ tasks.register('copyLsp', Copy) {
     mustRunAfter 'buildSearchableOptions'
     from './lsp'
     into "${tasks.named('prepareSandbox').map{it.pluginDirectory}.get().get()}/lib/cds-lsp"
+}
+
+tasks.register('copyLspToRunWebStorm', Copy) {
+    dependsOn installLsp
+    mustRunAfter 'buildSearchableOptions'
+    from './lsp'
     into "${tasks.named('prepareSandbox_runWebStorm').map{it.pluginDirectory}.get().get()}/lib/cds-lsp"
 }
 
