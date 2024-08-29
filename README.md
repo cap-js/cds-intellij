@@ -34,22 +34,23 @@ Tested on Windows, macOS, and Linux.
 
 ## Download and Installation
 
-### As a Zip File
-
 Prepare your environment:
 
 1. Install [![required Node.js version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fwww.unpkg.com%2F%40sap%2Fcds-lsp%2Fpackage.json&query=%24.engines.node&label=Node.js&cacheSeconds=3600)](https://nodejs.org/en/)
    on your computer.
 2. Make sure that your IntelliJ IDEA Ultimate (or other commercial IntelliJ IDE) runs with a `PATH` that includes the Node.js executable.
+3. If you have installed SAP CDS Language Support for IntelliJ from a Zip file before, uninstall it.
 
 Install or update the plugin:
 
-1. Download the latest [release](https://github.com/cap-js/cds-intellij/releases) from GitHub.
-2. In IntelliJ, go to `File > Settings > Plugins > ⚙ > Install Plugin from Disk…` and select the downloaded .zip file.
+1. In your IntelliJ IDE, go to *File > Settings > Plugins*.
+2. Click the *Marketplace* tab.
+3. Search for "SAP CDS Language Support" and click *Install*.
 
-### From JetBrains Marketplace
+Alternatively, you can install the plugin from the JetBrains Marketplace:
 
-Coming soon. We are working on it.
+1. Go to the [plugin homepage](https://plugins.jetbrains.com/plugin/25209-sap-cds-language-support) and hit the "Install to …" button.
+2. Open your IntelliJ IDE and follow the instructions in the dialog that appears.
 
 
 ## How to Obtain Support
