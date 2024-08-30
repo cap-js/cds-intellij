@@ -23,9 +23,9 @@ Look at our [comprehensive list of features](./FEATURES.md).
 
 ### Supported IDEs
 
-This plugin is compatible with the latest **paid** IntelliJ IDEs including IDEA Ultimate and WebStorm.  Check https://www.jetbrains.com/ which option is best for you.
+This plugin is compatible with the latest **paid** IntelliJ IDEs including IDEA Ultimate and WebStorm.  Check https://www.jetbrains.com/ to find out which option is best for you.
 
-> The LSP API is only available in the commercial versions JetBrains' IDEs, which is why the plugin doesn't run in the free variants.
+> The LSP API is only available in commercial IntelliJ IDEs, which is why the plugin doesn't run in the free variants (such as IntelliJ Community).
 
 ### Operating Systems
 
@@ -39,7 +39,8 @@ Prepare your environment:
 1. Install [![required Node.js version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fwww.unpkg.com%2F%40sap%2Fcds-lsp%2Fpackage.json&query=%24.engines.node&label=Node.js&cacheSeconds=3600)](https://nodejs.org/en/)
    on your computer.
 2. Make sure that your IntelliJ IDEA Ultimate (or other commercial IntelliJ IDE) runs with a `PATH` that includes the Node.js executable.
-3. If you have installed SAP CDS Language Support for IntelliJ from a Zip file before, uninstall it.
+3. If you have installed the SAP CDS Language Support for IntelliJ plugin from a Zip file before, uninstall it.
+     - Note: we have reset the current plugin version to `1.0.0` for the first JetBrains Marketplace release, to clarify that the feature set (based on the current LSP API) is still incomplete.
 
 Install or update the plugin:
 
