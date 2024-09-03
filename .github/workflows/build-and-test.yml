@@ -23,6 +23,9 @@ jobs:
           steps: |-
             test
             build
-            test
 
-      - uses: ./.github/actions/upload-installable-zip
+      - name: Upload installable ZIP
+        uses: actions/upload-artifact@v3
+        with:
+          name: cds-intellij
+          path: build/distributions/cds-intellij.zip
