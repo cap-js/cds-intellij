@@ -1,5 +1,5 @@
 name: upload-installable-zip
-description: Upload an installable zip artifact
+description: Upload build results as a ZIP directly installable in IntelliJ (equivalent to the ZIP built by Gradle)
 
 # Prerequisites: gradle-run with step build must have run before this action
 
