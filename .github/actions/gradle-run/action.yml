@@ -48,3 +48,9 @@ runs:
       run: |
         ./gradlew verifyPlugin buildPlugin
         ls -la build/distributions
+
+    - name: Publish
+      if: ${{ contains(inputs.steps, 'publish') }}
+      shell: bash
+      run: |
+        ./gradlew publishPlugin --info

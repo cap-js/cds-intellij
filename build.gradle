@@ -103,6 +103,10 @@ tasks {
         dependsOn 'copyLspToInstrumented'
     }
 
+    publishPlugin {
+        token.set(System.getenv("JB_TOKEN"))
+    }
+
     clean {
         doFirst {
             delete './lsp/node_modules'

@@ -1,0 +1,32 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  release-build:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/gradle-run
+        with:
+          steps: |-
+            test
+            build
+
+      - uses: ./.github/actions/gradle-run
+        with:
+          steps: |-
+            publish
+        env:
+          JB_TOKEN: ${{ JB_TOKEN }}
