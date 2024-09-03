@@ -59,8 +59,18 @@ The set of features will grow with future releases of the plugin, according to t
         />
     </projectListeners>
 
-    <change-notes><![CDATA[ <h3>Added</h3>
+    <change-notes><![CDATA[ <h3>Changed</h3>
 <ul>
-    <li>Support Find References</li>
+    <li>include @sap/cds-lsp 8.2.1 with:
+        <ul>
+            <li>code completion for artifacts within `using` statements now also completes single name segments with complete name</li>
+            <li>minimum required Node.js version is now 20.9.0</li>
+            <li>hover and completion proposal details now show artifact kind</li>
+            <li>fix: highlighting of element names in annotate statements and of special element names `entity`, `type`, `event`</li>
+            <li>fix: completion: rename of source folders led to wrong using path proposals</li>
+            <li>fix: completion: using path proposals did not work in multi-line using statements</li>
+            <li>fix: maintain translation quickfix sent wrong document version</li>
+        </ul>
+    </li>
 </ul> ]]></change-notes>
 </idea-plugin>
