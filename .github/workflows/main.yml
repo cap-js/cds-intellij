@@ -20,8 +20,8 @@ jobs:
       - uses: ./.github/actions/gradle-run
         with:
           steps: |-
-            build
             test
+            build
 
       - uses: ./.github/actions/upload-installable-zip
         with:
