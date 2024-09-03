@@ -29,21 +29,22 @@ runs:
         distribution: zulu
         java-version: 21
 
-    - name: Build
-      if: ${{ contains(inputs.steps, 'build') }}
-      shell: bash
-      run: |
-        ./gradlew verifyPlugin buildPlugin
-        ls -la build/distributions
-
     - name: Test
       if: ${{ contains(inputs.steps, 'test') }}
       shell: bash
       run: |
         ./gradlew test --info
 
-    - uses: actions/upload-artifact@v3
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
       if: ${{ contains(inputs.steps, 'test') }}
       with:
         name: test-results
         path: ./build/test-results/test
+
+    - name: Build
+      if: ${{ contains(inputs.steps, 'build') }}
+      shell: bash
+      run: |
+        ./gradlew verifyPlugin buildPlugin
+        ls -la build/distributions

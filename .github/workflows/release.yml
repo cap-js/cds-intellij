@@ -23,8 +23,8 @@ jobs:
       - uses: ./.github/actions/gradle-run
         with:
           steps: |-
-            build
             test
+            build
 
       - id: setenv
         run: |
