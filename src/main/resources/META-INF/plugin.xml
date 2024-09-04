@@ -2,10 +2,7 @@
     <id>com.sap.cap.cds</id>
     <name>SAP CDS Language Support</name>
     <vendor url="https://sap.com/">SAP SE</vendor>
-    <description><![CDATA[<p>This plugin provides support for the CDS language in IntelliJ. It enables you to write, edit, and validate CDS files with syntax highlighting, code completion, formatting, diagnostics, and more. Supported IDEs include IntelliJ IDEA, WebStorm, and other commercial IntelliJ products.</p>
-<p><a href="https://cap.cloud.sap/docs/">More information on CAP</a></p>
-<!--<p><br/></p>-->
-<h2>Features:</h2>
+    <description><![CDATA[ Provides support for the <a href="https://cap.cloud.sap/docs/cds/">CDS language</a> in IntelliJ IDEs. Use these powerful features:
 <ul>
     <li>Syntax highlighting</li>
     <li>Code completion</li>
@@ -15,8 +12,7 @@
     <li>Diagnostics</li>
     <li>Quick fixes</li>
 </ul>
-
-The set of features will grow with future releases of the plugin, according to the development of the JetBrains IntelliJ LSP API.]]></description>
+The set of features will grow with future releases, aligned with the development of the JetBrains IntelliJ LSP API.]]></description>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.ultimate</depends>
