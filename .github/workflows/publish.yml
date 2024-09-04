@@ -11,7 +11,8 @@ permissions:
   contents: write
 
 jobs:
-  release-build:
+  publish-jb:
+    environment: jb-marketplace
     runs-on: ubuntu-latest
     container:
       image: ubuntu:22.04
@@ -29,4 +30,4 @@ jobs:
           steps: |-
             publish
         env:
-          JB_TOKEN: ${{ JB_TOKEN }}
+          JB_TOKEN: ${{ secrets.JB_TOKEN }}
