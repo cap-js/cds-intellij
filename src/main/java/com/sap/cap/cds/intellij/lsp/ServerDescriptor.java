@@ -12,10 +12,13 @@ import com.sap.cap.cds.intellij.FileType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.intellij.util.PathUtil.getJarPathForClass;
+import static java.nio.charset.Charset.defaultCharset;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ServerDescriptor extends ProjectWideLspServerDescriptor {
@@ -23,6 +26,8 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
     private static final String RELATIVE_SERVER_PATH = "cds-lsp/node_modules/@sap/cds-lsp/dist/main.js";
     private static final String RELATIVE_MITM_PATH = "cds-lsp/mitm.js";
     private static final String RELATIVE_LOG_PATH = "cds-lsp/stdio.json";
+
+    private volatile Boolean started = false;
 
     public ServerDescriptor(@NotNull Project project, @NotNull String presentableName) {
         super(project, presentableName);
@@ -36,22 +41,43 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
             protected BaseOutputReader.@NotNull Options readerOptions() {
                 return BaseOutputReader.Options.forMostlySilentProcess();
             }
+            @Override
+            protected void onOSProcessTerminated(int exitCode) {
+                super.onOSProcessTerminated(exitCode);
+                if (started && exitCode != 0) {
+                    showUserError(getProcess());
+                }
+            }
         };
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) { /*ignore*/ }
-
-        Process process = handler.getProcess();
-        int exitValue;
-        try {
-            exitValue = process.exitValue();
-            handleServerError(exitValue);
-        } catch (RuntimeException e) { /* process still running */ }
+        tryHandleServerError(handler);
         return handler;
     }
 
-    private void handleServerError(int exitValue) {
-        UserError.show("CDS Language Server exited with code " + exitValue);
+    private void tryHandleServerError(OSProcessHandler handler) {
+        Process process = handler.getProcess();
+        try {
+            process.exitValue();
+            showUserError(process);
+        } catch (RuntimeException e) {
+            // process is running
+            started = true;
+        }
+    }
+
+    private void showUserError(Process process) {
+        try (BufferedReader reader = process.errorReader(defaultCharset())) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Error: ")) {
+                    UserError.show(line);
+                    return;
+                }
+            }
+        } catch (IOException e) { /* ignore */ }
+        UserError.show("CDS Language Server exited with code " + process.exitValue());
     }
 
     public GeneralCommandLine getCommandLine() throws ExecutionException {
