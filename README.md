@@ -38,7 +38,7 @@ Prepare your environment:
 
 1. Install [![required Node.js version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fwww.unpkg.com%2F%40sap%2Fcds-lsp%2Fpackage.json&query=%24.engines.node&label=Node.js&cacheSeconds=3600)](https://nodejs.org/en/)
    on your computer.
-2. Make sure that your IntelliJ IDEA Ultimate (or other commercial IntelliJ IDE) runs with a `PATH` that includes the Node.js executable.
+2. Make sure that IntelliJ *IDEA Ultimate* or *WebStorm* runs with a `PATH` that includes the Node.js executable.
 3. If you have installed the SAP CDS Language Support for IntelliJ plugin from a Zip file before, uninstall it.
      - Note: we have reset the current plugin version to `1.0.0` for the first JetBrains Marketplace release, to clarify that the feature set (based on the current LSP API) is still incomplete.
 
