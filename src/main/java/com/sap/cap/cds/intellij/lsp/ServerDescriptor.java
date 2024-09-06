@@ -27,7 +27,7 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
     private static final String RELATIVE_MITM_PATH = "cds-lsp/mitm.js";
     private static final String RELATIVE_LOG_PATH = "cds-lsp/stdio.json";
 
-    private volatile boolean started;
+    private boolean started;
 
     public ServerDescriptor(@NotNull Project project, @NotNull String presentableName) {
         super(project, presentableName);
