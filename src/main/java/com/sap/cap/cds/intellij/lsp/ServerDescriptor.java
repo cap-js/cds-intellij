@@ -52,18 +52,16 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) { /*ignore*/ }
-        tryHandleServerError(handler);
+        checkServerRunning(handler);
         return handler;
     }
 
-    private void tryHandleServerError(OSProcessHandler handler) {
+    private void checkServerRunning(OSProcessHandler handler) {
         Process process = handler.getProcess();
-        try {
-            process.exitValue();
-            showUserError(process);
-        } catch (RuntimeException e) {
-            // process is running
+        if (process.isAlive()) {
             started = true;
+        } else {
+            showUserError(process);
         }
     }
 
