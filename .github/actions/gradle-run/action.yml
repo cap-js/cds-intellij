@@ -36,7 +36,7 @@ runs:
         ./gradlew test --info
 
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: ${{ contains(inputs.steps, 'test') }}
       with:
         name: test-results
