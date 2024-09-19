@@ -57,6 +57,6 @@ The set of features will grow with future releases, aligned with the development
 
     <change-notes><![CDATA[ <h3>Changed</h3>
 <ul>
-    <li>remove Node.js version check, which is now done by the LSP server</li>
+    <li>Specify platform 2024.3 as highest compatible version</li>
 </ul> ]]></change-notes>
 </idea-plugin>
