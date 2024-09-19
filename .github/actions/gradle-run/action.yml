@@ -20,11 +20,11 @@ runs:
         DEBIAN_FRONTEND: noninteractive
         TZ: Etc/UTC
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
-        node-version: 18
+        node-version: 20
 
-    - uses: actions/setup-java@v3
+    - uses: actions/setup-java@v4
       with:
         distribution: zulu
         java-version: 21
@@ -36,7 +36,7 @@ runs:
         ./gradlew test --info
 
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: ${{ contains(inputs.steps, 'test') }}
       with:
         name: test-results
