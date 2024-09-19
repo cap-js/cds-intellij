@@ -39,7 +39,7 @@ Prepare your environment:
 1. Install [![required Node.js version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fwww.unpkg.com%2F%40sap%2Fcds-lsp%2Fpackage.json&query=%24.engines.node&label=Node.js&cacheSeconds=3600)](https://nodejs.org/en/)
    on your computer.
 2. Make sure that IntelliJ *IDEA Ultimate* or *WebStorm* runs with a `PATH` that includes the Node.js executable.
-3. If you have installed the SAP CDS Language Support for IntelliJ plugin from a Zip file before, uninstall it.
+3. If you have installed the SAP CDS Language Support for IntelliJ plugin from a ZIP file before, uninstall it.
      - Note: we have reset the current plugin version to `1.0.0` for the first JetBrains Marketplace release, to clarify that the feature set (based on the current LSP API) is still incomplete.
 
 Install or update the plugin:
@@ -65,7 +65,7 @@ For additional support, [ask a question in SAP Community](https://answers.sap.co
 - Language servers: provide language-specific features like code completion, diagnostics, etc.
 - Language Server Protocol (LSP): common protocol for communication between IDEs and language servers.
 
-cds-intellij is based on the following components:
+SAP CDS Language Support for IntelliJ is based on the following components:
 
 | Component                                                                                       | Role                                                                             | Publisher              |
 |-------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|------------------------|
@@ -78,10 +78,11 @@ cds-intellij is based on the following components:
 
 #### Installation and Compatibility
 
-| Symptom                                                      | Solution                                                                                                                                                                                                           |
-|--------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| SAP CDS Language Support for IntelliJ is not enabled in the IDE. | 🚫 The plugin is not compatible with the **free** IntelliJ **Community** Edition. Make sure you are using a commercial IntelliJ IDE such as IDEA Ultimate or WebStorm.                                             |
-| CDS file icons are missing and/or no syntax highlighting     | Uninstall any previous versions of the plugin *(File > Settings > Plugins)*. Remove the 'cds' TextMate Bundle *(File > Settings > Editor > TextMate Bundles)*. Restart the IDE. Install the latest plugin version. |
+| Symptom                                                                                        | Solution                                                                                                                                                                                                           |
+|------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| SAP CDS Language Support for IntelliJ is not enabled in the IDE.                               | 🚫 The plugin is not compatible with the **free** IntelliJ **Community** Edition. Make sure you are using a commercial IntelliJ IDE such as IDEA Ultimate or WebStorm.                                             |
+| SAP CDS Language Support for IntelliJ version 7 or 8 cannot be updated to the current version. | The plugin version has been reset to 1.0.0 for the first JetBrains Marketplace release. Uninstall the previous version of the plugin. Install the latest version from the JetBrains Marketplace.                   |
+| CDS file icons are missing and/or no syntax highlighting                                       | Uninstall any previous versions of the plugin *(File > Settings > Plugins)*. Remove the 'cds' TextMate Bundle *(File > Settings > Editor > TextMate Bundles)*. Restart the IDE. Install the latest plugin version. |
 
 ### Logs
 
