@@ -56,7 +56,7 @@ The set of features will grow with future releases, aligned with the development
         />
     </projectListeners>
 
-    <change-notes><![CDATA[ <h3>Changed</h3>
+    <change-notes><![CDATA[ <h3>Added</h3>
 <ul>
     <li>Determine suitable Node.js runtime automatically (no need to modify PATH environment variable anymore).</li>
 </ul> ]]></change-notes>
