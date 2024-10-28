@@ -33,7 +33,7 @@ dependencies {
     implementation 'org.jetbrains:annotations:24.1.0'
     implementation 'org.json:json:20240303'
     implementation 'org.apache.maven:maven-artifact:3.9.9'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.11.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.11.3'
     testCompileOnly 'junit:junit:4.13.2'
 
     intellijPlatform {
