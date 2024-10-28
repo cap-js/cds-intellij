@@ -41,7 +41,7 @@ dependencies {
         String version = project.findProperty('platformVersion')
         create(type, version)
 
-        bundledPlugins(['com.intellij.java', 'org.jetbrains.plugins.textmate'])
+        bundledPlugins(['com.intellij.java', 'NodeJS', 'org.jetbrains.plugins.textmate'])
 
         instrumentationTools()
         pluginVerifier()
