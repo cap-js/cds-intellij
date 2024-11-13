@@ -64,14 +64,10 @@ The set of features will grow with future releases, aligned with the development
 <ul>
     <li>include @sap/cds-lsp 8.4.3 with the following changes since 8.3.2:
         <ul>
-            <li>fix: deleting CDS files will now suggest to remove `using` statements without artifacts</li>
-            <li>Rename or move of CDS files and folders will update all `using` statements to the renamed file</li>
-            <li>Deletion of CDS files or folders will show all `using` statements to the renamed file with possibility to remove those.</li>
             <li>fix: highlighting of escaped identifiers and parameter lists</li>
             <li>fix: `using` path proposals could have been suggesting JS files instead of CDS files in certain cases</li>
             <li>fix: on Windows if client mixes upper- and lowercase drive letters some requests could have failed</li>
             <li>fix: CDS Typer was called when deleting a file which led to a misleading error output</li>
-            <li>fix: Analysis of dependencies failed when handling non-npm `package.json` files (e.g. from `pnpm` lacking `name` property)</li>
             <li>minimum required NodeJS version is now (back to) 20.9.0</li>
         </ul>
     </li>
