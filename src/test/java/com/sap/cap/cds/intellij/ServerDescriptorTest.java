@@ -9,8 +9,6 @@ import com.sap.cap.cds.intellij.lsp.ServerDescriptor;
 import java.io.*;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.assertNotEquals;
-
 /*
  * TODO try to write model-level functional tests instead of unit tests (cf. https://plugins.jetbrains.com/docs/intellij/testing-plugins.html)
  */
@@ -71,8 +69,6 @@ public class ServerDescriptorTest extends BasePlatformTestCase {
 
         System.clearProperty("DEBUG");
     }
-
-    // TODO test real initialization of server
 
     public void testIsSupportedFile() throws IOException {
         TempDirTestFixture fixture = this.createTempDirTestFixture();
