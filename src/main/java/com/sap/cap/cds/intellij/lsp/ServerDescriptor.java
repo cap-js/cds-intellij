@@ -16,17 +16,16 @@ import org.jetbrains.annotations.Nullable;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.intellij.util.PathUtil.getJarPathForClass;
 import static com.sap.cap.cds.intellij.util.JsonUtil.getPropertyAtPath;
 import static com.sap.cap.cds.intellij.util.NodeJsUtil.getInterpreter;
+import static com.sap.cap.cds.intellij.util.PathUtil.resolve;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ServerDescriptor extends ProjectWideLspServerDescriptor {
 
-    private static final String RELATIVE_SERVER_BASE_PATH = "cds-lsp/node_modules/@sap/cds-lsp/";
+    public static final String RELATIVE_SERVER_BASE_PATH = "cds-lsp/node_modules/@sap/cds-lsp/";
     private static final String RELATIVE_SERVER_PATH = RELATIVE_SERVER_BASE_PATH + "dist/main.js";
     private static final String RELATIVE_SERVER_PKG_PATH = RELATIVE_SERVER_BASE_PATH + "package.json";
     private static final String RELATIVE_MITM_PATH = "cds-lsp/mitm.js";
@@ -107,14 +106,6 @@ public class ServerDescriptor extends ProjectWideLspServerDescriptor {
                 resolve(RELATIVE_SERVER_PATH),
                 "--stdio"
         ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug");
-    }
-
-    private static String resolve(String relativePath) {
-        Path thisPath = Paths.get(getJarPathForClass(ServerDescriptor.class));
-        return thisPath
-                .getParent()
-                .resolve(relativePath)
-                .toString();
     }
 
     private void handleServerError(int exitValue) {
