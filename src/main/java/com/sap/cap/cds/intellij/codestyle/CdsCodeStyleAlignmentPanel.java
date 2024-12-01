@@ -5,11 +5,10 @@ import com.intellij.openapi.util.NlsContexts;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
 import com.sap.cap.cds.intellij.Language;
+import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-
-import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleMainPanel.ALIGNMENT;
 
 public class CdsCodeStyleAlignmentPanel extends OptionTreeWithPreviewPanel {
 
@@ -27,12 +26,7 @@ public class CdsCodeStyleAlignmentPanel extends OptionTreeWithPreviewPanel {
 
     @Override
     protected void initTables() {
-        initCustomOptions("'as' keyword'");
-        initCustomOptions("'key' keyword'");
-        initCustomOptions("Actions and functions");
-        initCustomOptions("Annotations");
-        initCustomOptions("Expressions and conditions");
-        initCustomOptions("Types");
+        CdsCodeStyleSettings.CATEGORY_GROUPS.get(Category.ALIGNMENT).forEach(this::initCustomOptions);
     }
 
     @Override
@@ -43,11 +37,11 @@ public class CdsCodeStyleAlignmentPanel extends OptionTreeWithPreviewPanel {
     @Override
     protected String getPreviewText() {
         return """
-entity Entitx {
-key k  : Integer;
-  el : String;
-}
-""";
+                entity Entitx {
+                key k  : Integer;
+                  el : String;
+                }
+                """;
     }
 
     @Override
@@ -61,7 +55,7 @@ key k  : Integer;
 
     @Override
     protected @NlsContexts.TabTitle @NotNull String getTabTitle() {
-        return ALIGNMENT;
+        return Category.ALIGNMENT.getTitle();
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.intellij.application.options.CodeStyleAbstractConfigurable;
 import com.intellij.application.options.CodeStyleAbstractPanel;
 import com.intellij.lang.Language;
 import com.intellij.psi.codeStyle.*;
+import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,10 +25,10 @@ public class CdsLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
     @Override
     public @Nullable String getCodeSample(@NotNull SettingsType settingsType) {
         return """
-entity En {
-  key k  : Integer;
-      el : String;
-}
+                entity En {
+                  key k  : Integer;
+                      el : String;
+                }
                 """;
     }
 
@@ -43,6 +44,7 @@ entity En {
 
     @Override
     public void customizeSettings(@NotNull CodeStyleSettingsCustomizable consumer, @NotNull SettingsType settingsType) {
+
         switch (settingsType) {
             case BLANK_LINES_SETTINGS -> {
             }
@@ -55,29 +57,13 @@ entity En {
             case COMMENTER_SETTINGS -> {
             }
             case LANGUAGE_SPECIFIC -> {
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_AS", "Align 'as' keyword", "'as' keyword'");
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_AS_IN_ENTITIES", "In entities", "'as' keyword'");
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_AS_IN_SELECT_ITEMS", "In 'select' items", "'as' keyword'");
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_AS_IN_USING", "In 'using' statements", "'as' keyword'");
-
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_AFTER_KEY", "Align after 'key' keyword", "'key' keyword'");
-
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_ACTIONS_FUNCTIONS", "Align actions and functions", "Actions and functions");
-
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_ANNOTATIONS", "Align annotations", "Annotations");
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_ANNOTATIONS_PRE", "Pre-annotations", "Annotations");
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_ANNOTATIONS_POST", "Post-annotations", "Annotations");
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_ANNOTATIONS_COLONS", "Colons", "Annotations");
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_ANNOTATIONS_VALUES", "Values", "Annotations");
-
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_EXPRESSIONS_CONDITIONS", "Align expressions and conditions", "Expressions and conditions");
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_EXPRESSIONS_CONDITIONS_WITHIN_BLOCK", "Within block", "Expressions and conditions");
-
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_TYPES", "Align types", "Types");
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_TYPES_WITHIN_BLOCK", "Within block", "Types");
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_TYPES_COLONS", "Colons", "Types");
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_TYPES_EQUALS", "Equals", "Types");
-                consumer.showCustomOption(CdsCodeStyleSettings.class, "ALIGN_TYPES_COMPOSITION_STRUCT_RIGHT", "Composition struct as type", "Types");
+                if (consumer instanceof CdsCodeStyleAlignmentPanel) {
+                    CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
+                        if (option.category == Category.ALIGNMENT) {
+                            consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
+                        }
+                    });
+                }
             }
         }
     }
