@@ -1,4 +1,4 @@
-package com.sap.cap.cds.intellij;
+package com.sap.cap.cds.intellij.lang;
 
 import com.intellij.lang.Language;
 import com.intellij.openapi.project.Project;
@@ -11,7 +11,7 @@ public class CdsLanguageSubstitutor extends LanguageSubstitutor {
     @Override
     public @Nullable Language getLanguage(@NotNull VirtualFile virtualFile, @NotNull Project project) {
         if (virtualFile.getName().endsWith(".cds")) {
-            return com.sap.cap.cds.intellij.Language.INSTANCE;
+            return CdsLanguage.INSTANCE;
         }
         return null;
     }

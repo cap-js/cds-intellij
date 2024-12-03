@@ -3,19 +3,20 @@ package com.sap.cap.cds.intellij;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.openapi.util.NlsSafe;
+import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.plugins.textmate.TextMateBackedFileType;
 
 import javax.swing.*;
 
-public final class FileType extends LanguageFileType implements TextMateBackedFileType {
+public final class CdsFileType extends LanguageFileType implements TextMateBackedFileType {
 
-    public static final FileType INSTANCE = new FileType();
+    public static final CdsFileType INSTANCE = new CdsFileType();
     public static final String EXTENSION = "cds";
 
-    private FileType() {
-        super(Language.INSTANCE);
+    private CdsFileType() {
+        super(CdsLanguage.INSTANCE);
     }
 
     @Override
@@ -35,6 +36,6 @@ public final class FileType extends LanguageFileType implements TextMateBackedFi
 
     @Override
     public Icon getIcon() {
-        return Icons.FILE;
+        return CdsIcons.FILE;
     }
 }

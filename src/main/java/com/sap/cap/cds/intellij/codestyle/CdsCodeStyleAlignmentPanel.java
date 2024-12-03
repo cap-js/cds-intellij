@@ -5,8 +5,9 @@ import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
-import com.sap.cap.cds.intellij.Language;
+import com.sap.cap.cds.intellij.CdsFileType;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
+import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,12 +39,12 @@ public class CdsCodeStyleAlignmentPanel extends OptionTreeWithPreviewPanel {
 
     @Override
     protected @NotNull FileType getFileType() {
-        return com.sap.cap.cds.intellij.FileType.INSTANCE;
+        return CdsFileType.INSTANCE;
     }
 
     @Override
     public com.intellij.lang.@Nullable Language getDefaultLanguage() {
-        return Language.INSTANCE;
+        return CdsLanguage.INSTANCE;
     }
 
     @Override
@@ -72,7 +73,7 @@ public class CdsCodeStyleAlignmentPanel extends OptionTreeWithPreviewPanel {
 
     @Override
     protected void customizeSettings() {
-        LanguageCodeStyleSettingsProvider provider = LanguageCodeStyleSettingsProvider.forLanguage(Language.INSTANCE);
+        LanguageCodeStyleSettingsProvider provider = LanguageCodeStyleSettingsProvider.forLanguage(CdsLanguage.INSTANCE);
         if (provider != null) {
             provider.customizeSettings(this, getSettingsType());
         }

@@ -1,6 +1,6 @@
 package com.sap.cap.cds.intellij;
 
-public class Plugin {
+public class CdsPlugin {
 
     /* Overview of all relevant IDs, names, and labels for the plugin itself */
 
