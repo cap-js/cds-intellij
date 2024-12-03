@@ -166,7 +166,7 @@ tasks.register('installLsp', Exec) {
 }
 
 tasks.register('patchJavaSrc', Exec) {
-//    dependsOn installLsp
+    dependsOn installLsp
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine 'cmd', '/c', 'node', 'src\\js\\codestyle\\patchJavaSrc.js'
     } else {
