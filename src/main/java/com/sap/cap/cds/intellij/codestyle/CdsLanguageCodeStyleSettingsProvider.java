@@ -2,13 +2,16 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.application.options.CodeStyleAbstractConfigurable;
 import com.intellij.application.options.CodeStyleAbstractPanel;
-import com.intellij.lang.Language;
+import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.codeStyle.*;
+import com.intellij.util.LocalTimeCounter;
+import com.sap.cap.cds.intellij.FileType;
+import com.sap.cap.cds.intellij.Language;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import static com.sap.cap.cds.intellij.Language.INSTANCE;
 
 public class CdsLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
 
@@ -34,12 +37,17 @@ public class CdsLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
 
     @Override
     public @NotNull Language getLanguage() {
-        return INSTANCE;
+        return Language.INSTANCE;
     }
 
     @Override
     public @NotNull CodeStyleConfigurable createConfigurable(@NotNull CodeStyleSettings settings, @NotNull CodeStyleSettings cloneSettings) {
         return new CdsCodeStyleConfigurable(settings, cloneSettings);
+    }
+
+    @Override
+    public @Nullable PsiFile createFileFromText(@NotNull Project project, @NotNull String text) {
+        return PsiFileFactory.getInstance(project).createFileFromText("sample.cds", FileType.INSTANCE, text, LocalTimeCounter.currentTime(), false, false);
     }
 
     @Override
@@ -70,7 +78,7 @@ public class CdsLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
 
     private class CdsCodeStyleConfigurable extends CodeStyleAbstractConfigurable {
         public CdsCodeStyleConfigurable(@NotNull CodeStyleSettings settings, @NotNull CodeStyleSettings cloneSettings) {
-            super(settings, cloneSettings, INSTANCE.getDisplayName());
+            super(settings, cloneSettings, Language.INSTANCE.getDisplayName());
         }
 
         @Override

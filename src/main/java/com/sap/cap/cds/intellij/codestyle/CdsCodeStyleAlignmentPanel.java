@@ -1,12 +1,14 @@
 package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.application.options.codeStyle.OptionTreeWithPreviewPanel;
+import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
 import com.sap.cap.cds.intellij.Language;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
@@ -35,11 +37,21 @@ public class CdsCodeStyleAlignmentPanel extends OptionTreeWithPreviewPanel {
     }
 
     @Override
+    protected @NotNull FileType getFileType() {
+        return com.sap.cap.cds.intellij.FileType.INSTANCE;
+    }
+
+    @Override
+    public com.intellij.lang.@Nullable Language getDefaultLanguage() {
+        return Language.INSTANCE;
+    }
+
+    @Override
     protected String getPreviewText() {
         return """
                 entity Entitx {
-                key k  : Integer;
-                  el : String;
+                  key k  : Integer;
+                      el : String;
                 }
                 """;
     }
