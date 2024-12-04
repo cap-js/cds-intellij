@@ -19,6 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.EnumMap;
+import java.util.Map;
 
 import static com.sap.cap.cds.intellij.util.JsonUtil.getPropertyAtPath;
 import static com.sap.cap.cds.intellij.util.NodeJsUtil.getInterpreter;
@@ -31,14 +33,22 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
     private static final String RELATIVE_SERVER_PATH = RELATIVE_SERVER_BASE_PATH + "dist/main.js";
     private static final String RELATIVE_FORMAT_CLI_PATH = RELATIVE_SERVER_BASE_PATH + "scripts/formatCli.js";
     private static final String RELATIVE_SERVER_PKG_PATH = RELATIVE_SERVER_BASE_PATH + "package.json";
+    private static final NodeJsLocalInterpreter NODE_JS_INTERPRETER = getInterpreter(getRequiredNodejsVersion());
     private static final String RELATIVE_MITM_PATH = "cds-lsp/mitm.js";
     private static final String RELATIVE_LOG_PATH = "cds-lsp/stdio.json";
+
+    private static final Map<CommandLineKind, GeneralCommandLine> commandLines = new EnumMap<>(CommandLineKind.class);
+
+    static {
+        commandLines.put(CommandLineKind.SERVER, null);
+        commandLines.put(CommandLineKind.SERVER_DEBUG, null);
+        commandLines.put(CommandLineKind.FORMATTING, null);
+    }
 
     public CdsLspServerDescriptor(@NotNull Project project, @NotNull String presentableName) {
         super(project, presentableName);
     }
 
-    // TODO cache
     private static ComparableVersion getRequiredNodejsVersion() {
         String serverPkgPath = resolve(RELATIVE_SERVER_PKG_PATH);
         String rawVersion = "";
@@ -59,42 +69,67 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
         return (debug != null) && debug.contains("cds-lsp");
     }
 
-    private static GeneralCommandLine getDefaultCommandLine(NodeJsLocalInterpreter interpreter) {
-        return new GeneralCommandLine(
-                interpreter.getInterpreterSystemDependentPath(),
-                resolve(RELATIVE_SERVER_PATH),
-                "--stdio"
-        ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose");
-    }
-
-    private static GeneralCommandLine getDebugCommandLine(NodeJsLocalInterpreter interpreter) {
-        String nodeJsPath = interpreter.getInterpreterSystemDependentPath();
-        return new GeneralCommandLine(
-                nodeJsPath,
-                resolve(RELATIVE_MITM_PATH),
-                resolve(RELATIVE_LOG_PATH),
-                nodeJsPath,
-                "--inspect",
-                resolve(RELATIVE_SERVER_PATH),
-                "--stdio"
-        ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug");
+    private static GeneralCommandLine getServerCommandLine(CommandLineKind kind) {
+        if (commandLines.get(kind) != null) {
+            return commandLines.get(kind);
+        }
+        switch (kind) {
+            case SERVER -> {
+                commandLines.put(CommandLineKind.SERVER,
+                        new GeneralCommandLine(
+                                NODE_JS_INTERPRETER.getInterpreterSystemDependentPath(),
+                                resolve(RELATIVE_SERVER_PATH),
+                                "--stdio"
+                        ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose")
+                );
+            }
+            case SERVER_DEBUG -> {
+                String nodeJsPath = NODE_JS_INTERPRETER.getInterpreterSystemDependentPath();
+                commandLines.put(CommandLineKind.SERVER_DEBUG,
+                        new GeneralCommandLine(
+                                nodeJsPath,
+                                resolve(RELATIVE_MITM_PATH),
+                                resolve(RELATIVE_LOG_PATH),
+                                nodeJsPath,
+                                "--inspect",
+                                resolve(RELATIVE_SERVER_PATH),
+                                "--stdio"
+                        ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug")
+                );
+            }
+            case FORMATTING -> {
+                throw new UnsupportedOperationException("Formatting command line not supported");
+            }
+        }
+        ;
+        if (commandLines.get(kind) == null) {
+            throw new RuntimeException("Failed to create command line for %s".formatted(kind));
+        }
+        return commandLines.get(kind);
     }
 
     public static GeneralCommandLine getFormattingCommandLine(Path cwd, Path srcPath) {
-        ComparableVersion requiredVersion = getRequiredNodejsVersion();
-        NodeJsLocalInterpreter interpreter = getInterpreter(requiredVersion);
         return new GeneralCommandLine(
-                interpreter.getInterpreterSystemDependentPath(),
+                NODE_JS_INTERPRETER.getInterpreterSystemDependentPath(),
                 resolve(RELATIVE_FORMAT_CLI_PATH),
                 "-f",
                 srcPath.toString()
         ).withWorkDirectory(cwd.toString());
     }
 
+    public GeneralCommandLine getServerCommandLine() throws ExecutionException {
+        CommandLineKind kind = isDebugCdsLsp() ? CommandLineKind.SERVER_DEBUG : CommandLineKind.SERVER;
+        return getServerCommandLine(kind)
+                // TODO check if this is really needed:
+                // Suppress ANSI escape sequences in cds-compiler output
+                .withEnvironment("NO_COLOR", "1")
+                .withCharset(UTF_8);
+    }
+
     @NotNull
     @Override
     public OSProcessHandler startServerProcess() throws ExecutionException {
-        OSProcessHandler handler = new OSProcessHandler(getCommandLine()) {
+        OSProcessHandler handler = new OSProcessHandler(getServerCommandLine()) {
             @Override
             protected BaseOutputReader.@NotNull Options readerOptions() {
                 return BaseOutputReader.Options.forMostlySilentProcess();
@@ -111,16 +146,6 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
             handleServerError(exitValue);
         } catch (RuntimeException e) { /* process still running */ }
         return handler;
-    }
-
-    public GeneralCommandLine getCommandLine() throws ExecutionException {
-        ComparableVersion requiredVersion = getRequiredNodejsVersion();
-        NodeJsLocalInterpreter interpreter = getInterpreter(requiredVersion);
-        return (isDebugCdsLsp() ? getDebugCommandLine(interpreter) : getDefaultCommandLine(interpreter))
-                // TODO check if this is really needed:
-                // Suppress ANSI escape sequences in cds-compiler output
-                .withEnvironment("NO_COLOR", "1")
-                .withCharset(UTF_8);
     }
 
     private void handleServerError(int exitValue) {
@@ -142,5 +167,11 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
                 return CdsFileType.EXTENSION.equals(file.getExtension());
             }
         };
+    }
+
+    private enum CommandLineKind {
+        SERVER,
+        SERVER_DEBUG,
+        FORMATTING
     }
 }

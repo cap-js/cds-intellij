@@ -21,7 +21,7 @@ public class CdsLspServerDescriptorTest extends BasePlatformTestCase {
         Process process = null;
         try {
             process = new CdsLspServerDescriptor(getProject(), "name")
-                    .getCommandLine()
+                    .getServerCommandLine()
                     .createProcess();
         } catch (ExecutionException e) {
             assertNull("unexpected exception", e.getMessage());
@@ -40,7 +40,7 @@ public class CdsLspServerDescriptorTest extends BasePlatformTestCase {
         Process process = null;
         GeneralCommandLine commandLine = null;
         try {
-            commandLine = new CdsLspServerDescriptor(getProject(), "name").getCommandLine();
+            commandLine = new CdsLspServerDescriptor(getProject(), "name").getServerCommandLine();
         } catch (ExecutionException e) {
             assertNull("unexpected exception", e.getMessage());
         }

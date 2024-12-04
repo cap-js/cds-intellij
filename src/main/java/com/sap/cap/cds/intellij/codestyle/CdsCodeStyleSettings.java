@@ -14,10 +14,12 @@ import static java.util.stream.Collectors.toMap;
 
 public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
 
+    // TODO sort options
+
     public static final Map<String, CdsCodeStyleOptionDef<?>> OPTION_DEFS = new HashMap<>();
     public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();
 
-    static {        
+    static {
         OPTION_DEFS.put("alignAfterKey", new CdsCodeStyleOptionDef<>("alignAfterKey", true, "Align element names and 'select' items after 'key'", "Other", Category.ALIGNMENT));
         OPTION_DEFS.put("alignAnnotations", new CdsCodeStyleOptionDef<>("alignAnnotations", true, "Align annotations", "Annotations", Category.ALIGNMENT));
         OPTION_DEFS.put("alignPreAnnotations", new CdsCodeStyleOptionDef<>("alignPreAnnotations", true, "Pre-annotations", "Annotations", Category.ALIGNMENT));
@@ -56,7 +58,7 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
         OPTION_DEFS.put("whitespaceAroundAlignedOps", new CdsCodeStyleOptionDef<>("whitespaceAroundAlignedOps", true, "Blanks around aligned binary operators and colons", "Other", Category.SPACES));
         OPTION_DEFS.put("whitespaceAroundBinaryOps", new CdsCodeStyleOptionDef<>("whitespaceAroundBinaryOps", true, "Blanks around binary operators", "Other", Category.SPACES));
         OPTION_DEFS.put("whitespaceWithinBrackets", new CdsCodeStyleOptionDef<>("whitespaceWithinBrackets", false, "Blanks within brackets", "Other", Category.SPACES));
-        
+
         CATEGORY_GROUPS.put(Category.ALIGNMENT, Set.of("Other", "Annotations", "Actions and functions", "'as'", "Expressions and conditions", "Types of elements"));
         CATEGORY_GROUPS.put(Category.WRAPPING_AND_BRACES, Set.of("Other"));
         CATEGORY_GROUPS.put(Category.BLANK_LINES, Set.of("Other"));
@@ -64,7 +66,7 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
         CATEGORY_GROUPS.put(Category.OTHER, Set.of("Format markdown in doc comments"));
         CATEGORY_GROUPS.put(Category.SPACES, Set.of("Before colon", "After colon", "Other"));
     }
-    
+
     public boolean alignAfterKey = true;
     public boolean alignAnnotations = true;
     public boolean alignPreAnnotations = true;

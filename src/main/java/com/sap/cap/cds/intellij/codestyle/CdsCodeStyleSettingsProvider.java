@@ -42,7 +42,6 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
         return new CdsCodeStyleConfigurable(settings, cloneSettings);
     }
 
-    // HOT-TODO enable?
     @Override
     public @Nullable PsiFile createFileFromText(@NotNull Project project, @NotNull String text) {
         return PsiFileFactory.getInstance(project).createFileFromText(SAMPLE_FILE_NAME, CdsFileType.INSTANCE, text, LocalTimeCounter.currentTime(), false, false);

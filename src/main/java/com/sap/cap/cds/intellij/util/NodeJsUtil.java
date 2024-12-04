@@ -13,7 +13,6 @@ import java.util.Optional;
 
 public class NodeJsUtil {
 
-    // TODO cache
     public static NodeJsLocalInterpreter getInterpreter(ComparableVersion requiredVersion) {
         Logger.PLUGIN.debug("Searching for Node.js interpreter with required version %s".formatted(requiredVersion));
 
