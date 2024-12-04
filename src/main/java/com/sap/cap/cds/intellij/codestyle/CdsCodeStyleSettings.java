@@ -2,56 +2,60 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CustomCodeStyleSettings;
-import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
+import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOptionDef.Category;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+
+import static com.sap.cap.cds.intellij.util.ReflectionUtil.getFieldValue;
+import static java.util.stream.Collectors.toMap;
 
 public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
 
-    public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new HashMap<>();
+    public static final Map<String, CdsCodeStyleOptionDef<?>> OPTION_DEFS = new HashMap<>();
     public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();
 
     static {        
-        OPTIONS.put("alignAfterKey", new CdsCodeStyleOption<>("alignAfterKey", true, "Align element names and 'select' items after 'key'", "Other", Category.ALIGNMENT));
-        OPTIONS.put("alignAnnotations", new CdsCodeStyleOption<>("alignAnnotations", true, "Align annotations", "Annotations", Category.ALIGNMENT));
-        OPTIONS.put("alignPreAnnotations", new CdsCodeStyleOption<>("alignPreAnnotations", true, "Pre-annotations", "Annotations", Category.ALIGNMENT));
-        OPTIONS.put("alignPostAnnotations", new CdsCodeStyleOption<>("alignPostAnnotations", true, "Post-annotations", "Annotations", Category.ALIGNMENT));
-        OPTIONS.put("alignColonsInAnnotations", new CdsCodeStyleOption<>("alignColonsInAnnotations", true, "Colons", "Annotations", Category.ALIGNMENT));
-        OPTIONS.put("alignValuesInAnnotations", new CdsCodeStyleOption<>("alignValuesInAnnotations", true, "Values", "Annotations", Category.ALIGNMENT));
-        OPTIONS.put("alignActionsAndFunctions", new CdsCodeStyleOption<>("alignActionsAndFunctions", true, "Align actions and functions", "Actions and functions", Category.ALIGNMENT));
-        OPTIONS.put("alignActionNames", new CdsCodeStyleOption<>("alignActionNames", true, "Names", "Actions and functions", Category.ALIGNMENT));
-        OPTIONS.put("alignActionReturns", new CdsCodeStyleOption<>("alignActionReturns", true, "'returns' keyword", "Actions and functions", Category.ALIGNMENT));
-        OPTIONS.put("alignAs", new CdsCodeStyleOption<>("alignAs", true, "Align 'as'", "'as'", Category.ALIGNMENT));
-        OPTIONS.put("alignAsInEntities", new CdsCodeStyleOption<>("alignAsInEntities", true, "In entities", "'as'", Category.ALIGNMENT));
-        OPTIONS.put("alignAsInSelectItems", new CdsCodeStyleOption<>("alignAsInSelectItems", true, "In 'select' items", "'as'", Category.ALIGNMENT));
-        OPTIONS.put("alignAsInUsing", new CdsCodeStyleOption<>("alignAsInUsing", true, "In 'using'", "'as'", Category.ALIGNMENT));
-        OPTIONS.put("alignExpressionsAndConditions", new CdsCodeStyleOption<>("alignExpressionsAndConditions", true, "Align expressions and conditions", "Expressions and conditions", Category.ALIGNMENT));
-        OPTIONS.put("alignExprAndCondWithinBlock", new CdsCodeStyleOption<>("alignExprAndCondWithinBlock", true, "Within block", "Expressions and conditions", Category.ALIGNMENT));
-        OPTIONS.put("alignTypes", new CdsCodeStyleOption<>("alignTypes", true, "Align types of elements", "Types of elements", Category.ALIGNMENT));
-        OPTIONS.put("alignColonsBeforeTypes", new CdsCodeStyleOption<>("alignColonsBeforeTypes", true, "Including colons", "Types of elements", Category.ALIGNMENT));
-        OPTIONS.put("alignEqualsAfterTypes", new CdsCodeStyleOption<>("alignEqualsAfterTypes", true, "Including assignment operators", "Types of elements", Category.ALIGNMENT));
-        OPTIONS.put("alignTypesWithinBlock", new CdsCodeStyleOption<>("alignTypesWithinBlock", true, "Within block", "Types of elements", Category.ALIGNMENT));
-        OPTIONS.put("alignCompositionStructToRight", new CdsCodeStyleOption<>("alignCompositionStructToRight", true, "Align struct in 'composition' to the right", "Types of elements", Category.ALIGNMENT));
-        OPTIONS.put("keepEmptyBracketsTogether", new CdsCodeStyleOption<>("keepEmptyBracketsTogether", true, "Keep empty brackets together", "Other", Category.WRAPPING_AND_BRACES));
-        OPTIONS.put("keepSingleLinedBlocksTogether", new CdsCodeStyleOption<>("keepSingleLinedBlocksTogether", true, "Keep similar single-lined blocks together", "Other", Category.BLANK_LINES));
-        OPTIONS.put("keepOriginalEmptyLines", new CdsCodeStyleOption<>("keepOriginalEmptyLines", true, "Keep original empty lines", "Other", Category.BLANK_LINES));
-        OPTIONS.put("maxKeepEmptyLines", new CdsCodeStyleOption<>("maxKeepEmptyLines", 2, "Maximum consecutive empty lines", "Other", Category.BLANK_LINES));
-        OPTIONS.put("openingBraceInNewLine", new CdsCodeStyleOption<>("openingBraceInNewLine", false, "Line wrapping before opening brace", "Other", Category.WRAPPING_AND_BRACES));
-        OPTIONS.put("selectInNewLine", new CdsCodeStyleOption<>("selectInNewLine", true, "Line wrapping before 'select' of entity or view", "Other", Category.WRAPPING_AND_BRACES));
-        OPTIONS.put("tabSize", new CdsCodeStyleOption<>("tabSize", 2, "Tab size", "Other", Category.TABS_AND_INDENTS));
-        OPTIONS.put("finalNewline", new CdsCodeStyleOption<>("finalNewline", true, "Final newline", "Other", Category.WRAPPING_AND_BRACES));
-        OPTIONS.put("formatDocComments", new CdsCodeStyleOption<>("formatDocComments", false, "Format markdown in doc comments", "Format markdown in doc comments", Category.OTHER));
-        OPTIONS.put("maxDocCommentLine", new CdsCodeStyleOption<>("maxDocCommentLine", 60, "Max doc comment line length", "Format markdown in doc comments", Category.OTHER));
-        OPTIONS.put("whitespaceBeforeColon", new CdsCodeStyleOption<>("whitespaceBeforeColon", true, "Blank before colon", "Before colon", Category.SPACES));
-        OPTIONS.put("whitespaceBeforeColonInAnnotation", new CdsCodeStyleOption<>("whitespaceBeforeColonInAnnotation", false, "Blank before colon in annotations", "Before colon", Category.SPACES));
-        OPTIONS.put("whitespaceAfterColon", new CdsCodeStyleOption<>("whitespaceAfterColon", true, "Blank after colon", "After colon", Category.SPACES));
-        OPTIONS.put("whitespaceAfterColonInAnnotation", new CdsCodeStyleOption<>("whitespaceAfterColonInAnnotation", true, "Blank after colon in annotations", "After colon", Category.SPACES));
-        OPTIONS.put("whitespaceAfterComma", new CdsCodeStyleOption<>("whitespaceAfterComma", true, "Blank after comma", "Other", Category.SPACES));
-        OPTIONS.put("whitespaceAroundAlignedOps", new CdsCodeStyleOption<>("whitespaceAroundAlignedOps", true, "Blanks around aligned binary operators and colons", "Other", Category.SPACES));
-        OPTIONS.put("whitespaceAroundBinaryOps", new CdsCodeStyleOption<>("whitespaceAroundBinaryOps", true, "Blanks around binary operators", "Other", Category.SPACES));
-        OPTIONS.put("whitespaceWithinBrackets", new CdsCodeStyleOption<>("whitespaceWithinBrackets", false, "Blanks within brackets", "Other", Category.SPACES));
+        OPTION_DEFS.put("alignAfterKey", new CdsCodeStyleOptionDef<>("alignAfterKey", true, "Align element names and 'select' items after 'key'", "Other", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignAnnotations", new CdsCodeStyleOptionDef<>("alignAnnotations", true, "Align annotations", "Annotations", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignPreAnnotations", new CdsCodeStyleOptionDef<>("alignPreAnnotations", true, "Pre-annotations", "Annotations", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignPostAnnotations", new CdsCodeStyleOptionDef<>("alignPostAnnotations", true, "Post-annotations", "Annotations", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignColonsInAnnotations", new CdsCodeStyleOptionDef<>("alignColonsInAnnotations", true, "Colons", "Annotations", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignValuesInAnnotations", new CdsCodeStyleOptionDef<>("alignValuesInAnnotations", true, "Values", "Annotations", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignActionsAndFunctions", new CdsCodeStyleOptionDef<>("alignActionsAndFunctions", true, "Align actions and functions", "Actions and functions", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignActionNames", new CdsCodeStyleOptionDef<>("alignActionNames", true, "Names", "Actions and functions", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignActionReturns", new CdsCodeStyleOptionDef<>("alignActionReturns", true, "'returns' keyword", "Actions and functions", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignAs", new CdsCodeStyleOptionDef<>("alignAs", true, "Align 'as'", "'as'", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignAsInEntities", new CdsCodeStyleOptionDef<>("alignAsInEntities", true, "In entities", "'as'", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignAsInSelectItems", new CdsCodeStyleOptionDef<>("alignAsInSelectItems", true, "In 'select' items", "'as'", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignAsInUsing", new CdsCodeStyleOptionDef<>("alignAsInUsing", true, "In 'using'", "'as'", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignExpressionsAndConditions", new CdsCodeStyleOptionDef<>("alignExpressionsAndConditions", true, "Align expressions and conditions", "Expressions and conditions", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignExprAndCondWithinBlock", new CdsCodeStyleOptionDef<>("alignExprAndCondWithinBlock", true, "Within block", "Expressions and conditions", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignTypes", new CdsCodeStyleOptionDef<>("alignTypes", true, "Align types of elements", "Types of elements", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignColonsBeforeTypes", new CdsCodeStyleOptionDef<>("alignColonsBeforeTypes", true, "Including colons", "Types of elements", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignEqualsAfterTypes", new CdsCodeStyleOptionDef<>("alignEqualsAfterTypes", true, "Including assignment operators", "Types of elements", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignTypesWithinBlock", new CdsCodeStyleOptionDef<>("alignTypesWithinBlock", true, "Within block", "Types of elements", Category.ALIGNMENT));
+        OPTION_DEFS.put("alignCompositionStructToRight", new CdsCodeStyleOptionDef<>("alignCompositionStructToRight", true, "Align struct in 'composition' to the right", "Types of elements", Category.ALIGNMENT));
+        OPTION_DEFS.put("keepEmptyBracketsTogether", new CdsCodeStyleOptionDef<>("keepEmptyBracketsTogether", true, "Keep empty brackets together", "Other", Category.WRAPPING_AND_BRACES));
+        OPTION_DEFS.put("keepSingleLinedBlocksTogether", new CdsCodeStyleOptionDef<>("keepSingleLinedBlocksTogether", true, "Keep similar single-lined blocks together", "Other", Category.BLANK_LINES));
+        OPTION_DEFS.put("keepOriginalEmptyLines", new CdsCodeStyleOptionDef<>("keepOriginalEmptyLines", true, "Keep original empty lines", "Other", Category.BLANK_LINES));
+        OPTION_DEFS.put("maxKeepEmptyLines", new CdsCodeStyleOptionDef<>("maxKeepEmptyLines", 2, "Maximum consecutive empty lines", "Other", Category.BLANK_LINES));
+        OPTION_DEFS.put("openingBraceInNewLine", new CdsCodeStyleOptionDef<>("openingBraceInNewLine", false, "Line wrapping before opening brace", "Other", Category.WRAPPING_AND_BRACES));
+        OPTION_DEFS.put("selectInNewLine", new CdsCodeStyleOptionDef<>("selectInNewLine", true, "Line wrapping before 'select' of entity or view", "Other", Category.WRAPPING_AND_BRACES));
+        OPTION_DEFS.put("tabSize", new CdsCodeStyleOptionDef<>("tabSize", 2, "Tab size", "Other", Category.TABS_AND_INDENTS));
+        OPTION_DEFS.put("finalNewline", new CdsCodeStyleOptionDef<>("finalNewline", true, "Final newline", "Other", Category.WRAPPING_AND_BRACES));
+        OPTION_DEFS.put("formatDocComments", new CdsCodeStyleOptionDef<>("formatDocComments", false, "Format markdown in doc comments", "Format markdown in doc comments", Category.OTHER));
+        OPTION_DEFS.put("maxDocCommentLine", new CdsCodeStyleOptionDef<>("maxDocCommentLine", 60, "Max doc comment line length", "Format markdown in doc comments", Category.OTHER));
+        OPTION_DEFS.put("whitespaceBeforeColon", new CdsCodeStyleOptionDef<>("whitespaceBeforeColon", true, "Blank before colon", "Before colon", Category.SPACES));
+        OPTION_DEFS.put("whitespaceBeforeColonInAnnotation", new CdsCodeStyleOptionDef<>("whitespaceBeforeColonInAnnotation", false, "Blank before colon in annotations", "Before colon", Category.SPACES));
+        OPTION_DEFS.put("whitespaceAfterColon", new CdsCodeStyleOptionDef<>("whitespaceAfterColon", true, "Blank after colon", "After colon", Category.SPACES));
+        OPTION_DEFS.put("whitespaceAfterColonInAnnotation", new CdsCodeStyleOptionDef<>("whitespaceAfterColonInAnnotation", true, "Blank after colon in annotations", "After colon", Category.SPACES));
+        OPTION_DEFS.put("whitespaceAfterComma", new CdsCodeStyleOptionDef<>("whitespaceAfterComma", true, "Blank after comma", "Other", Category.SPACES));
+        OPTION_DEFS.put("whitespaceAroundAlignedOps", new CdsCodeStyleOptionDef<>("whitespaceAroundAlignedOps", true, "Blanks around aligned binary operators and colons", "Other", Category.SPACES));
+        OPTION_DEFS.put("whitespaceAroundBinaryOps", new CdsCodeStyleOptionDef<>("whitespaceAroundBinaryOps", true, "Blanks around binary operators", "Other", Category.SPACES));
+        OPTION_DEFS.put("whitespaceWithinBrackets", new CdsCodeStyleOptionDef<>("whitespaceWithinBrackets", false, "Blanks within brackets", "Other", Category.SPACES));
         
         CATEGORY_GROUPS.put(Category.ALIGNMENT, Set.of("Other", "Annotations", "Actions and functions", "'as'", "Expressions and conditions", "Types of elements"));
         CATEGORY_GROUPS.put(Category.WRAPPING_AND_BRACES, Set.of("Other"));
@@ -102,6 +106,25 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
 
     public CdsCodeStyleSettings(CodeStyleSettings settings) {
         super("CDSCodeStyleSettings", settings);
+    }
+
+    public Map<String, Object> getNonDefaultSettings() {
+        return OPTION_DEFS.entrySet().stream()
+                .map(entry -> {
+                    Object fieldValue;
+                    try {
+                        fieldValue = getFieldValue(this, entry.getKey());
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    if (!entry.getValue().defaultValue.equals(fieldValue)) {
+                        return Map.entry(entry.getKey(), fieldValue);
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 }

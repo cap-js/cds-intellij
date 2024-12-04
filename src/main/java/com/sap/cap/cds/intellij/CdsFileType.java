@@ -14,6 +14,7 @@ public final class CdsFileType extends LanguageFileType implements TextMateBacke
 
     public static final CdsFileType INSTANCE = new CdsFileType();
     public static final String EXTENSION = "cds";
+    public static final String DOT_EXTENSION = ".cds";
 
     private CdsFileType() {
         super(CdsLanguage.INSTANCE);

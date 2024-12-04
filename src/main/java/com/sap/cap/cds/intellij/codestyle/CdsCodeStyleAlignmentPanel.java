@@ -6,12 +6,14 @@ import com.intellij.openapi.util.NlsContexts;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
 import com.sap.cap.cds.intellij.CdsFileType;
-import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
+import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOptionDef.Category;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
+
+import static com.sap.cap.cds.intellij.lang.CdsLanguage.SAMPLE_SRC;
 
 public class CdsCodeStyleAlignmentPanel extends OptionTreeWithPreviewPanel {
 
@@ -49,21 +51,13 @@ public class CdsCodeStyleAlignmentPanel extends OptionTreeWithPreviewPanel {
 
     @Override
     protected String getPreviewText() {
-        return """
-                entity Entitx {
-                  key k  : Integer;
-                      el : String;
-                }
-                """;
+        return SAMPLE_SRC;
     }
 
     @Override
     public void apply(@NotNull CodeStyleSettings settings) {
-        super.apply(settings);
-        CdsCodeStyleSettings customSettings = settings.getCustomSettings(CdsCodeStyleSettings.class);
-        if (customSettings != null) {
-//            customSettings.ALIGN_AS =
-        }
+        super.apply(settings); // Applies settings from UI to the settings object
+        CdsFormattingService.acceptSettings(settings.getCustomSettings(CdsCodeStyleSettings.class));
     }
 
     @Override

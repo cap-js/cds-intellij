@@ -2,7 +2,7 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType;
 
-public class CdsCodeStyleOption<T> {
+public class CdsCodeStyleOptionDef<T> {
     /**
      * Name of the option. Used as configuration key. Uses camelCase.
      */
@@ -24,7 +24,7 @@ public class CdsCodeStyleOption<T> {
      */
     public final Category category;
 
-    public CdsCodeStyleOption(String name, T defaultValue, String label, String group, Category category) {
+    public CdsCodeStyleOptionDef(String name, T defaultValue, String label, String group, Category category) {
         this.name = name;
         this.label = label;
         this.defaultValue = defaultValue;

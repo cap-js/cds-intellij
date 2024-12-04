@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.sap.cap.cds.intellij.util.JsonUtil.getPropertyAtPath;
@@ -28,6 +29,7 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
 
     public static final String RELATIVE_SERVER_BASE_PATH = "cds-lsp/node_modules/@sap/cds-lsp/";
     private static final String RELATIVE_SERVER_PATH = RELATIVE_SERVER_BASE_PATH + "dist/main.js";
+    private static final String RELATIVE_FORMAT_CLI_PATH = RELATIVE_SERVER_BASE_PATH + "scripts/formatCli.js";
     private static final String RELATIVE_SERVER_PKG_PATH = RELATIVE_SERVER_BASE_PATH + "package.json";
     private static final String RELATIVE_MITM_PATH = "cds-lsp/mitm.js";
     private static final String RELATIVE_LOG_PATH = "cds-lsp/stdio.json";
@@ -36,6 +38,7 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
         super(project, presentableName);
     }
 
+    // TODO cache
     private static ComparableVersion getRequiredNodejsVersion() {
         String serverPkgPath = resolve(RELATIVE_SERVER_PKG_PATH);
         String rawVersion = "";
@@ -75,6 +78,17 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
                 resolve(RELATIVE_SERVER_PATH),
                 "--stdio"
         ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug");
+    }
+
+    public static GeneralCommandLine getFormattingCommandLine(Path cwd, Path srcPath) {
+        ComparableVersion requiredVersion = getRequiredNodejsVersion();
+        NodeJsLocalInterpreter interpreter = getInterpreter(requiredVersion);
+        return new GeneralCommandLine(
+                interpreter.getInterpreterSystemDependentPath(),
+                resolve(RELATIVE_FORMAT_CLI_PATH),
+                "-f",
+                srcPath.toString()
+        ).withWorkDirectory(cwd.toString());
     }
 
     @NotNull

@@ -78,13 +78,13 @@ const optionFieldsSrc = options
     .reduce((acc, opt) => `${acc}\npublic ${opt.type} ${opt.name} = ${opt.default};`, '')
     .replace(/^/gm, '    ');
 
-const staticMembers = `    public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new HashMap<>();\n    public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();\n`;
+const staticMembers = `    public static final Map<String, CdsCodeStyleOptionDef<?>> OPTION_DEFS = new HashMap<>();\n    public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();\n`;
 const startStaticInit = '    static {';
 const endStaticInit = '    }';
 
 const optionsMapSrc = options
     .reduce((acc, opt, i) =>
-            `${acc}\nOPTIONS.put("${opt.name}", new CdsCodeStyleOption<>("${opt.name}", ${opt.default}, "${opt.label}", "${opt.group}", Category.${opt.category}));`,
+            `${acc}\nOPTION_DEFS.put("${opt.name}", new CdsCodeStyleOptionDef<>("${opt.name}", ${opt.default}, "${opt.label}", "${opt.group}", Category.${opt.category}));`,
         ''
     ).replace(/^/gm, '        ');
 

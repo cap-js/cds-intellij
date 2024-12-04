@@ -8,12 +8,14 @@ import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.codeStyle.*;
 import com.intellij.util.LocalTimeCounter;
 import com.sap.cap.cds.intellij.CdsFileType;
-import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
+import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOptionDef.Category;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CdsLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
+public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
+
+    public static final String SAMPLE_FILE_NAME = ".cds-codestyle.sample.cds";
 
     @Override
     public CustomCodeStyleSettings createCustomSettings(CodeStyleSettings settings) {
@@ -27,12 +29,7 @@ public class CdsLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
 
     @Override
     public @Nullable String getCodeSample(@NotNull SettingsType settingsType) {
-        return """
-                entity En {
-                  key k  : Integer;
-                      el : String;
-                }
-                """;
+        return CdsLanguage.SAMPLE_SRC;
     }
 
     @Override
@@ -48,32 +45,17 @@ public class CdsLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
     // HOT-TODO enable?
     @Override
     public @Nullable PsiFile createFileFromText(@NotNull Project project, @NotNull String text) {
-        return PsiFileFactory.getInstance(project).createFileFromText("sample.cds", CdsFileType.INSTANCE, text, LocalTimeCounter.currentTime(), false, false);
+        return PsiFileFactory.getInstance(project).createFileFromText(SAMPLE_FILE_NAME, CdsFileType.INSTANCE, text, LocalTimeCounter.currentTime(), false, false);
     }
 
     @Override
     public void customizeSettings(@NotNull CodeStyleSettingsCustomizable consumer, @NotNull SettingsType settingsType) {
-
-        switch (settingsType) {
-            case BLANK_LINES_SETTINGS -> {
-            }
-            case SPACING_SETTINGS -> {
-            }
-            case WRAPPING_AND_BRACES_SETTINGS -> {
-            }
-            case INDENT_SETTINGS -> {
-            }
-            case COMMENTER_SETTINGS -> {
-            }
-            case LANGUAGE_SPECIFIC -> {
-                if (consumer instanceof CdsCodeStyleAlignmentPanel) {
-                    CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
-                        if (option.category == Category.ALIGNMENT) {
-                            consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
-                        }
-                    });
+        if (consumer instanceof CdsCodeStyleAlignmentPanel) {
+            CdsCodeStyleSettings.OPTION_DEFS.forEach((name, option) -> {
+                if (option.category == Category.ALIGNMENT) {
+                    consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
                 }
-            }
+            });
         }
     }
 
