@@ -8,24 +8,27 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
-import com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor;
 import com.sap.cap.cds.intellij.util.FileUtil;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsProvider.SAMPLE_FILE_NAME;
+import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.getFormattingCommandLine;
 import static java.nio.file.Files.readString;
 import static java.nio.file.Files.write;
 
 public class CdsFormattingService implements FormattingService {
 
-    private static Path cdsPrettierJsonPath;
-    private final Path tempDir;
-    private final Path samplePath;
+    private static final Map<String, String> formatted = new HashMap<>();
+    private static Path prettierJsonPath;
+    private static Path tempDir;
+    private static Path samplePath;
+    private static String prettierJson;
 
     CdsFormattingService() {
         try {
@@ -34,10 +37,9 @@ public class CdsFormattingService implements FormattingService {
             throw new RuntimeException(e);
         }
 
-        cdsPrettierJsonPath = tempDir.resolve(".cdsprettier.json");
-
+        prettierJsonPath = tempDir.resolve(".cdsprettier.json");
         try {
-            write(cdsPrettierJsonPath, "{}".getBytes());
+            write(prettierJsonPath, "{}".getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -51,15 +53,7 @@ public class CdsFormattingService implements FormattingService {
     }
 
     public static void acceptSettings(CdsCodeStyleSettings settings) {
-        if (cdsPrettierJsonPath == null) {
-            return;
-        }
-        JSONObject cdsPrettierJson = new JSONObject(settings.getNonDefaultSettings());
-        try {
-            write(cdsPrettierJsonPath, cdsPrettierJson.toString().getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        prettierJson = settings.getNonDefaultSettingsJSON();
     }
 
     @Override
@@ -73,28 +67,28 @@ public class CdsFormattingService implements FormattingService {
     }
 
     @Override
-    public @NotNull PsiElement formatElement(@NotNull PsiElement psiElement, boolean canChangeWhiteSpaceOnly) {
-        try {
-            CdsLspServerDescriptor.getFormattingCommandLine(tempDir, samplePath).createProcess().waitFor();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-
-        String formatted;
-        try {
-            formatted = readString(samplePath);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        psiElement.getContainingFile().getViewProvider().getDocument().setText(formatted);
-
-        return psiElement;
+    public @NotNull PsiElement formatElement(@NotNull PsiElement psiElement, @NotNull TextRange textRange, boolean canChangeWhiteSpaceOnly) {
+        return this.formatElement(psiElement, canChangeWhiteSpaceOnly);
     }
 
     @Override
-    public @NotNull PsiElement formatElement(@NotNull PsiElement psiElement, @NotNull TextRange textRange, boolean canChangeWhiteSpaceOnly) {
-        return this.formatElement(psiElement, canChangeWhiteSpaceOnly);
+    public @NotNull PsiElement formatElement(@NotNull PsiElement psiElement, boolean canChangeWhiteSpaceOnly) {
+        String src = formatted.get(prettierJson);
+        if (src == null) {
+            formatted.put(prettierJson, src = formatSampleSrc(prettierJson));
+        }
+        psiElement.getContainingFile().getViewProvider().getDocument().setText(src);
+        return psiElement;
+    }
+
+    private String formatSampleSrc(String cdsPrettierJson) {
+        try {
+            write(prettierJsonPath, cdsPrettierJson.getBytes());
+            getFormattingCommandLine(tempDir, samplePath).createProcess().waitFor();
+            return readString(samplePath);
+        } catch (InterruptedException | ExecutionException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

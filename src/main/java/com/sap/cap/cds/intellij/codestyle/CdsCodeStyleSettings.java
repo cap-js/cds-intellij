@@ -3,6 +3,7 @@ package com.sap.cap.cds.intellij.codestyle;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CustomCodeStyleSettings;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOptionDef.Category;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -110,8 +111,8 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
         super("CDSCodeStyleSettings", settings);
     }
 
-    public Map<String, Object> getNonDefaultSettings() {
-        return OPTION_DEFS.entrySet().stream()
+    public String getNonDefaultSettingsJSON() {
+        var map = OPTION_DEFS.entrySet().stream()
                 .map(entry -> {
                     Object fieldValue;
                     try {
@@ -127,6 +128,7 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
                 })
                 .filter(Objects::nonNull)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return new JSONObject(map).toString();
     }
 
 }
