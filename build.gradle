@@ -96,6 +96,10 @@ tasks {
         archiveFileName = project.findProperty('archiveName')
     }
 
+    compileJava {
+        dependsOn 'patchJavaSrc'
+    }
+
     verifyPlugin {
         dependsOn 'copyLsp'
     }
@@ -146,7 +150,6 @@ tasks.register('rmCdsLspNodeModules', Delete) {
         return project.findProperty('local.rmCdsLspNodeModules') == 'true'
     }
     onlyIf { localRmCdsLspNodeModules.get() }
-    mustRunAfter prepareSandbox, prepareSandbox_runWebStorm
     delete 'lsp/node_modules/@sap/cds-lsp'
 }
 
