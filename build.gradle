@@ -180,21 +180,19 @@ tasks.register('patchJavaSrc', Exec) {
 // TODO copy before install
 
 tasks.register('copyLsp', Copy) {
-    dependsOn patchJavaSrc
-    mustRunAfter 'buildSearchableOptions'
+    mustRunAfter prepareSandbox
     from './lsp'
     into "${tasks.named('prepareSandbox').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
 
 tasks.register('copyLspToRunWebStorm', Copy) {
-    dependsOn patchJavaSrc
-    mustRunAfter 'buildSearchableOptions'
+    mustRunAfter prepareSandbox_runWebStorm
     from './lsp'
     into "${tasks.named('prepareSandbox_runWebStorm').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
 
 tasks.register('copyLspToInstrumented', Copy) {
-    dependsOn patchJavaSrc
+    mustRunAfter prepareTestSandbox
     from './lsp'
     into './build/instrumented/cds-lsp'
 }
