@@ -12,9 +12,9 @@ import java.util.Set;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.getFieldValue;
 import static java.util.stream.Collectors.toMap;
 
-public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
+// TODO sort options
 
-    // TODO sort options
+public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
 
     public static final Map<String, CdsCodeStyleOptionDef<?>> OPTION_DEFS = new HashMap<>();
     public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();

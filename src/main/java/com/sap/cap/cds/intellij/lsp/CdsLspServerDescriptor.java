@@ -42,7 +42,7 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
     static {
         commandLines.put(CommandLineKind.SERVER, null);
         commandLines.put(CommandLineKind.SERVER_DEBUG, null);
-        commandLines.put(CommandLineKind.FORMATTING, null);
+        commandLines.put(CommandLineKind.CLI_FORMAT, null);
     }
 
     public CdsLspServerDescriptor(@NotNull Project project, @NotNull String presentableName) {
@@ -97,7 +97,7 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
                         ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug")
                 );
             }
-            case FORMATTING -> {
+            case CLI_FORMAT -> {
                 throw new UnsupportedOperationException("Formatting command line not supported");
             }
         }
@@ -109,12 +109,19 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
     }
 
     public static GeneralCommandLine getFormattingCommandLine(Path cwd, Path srcPath) {
-        return new GeneralCommandLine(
-                NODE_JS_INTERPRETER.getInterpreterSystemDependentPath(),
-                resolve(RELATIVE_FORMAT_CLI_PATH),
-                "-f",
-                srcPath.toString()
-        ).withWorkDirectory(cwd.toString());
+        if (commandLines.get(CommandLineKind.CLI_FORMAT) != null) {
+            return commandLines.get(CommandLineKind.CLI_FORMAT);
+        }
+
+        commandLines.put(CommandLineKind.CLI_FORMAT,
+                new GeneralCommandLine(
+                        NODE_JS_INTERPRETER.getInterpreterSystemDependentPath(),
+                        resolve(RELATIVE_FORMAT_CLI_PATH),
+                        "-f",
+                        srcPath.toString()
+                ).withWorkDirectory(cwd.toString())
+        );
+        return commandLines.get(CommandLineKind.CLI_FORMAT);
     }
 
     public GeneralCommandLine getServerCommandLine() throws ExecutionException {
@@ -172,6 +179,6 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
     private enum CommandLineKind {
         SERVER,
         SERVER_DEBUG,
-        FORMATTING
+        CLI_FORMAT
     }
 }
