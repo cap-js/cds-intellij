@@ -8,7 +8,6 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
-import com.sap.cap.cds.intellij.util.FileUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -18,26 +17,28 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsProvider.SAMPLE_FILE_NAME;
+import static com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonService.PRETTIER_JSON;
 import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.getFormattingCommandLine;
+import static com.sap.cap.cds.intellij.util.FileUtil.createTempDir;
 import static java.nio.file.Files.readString;
 import static java.nio.file.Files.write;
 
-public class CdsFormattingService implements FormattingService {
+public class CdsPreviewFormattingService implements FormattingService {
 
-    private static final Map<String, String> formatted = new HashMap<>();
+    private static final Map<String, String> formattedByPrettierJson = new HashMap<>();
     private static Path prettierJsonPath;
     private static Path tempDir;
     private static Path samplePath;
     private static String prettierJson;
 
-    CdsFormattingService() {
+    CdsPreviewFormattingService() {
         try {
-            tempDir = FileUtil.createTempDir("cds-formatting-options-");
+            tempDir = createTempDir(CdsPreviewFormattingService.class.getName() + "_");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        prettierJsonPath = tempDir.resolve(".cdsprettier.json");
+        prettierJsonPath = tempDir.resolve(PRETTIER_JSON);
         try {
             write(prettierJsonPath, "{}".getBytes());
         } catch (IOException e) {
@@ -53,7 +54,7 @@ public class CdsFormattingService implements FormattingService {
     }
 
     public static void acceptSettings(CdsCodeStyleSettings settings) {
-        prettierJson = settings.getNonDefaultSettingsJSON();
+        prettierJson = settings.getNonDefaultSettingsJSON().toString();
     }
 
     @Override
@@ -73,17 +74,17 @@ public class CdsFormattingService implements FormattingService {
 
     @Override
     public @NotNull PsiElement formatElement(@NotNull PsiElement psiElement, boolean canChangeWhiteSpaceOnly) {
-        String src = formatted.get(prettierJson);
+        String src = formattedByPrettierJson.get(prettierJson);
         if (src == null) {
-            formatted.put(prettierJson, src = formatSampleSrc(prettierJson));
+            formattedByPrettierJson.put(prettierJson, src = formatSampleSrc(prettierJson));
         }
         psiElement.getContainingFile().getViewProvider().getDocument().setText(src);
         return psiElement;
     }
 
-    private String formatSampleSrc(String cdsPrettierJson) {
+    private String formatSampleSrc(String prettierJson) {
         try {
-            write(prettierJsonPath, cdsPrettierJson.getBytes());
+            write(prettierJsonPath, prettierJson.getBytes());
             getFormattingCommandLine(tempDir, samplePath).createProcess().waitFor();
             return readString(samplePath);
         } catch (InterruptedException | ExecutionException | IOException e) {

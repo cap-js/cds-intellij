@@ -57,7 +57,7 @@ public class CdsCodeStyleAlignmentPanel extends OptionTreeWithPreviewPanel {
     @Override
     public void apply(@NotNull CodeStyleSettings settings) {
         super.apply(settings); // Applies settings from UI to the settings object
-        CdsFormattingService.acceptSettings(settings.getCustomSettings(CdsCodeStyleSettings.class));
+        CdsPreviewFormattingService.acceptSettings(settings.getCustomSettings(CdsCodeStyleSettings.class));
     }
 
     @Override

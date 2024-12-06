@@ -111,7 +111,7 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
         super("CDSCodeStyleSettings", settings);
     }
 
-    public String getNonDefaultSettingsJSON() {
+    public JSONObject getNonDefaultSettingsJSON() {
         var map = OPTION_DEFS.entrySet().stream()
                 .map(entry -> {
                     Object fieldValue;
@@ -128,7 +128,7 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
                 })
                 .filter(Objects::nonNull)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-        return new JSONObject(map).toString();
+        return new JSONObject(map);
     }
 
 }

@@ -10,4 +10,6 @@ public class CdsPlugin {
 
     public static final String LABEL = "cds-intellij"; // Used for logging and other purposes
 
+    public static final String TITLE = "SAP CDS Language Support"; // Used as plugin name in UI
+
 }

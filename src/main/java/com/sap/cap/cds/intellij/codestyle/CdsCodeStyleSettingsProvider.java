@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
 
     public static final String SAMPLE_FILE_NAME = ".cds-codestyle.sample.cds";
+    public static final String LABEL = "Code Style";
 
     @Override
     public CustomCodeStyleSettings createCustomSettings(CodeStyleSettings settings) {
@@ -58,7 +59,7 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
         }
     }
 
-    private class CdsCodeStyleConfigurable extends CodeStyleAbstractConfigurable {
+    private static class CdsCodeStyleConfigurable extends CodeStyleAbstractConfigurable {
         public CdsCodeStyleConfigurable(@NotNull CodeStyleSettings settings, @NotNull CodeStyleSettings cloneSettings) {
             super(settings, cloneSettings, CdsLanguage.INSTANCE.getDisplayName());
         }

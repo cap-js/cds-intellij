@@ -36,7 +36,7 @@ The set of features will grow with future releases, aligned with the development
         <langCodeStyleSettingsProvider
                 implementation="com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsProvider"/>
 
-        <formattingService implementation="com.sap.cap.cds.intellij.codestyle.CdsFormattingService"/>
+        <formattingService implementation="com.sap.cap.cds.intellij.codestyle.CdsPreviewFormattingService"/>
 
         <platform.lsp.serverSupportProvider implementation="com.sap.cap.cds.intellij.lsp.CdsLspServerSupportProvider"/>
 
