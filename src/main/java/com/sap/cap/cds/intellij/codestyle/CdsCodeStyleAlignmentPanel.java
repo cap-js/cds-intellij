@@ -65,6 +65,9 @@ public class CdsCodeStyleAlignmentPanel extends OptionTreeWithPreviewPanel {
         return Category.ALIGNMENT.getTitle();
     }
 
+    /**
+     * Show CDS code-style options via the corresponding panel
+     */
     @Override
     protected void customizeSettings() {
         LanguageCodeStyleSettingsProvider provider = LanguageCodeStyleSettingsProvider.forLanguage(CdsLanguage.INSTANCE);

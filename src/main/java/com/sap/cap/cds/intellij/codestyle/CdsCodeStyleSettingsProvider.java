@@ -38,9 +38,14 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
         return CdsLanguage.INSTANCE;
     }
 
+    /**
+     * @param initialSettings  The base (initial) settings before changes.
+     * @param modifiedSettings The settings to which UI changes are applied (a.k.a. model/clone settings).
+     * @see com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider#createConfigurable(com.intellij.psi.codeStyle.CodeStyleSettings, com.intellij.psi.codeStyle.CodeStyleSettings)
+     */
     @Override
-    public @NotNull CodeStyleConfigurable createConfigurable(@NotNull CodeStyleSettings settings, @NotNull CodeStyleSettings cloneSettings) {
-        return new CdsCodeStyleConfigurable(settings, cloneSettings);
+    public @NotNull CodeStyleConfigurable createConfigurable(@NotNull CodeStyleSettings initialSettings, @NotNull CodeStyleSettings modifiedSettings) {
+        return new CdsCodeStyleConfigurable(initialSettings, modifiedSettings);
     }
 
     @Override
@@ -60,13 +65,18 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
     }
 
     private static class CdsCodeStyleConfigurable extends CodeStyleAbstractConfigurable {
-        public CdsCodeStyleConfigurable(@NotNull CodeStyleSettings settings, @NotNull CodeStyleSettings cloneSettings) {
-            super(settings, cloneSettings, CdsLanguage.INSTANCE.getDisplayName());
+
+        /**
+         * @param initialSettings  The base (initial) settings before changes.
+         * @param modifiedSettings The settings to which UI changes are applied. Initially a clone of the initial settings.
+         */
+        public CdsCodeStyleConfigurable(@NotNull CodeStyleSettings initialSettings, @NotNull CodeStyleSettings modifiedSettings) {
+            super(initialSettings, modifiedSettings, CdsLanguage.INSTANCE.getDisplayName());
         }
 
         @Override
-        protected @NotNull CodeStyleAbstractPanel createPanel(final @NotNull CodeStyleSettings settings) {
-            return new CdsCodeStyleMainPanel(getCurrentSettings(), settings);
+        protected @NotNull CodeStyleAbstractPanel createPanel(final @NotNull CodeStyleSettings modifiedSettings) {
+            return new CdsCodeStyleMainPanel(getCurrentSettings(), modifiedSettings);
         }
     }
 }

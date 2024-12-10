@@ -20,6 +20,8 @@ The set of features will grow with future releases, aligned with the development
     <depends>NodeJS</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <vfs.asyncListener implementation="com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonListener"/>
+
         <fileType
                 name="cds"
                 implementationClass="com.sap.cap.cds.intellij.CdsFileType"

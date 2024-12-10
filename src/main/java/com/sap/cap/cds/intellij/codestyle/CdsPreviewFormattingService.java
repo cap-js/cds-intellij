@@ -54,7 +54,7 @@ public class CdsPreviewFormattingService implements FormattingService {
     }
 
     public static void acceptSettings(CdsCodeStyleSettings settings) {
-        prettierJson = settings.getNonDefaultSettingsJSON().toString();
+        prettierJson = settings.getNonDefaultSettings().toString();
     }
 
     @Override

@@ -4,18 +4,16 @@ import com.intellij.openapi.components.Service;
 import com.intellij.psi.codeStyle.*;
 
 @Service
-public final class CdsDefaultCodeStyleSchemeService {
+public final class CdsDefaultCodeStyleSettingsService {
 
-    private CodeStyleScheme scheme;
+    // TODO apply default settings to new projects
 
-    // TODO apply default scheme to new projects
-
-    public CdsDefaultCodeStyleSchemeService() {
+    public CdsDefaultCodeStyleSettingsService() {
         CodeStyleSettingsManager codeStyleManager = CodeStyleSettingsManager.getInstance();
         codeStyleManager.subscribe(new CodeStyleSettingsListener() {
             @Override
             public void codeStyleSettingsChanged(CodeStyleSettingsChangeEvent event) {
-                scheme = CodeStyleSchemes.getInstance().getDefaultScheme();
+                // TODO implement
             }
         });
     }
