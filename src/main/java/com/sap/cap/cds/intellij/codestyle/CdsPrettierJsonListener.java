@@ -12,13 +12,14 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
+import static com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonService.PRETTIER_JSON;
 
 public class CdsPrettierJsonListener implements AsyncFileListener {
     @Override
     public @Nullable ChangeApplier prepareChange(@NotNull List<? extends @NotNull VFileEvent> list) {
         list.stream()
                 // NOTE this is also triggered by programmatic changes to the file
-                .filter(event -> event instanceof VFileContentChangeEvent && event.getPath().matches(".*[/\\\\]\\.cdsprettier\\.json"))
+                .filter(event -> event instanceof VFileContentChangeEvent && ((VFileContentChangeEvent) event).getFile().getName().equals(PRETTIER_JSON))
                 .map(event -> getApplication().getService(ProjectLocator.class).guessProjectForFile(event.getFile()))
                 .filter(Objects::nonNull)
                 .distinct()
