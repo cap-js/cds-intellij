@@ -73,17 +73,14 @@ The set of features will grow with future releases, aligned with the development
 
     <change-notes><![CDATA[ <h3>Added</h3>
 <ul>
-    <li>Determine suitable Node.js runtime automatically (no need to modify PATH environment variable anymore).</li>
 </ul>
 <h3>Changed</h3>
 <ul>
-    <li>include @sap/cds-lsp 8.4.3 with the following changes since 8.3.2:
+    <li>include @sap/cds-lsp 8.5.1 with the following changes since 8.4.3:
         <ul>
-            <li>fix: highlighting of escaped identifiers and parameter lists</li>
-            <li>fix: `using` path proposals could have been suggesting JS files instead of CDS files in certain cases</li>
-            <li>fix: on Windows if client mixes upper- and lowercase drive letters some requests could have failed</li>
-            <li>fix: CDS Typer was called when deleting a file which led to a misleading error output</li>
-            <li>minimum required NodeJS version is now (back to) 20.9.0</li>
+            <li> enabling `newParser` via `cds.env` will no longer interfere with language server
+            <li> improved telemetry messages
+            <li> With `@sap/cds 8.5.0` one of the default locations for translation folders (`assets/i18n`) was removed
         </ul>
     </li>
 </ul> ]]></change-notes>
