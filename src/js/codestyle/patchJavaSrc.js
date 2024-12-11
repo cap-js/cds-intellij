@@ -32,14 +32,15 @@ const parentOptionGroups = Object.values(optsFromSchema)
 const categoryGroups = {};
 
 const options = Object.entries(optsFromSchema)
+    .sort(([name1], [name2]) => name1.localeCompare(name2))
     .map(([name, attribs]) => {
       const type = attribs.type === 'boolean'
           ? 'boolean'
           : attribs.type === 'number'
               ? 'int'
               : 'ENUM';
-      // TODO enum
       if (type === 'ENUM') {
+        // TODO
         return;
       }
       const parentOption = attribs.parentOption;
@@ -53,11 +54,13 @@ const options = Object.entries(optsFromSchema)
               : attribs.category === 'Other'
                   ? name.includes('tab')
                       ? 'TABS_AND_INDENTS'
-                      : /(?:Empty|Single)Line/.test(name)
-                          ? 'BLANK_LINES'
-                          : /keep.*(?:Line|Together)|New[Ll]ine/.test(name)
-                              ? 'WRAPPING_AND_BRACES'
-                              : 'OTHER'
+                      : name.includes('omments')
+                          ? 'COMMENTS'
+                          : /(?:Empty|Single)Line/.test(name)
+                              ? 'BLANK_LINES'
+                              : /keep.*(?:Line|Together)|max.*Line$|New[Ll]ine/.test(name)
+                                  ? 'WRAPPING_AND_BRACES'
+                                  : 'OTHER'
                   : 'OTHER';
 
       (categoryGroups[category] ??= new Set()).add(group);
@@ -76,7 +79,7 @@ const options = Object.entries(optsFromSchema)
 
 const optionFieldsSrc = options
     .reduce((acc, opt) => `${acc}\npublic ${opt.type} ${opt.name} = ${opt.default};`, '')
-    .replace(/^/gm, '    ');
+    .replace(/^(?!$)/gm, '    ');
 
 const staticMembers = `    public static final Map<String, CdsCodeStyleOptionDef<?>> OPTION_DEFS = new HashMap<>();\n    public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();\n`;
 const startStaticInit = '    static {';
@@ -86,12 +89,12 @@ const optionsMapSrc = options
     .reduce((acc, opt, i) =>
             `${acc}\nOPTION_DEFS.put("${opt.name}", new CdsCodeStyleOptionDef<>("${opt.name}", ${opt.default}, "${opt.label}", "${opt.group}", Category.${opt.category}));`,
         ''
-    ).replace(/^/gm, '        ');
+    ).replace(/^(?!$)/gm, '        ');
 
 const categoryGroupsMapSrc = Object.entries(categoryGroups)
     .reduce((acc, [category, groups]) => `${acc}\nCATEGORY_GROUPS.put(Category.${category}, Set.of(${[...groups].map(g => `"${g}"`).join(', ')}));`,
         ''
-    ).replace(/^/gm, '        ');
+    ).replace(/^(?!$)/gm, '        ');
 
 const patched = src.replace(
     /(?<=(public class CdsCodeStyleSettings [\w ]*\{\n)).*(?=(\n\s*public CdsCodeStyleSettings))/sm,

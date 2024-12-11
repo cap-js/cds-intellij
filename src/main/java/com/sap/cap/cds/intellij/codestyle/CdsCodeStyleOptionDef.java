@@ -35,6 +35,7 @@ public class CdsCodeStyleOptionDef<T> {
     public enum Category {
         ALIGNMENT("Alignment", SettingsType.LANGUAGE_SPECIFIC),
         BLANK_LINES("Blank Lines", SettingsType.BLANK_LINES_SETTINGS),
+        COMMENTS("Comments", SettingsType.COMMENTER_SETTINGS),
         OTHER("Other", SettingsType.LANGUAGE_SPECIFIC),
         SPACES("Spaces", SettingsType.SPACING_SETTINGS),
         TABS_AND_INDENTS("Tabs and Indents", SettingsType.INDENT_SETTINGS),
