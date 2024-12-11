@@ -4,5 +4,7 @@
 .qodana
 
 local.properties
-build
-lsp/node_modules
+
+/build
+/lsp/node_modules/
+/src/js/.idea/
