@@ -26,5 +26,8 @@ public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
     protected void initTabs(CodeStyleSettings settings) {
 //        super.initTabs(settings);
         addTab(new CdsCodeStyleAlignmentPanel(settings));
+        addTab(new CdsCodeStyleBlankLinesPanel(settings));
+        // HOT-TODO after blank lines:
+//        addTab(new CdsCodeStyleWrappingAndBracesPanel(settings));
     }
 }

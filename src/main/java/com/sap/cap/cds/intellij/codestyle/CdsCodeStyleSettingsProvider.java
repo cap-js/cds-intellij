@@ -55,10 +55,27 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
 
     @Override
     public void customizeSettings(@NotNull CodeStyleSettingsCustomizable consumer, @NotNull SettingsType settingsType) {
+        // HOT-TODO cf.   consumer.renameStandardOption
         if (consumer instanceof CdsCodeStyleAlignmentPanel) {
             CdsCodeStyleSettings.OPTION_DEFS.forEach((name, option) -> {
                 if (option.category == Category.ALIGNMENT) {
                     consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
+                }
+            });
+        } else if (consumer instanceof CdsCodeStyleWrappingAndBracesPanel) {
+//            CdsCodeStyleSettings.OPTION_DEFS.forEach((name, option) -> {
+//                if (option.category == Category.WRAPPING_AND_BRACES) {
+//                    consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
+//                }
+//            });
+        } else if (consumer instanceof CdsCodeStyleBlankLinesPanel) {
+            CdsCodeStyleSettings.OPTION_DEFS.forEach((name, option) -> {
+                if (option.category == Category.BLANK_LINES) {
+                    if (option.defaultValue instanceof Boolean) {
+                        consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
+                    } else if (option.defaultValue instanceof Integer d) {
+                        // HOT-TODO use/see CodeStyleBoundedIntegerSettingPresentation
+                    }
                 }
             });
         }
