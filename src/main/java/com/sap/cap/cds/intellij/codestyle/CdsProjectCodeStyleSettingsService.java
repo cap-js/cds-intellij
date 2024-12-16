@@ -1,4 +1,4 @@
-package com.sap.cap.cds.intellij;
+package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.application.options.CodeStyle;
 import com.intellij.openapi.components.Service;
@@ -6,8 +6,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.codeStyle.CodeStyleSettingsChangeEvent;
 import com.intellij.psi.codeStyle.CodeStyleSettingsListener;
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
-import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettings;
-import com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonService;
 
 @Service(Service.Level.PROJECT)
 public final class CdsProjectCodeStyleSettingsService {

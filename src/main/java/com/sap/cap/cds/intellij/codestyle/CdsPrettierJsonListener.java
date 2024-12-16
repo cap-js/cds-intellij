@@ -4,7 +4,6 @@ import com.intellij.openapi.project.ProjectLocator;
 import com.intellij.openapi.vfs.AsyncFileListener;
 import com.intellij.openapi.vfs.newvfs.events.VFileContentChangeEvent;
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent;
-import com.sap.cap.cds.intellij.CdsProjectCodeStyleSettingsService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
