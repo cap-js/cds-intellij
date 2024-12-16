@@ -3,7 +3,6 @@ package com.sap.cap.cds.intellij.lsp;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreter;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.platform.lsp.api.ProjectWideLspServerDescriptor;
@@ -33,10 +32,9 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
     private static final String RELATIVE_SERVER_PATH = RELATIVE_SERVER_BASE_PATH + "dist/main.js";
     private static final String RELATIVE_FORMAT_CLI_PATH = RELATIVE_SERVER_BASE_PATH + "scripts/formatCli.js";
     private static final String RELATIVE_SERVER_PKG_PATH = RELATIVE_SERVER_BASE_PATH + "package.json";
-    private static final NodeJsLocalInterpreter NODE_JS_INTERPRETER = getInterpreter(getRequiredNodejsVersion());
+    private static final ComparableVersion REQUIRED_NODEJS_VERSION = getRequiredNodejsVersion();
     private static final String RELATIVE_MITM_PATH = "cds-lsp/mitm.js";
     private static final String RELATIVE_LOG_PATH = "cds-lsp/stdio.json";
-
     private static final Map<CommandLineKind, GeneralCommandLine> commandLines = new EnumMap<>(CommandLineKind.class);
 
     static {
@@ -73,18 +71,19 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
         if (commandLines.get(kind) != null) {
             return commandLines.get(kind);
         }
+        final String nodeInterpreterPath = getInterpreter(REQUIRED_NODEJS_VERSION).getInterpreterSystemDependentPath();
         switch (kind) {
             case SERVER -> {
                 commandLines.put(CommandLineKind.SERVER,
                         new GeneralCommandLine(
-                                NODE_JS_INTERPRETER.getInterpreterSystemDependentPath(),
+                                nodeInterpreterPath,
                                 resolve(RELATIVE_SERVER_PATH),
                                 "--stdio"
                         ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose")
                 );
             }
             case SERVER_DEBUG -> {
-                String nodeJsPath = NODE_JS_INTERPRETER.getInterpreterSystemDependentPath();
+                String nodeJsPath = nodeInterpreterPath;
                 commandLines.put(CommandLineKind.SERVER_DEBUG,
                         new GeneralCommandLine(
                                 nodeJsPath,
@@ -115,7 +114,7 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
 
         commandLines.put(CommandLineKind.CLI_FORMAT,
                 new GeneralCommandLine(
-                        NODE_JS_INTERPRETER.getInterpreterSystemDependentPath(),
+                        getInterpreter(REQUIRED_NODEJS_VERSION).getInterpreterSystemDependentPath(),
                         resolve(RELATIVE_FORMAT_CLI_PATH),
                         "-f",
                         srcPath.toString()
