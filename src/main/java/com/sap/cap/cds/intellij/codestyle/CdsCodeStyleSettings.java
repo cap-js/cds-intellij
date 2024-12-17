@@ -42,10 +42,13 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
         OPTION_DEFS.put("alignTypes", new CdsCodeStyleOptionDef<>("alignTypes", true, "Align types of elements", "Types of elements", Category.ALIGNMENT));
         OPTION_DEFS.put("alignTypesWithinBlock", new CdsCodeStyleOptionDef<>("alignTypesWithinBlock", true, "Within block", "Types of elements", Category.ALIGNMENT));
         OPTION_DEFS.put("alignValuesInAnnotations", new CdsCodeStyleOptionDef<>("alignValuesInAnnotations", true, "Values", "Annotations", Category.ALIGNMENT));
+        OPTION_DEFS.put("cqlKeywordCapitalization", new CdsCodeStyleOptionDef<>("cqlKeywordCapitalization", CqlKeywordCapitalization.LOWER.getId(), "Capitalization style of CQL keywords", "Other", Category.OTHER));
         OPTION_DEFS.put("finalNewline", new CdsCodeStyleOptionDef<>("finalNewline", true, "Final newline", "Other", Category.WRAPPING_AND_BRACES));
         OPTION_DEFS.put("formatDocComments", new CdsCodeStyleOptionDef<>("formatDocComments", false, "Format markdown in doc comments", "Format markdown in doc comments", Category.COMMENTS));
         OPTION_DEFS.put("keepEmptyBracketsTogether", new CdsCodeStyleOptionDef<>("keepEmptyBracketsTogether", true, "Keep empty brackets in same line", "Other", Category.WRAPPING_AND_BRACES));
         OPTION_DEFS.put("keepOriginalEmptyLines", new CdsCodeStyleOptionDef<>("keepOriginalEmptyLines", true, "Keep original empty lines", "Other", Category.BLANK_LINES));
+        OPTION_DEFS.put("keepPostAnnotationsInOriginalLine", new CdsCodeStyleOptionDef<>("keepPostAnnotationsInOriginalLine", KeepPostAnnotationsInOriginalLine.KEEP_LINE.getId(), "Line wrapping of post-annotations", "Other", Category.WRAPPING_AND_BRACES));
+        OPTION_DEFS.put("keepPreAnnotationsInOriginalLine", new CdsCodeStyleOptionDef<>("keepPreAnnotationsInOriginalLine", KeepPreAnnotationsInOriginalLine.KEEP_LINE.getId(), "Line wrapping of pre-annotations", "Other", Category.WRAPPING_AND_BRACES));
         OPTION_DEFS.put("keepSingleLinedBlocksTogether", new CdsCodeStyleOptionDef<>("keepSingleLinedBlocksTogether", true, "Keep similar single-lined blocks together", "Other", Category.BLANK_LINES));
         OPTION_DEFS.put("maxDocCommentLine", new CdsCodeStyleOptionDef<>("maxDocCommentLine", 60, "Max doc comment line length", "Format markdown in doc comments", Category.WRAPPING_AND_BRACES));
         OPTION_DEFS.put("maxKeepEmptyLines", new CdsCodeStyleOptionDef<>("maxKeepEmptyLines", 2, "Maximum consecutive empty lines", "Other", Category.BLANK_LINES));
@@ -62,6 +65,7 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
         OPTION_DEFS.put("whitespaceWithinBrackets", new CdsCodeStyleOptionDef<>("whitespaceWithinBrackets", false, "Blanks within brackets", "Other", Category.SPACES));
 
         CATEGORY_GROUPS.put(Category.ALIGNMENT, Set.of("Actions and functions", "Other", "Annotations", "'as'", "Types of elements", "Expressions and conditions"));
+        CATEGORY_GROUPS.put(Category.OTHER, Set.of("Other"));
         CATEGORY_GROUPS.put(Category.WRAPPING_AND_BRACES, Set.of("Other", "Format markdown in doc comments"));
         CATEGORY_GROUPS.put(Category.COMMENTS, Set.of("Format markdown in doc comments"));
         CATEGORY_GROUPS.put(Category.BLANK_LINES, Set.of("Other"));
@@ -89,10 +93,13 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
     public boolean alignTypes = true;
     public boolean alignTypesWithinBlock = true;
     public boolean alignValuesInAnnotations = true;
+    public int cqlKeywordCapitalization = CqlKeywordCapitalization.LOWER.getId();
     public boolean finalNewline = true;
     public boolean formatDocComments = false;
     public boolean keepEmptyBracketsTogether = true;
     public boolean keepOriginalEmptyLines = true;
+    public int keepPostAnnotationsInOriginalLine = KeepPostAnnotationsInOriginalLine.KEEP_LINE.getId();
+    public int keepPreAnnotationsInOriginalLine = KeepPreAnnotationsInOriginalLine.KEEP_LINE.getId();
     public boolean keepSingleLinedBlocksTogether = true;
     public int maxDocCommentLine = 60;
     public int maxKeepEmptyLines = 2;
@@ -107,6 +114,69 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
     public boolean whitespaceBeforeColon = true;
     public boolean whitespaceBeforeColonInAnnotation = false;
     public boolean whitespaceWithinBrackets = false;
+
+    public enum CqlKeywordCapitalization {
+        LOWER(0, "lower"),
+        UPPER(1, "upper"),
+        TITLE(2, "title"),
+        AS_IS(3, "as-is");
+        private final String label;
+        private final int id;
+
+        CqlKeywordCapitalization(int id, String label) {
+            this.id = id;
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public int getId() {
+            return id;
+        }
+    }
+
+    public enum KeepPostAnnotationsInOriginalLine {
+        KEEP_LINE(0, "keepLine"),
+        SEPARATE_LINE(1, "separateLine");
+        private final String label;
+        private final int id;
+
+        KeepPostAnnotationsInOriginalLine(int id, String label) {
+            this.id = id;
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public int getId() {
+            return id;
+        }
+    }
+
+    public enum KeepPreAnnotationsInOriginalLine {
+        KEEP_LINE(0, "keepLine"),
+        SEPARATE_LINE(1, "separateLine");
+        private final String label;
+        private final int id;
+
+        KeepPreAnnotationsInOriginalLine(int id, String label) {
+            this.id = id;
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public int getId() {
+            return id;
+        }
+    }
+
 
     public CdsCodeStyleSettings(CodeStyleSettings settings) {
         super("CDSCodeStyleSettings", settings);

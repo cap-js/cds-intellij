@@ -3,7 +3,7 @@
 const path = require('path');
 const { readFileSync, writeFileSync } = require('node:fs');
 
-const { capitalizeFirstLetter, removeMarkdownFormatting } = require('../util/string');
+const { capitalizeFirstLetter, removeMarkdownFormatting, toScreamingSnakeCase } = require('../util/string');
 
 const schemaPath = path.resolve(__dirname, '../../../lsp/node_modules/@sap/cds-lsp/schemas/cds-prettier.json');
 const schema = require(schemaPath);
@@ -36,13 +36,7 @@ const options = Object.entries(optsFromSchema)
     .map(([name, attribs]) => {
       const type = attribs.type === 'boolean'
           ? 'boolean'
-          : attribs.type === 'number'
-              ? 'int'
-              : 'ENUM';
-      if (type === 'ENUM') {
-        // TODO
-        return;
-      }
+          : 'int';
       const parentOption = attribs.parentOption;
       const group = parentOption
           ? parentOptionGroups[parentOption]
@@ -65,15 +59,19 @@ const options = Object.entries(optsFromSchema)
 
       (categoryGroups[category] ??= new Set()).add(group);
 
+      const defaultValue = attribs.enum
+          ? `${enumName(name)}.${enumValueName(attribs.default)}.getId()`
+          : attribs.default;
+
       return {
         name,
         type,
-        default: attribs.default,
+        values: attribs.enum,
+        default: defaultValue,
         label: capitalizeFirstLetter(removeMarkdownFormatting(attribs.label)),
         group: capitalizeFirstLetter(group),
         category
       };
-      //return `    public ${type} ${name};`
     })
     .filter(Boolean);
 
@@ -90,11 +88,47 @@ ${Object.entries(categoryGroups).map(([category, groups]) => `${t}${t}CATEGORY_G
 ${t}}
 
 ${options.map(opt => `${t}public ${opt.type} ${opt.name} = ${opt.default};`).join('\n')}
+${options.filter(opt => opt.values).map(enumDef).join('\n')}
+
 `;
 
 const patchedSrc = src.replace(
-    /(?<=(public class CdsCodeStyleSettings [\w ]*\{\n)).*(?=(\n\s*public CdsCodeStyleSettings))/sm,
+    /(?<=(public class CdsCodeStyleSettings [\w ]*\{\n)).*(?=(\n\s*public CdsCodeStyleSettings))/s,
     initSection
 );
 
 writeFileSync(srcPath, patchedSrc, 'utf8');
+
+
+
+function enumName(name) {
+  return capitalizeFirstLetter(name);
+}
+
+function enumValueName(value) {
+  return toScreamingSnakeCase(value);
+}
+
+function enumDef(attribs) {
+  const name = enumName(attribs.name);
+  const values = attribs.values.map((value, id) => `${t}${t}${enumValueName(value)}(${id}, "${value}")`).join(',\n');
+  return `
+${t}public enum ${name} {
+${values};
+${t}${t}private final String label;
+${t}${t}private final int id;
+
+${t}${t}${name}(int id, String label) {
+${t}${t}${t}this.id = id;
+${t}${t}${t}this.label = label;
+${t}${t}}
+
+${t}${t}public String getLabel() {
+${t}${t}${t}return label;
+${t}${t}}
+
+${t}${t}public int getId() {
+${t}${t}${t}return id;
+${t}${t}}
+${t}}`;
+}
