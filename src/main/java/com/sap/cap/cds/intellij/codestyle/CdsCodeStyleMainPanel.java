@@ -8,8 +8,8 @@ import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
-import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOptionDef.Category.ALIGNMENT;
-import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOptionDef.Category.COMMENTS;
+import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category.ALIGNMENT;
+import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category.COMMENTS;
 
 public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
 

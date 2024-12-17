@@ -7,7 +7,7 @@ import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType;
 import com.sap.cap.cds.intellij.CdsFileType;
-import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOptionDef.Category;
+import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

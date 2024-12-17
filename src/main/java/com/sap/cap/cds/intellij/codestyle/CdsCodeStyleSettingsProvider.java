@@ -8,7 +8,7 @@ import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.codeStyle.*;
 import com.intellij.util.LocalTimeCounter;
 import com.sap.cap.cds.intellij.CdsFileType;
-import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOptionDef.Category;
+import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,7 +56,7 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
     @Override
     public void customizeSettings(@NotNull CodeStyleSettingsCustomizable consumer, @NotNull SettingsType settingsType) {
         if (consumer instanceof CdsCodeStyleCustomPanel panel) {
-            CdsCodeStyleSettings.OPTION_DEFS.forEach((name, option) -> {
+            CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
                 if (option.category == panel.category) {
                     panel.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
                 }
@@ -65,12 +65,12 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
         }
 
         switch (settingsType) {
-            case BLANK_LINES_SETTINGS -> CdsCodeStyleSettings.OPTION_DEFS.forEach((name, option) -> {
+            case BLANK_LINES_SETTINGS -> CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
                 if (option.category == Category.BLANK_LINES) {
                     consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
                 }
             });
-            case SPACING_SETTINGS -> CdsCodeStyleSettings.OPTION_DEFS.forEach((name, option) -> {
+            case SPACING_SETTINGS -> CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
                 if (option.category == Category.SPACES) {
                     // TODO ensure only boolean options here
                     consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);

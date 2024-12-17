@@ -78,11 +78,11 @@ const options = Object.entries(optsFromSchema)
 const t = '    ';
 
 const initSection = `
-${t}public static final Map<String, CdsCodeStyleOptionDef<?>> OPTION_DEFS = new HashMap<>();
+${t}public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new HashMap<>();
 ${t}public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();
 
 ${t}static {
-${options.map(opt => `${t}${t}OPTION_DEFS.put("${opt.name}", new CdsCodeStyleOptionDef<>("${opt.name}", ${opt.default}, "${opt.label}", "${opt.group}", Category.${opt.category}));`).join('\n')}
+${options.map(opt => `${t}${t}OPTIONS.put("${opt.name}", new CdsCodeStyleOption<>("${opt.name}", ${opt.default}, "${opt.label}", "${opt.group}", Category.${opt.category}));`).join('\n')}
 
 ${Object.entries(categoryGroups).map(([category, groups]) => `${t}${t}CATEGORY_GROUPS.put(Category.${category}, Set.of(${[...groups].map(g => `"${g}"`).join(', ')}));`).join('\n')}
 ${t}}
