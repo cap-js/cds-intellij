@@ -2,6 +2,7 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.sap.cap.cds.intellij.util.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -24,7 +25,12 @@ public final class CdsPrettierJsonService {
 
     public CdsPrettierJsonService(Project project) {
         // assuming no changes to project directory
-        jsonFile = getJsonFile(guessProjectDir(project).getPath());
+        VirtualFile projectDir = guessProjectDir(project);
+        if (projectDir == null) {
+            // TODO handle IDE settings
+        } else {
+            jsonFile = getJsonFile(projectDir.getPath());
+        }
     }
 
     public void loadSettingsFromFile(@NotNull CdsCodeStyleSettings settings) {

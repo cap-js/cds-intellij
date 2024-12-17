@@ -4,6 +4,7 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.formatting.FormattingRangesInfo;
 import com.intellij.formatting.service.FormattingService;
 import com.intellij.lang.ImportOptimizer;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -29,7 +30,8 @@ public class CdsPreviewFormattingService implements FormattingService {
     private static Path prettierJsonPath;
     private static Path tempDir;
     private static Path samplePath;
-    private static String prettierJson;
+    // HOT-TODO initialize from file
+    private static String prettierJson = "{}";
 
     CdsPreviewFormattingService() {
         try {
@@ -74,6 +76,15 @@ public class CdsPreviewFormattingService implements FormattingService {
 
     @Override
     public @NotNull PsiElement formatElement(@NotNull PsiElement psiElement, boolean canChangeWhiteSpaceOnly) {
+        /*
+         Accept changed settings from UI while it's still open. NOTE: This is not the best place to do this, but all other obvious methods are unsuitable:
+         - CdsCodeStyleMainPanel.onSomethingChanged() is called before the settings are applied (even getApplication().invokeLater() doesn't help)
+         - CdsCodeStyleMainPanel.apply*() methods are not called
+        */
+        Project project = psiElement.getProject(); // may be default project
+        CdsCodeStyleSettings settings = project.getService(CdsProjectCodeStyleSettingsService.class).getSettings();
+        acceptSettings(settings);
+
         String src = formattedByPrettierJson.get(prettierJson);
         if (src == null) {
             formattedByPrettierJson.put(prettierJson, src = formatSampleSrc(prettierJson));

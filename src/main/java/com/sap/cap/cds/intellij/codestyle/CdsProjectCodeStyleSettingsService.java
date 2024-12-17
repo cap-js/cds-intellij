@@ -29,8 +29,7 @@ public final class CdsProjectCodeStyleSettingsService {
     }
 
     public void updateSettingsFromFile() {
-        CdsCodeStyleSettings settings = getSettings();
         CdsPrettierJsonService prettierJsonService = project.getService(CdsPrettierJsonService.class);
-        prettierJsonService.loadSettingsFromFile(settings);
+        prettierJsonService.loadSettingsFromFile(getSettings());
     }
 }
