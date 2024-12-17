@@ -77,28 +77,24 @@ const options = Object.entries(optsFromSchema)
     })
     .filter(Boolean);
 
-const optionFieldsSrc = options
-    .reduce((acc, opt) => `${acc}\npublic ${opt.type} ${opt.name} = ${opt.default};`, '')
-    .replace(/^(?!$)/gm, '    ');
+const t = '    ';
 
-const staticMembers = `    public static final Map<String, CdsCodeStyleOptionDef<?>> OPTION_DEFS = new HashMap<>();\n    public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();\n`;
-const startStaticInit = '    static {';
-const endStaticInit = '    }';
+const initSection = `
+${t}public static final Map<String, CdsCodeStyleOptionDef<?>> OPTION_DEFS = new HashMap<>();
+${t}public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();
 
-const optionsMapSrc = options
-    .reduce((acc, opt, i) =>
-            `${acc}\nOPTION_DEFS.put("${opt.name}", new CdsCodeStyleOptionDef<>("${opt.name}", ${opt.default}, "${opt.label}", "${opt.group}", Category.${opt.category}));`,
-        ''
-    ).replace(/^(?!$)/gm, '        ');
+${t}static {
+${options.map(opt => `${t}${t}OPTION_DEFS.put("${opt.name}", new CdsCodeStyleOptionDef<>("${opt.name}", ${opt.default}, "${opt.label}", "${opt.group}", Category.${opt.category}));`).join('\n')}
 
-const categoryGroupsMapSrc = Object.entries(categoryGroups)
-    .reduce((acc, [category, groups]) => `${acc}\nCATEGORY_GROUPS.put(Category.${category}, Set.of(${[...groups].map(g => `"${g}"`).join(', ')}));`,
-        ''
-    ).replace(/^(?!$)/gm, '        ');
+${Object.entries(categoryGroups).map(([category, groups]) => `${t}${t}CATEGORY_GROUPS.put(Category.${category}, Set.of(${[...groups].map(g => `"${g}"`).join(', ')}));`).join('\n')}
+${t}}
 
-const patched = src.replace(
+${options.map(opt => `${t}public ${opt.type} ${opt.name} = ${opt.default};`).join('\n')}
+`;
+
+const patchedSrc = src.replace(
     /(?<=(public class CdsCodeStyleSettings [\w ]*\{\n)).*(?=(\n\s*public CdsCodeStyleSettings))/sm,
-    `\n${staticMembers}\n${startStaticInit}${optionsMapSrc}\n${categoryGroupsMapSrc}\n${endStaticInit}\n${optionFieldsSrc}\n`
+    initSection
 );
 
-writeFileSync(srcPath, patched, 'utf8');
+writeFileSync(srcPath, patchedSrc, 'utf8');
