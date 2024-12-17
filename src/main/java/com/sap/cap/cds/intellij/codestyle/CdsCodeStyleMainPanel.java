@@ -8,6 +8,8 @@ import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
+import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOptionDef.Category.ALIGNMENT;
+import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOptionDef.Category.COMMENTS;
 
 public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
 
@@ -24,11 +26,12 @@ public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
     @Override
     protected void initTabs(CodeStyleSettings settings) {
         /*
-         NOTE: we use default tabs because deriving from OptionTableWithPreviewPanel was unfeasible for non-boolean options
+         NOTE: we use default tabs because deriving from OptionTableWithPreviewPanel is unfeasible for non-boolean options
          due to visibility of required methods and fields
         */
         super.initTabs(settings);
-        addTab(new CdsCodeStyleAlignmentPanel(settings));
+        addTab(new CdsCodeStyleCustomPanel(settings, ALIGNMENT));
+        addTab(new CdsCodeStyleCustomPanel(settings, COMMENTS));
     }
 
     @Override

@@ -5,38 +5,34 @@ import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
+import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType;
 import com.sap.cap.cds.intellij.CdsFileType;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOptionDef.Category;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
-
+import static com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType.LANGUAGE_SPECIFIC;
 import static com.sap.cap.cds.intellij.lang.CdsLanguage.SAMPLE_SRC;
 
-public class CdsCodeStyleAlignmentPanel extends OptionTreeWithPreviewPanel {
+public class CdsCodeStyleCustomPanel extends OptionTreeWithPreviewPanel {
 
-    public CdsCodeStyleAlignmentPanel(CodeStyleSettings settings) {
+    public final Category category;
+
+    public CdsCodeStyleCustomPanel(CodeStyleSettings settings, Category category) {
         super(settings);
+        this.category = category;
         init();
     }
 
     @Override
-    protected void init() {
-        super.init();
-
-        myPanel.setMinimumSize(new Dimension(100, 0));
-    }
-
-    @Override
     protected void initTables() {
-        CdsCodeStyleSettings.CATEGORY_GROUPS.get(Category.ALIGNMENT).forEach(this::initCustomOptions);
+        CdsCodeStyleSettings.CATEGORY_GROUPS.get(category).forEach(this::initCustomOptions);
     }
 
     @Override
-    public LanguageCodeStyleSettingsProvider.SettingsType getSettingsType() {
-        return LanguageCodeStyleSettingsProvider.SettingsType.LANGUAGE_SPECIFIC;
+    public SettingsType getSettingsType() {
+        return LANGUAGE_SPECIFIC;
     }
 
     @Override
@@ -62,7 +58,7 @@ public class CdsCodeStyleAlignmentPanel extends OptionTreeWithPreviewPanel {
 
     @Override
     protected @NlsContexts.TabTitle @NotNull String getTabTitle() {
-        return Category.ALIGNMENT.getTitle();
+        return category.getTitle();
     }
 
     /**

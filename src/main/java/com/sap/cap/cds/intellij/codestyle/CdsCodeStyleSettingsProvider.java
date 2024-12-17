@@ -55,9 +55,9 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
 
     @Override
     public void customizeSettings(@NotNull CodeStyleSettingsCustomizable consumer, @NotNull SettingsType settingsType) {
-        if (consumer instanceof CdsCodeStyleAlignmentPanel panel) {
+        if (consumer instanceof CdsCodeStyleCustomPanel panel) {
             CdsCodeStyleSettings.OPTION_DEFS.forEach((name, option) -> {
-                if (option.category == Category.ALIGNMENT) {
+                if (option.category == panel.category) {
                     panel.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
                 }
             });
