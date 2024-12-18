@@ -14,8 +14,6 @@ import static com.sap.cap.cds.intellij.util.ReflectionUtil.getFieldValue;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.setFieldValue;
 import static java.util.stream.Collectors.toMap;
 
-// TODO sort options
-
 public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
 
     public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new HashMap<>();

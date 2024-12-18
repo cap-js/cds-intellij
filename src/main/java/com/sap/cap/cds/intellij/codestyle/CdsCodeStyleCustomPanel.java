@@ -15,6 +15,9 @@ import org.jetbrains.annotations.Nullable;
 import static com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType.LANGUAGE_SPECIFIC;
 import static com.sap.cap.cds.intellij.lang.CdsLanguage.SAMPLE_SRC;
 
+/**
+ * Custom code-style panel for CDS language. Supports boolean options only.
+ */
 public class CdsCodeStyleCustomPanel extends OptionTreeWithPreviewPanel {
 
     public final Category category;
