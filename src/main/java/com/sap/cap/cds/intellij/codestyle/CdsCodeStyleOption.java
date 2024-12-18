@@ -49,21 +49,6 @@ public class CdsCodeStyleOption<T> {
             this.settingsType = settingsType;
         }
 
-        public static Category fromCdsPrettierSchema(String name, String category) {
-            return switch (category) {
-                case "Alignment" -> ALIGNMENT;
-                case "Whitespace" -> SPACES;
-                case "Other" -> name.contains("tab")
-                        ? TABS_AND_INDENTS
-                        : name.matches("(?:Empty|Single)Line")
-                        ? BLANK_LINES
-                        : name.matches("keep.*(?:Line|Together)|New[Ll]ine")
-                        ? WRAPPING_AND_BRACES
-                        : OTHER;
-                default -> OTHER; // should not happen
-            };
-        }
-
         public String getTitle() {
             return title;
         }
