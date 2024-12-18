@@ -48,15 +48,19 @@ public class CdsPreviewFormattingService implements FormattingService {
         }
 
         samplePath = tempDir.resolve(SAMPLE_FILE_NAME);
+        resetSampleSrc();
+    }
+
+    public static void acceptSettings(CdsCodeStyleSettings settings) {
+        prettierJson = settings.getNonDefaultSettings().toString();
+    }
+
+    private static void resetSampleSrc() {
         try {
             write(samplePath, CdsLanguage.SAMPLE_SRC.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static void acceptSettings(CdsCodeStyleSettings settings) {
-        prettierJson = settings.getNonDefaultSettings().toString();
     }
 
     @Override
@@ -94,6 +98,7 @@ public class CdsPreviewFormattingService implements FormattingService {
     }
 
     private String formatSampleSrc(String prettierJson) {
+        resetSampleSrc();
         try {
             write(prettierJsonPath, prettierJson.getBytes());
             getFormattingCommandLine(tempDir, samplePath).createProcess().waitFor();
