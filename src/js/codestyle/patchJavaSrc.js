@@ -17,6 +17,39 @@ function getGroup(label) {
   return capitalizeFirstLetter(removeMarkdownFormatting(reducedLabel));
 }
 
+function getEnumName(name) {
+  return capitalizeFirstLetter(name);
+}
+
+function getEnumValueName(value) {
+  return toScreamingSnakeCase(value);
+}
+
+function getEnumDef(attribs) {
+  const name = getEnumName(attribs.name);
+  const values = attribs.values.map((value, id) => `${t}${t}${getEnumValueName(value)}(${id}, "${value}")`).join(',\n');
+  return `
+${t}public enum ${name} {
+${values};
+${t}${t}private final String label;
+${t}${t}private final int id;
+
+${t}${t}${name}(int id, String label) {
+${t}${t}${t}this.id = id;
+${t}${t}${t}this.label = label;
+${t}${t}}
+
+${t}${t}public String getLabel() {
+${t}${t}${t}return label;
+${t}${t}}
+
+${t}${t}public int getId() {
+${t}${t}${t}return id;
+${t}${t}}
+${t}}`;
+}
+
+
 const parentOptionGroups = Object.values(optsFromSchema)
     .map(opt => opt.parentOption)
     .filter(Boolean)
@@ -60,7 +93,7 @@ const options = Object.entries(optsFromSchema)
       (categoryGroups[category] ??= new Set()).add(group);
 
       const defaultValue = attribs.enum
-          ? `${enumName(name)}.${enumValueName(attribs.default)}.getId()`
+          ? `${getEnumName(name)}.${getEnumValueName(attribs.default)}.getId()`
           : attribs.default;
 
       return {
@@ -88,7 +121,7 @@ ${Object.entries(categoryGroups).map(([category, groups]) => `${t}${t}CATEGORY_G
 ${t}}
 
 ${options.map(opt => `${t}public ${opt.type} ${opt.name} = ${opt.default};`).join('\n')}
-${options.filter(opt => opt.values).map(enumDef).join('\n')}
+${options.filter(opt => opt.values).map(getEnumDef).join('\n')}
 
 `;
 
@@ -98,37 +131,3 @@ const patchedSrc = src.replace(
 );
 
 writeFileSync(srcPath, patchedSrc, 'utf8');
-
-
-
-function enumName(name) {
-  return capitalizeFirstLetter(name);
-}
-
-function enumValueName(value) {
-  return toScreamingSnakeCase(value);
-}
-
-function enumDef(attribs) {
-  const name = enumName(attribs.name);
-  const values = attribs.values.map((value, id) => `${t}${t}${enumValueName(value)}(${id}, "${value}")`).join(',\n');
-  return `
-${t}public enum ${name} {
-${values};
-${t}${t}private final String label;
-${t}${t}private final int id;
-
-${t}${t}${name}(int id, String label) {
-${t}${t}${t}this.id = id;
-${t}${t}${t}this.label = label;
-${t}${t}}
-
-${t}${t}public String getLabel() {
-${t}${t}${t}return label;
-${t}${t}}
-
-${t}${t}public int getId() {
-${t}${t}${t}return id;
-${t}${t}}
-${t}}`;
-}
