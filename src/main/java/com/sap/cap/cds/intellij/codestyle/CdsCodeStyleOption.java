@@ -3,6 +3,11 @@ package com.sap.cap.cds.intellij.codestyle;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+
+import static com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType.*;
+
+// HOT-TODO rid of T ?
 public class CdsCodeStyleOption<T> {
     /**
      * Name of the option (camelCase). Used as configuration key.
@@ -28,14 +33,49 @@ public class CdsCodeStyleOption<T> {
      * Optional values for the option. Used as dropdown values in UI.
      */
     public final @Nullable CdsCodeStyleSettings.Enum[] values;
+    /**
+     * Type of the option.
+     */
+    public final Type type;
 
-    public CdsCodeStyleOption(String name, T defaultValue, String label, String group, Category category, @Nullable CdsCodeStyleSettings.Enum... values) {
+    public CdsCodeStyleOption(String name, Type type, T defaultValue, String label, String group, Category category, @Nullable CdsCodeStyleSettings.Enum... values) {
         this.name = name;
+        this.type = type;
         this.label = label;
         this.defaultValue = defaultValue;
         this.group = group;
         this.category = category;
         this.values = values;
+    }
+
+    public String[] getValuesLabels() {
+        if (type != Type.ENUM) {
+            throw new IllegalStateException("Option is not an enum");
+        }
+        return Arrays.stream(values).map(value -> value.getLabel()).toArray(String[]::new);
+    }
+
+    public int[] getValuesIds() {
+        if (type != Type.ENUM) {
+            throw new IllegalStateException("Option is not an enum");
+        }
+        return Arrays.stream(values).mapToInt(value -> value.getId()).toArray();
+    }
+
+    public enum Type {
+        BOOLEAN(Boolean.class),
+        ENUM(Integer.class),
+        INT(Integer.class);
+
+        private final Class<?> fieldType;
+
+        Type(Class<?> fieldType) {
+            this.fieldType = fieldType;
+        }
+
+        public Class<?> getFieldType() {
+            return fieldType;
+        }
     }
 
     public enum Category {

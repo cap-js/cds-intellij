@@ -56,18 +56,31 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
 
     @Override
     public void customizeSettings(@NotNull CodeStyleSettingsCustomizable consumer, @NotNull SettingsType settingsType) {
-        if (consumer instanceof CdsCodeStyleCustomPanel panel) {
-            // TODO ensure only boolean options are shown
-            CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
-                if (option.category == panel.category) {
-                    showCustomOption(consumer, name, option);
-                }
-            });
-            return;
+        switch (consumer) {
+            case CdsCodeStyleTabularPanel panel -> {
+                CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
+                    if (option.category.getSettingsType() == settingsType) {
+                        showCustomOption(consumer, name, option);
+                    }
+                });
+                consumer.showAllStandardOptions();
+                return;
+            }
+            case CdsCodeStyleCustomPanel panel -> {
+                // TODO ensure only boolean options are shown
+                CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
+                    if (option.category == panel.category) {
+                        showCustomOption(consumer, name, option);
+                    }
+                });
+                return;
+            }
+            default -> {
+            }
         }
 
         switch (settingsType) {
-            case BLANK_LINES_SETTINGS, SPACING_SETTINGS, WRAPPING_AND_BRACES_SETTINGS -> {
+            case BLANK_LINES_SETTINGS, SPACING_SETTINGS /*WRAPPING_AND_BRACES_SETTINGS*/ -> {
                 CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
                     if (option.category.getSettingsType() == settingsType) {
                         showCustomOption(consumer, name, option);
@@ -78,6 +91,11 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
     }
 
     private void showCustomOption(CodeStyleSettingsCustomizable consumer, String name, @NotNull CdsCodeStyleOption<?> option) {
+        if (consumer instanceof CdsCodeStyleTabularPanel panel) {
+            panel.addOption(option);
+            return;
+        }
+
         if (option.values.length == 0) {
             consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
         } else {

@@ -67,8 +67,13 @@ const options = Object.entries(optsFromSchema)
     .sort(([name1], [name2]) => name1.localeCompare(name2))
     .map(([name, attribs]) => {
       const type = attribs.type === 'boolean'
-          ? 'boolean'
-          : 'int';
+          ? 'BOOLEAN'
+          : attribs.enum
+              ? 'ENUM'
+              : 'INT';
+      const fieldType = type === 'ENUM'
+          ? 'int'
+          : type.toLowerCase();
       const parentOption = attribs.parentOption;
       const group = parentOption
           ? parentOptionGroups[parentOption]
@@ -98,6 +103,7 @@ const options = Object.entries(optsFromSchema)
       return {
         name,
         type,
+        fieldType,
         values: attribs.enum,
         default: defaultValue,
         label: capitalizeFirstLetter(removeMarkdownFormatting(attribs.label)),
@@ -110,17 +116,12 @@ const options = Object.entries(optsFromSchema)
 const t = '    ';
 
 const classBody = `
-${t}public interface Enum {
-${t}${t}String getLabel();
-${t}${t}int getId();
-${t}}
-
 ${t}public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new HashMap<>();
 ${t}public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();
 
 ${t}static {
 ${options.map(opt =>
-    `${t}${t}OPTIONS.put("${opt.name}", new CdsCodeStyleOption<>("${opt.name}", ${opt.default}, "${opt.label}", "${opt.group}", Category.${opt.category}${
+    `${t}${t}OPTIONS.put("${opt.name}", new CdsCodeStyleOption<>("${opt.name}", ${opt.type}, ${opt.default}, "${opt.label}", "${opt.group}", ${opt.category}${
         opt.values ? ', ' + opt.values.map(v => `${getEnumName(opt.name)}.${getEnumValueName(v)}`).join(', ') : ''
     }));`
 ).join('\n')}
@@ -133,8 +134,14 @@ ${t}public CdsCodeStyleSettings(CodeStyleSettings settings) {
 ${t}${t}super("CDSCodeStyleSettings", settings);
 ${t}}
 
-${options.map(opt => `${t}public ${opt.type} ${opt.name} = ${opt.default};`).join('\n')}
+${options.map(opt => `${t}public ${opt.fieldType} ${opt.name} = ${opt.default};`).join('\n')}
 ${options.filter(opt => opt.values).map(getEnumDef).join('\n')}
+
+${t}public interface Enum {
+${t}${t}String getLabel();
+
+${t}${t}int getId();
+${t}}
 
 `;
 

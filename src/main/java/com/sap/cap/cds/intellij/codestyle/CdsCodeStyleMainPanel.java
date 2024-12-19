@@ -24,17 +24,13 @@ public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
 
     @Override
     protected void initTabs(CodeStyleSettings settings) {
-        /*
-         NOTE: we use default tabs because deriving from OptionTableWithPreviewPanel is unfeasible for non-boolean options
-         due to visibility of required methods and fields
-        */
-        super.initTabs(settings);
         addTab(new CdsCodeStyleCustomPanel(settings, ALIGNMENT));
         addTab(new CdsCodeStyleCustomPanel(settings, COMMENTS));
+        addTab(new CdsCodeStyleTabularPanel(settings, WRAPPING_AND_BRACES.getSettingsType(), WRAPPING_AND_BRACES.getTitle()));
     }
 
     @Override
-    protected void updatePreview(boolean useDefaultSample) {
-        super.updatePreview(useDefaultSample);
+    protected String getPreviewText() {
+        return CdsLanguage.SAMPLE_SRC;
     }
 }
