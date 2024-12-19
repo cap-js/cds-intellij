@@ -8,21 +8,27 @@ import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CdsCodeStyleTabularPanel extends OptionTableWithPreviewPanel {
+public class CdsCodeStyleTabularPanel extends OptionTableWithPreviewPanel implements CdsCodeStylePanel {
 
-    private final LanguageCodeStyleSettingsProvider.SettingsType settingsType;
-    private final String title;
+    private final CdsCodeStyleOption.Category category;
 
-    public CdsCodeStyleTabularPanel(CodeStyleSettings settings, LanguageCodeStyleSettingsProvider.SettingsType settingsType, String title) {
+    public CdsCodeStyleTabularPanel(CodeStyleSettings settings, CdsCodeStyleOption.Category category) {
         super(settings);
-        this.settingsType = settingsType;
-        this.title = title;
+        this.category = category;
         init();
     }
 
     @Override
+    public CdsCodeStyleOption.Category getCategory() {
+        return category;
+    }
+
+    @Override
     public LanguageCodeStyleSettingsProvider.SettingsType getSettingsType() {
-        return settingsType;
+        if (category == null) {
+            return null;
+        }
+        return category.getSettingsType();
     }
 
     @Override
@@ -31,7 +37,10 @@ public class CdsCodeStyleTabularPanel extends OptionTableWithPreviewPanel {
 
     @Override
     protected @TabTitle @NotNull String getTabTitle() {
-        return title;
+        if (category == null) {
+            return "";
+        }
+        return category.getTitle();
     }
 
     @Override

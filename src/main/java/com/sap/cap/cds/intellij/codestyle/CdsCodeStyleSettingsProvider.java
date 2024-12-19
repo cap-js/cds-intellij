@@ -12,8 +12,6 @@ import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-
 public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
 
     public static final String SAMPLE_FILE_NAME = ".cds-codestyle.sample.cds";
@@ -56,59 +54,20 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
 
     @Override
     public void customizeSettings(@NotNull CodeStyleSettingsCustomizable consumer, @NotNull SettingsType settingsType) {
-        switch (consumer) {
-            case CdsCodeStyleTabularPanel panel -> {
-                CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
-                    if (option.category.getSettingsType() == settingsType) {
-                        showCustomOption(consumer, name, option);
-                    }
-                });
-                consumer.showAllStandardOptions();
-                return;
-            }
-            case CdsCodeStyleCustomPanel panel -> {
-                // TODO ensure only boolean options are shown
-                CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
-                    if (option.category == panel.category) {
-                        showCustomOption(consumer, name, option);
-                    }
-                });
-                return;
-            }
-            default -> {
-            }
-        }
-
-        switch (settingsType) {
-            case BLANK_LINES_SETTINGS, SPACING_SETTINGS /*WRAPPING_AND_BRACES_SETTINGS*/ -> {
-                CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
-                    if (option.category.getSettingsType() == settingsType) {
-                        showCustomOption(consumer, name, option);
-                    }
-                });
-            }
-        }
-    }
-
-    private void showCustomOption(CodeStyleSettingsCustomizable consumer, String name, @NotNull CdsCodeStyleOption<?> option) {
-        if (consumer instanceof CdsCodeStyleTabularPanel panel) {
-            panel.addOption(option);
+        if (!(consumer instanceof CdsCodeStylePanel panel)) {
             return;
         }
-
-        if (option.values.length == 0) {
-            consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
-        } else {
-            String[] labels = Arrays.stream(option.values).map(value -> value.getLabel()).toArray(String[]::new);
-            int[] values = Arrays.stream(option.values).mapToInt(value -> value.getId()).toArray();
-            consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group, labels, values);
-        }
+        CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
+            if (option.category == panel.getCategory()) {
+                panel.addOption(option);
+            }
+        });
     }
 
 
     @Override
     protected void customizeDefaults(@NotNull CommonCodeStyleSettings commonSettings, CommonCodeStyleSettings.@NotNull IndentOptions indentOptions) {
-        // TODO set default values
+        // TODO set default values?
     }
 
     private static class CdsCodeStyleConfigurable extends CodeStyleAbstractConfigurable {

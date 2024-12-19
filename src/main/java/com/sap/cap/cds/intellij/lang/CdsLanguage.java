@@ -14,10 +14,16 @@ public class CdsLanguage extends com.intellij.lang.Language {
             *    1. comment 1
             * 2. comment 2
             */
+            
+            
             entity MySampleEntity {
             @pre key k : Integer;
             el : String @post;
             }
+            
+            entity F {}
+            
+            entity G {}
             """;
 
     private CdsLanguage() {

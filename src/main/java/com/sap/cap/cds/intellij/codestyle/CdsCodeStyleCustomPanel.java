@@ -13,19 +13,25 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType.LANGUAGE_SPECIFIC;
+import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.BOOLEAN;
 import static com.sap.cap.cds.intellij.lang.CdsLanguage.SAMPLE_SRC;
 
 /**
  * Custom code-style panel for CDS language. Supports boolean options only.
  */
-public class CdsCodeStyleCustomPanel extends OptionTreeWithPreviewPanel {
+public class CdsCodeStyleCustomPanel extends OptionTreeWithPreviewPanel implements CdsCodeStylePanel {
 
-    public final Category category;
+    private final Category category;
 
     public CdsCodeStyleCustomPanel(CodeStyleSettings settings, Category category) {
         super(settings);
         this.category = category;
         init();
+    }
+
+    @Override
+    public Category getCategory() {
+        return category;
     }
 
     @Override
@@ -35,7 +41,10 @@ public class CdsCodeStyleCustomPanel extends OptionTreeWithPreviewPanel {
 
     @Override
     public SettingsType getSettingsType() {
-        return LANGUAGE_SPECIFIC;
+        if (category == null) {
+            return null;
+        }
+        return category.getSettingsType();
     }
 
     @Override
@@ -61,6 +70,9 @@ public class CdsCodeStyleCustomPanel extends OptionTreeWithPreviewPanel {
 
     @Override
     protected @NlsContexts.TabTitle @NotNull String getTabTitle() {
+        if (category == null) {
+            return "";
+        }
         return category.getTitle();
     }
 
@@ -75,4 +87,10 @@ public class CdsCodeStyleCustomPanel extends OptionTreeWithPreviewPanel {
         }
     }
 
+    @Override
+    public void addOption(CdsCodeStyleOption<?> option) {
+        if (option.type == BOOLEAN) {
+            showCustomOption(CdsCodeStyleSettings.class, option.name, option.label, option.group);
+        }
+    }
 }

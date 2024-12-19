@@ -45,7 +45,7 @@ import java.util.*;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.*;
 
-public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCodeStylePanel {
+public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCodeStylePanel implements CdsCodeStylePanel {
     private static final Logger LOG = Logger.getInstance(OptionTableWithPreviewPanel.class);
 
     private static final KeyStroke ENTER_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
@@ -302,6 +302,7 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
 
     protected abstract void initTables();
 
+    @Override
     public void addOption(CdsCodeStyleOption<?> option) {
         if (option.type == BOOLEAN) {
             myOptions.add(new BooleanOption(option.name, option.label, option.group, null, null));
@@ -309,8 +310,6 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
             myOptions.add(new SelectionOption(option.name, option.label, option.group, null, null, option.getValuesLabels(), option.getValuesIds()));
         } else if (option.type == INT) {
             myOptions.add(new IntOption(option.name, option.label, option.group, null, null, 0, 100, (int) option.defaultValue));
-        } else {
-            throw new IllegalArgumentException("Unknown option type: " + option.type);
         }
     }
 
