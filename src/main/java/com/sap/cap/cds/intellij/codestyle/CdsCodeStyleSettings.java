@@ -1,20 +1,14 @@
 package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.psi.codeStyle.CodeStyleSettings;
-import com.intellij.psi.codeStyle.CustomCodeStyleSettings;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
-import static com.sap.cap.cds.intellij.util.ReflectionUtil.getFieldValue;
-import static com.sap.cap.cds.intellij.util.ReflectionUtil.setFieldValue;
-import static java.util.stream.Collectors.toMap;
 
-public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
+public class CdsCodeStyleSettings extends CdsCodeStyleSettingsBase {
 
     public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new HashMap<>();
     public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();
@@ -40,13 +34,13 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
         OPTIONS.put("alignTypes", new CdsCodeStyleOption<>("alignTypes", true, "Align types of elements", "Types of elements", Category.ALIGNMENT));
         OPTIONS.put("alignTypesWithinBlock", new CdsCodeStyleOption<>("alignTypesWithinBlock", true, "Within block", "Types of elements", Category.ALIGNMENT));
         OPTIONS.put("alignValuesInAnnotations", new CdsCodeStyleOption<>("alignValuesInAnnotations", true, "Values", "Annotations", Category.ALIGNMENT));
-        OPTIONS.put("cqlKeywordCapitalization", new CdsCodeStyleOption<>("cqlKeywordCapitalization", CqlKeywordCapitalization.LOWER.getId(), "Capitalization style of CQL keywords", "Other", Category.OTHER));
+        OPTIONS.put("cqlKeywordCapitalization", new CdsCodeStyleOption<>("cqlKeywordCapitalization", CqlKeywordCapitalization.LOWER.getId(), "Capitalization style of CQL keywords", "Other", Category.OTHER, CqlKeywordCapitalization.LOWER, CqlKeywordCapitalization.UPPER, CqlKeywordCapitalization.TITLE, CqlKeywordCapitalization.AS_IS));
         OPTIONS.put("finalNewline", new CdsCodeStyleOption<>("finalNewline", true, "Final newline", "Other", Category.WRAPPING_AND_BRACES));
         OPTIONS.put("formatDocComments", new CdsCodeStyleOption<>("formatDocComments", false, "Format markdown in doc comments", "Format markdown in doc comments", Category.COMMENTS));
         OPTIONS.put("keepEmptyBracketsTogether", new CdsCodeStyleOption<>("keepEmptyBracketsTogether", true, "Keep empty brackets in same line", "Other", Category.WRAPPING_AND_BRACES));
         OPTIONS.put("keepOriginalEmptyLines", new CdsCodeStyleOption<>("keepOriginalEmptyLines", true, "Keep original empty lines", "Other", Category.BLANK_LINES));
-        OPTIONS.put("keepPostAnnotationsInOriginalLine", new CdsCodeStyleOption<>("keepPostAnnotationsInOriginalLine", KeepPostAnnotationsInOriginalLine.KEEP_LINE.getId(), "Line wrapping of post-annotations", "Other", Category.WRAPPING_AND_BRACES));
-        OPTIONS.put("keepPreAnnotationsInOriginalLine", new CdsCodeStyleOption<>("keepPreAnnotationsInOriginalLine", KeepPreAnnotationsInOriginalLine.KEEP_LINE.getId(), "Line wrapping of pre-annotations", "Other", Category.WRAPPING_AND_BRACES));
+        OPTIONS.put("keepPostAnnotationsInOriginalLine", new CdsCodeStyleOption<>("keepPostAnnotationsInOriginalLine", KeepPostAnnotationsInOriginalLine.KEEP_LINE.getId(), "Line wrapping of post-annotations", "Other", Category.WRAPPING_AND_BRACES, KeepPostAnnotationsInOriginalLine.KEEP_LINE, KeepPostAnnotationsInOriginalLine.SEPARATE_LINE));
+        OPTIONS.put("keepPreAnnotationsInOriginalLine", new CdsCodeStyleOption<>("keepPreAnnotationsInOriginalLine", KeepPreAnnotationsInOriginalLine.KEEP_LINE.getId(), "Line wrapping of pre-annotations", "Other", Category.WRAPPING_AND_BRACES, KeepPreAnnotationsInOriginalLine.KEEP_LINE, KeepPreAnnotationsInOriginalLine.SEPARATE_LINE));
         OPTIONS.put("keepSingleLinedBlocksTogether", new CdsCodeStyleOption<>("keepSingleLinedBlocksTogether", true, "Keep similar single-lined blocks together", "Other", Category.BLANK_LINES));
         OPTIONS.put("maxDocCommentLine", new CdsCodeStyleOption<>("maxDocCommentLine", 60, "Max doc comment line length", "Format markdown in doc comments", Category.WRAPPING_AND_BRACES));
         OPTIONS.put("maxKeepEmptyLines", new CdsCodeStyleOption<>("maxKeepEmptyLines", 2, "Maximum consecutive empty lines", "Other", Category.BLANK_LINES));
@@ -117,44 +111,7 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
         super("CDSCodeStyleSettings", settings);
     }
 
-    public void loadFrom(JSONObject json) {
-        OPTIONS.forEach((name, option) -> {
-            if (!json.has(name)) {
-                return;
-            }
-            var value = json.get(name);
-            if (value != null) {
-                try {
-                    setFieldValue(this, name, value);
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-    }
-
-    public JSONObject getNonDefaultSettings() {
-        var map = OPTIONS.entrySet().stream()
-                .map(entry -> {
-                    Object fieldValue;
-                    try {
-                        fieldValue = getFieldValue(this, entry.getKey());
-                    } catch (NoSuchFieldException | IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    if (!entry.getValue().defaultValue.equals(fieldValue)) {
-                        return Map.entry(entry.getKey(), fieldValue);
-                    }
-                    return null;
-                })
-                .filter(Objects::nonNull)
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-        return new JSONObject(map);
-    }
-
-
-    public enum CqlKeywordCapitalization {
+    public enum CqlKeywordCapitalization implements Enum {
         LOWER(0, "lower"),
         UPPER(1, "upper"),
         TITLE(2, "title"),
@@ -176,7 +133,7 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
         }
     }
 
-    public enum KeepPostAnnotationsInOriginalLine {
+    public enum KeepPostAnnotationsInOriginalLine implements Enum {
         KEEP_LINE(0, "keepLine"),
         SEPARATE_LINE(1, "separateLine");
         private final String label;
@@ -196,7 +153,7 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
         }
     }
 
-    public enum KeepPreAnnotationsInOriginalLine {
+    public enum KeepPreAnnotationsInOriginalLine implements Enum {
         KEEP_LINE(0, "keepLine"),
         SEPARATE_LINE(1, "separateLine");
         private final String label;
@@ -214,6 +171,12 @@ public class CdsCodeStyleSettings extends CustomCodeStyleSettings {
         public int getId() {
             return id;
         }
+    }
+
+    public interface Enum {
+        String getLabel();
+
+        int getId();
     }
 
 }

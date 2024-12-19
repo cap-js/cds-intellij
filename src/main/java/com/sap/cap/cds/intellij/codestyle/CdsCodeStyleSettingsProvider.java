@@ -12,6 +12,8 @@ import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+
 public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
 
     public static final String SAMPLE_FILE_NAME = ".cds-codestyle.sample.cds";
@@ -58,18 +60,30 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
             // TODO ensure only boolean options are shown
             CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
                 if (option.category == panel.category) {
-                    panel.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
+                    showCustomOption(consumer, name, option);
                 }
             });
             return;
         }
 
         switch (settingsType) {
-            case BLANK_LINES_SETTINGS, SPACING_SETTINGS -> CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
-                if (option.category.getSettingsType() == settingsType) {
-                    consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
-                }
-            });
+            case BLANK_LINES_SETTINGS, SPACING_SETTINGS, WRAPPING_AND_BRACES_SETTINGS -> {
+                CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
+                    if (option.category.getSettingsType() == settingsType) {
+                        showCustomOption(consumer, name, option);
+                    }
+                });
+            }
+        }
+    }
+
+    private void showCustomOption(CodeStyleSettingsCustomizable consumer, String name, @NotNull CdsCodeStyleOption<?> option) {
+        if (option.values.length == 0) {
+            consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group);
+        } else {
+            String[] labels = Arrays.stream(option.values).map(value -> value.getLabel()).toArray(String[]::new);
+            int[] values = Arrays.stream(option.values).mapToInt(value -> value.getId()).toArray();
+            consumer.showCustomOption(CdsCodeStyleSettings.class, name, option.label, option.group, labels, values);
         }
     }
 

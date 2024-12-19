@@ -15,8 +15,8 @@ public class CdsLanguage extends com.intellij.lang.Language {
             * 2. comment 2
             */
             entity MySampleEntity {
-            key k : Integer;
-            el : String;
+            @pre key k : Integer;
+            el : String @post;
             }
             """;
 

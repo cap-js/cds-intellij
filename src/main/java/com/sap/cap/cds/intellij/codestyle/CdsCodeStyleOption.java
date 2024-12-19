@@ -1,14 +1,15 @@
 package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType;
+import org.jetbrains.annotations.Nullable;
 
 public class CdsCodeStyleOption<T> {
     /**
-     * Name of the option. Used as configuration key. Uses camelCase.
+     * Name of the option (camelCase). Used as configuration key.
      */
     public final String name;
     /**
-     * Label of the option. Used in UI. Uses sentence case.
+     * Label of the option (sentence case). Used as UI label.
      */
     public final String label;
     /**
@@ -16,20 +17,25 @@ public class CdsCodeStyleOption<T> {
      */
     public final T defaultValue;
     /**
-     * Group within category. Used as collapsable heading in UI. Uses sentence case.
+     * Group within category (sentence case). Used as collapsable section title in UI.
      */
     public final String group;
     /**
-     * Category of the option. Used as tab title in UI. Uses title case.
+     * Category of the option (title case). Used as tab title in UI.
      */
     public final Category category;
+    /**
+     * Optional values for the option. Used as dropdown values in UI.
+     */
+    public final @Nullable CdsCodeStyleSettings.Enum[] values;
 
-    public CdsCodeStyleOption(String name, T defaultValue, String label, String group, Category category) {
+    public CdsCodeStyleOption(String name, T defaultValue, String label, String group, Category category, @Nullable CdsCodeStyleSettings.Enum... values) {
         this.name = name;
         this.label = label;
         this.defaultValue = defaultValue;
         this.group = group;
         this.category = category;
+        this.values = values;
     }
 
     public enum Category {

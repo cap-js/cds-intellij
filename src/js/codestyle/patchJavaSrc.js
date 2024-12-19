@@ -29,7 +29,7 @@ function getEnumDef(attribs) {
   const name = getEnumName(attribs.name);
   const values = attribs.values.map((value, id) => `${t}${t}${getEnumValueName(value)}(${id}, "${value}")`).join(',\n');
   return `
-${t}public enum ${name} {
+${t}public enum ${name} implements Enum {
 ${values};
 ${t}${t}private final String label;
 ${t}${t}private final int id;
@@ -48,7 +48,6 @@ ${t}${t}${t}return id;
 ${t}${t}}
 ${t}}`;
 }
-
 
 const parentOptionGroups = Object.values(optsFromSchema)
     .map(opt => opt.parentOption)
@@ -110,14 +109,28 @@ const options = Object.entries(optsFromSchema)
 
 const t = '    ';
 
-const initSection = `
+const classBody = `
+${t}public interface Enum {
+${t}${t}String getLabel();
+${t}${t}int getId();
+${t}}
+
 ${t}public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new HashMap<>();
 ${t}public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();
 
 ${t}static {
-${options.map(opt => `${t}${t}OPTIONS.put("${opt.name}", new CdsCodeStyleOption<>("${opt.name}", ${opt.default}, "${opt.label}", "${opt.group}", Category.${opt.category}));`).join('\n')}
+${options.map(opt =>
+    `${t}${t}OPTIONS.put("${opt.name}", new CdsCodeStyleOption<>("${opt.name}", ${opt.default}, "${opt.label}", "${opt.group}", Category.${opt.category}${
+        opt.values ? ', ' + opt.values.map(v => `${getEnumName(opt.name)}.${getEnumValueName(v)}`).join(', ') : ''
+    }));`
+).join('\n')}
 
-${Object.entries(categoryGroups).map(([category, groups]) => `${t}${t}CATEGORY_GROUPS.put(Category.${category}, Set.of(${[...groups].map(g => `"${g}"`).join(', ')}));`).join('\n')}
+${Object.entries(categoryGroups).map(([category, groups]) =>
+    `${t}${t}CATEGORY_GROUPS.put(Category.${category}, Set.of(${[...groups].map(g => `"${g}"`).join(', ')}));`
+).join('\n')}
+${t}}
+${t}public CdsCodeStyleSettings(CodeStyleSettings settings) {
+${t}${t}super("CDSCodeStyleSettings", settings);
 ${t}}
 
 ${options.map(opt => `${t}public ${opt.type} ${opt.name} = ${opt.default};`).join('\n')}
@@ -126,8 +139,8 @@ ${options.filter(opt => opt.values).map(getEnumDef).join('\n')}
 `;
 
 const patchedSrc = src.replace(
-    /(?<=(public class CdsCodeStyleSettings [\w ]*\{\n)).*(?=(\n\s*public CdsCodeStyleSettings))/s,
-    initSection
+    /(?<=public class CdsCodeStyleSettings [\w ]*\{\n).*(?=^})/sm,
+    classBody
 );
 
 writeFileSync(srcPath, patchedSrc, 'utf8');
