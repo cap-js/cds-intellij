@@ -1,6 +1,6 @@
 package com.sap.cap.cds.intellij.textmate;
 
-public class Bundle {
+public class CdsTextMateBundle {
 
     public static final String LABEL = "TextMate Bundle";
 

@@ -1,5 +1,5 @@
-import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 plugins {
     id 'java'
@@ -96,6 +96,10 @@ tasks {
         archiveFileName = project.findProperty('archiveName')
     }
 
+    compileJava {
+        dependsOn 'patchJavaSrc'
+    }
+
     verifyPlugin {
         dependsOn 'copyLsp'
     }
@@ -117,7 +121,7 @@ tasks {
 
 tasks.register('syncSandboxIdeConf', Copy) {
     onlyIf { hasLocalProperties.get() }
-    into "${tasks.named('prepareSandbox_runWebStorm').map{it.defaultDestinationDirectory}.get().get()}/../config"
+    into "${tasks.named('prepareSandbox_runWebStorm').map { it.defaultDestinationDirectory }.get().get()}/../config"
     into('keymaps') {
         from "${project.findProperty('local.ideConfDir')}/keymaps"
     }
@@ -146,7 +150,6 @@ tasks.register('rmCdsLspNodeModules', Delete) {
         return project.findProperty('local.rmCdsLspNodeModules') == 'true'
     }
     onlyIf { localRmCdsLspNodeModules.get() }
-    mustRunAfter prepareSandbox, prepareSandbox_runWebStorm
     delete 'lsp/node_modules/@sap/cds-lsp'
 }
 
@@ -165,24 +168,31 @@ tasks.register('installLsp', Exec) {
     }
 }
 
+tasks.register('patchJavaSrc', Exec) {
+    dependsOn installLsp
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', 'node', 'src\\js\\codestyle\\patchJavaSrc.js'
+    } else {
+        commandLine 'sh', '-c', 'src/js/codestyle/patchJavaSrc.js'
+    }
+}
+
 // TODO copy before install
 
 tasks.register('copyLsp', Copy) {
-    dependsOn installLsp
-    mustRunAfter 'buildSearchableOptions'
+    mustRunAfter prepareSandbox
     from './lsp'
-    into "${tasks.named('prepareSandbox').map{it.pluginDirectory}.get().get()}/lib/cds-lsp"
+    into "${tasks.named('prepareSandbox').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
 
 tasks.register('copyLspToRunWebStorm', Copy) {
-    dependsOn installLsp
-    mustRunAfter 'buildSearchableOptions'
+    mustRunAfter prepareSandbox_runWebStorm
     from './lsp'
-    into "${tasks.named('prepareSandbox_runWebStorm').map{it.pluginDirectory}.get().get()}/lib/cds-lsp"
+    into "${tasks.named('prepareSandbox_runWebStorm').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
 
 tasks.register('copyLspToInstrumented', Copy) {
-    dependsOn installLsp
+    mustRunAfter prepareTestSandbox
     from './lsp'
     into './build/instrumented/cds-lsp'
 }

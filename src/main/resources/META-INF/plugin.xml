@@ -20,13 +20,28 @@ The set of features will grow with future releases, aligned with the development
     <depends>NodeJS</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <vfs.asyncListener implementation="com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonListener"/>
+
         <fileType
                 name="cds"
-                implementationClass="com.sap.cap.cds.intellij.FileType"
+                implementationClass="com.sap.cap.cds.intellij.CdsFileType"
                 fieldName="INSTANCE"
                 language="cds"
                 extensions="cds"/>
-        <platform.lsp.serverSupportProvider implementation="com.sap.cap.cds.intellij.lsp.ServerSupportProvider"/>
+
+        <lang.substitutor language="cds" order="first"
+                          implementationClass="com.sap.cap.cds.intellij.lang.CdsLanguageSubstitutor"/>
+
+        <lang.syntaxHighlighterFactory language="cds"
+                                       implementationClass="com.sap.cap.cds.intellij.CdsSyntaxHighlighterFactory"/>
+
+        <langCodeStyleSettingsProvider
+                implementation="com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsProvider"/>
+
+        <formattingService implementation="com.sap.cap.cds.intellij.codestyle.CdsPreviewFormattingService"/>
+
+        <platform.lsp.serverSupportProvider implementation="com.sap.cap.cds.intellij.lsp.CdsLspServerSupportProvider"/>
+
         <notificationGroup id="com.sap.cap.cds.intellij.notifications"
                            displayType="BALLOON"/>
     </extensions>
@@ -34,41 +49,39 @@ The set of features will grow with future releases, aligned with the development
     <applicationListeners>
         <listener
                 topic="com.intellij.ide.AppLifecycleListener"
-                class="com.sap.cap.cds.intellij.textmate.BundleManager"
+                class="com.sap.cap.cds.intellij.textmate.CdsTextMateBundleManager"
                 activeInHeadlessMode="true" activeInTestMode="true"
         />
         <listener
                 topic="com.intellij.openapi.startup.StartupActivity"
-                class="com.sap.cap.cds.intellij.textmate.BundleManager"
+                class="com.sap.cap.cds.intellij.textmate.CdsTextMateBundleManager"
                 activeInHeadlessMode="true" activeInTestMode="true"
         />
         <listener
                 topic="com.intellij.ide.plugins.DynamicPluginListener"
-                class="com.sap.cap.cds.intellij.textmate.BundleManager"
+                class="com.sap.cap.cds.intellij.textmate.CdsTextMateBundleManager"
                 activeInHeadlessMode="true" activeInTestMode="true"
         />
     </applicationListeners>
     <projectListeners>
         <listener
                 topic="com.intellij.openapi.startup.ProjectActivity"
-                class="com.sap.cap.cds.intellij.textmate.BundleManager"
+                class="com.sap.cap.cds.intellij.textmate.CdsTextMateBundleManager"
                 activeInHeadlessMode="true" activeInTestMode="true"
         />
     </projectListeners>
 
     <change-notes><![CDATA[ <h3>Added</h3>
 <ul>
-    <li>Determine suitable Node.js runtime automatically (no need to modify PATH environment variable anymore).</li>
+    <li>CDS Formatting Options can now be configured under Settings > Editor > Code Style > CDS.</li>
 </ul>
 <h3>Changed</h3>
 <ul>
-    <li>include @sap/cds-lsp 8.4.3 with the following changes since 8.3.2:
+    <li>include @sap/cds-lsp 8.5.1 with the following changes since 8.4.3:
         <ul>
-            <li>fix: highlighting of escaped identifiers and parameter lists</li>
-            <li>fix: `using` path proposals could have been suggesting JS files instead of CDS files in certain cases</li>
-            <li>fix: on Windows if client mixes upper- and lowercase drive letters some requests could have failed</li>
-            <li>fix: CDS Typer was called when deleting a file which led to a misleading error output</li>
-            <li>minimum required NodeJS version is now (back to) 20.9.0</li>
+            <li> enabling `newParser` via `cds.env` will no longer interfere with language server
+            <li> improved telemetry messages
+            <li> With `@sap/cds 8.5.0` one of the default locations for translation folders (`assets/i18n`) was removed
         </ul>
     </li>
 </ul> ]]></change-notes>

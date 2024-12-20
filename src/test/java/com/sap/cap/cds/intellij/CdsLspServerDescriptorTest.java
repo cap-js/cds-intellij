@@ -4,21 +4,24 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.intellij.testFramework.fixtures.TempDirTestFixture;
-import com.sap.cap.cds.intellij.lsp.ServerDescriptor;
+import com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 /*
  * TODO try to write model-level functional tests instead of unit tests (cf. https://plugins.jetbrains.com/docs/intellij/testing-plugins.html)
  */
 
-public class ServerDescriptorTest extends BasePlatformTestCase {
+public class CdsLspServerDescriptorTest extends BasePlatformTestCase {
     public void testCommandLine() {
         Process process = null;
         try {
-            process = new ServerDescriptor(getProject(), "name")
-                    .getCommandLine()
+            process = new CdsLspServerDescriptor(getProject(), "name")
+                    .getServerCommandLine()
                     .createProcess();
         } catch (ExecutionException e) {
             assertNull("unexpected exception", e.getMessage());
@@ -37,7 +40,7 @@ public class ServerDescriptorTest extends BasePlatformTestCase {
         Process process = null;
         GeneralCommandLine commandLine = null;
         try {
-            commandLine = new ServerDescriptor(getProject(), "name").getCommandLine();
+            commandLine = new CdsLspServerDescriptor(getProject(), "name").getServerCommandLine();
         } catch (ExecutionException e) {
             assertNull("unexpected exception", e.getMessage());
         }
@@ -72,7 +75,7 @@ public class ServerDescriptorTest extends BasePlatformTestCase {
 
     public void testIsSupportedFile() throws IOException {
         TempDirTestFixture fixture = this.createTempDirTestFixture();
-        ServerDescriptor serverDescriptor = new ServerDescriptor(getProject(), "name");
+        CdsLspServerDescriptor serverDescriptor = new CdsLspServerDescriptor(getProject(), "name");
         assertTrue(serverDescriptor.isSupportedFile(fixture.createFile("a.cds")));
         assertFalse(serverDescriptor.isSupportedFile(fixture.createFile("a.txt")));
     }
