@@ -24,13 +24,13 @@ public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
 
     @Override
     protected void initTabs(CodeStyleSettings settings) {
+        addTab(new CdsCodeStyleTabularPanel(settings, TABS_AND_INDENTS));
+        addTab(new CdsCodeStyleTabularPanel(settings, SPACES));
         addTab(new CdsCodeStyleCustomPanel(settings, ALIGNMENT));
+        addTab(new CdsCodeStyleTabularPanel(settings, WRAPPING_AND_BRACES));
         addTab(new CdsCodeStyleTabularPanel(settings, BLANK_LINES));
         addTab(new CdsCodeStyleCustomPanel(settings, COMMENTS));
         addTab(new CdsCodeStyleTabularPanel(settings, OTHER));
-        addTab(new CdsCodeStyleTabularPanel(settings, SPACES));
-        addTab(new CdsCodeStyleTabularPanel(settings, TABS_AND_INDENTS));
-        addTab(new CdsCodeStyleTabularPanel(settings, WRAPPING_AND_BRACES));
     }
 
     @Override
