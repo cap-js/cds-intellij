@@ -8,7 +8,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -57,7 +56,7 @@ public class CdsPreviewFormattingService implements FormattingService {
 
     private static void resetSampleSrc() {
         try {
-            write(samplePath, CdsLanguage.SAMPLE_SRC.getBytes());
+            write(samplePath, CdsCodeStyleSettings.SAMPLE_SRC.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

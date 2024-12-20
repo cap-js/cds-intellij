@@ -29,7 +29,7 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
 
     @Override
     public @Nullable String getCodeSample(@NotNull SettingsType settingsType) {
-        return CdsLanguage.SAMPLE_SRC;
+        return CdsCodeStyleSettings.SAMPLE_SRC;
     }
 
     @Override

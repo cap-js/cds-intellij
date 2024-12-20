@@ -15,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.*;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.BOOLEAN;
-import static com.sap.cap.cds.intellij.lang.CdsLanguage.SAMPLE_SRC;
 
 /**
  * Custom code-style panel for CDS language with a checkboxes-tree layout. Supports boolean options only.
@@ -65,7 +64,7 @@ public class CdsCodeStyleCheckboxesPanel extends OptionTreeWithPreviewPanel impl
 
     @Override
     protected String getPreviewText() {
-        return SAMPLE_SRC;
+        return CdsCodeStyleSettings.SAMPLE_SRC;
     }
 
     @Override

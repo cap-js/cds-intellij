@@ -2,13 +2,14 @@
 
 const path = require('path');
 const { readFileSync, writeFileSync } = require('node:fs');
+const assert = require('node:assert');
 
 const { capitalizeFirstLetter, removeMarkdownFormatting, toScreamingSnakeCase } = require('../util/string');
 
 const schemaPath = path.resolve(__dirname, '../../../lsp/node_modules/@sap/cds-lsp/schemas/cds-prettier.json');
 const schema = require(schemaPath);
-const assert = require('node:assert');
 const optsFromSchema = schema.properties;
+const sample = Object.values(optsFromSchema)[0].sample;
 
 const srcPath = path.resolve(__dirname, '../../../src/main/java/com/sap/cap/cds/intellij/codestyle/CdsCodeStyleSettings.java');
 const src = readFileSync(srcPath, 'utf8');
@@ -128,6 +129,9 @@ const t = '    ';
 const classBody = `
 ${t}public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new LinkedHashMap<>();
 ${t}public static final Map<Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
+${t}public static final String SAMPLE_SRC = """
+${n = `${t}public static final String SAMPLE_SRC = `.length, sample.replace(/^/gm, ' '.repeat(n))}
+                                            """;
 
 ${t}static {
 ${options.map(opt =>

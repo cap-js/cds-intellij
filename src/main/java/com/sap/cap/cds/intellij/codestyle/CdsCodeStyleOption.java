@@ -79,13 +79,13 @@ public class CdsCodeStyleOption<T> {
     }
 
     public enum Category {
-        ALIGNMENT("Alignment", SettingsType.LANGUAGE_SPECIFIC),
-        BLANK_LINES("Blank Lines", SettingsType.BLANK_LINES_SETTINGS),
-        COMMENTS("Comments", SettingsType.COMMENTER_SETTINGS),
-        OTHER("Other", SettingsType.LANGUAGE_SPECIFIC),
-        SPACES("Spaces", SettingsType.SPACING_SETTINGS),
-        TABS_AND_INDENTS("Tabs and Indents", SettingsType.INDENT_SETTINGS),
-        WRAPPING_AND_BRACES("Wrapping and Braces", SettingsType.WRAPPING_AND_BRACES_SETTINGS);
+        ALIGNMENT("Alignment", LANGUAGE_SPECIFIC),
+        BLANK_LINES("Blank Lines", BLANK_LINES_SETTINGS),
+        COMMENTS("Comments", COMMENTER_SETTINGS),
+        OTHER("Other", LANGUAGE_SPECIFIC),
+        SPACES("Spaces", SPACING_SETTINGS),
+        TABS_AND_INDENTS("Tabs and Indents", INDENT_SETTINGS),
+        WRAPPING_AND_BRACES("Wrapping and Braces", WRAPPING_AND_BRACES_SETTINGS);
 
         private final String title;
         private final SettingsType settingsType;

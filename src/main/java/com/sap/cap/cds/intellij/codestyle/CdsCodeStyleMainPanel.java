@@ -32,6 +32,6 @@ public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
 
     @Override
     protected String getPreviewText() {
-        return CdsLanguage.SAMPLE_SRC;
+        return CdsCodeStyleSettings.SAMPLE_SRC;
     }
 }

@@ -15,6 +15,83 @@ public class CdsCodeStyleSettings extends CdsCodeStyleSettingsBase {
 
     public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new LinkedHashMap<>();
     public static final Map<Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
+    public static final String SAMPLE_SRC = """
+                                            using {
+                                                Employee    as Worker,
+                                                WorkerIdent as WorkerID
+                                            } from './employees';
+                                            
+                                            @requires            : 'verified-user'  @insertonly
+                                            @PropertyRestrictions: true             @Searchable: true
+                                            entity Project : managed {
+                                                key projectId : /* UUID */ String(20) = 4;
+                                                    owner     :            Association to one Worker @cds.on.insert /*1*/: #worker;
+                                                    tasks     :            Composition of many {
+                                                                               taskId : Integer;
+                                                                           }
+                                                    urgency   :            Integer    = 2;
+                                                    deadline  :            DateTime                  @cds.on.insert      : /*2*/ #now;
+                                            }
+                                            
+                                            context Records {
+                                                entity ProjectRecords   as
+                                                        select from Project as project
+                                                        join Tasks as task
+                                                            on  task.projectRef  =      'p' + project.projectId
+                                                            and project.deadline is not null
+                                                        mixin {
+                                                            taskCategory    : Association to one TaskCategory
+                                            
+                                                                                  on taskCategory.active = true;
+                                                            rejectionReason : Association to one Description;
+                                                        }
+                                                        into {
+                                                            project.projectId : String,
+                                                            project.deadline as deadline,
+                                                            project.owner    as owner
+                                                        }
+                                                    union
+                                                        select from GeneralProjects
+                                                        mixin {}
+                                                        into {
+                                                            'none' as projectId
+                                                        }
+                                                    actions {
+                                                        action printReport() returns Integer;
+                                                        function sortTasks() returns array of Project;
+                                                    };
+                                            
+                                                entity ArchivedProjects as
+                                                    select from Archived {
+                                            
+                                            
+                                                        // only expose projectId
+                                                        projectId
+                                                    }
+                                            }
+                                            
+                                            type Identifier  : Integer;
+                                            /**
+                                             * # The Description
+                                             *
+                                             * This is a very precise sentence as it has minimal key phrases and will format properly if extended.
+                                             *
+                                             * * * *
+                                             *
+                                             *   - _italicized_ and **bold**
+                                             * - **bold** or _italicized_
+                                             *
+                                             * 1. efficient
+                                             *    2. scalable
+                                             *    | name    | tenure |
+                                             *   | ------- | -----: |
+                                             *   | alice   |    10 |
+                                             *  | bob     |3 |
+                                             *  | manager |25 |
+                                             */
+                                            type Description : String;
+                                            
+                                            """;
 
     static {
         OPTIONS.put("alignActionNames", new CdsCodeStyleOption<>("alignActionNames", BOOLEAN, true, "Names", "Actions and functions", ALIGNMENT));
