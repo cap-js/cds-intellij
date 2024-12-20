@@ -8,7 +8,6 @@ import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
-import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category.*;
 
 public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
 
@@ -24,13 +23,11 @@ public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
 
     @Override
     protected void initTabs(CodeStyleSettings settings) {
-        addTab(new CdsCodeStyleTabularPanel(settings, TABS_AND_INDENTS));
-        addTab(new CdsCodeStyleTabularPanel(settings, SPACES));
-        addTab(new CdsCodeStyleCheckboxesPanel(settings, ALIGNMENT));
-        addTab(new CdsCodeStyleTabularPanel(settings, WRAPPING_AND_BRACES));
-        addTab(new CdsCodeStyleTabularPanel(settings, BLANK_LINES));
-        addTab(new CdsCodeStyleCheckboxesPanel(settings, COMMENTS));
-        addTab(new CdsCodeStyleTabularPanel(settings, OTHER));
+        CdsCodeStyleTabPanelFactory factory = new CdsCodeStyleTabPanelFactory(settings);
+
+        CdsCodeStyleSettings.CATEGORY_GROUPS.keySet().forEach(category -> {
+            addTab(factory.createTabPanel(category));
+        });
     }
 
     @Override

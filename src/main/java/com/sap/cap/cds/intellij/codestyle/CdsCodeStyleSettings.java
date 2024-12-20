@@ -3,7 +3,7 @@ package com.sap.cap.cds.intellij.codestyle;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,8 +13,8 @@ import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.*;
 
 public class CdsCodeStyleSettings extends CdsCodeStyleSettingsBase {
 
-    public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new HashMap<>();
-    public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();
+    public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new LinkedHashMap<>();
+    public static final Map<Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
 
     static {
         OPTIONS.put("alignActionNames", new CdsCodeStyleOption<>("alignActionNames", BOOLEAN, true, "Names", "Actions and functions", ALIGNMENT));
@@ -59,13 +59,13 @@ public class CdsCodeStyleSettings extends CdsCodeStyleSettingsBase {
         OPTIONS.put("whitespaceBeforeColonInAnnotation", new CdsCodeStyleOption<>("whitespaceBeforeColonInAnnotation", BOOLEAN, false, "Blank before colon in annotations", "Before colon", SPACES));
         OPTIONS.put("whitespaceWithinBrackets", new CdsCodeStyleOption<>("whitespaceWithinBrackets", BOOLEAN, false, "Blanks within brackets", "Other", SPACES));
 
-        CATEGORY_GROUPS.put(Category.ALIGNMENT, Set.of("Actions and functions", "Other", "Annotations", "'as'", "Types of elements", "Expressions and conditions"));
-        CATEGORY_GROUPS.put(Category.OTHER, Set.of("Other"));
-        CATEGORY_GROUPS.put(Category.WRAPPING_AND_BRACES, Set.of("Other", "Format markdown in doc comments"));
-        CATEGORY_GROUPS.put(Category.COMMENTS, Set.of("Format markdown in doc comments"));
-        CATEGORY_GROUPS.put(Category.BLANK_LINES, Set.of("Other"));
         CATEGORY_GROUPS.put(Category.TABS_AND_INDENTS, Set.of("Other"));
         CATEGORY_GROUPS.put(Category.SPACES, Set.of("After colon", "Other", "Before colon"));
+        CATEGORY_GROUPS.put(Category.ALIGNMENT, Set.of("Actions and functions", "Other", "Annotations", "'as'", "Types of elements", "Expressions and conditions"));
+        CATEGORY_GROUPS.put(Category.WRAPPING_AND_BRACES, Set.of("Other", "Format markdown in doc comments"));
+        CATEGORY_GROUPS.put(Category.BLANK_LINES, Set.of("Other"));
+        CATEGORY_GROUPS.put(Category.COMMENTS, Set.of("Format markdown in doc comments"));
+        CATEGORY_GROUPS.put(Category.OTHER, Set.of("Other"));
     }
     public CdsCodeStyleSettings(CodeStyleSettings settings) {
         super("CDSCodeStyleSettings", settings);

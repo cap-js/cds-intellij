@@ -7,6 +7,7 @@ const { capitalizeFirstLetter, removeMarkdownFormatting, toScreamingSnakeCase } 
 
 const schemaPath = path.resolve(__dirname, '../../../lsp/node_modules/@sap/cds-lsp/schemas/cds-prettier.json');
 const schema = require(schemaPath);
+const assert = require('node:assert');
 const optsFromSchema = schema.properties;
 
 const srcPath = path.resolve(__dirname, '../../../src/main/java/com/sap/cap/cds/intellij/codestyle/CdsCodeStyleSettings.java');
@@ -61,7 +62,15 @@ const parentOptionGroups = Object.values(optsFromSchema)
       return acc;
     }, {});
 
-const categoryGroups = {};
+const categoryGroups = [
+    'TABS_AND_INDENTS',
+    'SPACES',
+    'ALIGNMENT',
+    'WRAPPING_AND_BRACES',
+    'BLANK_LINES',
+    'COMMENTS',
+    'OTHER'
+].reduce((acc, cur) => ({ ...acc, [cur]: new Set() }), {});
 
 const options = Object.entries(optsFromSchema)
     .sort(([name1], [name2]) => name1.localeCompare(name2))
@@ -94,7 +103,8 @@ const options = Object.entries(optsFromSchema)
                                   : 'OTHER'
                   : 'OTHER';
 
-      (categoryGroups[category] ??= new Set()).add(group);
+      assert (category in categoryGroups, `Unknown category: ${category}`);
+      categoryGroups[category].add(group);
 
       const defaultValue = attribs.enum
           ? `${getEnumName(name)}.${getEnumValueName(attribs.default)}.getId()`
@@ -116,8 +126,8 @@ const options = Object.entries(optsFromSchema)
 const t = '    ';
 
 const classBody = `
-${t}public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new HashMap<>();
-${t}public static final Map<Category, Set<String>> CATEGORY_GROUPS = new HashMap<>();
+${t}public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new LinkedHashMap<>();
+${t}public static final Map<Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
 
 ${t}static {
 ${options.map(opt =>
