@@ -463,8 +463,8 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
                              @NotNull String label,
                              @Nullable String groupName,
                              @Nullable OptionAnchor anchor,
-                             @Nullable String anchorFiledName) {
-            super(name, label, groupName, anchor, anchorFiledName);
+                             @Nullable String anchorFieldName) {
+            super(name, label, groupName, anchor, anchorFieldName);
         }
 
         @Override
@@ -493,10 +493,10 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
                                @NotNull String label,
                                @Nullable String groupName,
                                @Nullable OptionAnchor anchor,
-                               @Nullable String anchorFiledName,
+                               @Nullable String anchorFieldName,
                                String @NotNull [] options,
                                int @NotNull [] ids) {
-            super(name, label, groupName, anchor, anchorFiledName);
+            super(name, label, groupName, anchor, anchorFieldName);
             this.options = options;
             this.ids = ids;
         }
@@ -629,8 +629,8 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
                     @NotNull String label,
                     @Nullable String groupName,
                     @Nullable OptionAnchor anchor,
-                    @Nullable String anchorFiledName) {
-            super(name, label, groupName, anchor, anchorFiledName);
+                    @Nullable String anchorFieldName) {
+            super(name, label, groupName, anchor, anchorFieldName);
 
             try {
                 this.field = CdsCodeStyleSettings.class.getField(name);
@@ -655,11 +655,11 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
                          @NotNull String label,
                          @Nullable String groupName,
                          @Nullable OptionAnchor anchor,
-                         @Nullable String anchorFiledName,
+                         @Nullable String anchorFieldName,
                          int minValue,
                          int maxValue,
                          int defaultValue) {
-            super(name, label, groupName, anchor, anchorFiledName);
+            super(name, label, groupName, anchor, anchorFieldName);
             myMinValue = minValue;
             myMaxValue = maxValue;
             myDefaultValue = defaultValue;
