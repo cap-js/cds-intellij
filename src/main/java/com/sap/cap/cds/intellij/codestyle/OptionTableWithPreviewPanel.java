@@ -45,6 +45,8 @@ import java.util.*;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.*;
 
+// Mostly taken from {@link com.intellij.application.options.codeStyle.OptionTableWithPreviewPanel}.
+
 public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCodeStylePanel implements CdsCodeStylePanel {
     private static final Logger LOG = Logger.getInstance(OptionTableWithPreviewPanel.class);
 
