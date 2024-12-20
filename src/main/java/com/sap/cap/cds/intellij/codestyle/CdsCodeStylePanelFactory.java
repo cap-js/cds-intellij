@@ -6,11 +6,11 @@ import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.BOOLEAN;
 
-public class CdsCodeStyleTabPanelFactory {
+public class CdsCodeStylePanelFactory {
 
     private final CodeStyleSettings settings;
 
-    CdsCodeStyleTabPanelFactory(CodeStyleSettings settings) {
+    CdsCodeStylePanelFactory(CodeStyleSettings settings) {
         this.settings = settings;
     }
 

@@ -23,7 +23,7 @@ public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
 
     @Override
     protected void initTabs(CodeStyleSettings settings) {
-        CdsCodeStyleTabPanelFactory factory = new CdsCodeStyleTabPanelFactory(settings);
+        CdsCodeStylePanelFactory factory = new CdsCodeStylePanelFactory(settings);
 
         CdsCodeStyleSettings.CATEGORY_GROUPS.keySet().forEach(category -> {
             addTab(factory.createTabPanel(category));
