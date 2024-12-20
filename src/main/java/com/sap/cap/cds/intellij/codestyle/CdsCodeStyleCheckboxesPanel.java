@@ -12,6 +12,8 @@ import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
+
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.BOOLEAN;
 import static com.sap.cap.cds.intellij.lang.CdsLanguage.SAMPLE_SRC;
 
@@ -26,6 +28,11 @@ public class CdsCodeStyleCheckboxesPanel extends OptionTreeWithPreviewPanel impl
         super(settings);
         this.category = category;
         init();
+
+        // Prevent long option labels getting cut off
+        Dimension preferredSize = this.myPanel.getPreferredSize();
+        preferredSize.width *= 2;
+        this.myPanel.setMinimumSize(preferredSize);
     }
 
     @Override
