@@ -26,10 +26,10 @@ public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
     protected void initTabs(CodeStyleSettings settings) {
         addTab(new CdsCodeStyleTabularPanel(settings, TABS_AND_INDENTS));
         addTab(new CdsCodeStyleTabularPanel(settings, SPACES));
-        addTab(new CdsCodeStyleCustomPanel(settings, ALIGNMENT));
+        addTab(new CdsCodeStyleCheckboxesPanel(settings, ALIGNMENT));
         addTab(new CdsCodeStyleTabularPanel(settings, WRAPPING_AND_BRACES));
         addTab(new CdsCodeStyleTabularPanel(settings, BLANK_LINES));
-        addTab(new CdsCodeStyleCustomPanel(settings, COMMENTS));
+        addTab(new CdsCodeStyleCheckboxesPanel(settings, COMMENTS));
         addTab(new CdsCodeStyleTabularPanel(settings, OTHER));
     }
 
