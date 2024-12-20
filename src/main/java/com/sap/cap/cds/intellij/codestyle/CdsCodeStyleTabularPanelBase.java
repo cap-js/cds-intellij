@@ -47,8 +47,8 @@ import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.*;
 
 // Mostly copied from {@link com.intellij.application.options.codeStyle.OptionTableWithPreviewPanel}.
 
-public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCodeStylePanel implements CdsCodeStylePanel {
-    private static final Logger LOG = Logger.getInstance(OptionTableWithPreviewPanel.class);
+public abstract class CdsCodeStyleTabularPanelBase extends CustomizableLanguageCodeStylePanel implements CdsCodeStylePanel {
+    private static final Logger LOG = Logger.getInstance(CdsCodeStyleTabularPanelBase.class);
 
     private static final KeyStroke ENTER_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
     public final ColumnInfo TITLE = new ColumnInfo("TITLE") {
@@ -106,7 +106,7 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
     protected boolean isFirstUpdate = true;
     private SpeedSearchHelper mySearchHelper;
 
-    public OptionTableWithPreviewPanel(CodeStyleSettings settings) {
+    public CdsCodeStyleTabularPanelBase(CodeStyleSettings settings) {
         super(settings);
     }
 

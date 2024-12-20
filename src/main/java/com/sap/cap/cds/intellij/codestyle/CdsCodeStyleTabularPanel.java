@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Custom code-style panel for CDS language with a tabular layout. Supports all types of options (boolean, integer, enum).
  */
-public class CdsCodeStyleTabularPanel extends OptionTableWithPreviewPanel implements CdsCodeStylePanel {
+public class CdsCodeStyleTabularPanel extends CdsCodeStyleTabularPanelBase implements CdsCodeStylePanel {
 
     private final CdsCodeStyleOption.Category category;
 
