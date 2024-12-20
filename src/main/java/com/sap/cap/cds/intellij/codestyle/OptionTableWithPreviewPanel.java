@@ -463,7 +463,7 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
         @Override
         public void setValue(Object value, CodeStyleSettings settings) {
             try {
-                field.setBoolean(getSettings(settings), ((Boolean) value).booleanValue());
+                field.setBoolean(getSettings(settings), (Boolean) value);
             } catch (IllegalAccessException ignored) {
             }
         }
@@ -658,7 +658,7 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
             //noinspection EmptyCatchBlock
             try {
                 if (value instanceof Integer) {
-                    field.setInt(getSettings(settings), ((Integer) value).intValue());
+                    field.setInt(getSettings(settings), (Integer) value);
                 } else {
                     field.setInt(getSettings(settings), myDefaultValue);
                 }
@@ -749,7 +749,7 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
                 isEnabled = false;
             }
             if (value instanceof Boolean) {
-                myCheckBox.setSelected(((Boolean) value).booleanValue());
+                myCheckBox.setSelected((Boolean) value);
                 myCheckBox.setEnabled(isEnabled);
                 updateColors(myCheckBox, table, isSelected);
                 return myCheckBox;
