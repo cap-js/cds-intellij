@@ -532,7 +532,7 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
         private MyTreeNode myCurrentNode = null;
 
         MyValueEditor() {
-            final ActionListener itemChoosen = new ActionListener() {
+            final ActionListener itemChosen = new ActionListener() {
                 @Override
                 public void actionPerformed(@NotNull ActionEvent e) {
                     if (myCurrentNode != null) {
@@ -541,8 +541,8 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
                     }
                 }
             };
-            myBooleanEditor.addActionListener(itemChoosen);
-            myOptionsEditor.addActionListener(itemChoosen);
+            myBooleanEditor.addActionListener(itemChosen);
+            myOptionsEditor.addActionListener(itemChosen);
             UIUtil.applyStyle(UIUtil.ComponentStyle.SMALL, myBooleanEditor);
             UIUtil.applyStyle(UIUtil.ComponentStyle.SMALL, myOptionsEditor);
             UIUtil.applyStyle(UIUtil.ComponentStyle.MINI, myIntOptionsEditor);
@@ -742,10 +742,8 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
             boolean isEnabled = true;
             final DefaultMutableTreeNode node = (DefaultMutableTreeNode) ((TreeTable) table).getTree().
                     getPathForRow(row).getLastPathComponent();
-            Option key = null;
             if (node instanceof MyTreeNode) {
                 isEnabled = ((MyTreeNode) node).isEnabled();
-                key = ((MyTreeNode) node).getKey();
             }
             if (!table.isEnabled()) {
                 isEnabled = false;
