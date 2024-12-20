@@ -9,7 +9,7 @@ import java.util.List;
 
 import static com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType.*;
 
-// HOT-TODO rid of T ?
+// TODO remove T
 public class CdsCodeStyleOption<T> {
     /**
      * Name of the option (camelCase). Used as configuration key.

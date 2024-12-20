@@ -315,19 +315,6 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
         }
     }
 
-    // HOT-TODO remove these
-    protected @Nullable JComponent getCustomValueRenderer(@NotNull String optionName, @NotNull Object value) {
-        return null;
-    }
-
-    protected @Nullable JComponent getCustomNodeEditor(@NotNull MyTreeNode node) {
-        return null;
-    }
-
-    protected @Nullable Object getCustomNodeEditorValue(@NotNull JComponent customEditor) {
-        return null;
-    }
-
     @Override
     public @NotNull Set<String> processListOptions() {
         Set<String> options = new HashSet<>();
@@ -354,10 +341,7 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
         }
         TreeModel treeModel = myTreeTable.getTree().getModel();
         TreeNode root = (TreeNode) treeModel.getRoot();
-        if (isModified(root, settings)) {
-            return true;
-        }
-        return false;
+        return isModified(root, settings);
     }
 
     @Override
@@ -572,9 +556,6 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
                 return myBooleanEditor.isSelected();
             } else if (myCurrentEditor == myIntOptionsEditor) {
                 return myIntOptionsEditor.getValue();
-            } else {
-                Object value = getCustomNodeEditorValue(myCurrentEditor);
-                if (value != null) return value;
             }
 
             return null;
@@ -606,8 +587,6 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
                     //noinspection ConfusingArgumentToVarargsMethod
                     myOptionsEditor.setOptions(((SelectionOption) node.getKey()).options);
                     myOptionsEditor.setDefaultValue(node.getValue());
-                } else {
-                    myCurrentEditor = getCustomNodeEditor(node);
                 }
             }
 
@@ -770,13 +749,6 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
             }
             if (!table.isEnabled()) {
                 isEnabled = false;
-            }
-            if (key != null && value != null) {
-                JComponent customRenderer = getCustomValueRenderer(key.getOptionName(), value);
-                if (customRenderer != null) {
-                    updateColors(customRenderer, table, isSelected);
-                    return customRenderer;
-                }
             }
             if (value instanceof Boolean) {
                 myCheckBox.setSelected(((Boolean) value).booleanValue());
