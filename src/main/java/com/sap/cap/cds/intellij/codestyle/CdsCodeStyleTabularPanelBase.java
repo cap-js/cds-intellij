@@ -47,6 +47,8 @@ import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.*;
 
 // Mostly copied from {@link com.intellij.application.options.codeStyle.OptionTableWithPreviewPanel}.
 
+// TODO clean up unneeded corners
+
 public abstract class CdsCodeStyleTabularPanelBase extends CustomizableLanguageCodeStylePanel implements CdsCodeStylePanel {
     private static final Logger LOG = Logger.getInstance(CdsCodeStyleTabularPanelBase.class);
 
