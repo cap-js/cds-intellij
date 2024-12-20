@@ -28,7 +28,6 @@ public class CdsPreviewFormattingService implements FormattingService {
     private static Path prettierJsonPath;
     private static Path tempDir;
     private static Path samplePath;
-    // HOT-TODO initialize from file
     private static String prettierJson = "{}";
 
     CdsPreviewFormattingService() {
@@ -37,14 +36,7 @@ public class CdsPreviewFormattingService implements FormattingService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         prettierJsonPath = tempDir.resolve(PRETTIER_JSON);
-        try {
-            write(prettierJsonPath, "{}".getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         samplePath = tempDir.resolve(SAMPLE_FILE_NAME);
         resetSampleSrc();
     }
