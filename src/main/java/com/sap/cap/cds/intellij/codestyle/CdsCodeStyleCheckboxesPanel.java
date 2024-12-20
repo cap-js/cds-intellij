@@ -16,7 +16,7 @@ import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.BOOLEAN
 import static com.sap.cap.cds.intellij.lang.CdsLanguage.SAMPLE_SRC;
 
 /**
- * Custom code-style panel for CDS language. Supports boolean options only.
+ * Custom code-style panel for CDS language with a checkboxes-tree layout. Supports boolean options only.
  */
 public class CdsCodeStyleCheckboxesPanel extends OptionTreeWithPreviewPanel implements CdsCodeStylePanel {
 

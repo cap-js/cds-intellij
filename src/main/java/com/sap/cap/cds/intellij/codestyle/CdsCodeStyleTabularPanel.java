@@ -8,6 +8,9 @@ import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Custom code-style panel for CDS language with a tabular layout. Supports all types of options (boolean, integer, enum).
+ */
 public class CdsCodeStyleTabularPanel extends OptionTableWithPreviewPanel implements CdsCodeStylePanel {
 
     private final CdsCodeStyleOption.Category category;
