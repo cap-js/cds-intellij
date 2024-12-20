@@ -3,19 +3,15 @@ package com.sap.cap.cds.intellij.codestyle;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category.*;
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.*;
 
-
+// NOTE: class body is generated
 public class CdsCodeStyleSettings extends CdsCodeStyleSettingsBase {
 
-    public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new LinkedHashMap<>();
-    public static final Map<Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
     public static final String SAMPLE_SRC = """
                                             using {
                                                 Employee    as Worker,

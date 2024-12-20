@@ -136,8 +136,6 @@ const options = Object.entries(optsFromSchema)
 const t = '    ';
 
 const classBody = `
-${t}public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new LinkedHashMap<>();
-${t}public static final Map<Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
 ${t}public static final String SAMPLE_SRC = """
 ${n = `${t}public static final String SAMPLE_SRC = `.length, sample.replace(/^/gm, ' '.repeat(n))}
                                             """;

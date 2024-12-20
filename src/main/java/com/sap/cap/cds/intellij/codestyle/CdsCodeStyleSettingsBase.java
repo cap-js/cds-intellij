@@ -6,16 +6,16 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
-import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettings.OPTIONS;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.getFieldValue;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.setFieldValue;
 import static java.util.stream.Collectors.toMap;
 
 public class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
+    public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new LinkedHashMap<>();
+    public static final Map<CdsCodeStyleOption.Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
+
     public CdsCodeStyleSettingsBase(@NonNls @NotNull String tagName, @NotNull CodeStyleSettings container) {
         super(tagName, container);
     }

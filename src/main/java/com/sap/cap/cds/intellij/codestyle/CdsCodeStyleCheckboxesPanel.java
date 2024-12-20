@@ -9,14 +9,13 @@ import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType
 import com.sap.cap.cds.intellij.CdsFileType;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
-import com.sap.cap.cds.intellij.util.ReflectionUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.BOOLEAN;
+import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsBase.CATEGORY_GROUPS;
 
 /**
  * Custom code-style panel for CDS language with a checkboxes-tree layout. Supports boolean options only.
@@ -43,7 +42,7 @@ public class CdsCodeStyleCheckboxesPanel extends OptionTreeWithPreviewPanel impl
 
     @Override
     protected void initTables() {
-        CdsCodeStyleSettings.CATEGORY_GROUPS.get(category).forEach(this::initCustomOptions);
+        CATEGORY_GROUPS.get(category).forEach(this::initCustomOptions);
     }
 
     @Override
