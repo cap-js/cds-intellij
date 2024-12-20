@@ -1,6 +1,7 @@
 package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.lang.Language;
+import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.util.NlsContexts.TabTitle;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
@@ -54,5 +55,11 @@ public class CdsCodeStyleTabularPanel extends OptionTableWithPreviewPanel implem
     @Override
     protected String getPreviewText() {
         return CdsCodeStyleSettings.SAMPLE_SRC;
+    }
+
+    @Override
+    public void apply(@NotNull CodeStyleSettings settings) throws ConfigurationException {
+        super.apply(settings);
+        CdsPreviewFormattingService.acceptSettings(settings.getCustomSettings(CdsCodeStyleSettings.class));
     }
 }
