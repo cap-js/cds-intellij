@@ -57,11 +57,9 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
         if (!(consumer instanceof CdsCodeStylePanel panel)) {
             return;
         }
-        CdsCodeStyleSettings.OPTIONS.forEach((name, option) -> {
-            if (option.category == panel.getCategory()) {
-                panel.addOption(option);
-            }
-        });
+        CdsCodeStyleSettings.OPTIONS.values().stream()
+                .filter(option -> option.category == panel.getCategory())
+                .forEach(panel::addOption);
     }
 
 
