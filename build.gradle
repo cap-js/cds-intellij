@@ -162,9 +162,9 @@ tasks.register('installLsp', Exec) {
     dependsOn rmCdsLspNodeModules
     workingDir './lsp'
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine 'cmd', '/c', 'npm', 'ci'
+        commandLine 'cmd', '/c', 'npm', 'install', '--no-package-lock'
     } else {
-        commandLine 'sh', '-c', 'npm ci'
+        commandLine 'sh', '-c', 'npm install --no-package-lock'
     }
 }
 
