@@ -45,7 +45,7 @@ import java.util.*;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.*;
 
-// Mostly taken from {@link com.intellij.application.options.codeStyle.OptionTableWithPreviewPanel}.
+// Mostly copied from {@link com.intellij.application.options.codeStyle.OptionTableWithPreviewPanel}.
 
 public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCodeStylePanel implements CdsCodeStylePanel {
     private static final Logger LOG = Logger.getInstance(OptionTableWithPreviewPanel.class);
@@ -307,11 +307,11 @@ public abstract class OptionTableWithPreviewPanel extends CustomizableLanguageCo
     @Override
     public void addOption(CdsCodeStyleOption<?> option) {
         if (option.type == BOOLEAN) {
-            myOptions.add(new BooleanOption(option.name, option.label, option.group, null, null));
+            myOptions.add(new BooleanOption(option.name, option.label, option.group, option.getAnchor(), option.getAnchorOptionName()));
         } else if (option.type == ENUM) {
-            myOptions.add(new SelectionOption(option.name, option.label, option.group, null, null, option.getValuesLabels(), option.getValuesIds()));
+            myOptions.add(new SelectionOption(option.name, option.label, option.group, option.getAnchor(), option.getAnchorOptionName(), option.getValuesLabels(), option.getValuesIds()));
         } else if (option.type == INT) {
-            myOptions.add(new IntOption(option.name, option.label, option.group, null, null, 0, 100, (int) option.defaultValue));
+            myOptions.add(new IntOption(option.name, option.label, option.group, option.getAnchor(), option.getAnchorOptionName(), 0, 100, (int) option.defaultValue));
         }
     }
 

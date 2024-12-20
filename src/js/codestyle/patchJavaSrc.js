@@ -62,6 +62,14 @@ const parentOptionGroups = Object.values(optsFromSchema)
       return { ...acc, [parentName]: getGroup(parentLabel) };
     }, {});
 
+const parentOptionChildren = Object.entries(optsFromSchema)
+    .filter(([, opt]) => opt.parentOption)
+    .reduce((acc, [name, opt]) => {
+      const parent = opt.parentOption;
+      (acc[parent] ??= []).push(name);
+      return acc;
+    }, {});
+
 const categoryGroups = [
     'TABS_AND_INDENTS',
     'SPACES',
@@ -83,9 +91,9 @@ const options = Object.entries(optsFromSchema)
       const fieldType = type === 'ENUM'
           ? 'int'
           : type.toLowerCase();
-      const parentOption = attribs.parentOption;
-      const group = parentOption
-          ? parentOptionGroups[parentOption]
+      const parent = attribs.parentOption;
+      const group = parent
+          ? parentOptionGroups[parent]
           : parentOptionGroups[name] || 'Other';
       const category = attribs.category === 'Alignment'
           ? 'ALIGNMENT'
@@ -114,6 +122,8 @@ const options = Object.entries(optsFromSchema)
         name,
         type,
         fieldType,
+        parent,
+        children: parentOptionChildren[name],
         values: attribs.enum,
         default: defaultValue,
         label: capitalizeFirstLetter(removeMarkdownFormatting(attribs.label)),
@@ -134,7 +144,9 @@ ${n = `${t}public static final String SAMPLE_SRC = `.length, sample.replace(/^/g
 
 ${t}static {
 ${options.map(opt =>
-    `${t}${t}OPTIONS.put("${opt.name}", new CdsCodeStyleOption<>("${opt.name}", ${opt.type}, ${opt.default}, "${opt.label}", "${opt.group}", ${opt.category}${
+    `${t}${t}OPTIONS.put("${opt.name}", new CdsCodeStyleOption<>("${opt.name}", ${opt.type}, ${opt.default}, "${opt.label}", "${opt.group}", ${opt.category}, ` +
+    `${opt.parent ? `"${opt.parent}"` : 'null'}, List.of(${opt.children?.map(c => `"${c}"`).join(', ') ?? ''})` +
+    `${
         opt.values ? ', ' + opt.values.map(v => `${getEnumName(opt.name)}.${getEnumValueName(v)}`).join(', ') : ''
     }));`
 ).join('\n')}

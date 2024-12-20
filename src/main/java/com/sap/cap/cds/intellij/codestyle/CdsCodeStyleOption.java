@@ -1,9 +1,11 @@
 package com.sap.cap.cds.intellij.codestyle;
 
+import com.intellij.psi.codeStyle.CodeStyleSettingsCustomizable.OptionAnchor;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType.*;
 
@@ -30,6 +32,14 @@ public class CdsCodeStyleOption<T> {
      */
     public final Category category;
     /**
+     * Name of the parent option.
+     */
+    public final String parent;
+    /**
+     * Names of the child options.
+     */
+    public final List<String> children;
+    /**
      * Optional values for the option. Used as dropdown values in UI.
      */
     public final @Nullable CdsCodeStyleSettings.Enum[] values;
@@ -38,13 +48,15 @@ public class CdsCodeStyleOption<T> {
      */
     public final Type type;
 
-    public CdsCodeStyleOption(String name, Type type, T defaultValue, String label, String group, Category category, @Nullable CdsCodeStyleSettings.Enum... values) {
+    public CdsCodeStyleOption(String name, Type type, T defaultValue, String label, String group, Category category, @Nullable String parent, List<String> children, @Nullable CdsCodeStyleSettings.Enum... values) {
         this.name = name;
         this.type = type;
         this.label = label;
         this.defaultValue = defaultValue;
         this.group = group;
         this.category = category;
+        this.parent = parent;
+        this.children = children;
         this.values = values;
     }
 
@@ -60,6 +72,14 @@ public class CdsCodeStyleOption<T> {
             throw new IllegalStateException("Option is not an enum");
         }
         return Arrays.stream(values).mapToInt(value -> value.getId()).toArray();
+    }
+
+    public OptionAnchor getAnchor() {
+        return parent != null ? OptionAnchor.AFTER : null;
+    }
+
+    public String getAnchorOptionName() {
+        return parent;
     }
 
     public enum Type {

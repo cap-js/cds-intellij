@@ -9,9 +9,11 @@ import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType
 import com.sap.cap.cds.intellij.CdsFileType;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
+import com.sap.cap.cds.intellij.util.ReflectionUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.BOOLEAN;
@@ -95,7 +97,7 @@ public class CdsCodeStyleCheckboxesPanel extends OptionTreeWithPreviewPanel impl
     @Override
     public void addOption(CdsCodeStyleOption<?> option) {
         if (option.type == BOOLEAN) {
-            showCustomOption(CdsCodeStyleSettings.class, option.name, option.label, option.group);
+            showCustomOption(CdsCodeStyleSettings.class, option.name, option.label, option.group, option.getAnchor(), option.getAnchorOptionName());
         }
     }
 }

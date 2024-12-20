@@ -53,7 +53,7 @@ public class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
                 .map(optionEntry -> {
                     final Object value;
                     try {
-                        value = getFieldValue(this, optionEntry.getKey());
+                        value = getFieldValue(this, optionEntry.getKey(), null);
                     } catch (NoSuchFieldException | IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
