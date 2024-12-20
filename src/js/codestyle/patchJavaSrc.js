@@ -58,9 +58,8 @@ const parentOptionGroups = Object.values(optsFromSchema)
       if (parentName in acc) {
         return acc;
       }
-      const parentOpt = optsFromSchema[parentName];
-      acc[parentName] = getGroup(parentOpt.label);
-      return acc;
+      const parentLabel = optsFromSchema[parentName].label;
+      return { ...acc, [parentName]: getGroup(parentLabel) };
     }, {});
 
 const categoryGroups = [
