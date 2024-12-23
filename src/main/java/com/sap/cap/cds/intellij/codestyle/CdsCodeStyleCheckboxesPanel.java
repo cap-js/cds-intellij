@@ -36,6 +36,8 @@ public class CdsCodeStyleCheckboxesPanel extends OptionTreeWithPreviewPanel impl
         // Prevent long option labels getting cut off in scroll pane
         Dimension minSize = new JLabel("this is quite a long description for a simple setting, eh?").getPreferredSize();
         myPanel.setMinimumSize(minSize);
+
+        getEditor().getSettings().setRightMarginShown(false);
     }
 
     @Override
