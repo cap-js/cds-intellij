@@ -1,10 +1,9 @@
-package com.sap.cap.cds.intellij;
+package com.sap.cap.cds.intellij.lsp;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.intellij.testFramework.fixtures.TempDirTestFixture;
-import com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor;
 
 import java.io.BufferedWriter;
 import java.io.File;
