@@ -12,6 +12,7 @@ import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.util.Map;
@@ -32,10 +33,11 @@ public class CdsCodeStyleCheckboxesPanel extends OptionTreeWithPreviewPanel impl
         this.category = category;
         init();
 
-        // Prevent long option labels getting cut off
-        Dimension preferredSize = this.myPanel.getPreferredSize();
-        preferredSize.width *= 2;
-        this.myPanel.setMinimumSize(preferredSize);
+        // Prevent long option labels getting cut off in scroll pane
+        Dimension minSize = new JLabel("this is quite a long description for a simple setting, eh?").getPreferredSize();
+        myPanel.setMinimumSize(minSize);
+
+        getEditor().getSettings().setRightMarginShown(false);
     }
 
     @Override
