@@ -60,6 +60,8 @@ public class CdsCodeStyleTabularPanel extends CdsCodeStyleTabularPanelBase imple
     @Override
     public void apply(@NotNull CodeStyleSettings settings) throws ConfigurationException {
         super.apply(settings);
-        CdsPreviewFormattingService.acceptSettings(settings.getCustomSettings(CdsCodeStyleSettings.class));
+        CdsCodeStyleSettings cdsSettings = settings.getCustomSettings(CdsCodeStyleSettings.class);
+        setOptionsEnablement(cdsSettings.getChildOptionsEnablement(category));
+        CdsPreviewFormattingService.acceptSettings(cdsSettings);
     }
 }

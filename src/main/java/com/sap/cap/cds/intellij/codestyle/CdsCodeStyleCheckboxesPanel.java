@@ -12,10 +12,13 @@ import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
+import java.util.Map;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.BOOLEAN;
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsBase.CATEGORY_GROUPS;
+import static com.sap.cap.cds.intellij.util.ReflectionUtil.setCustomOptionsEnablement;
 
 /**
  * Custom code-style panel for CDS language with a checkboxes-tree layout. Supports boolean options only.
@@ -71,7 +74,14 @@ public class CdsCodeStyleCheckboxesPanel extends OptionTreeWithPreviewPanel impl
     @Override
     public void apply(@NotNull CodeStyleSettings settings) {
         super.apply(settings); // Applies settings from UI to the settings object
-        CdsPreviewFormattingService.acceptSettings(settings.getCustomSettings(CdsCodeStyleSettings.class));
+        CdsCodeStyleSettings cdsSettings = settings.getCustomSettings(CdsCodeStyleSettings.class);
+        setOptionsEnablement(cdsSettings.getChildOptionsEnablement(category));
+        CdsPreviewFormattingService.acceptSettings(cdsSettings);
+    }
+
+    @Override
+    public void setOptionsEnablement(Map<String, Boolean> enablementMap) {
+        setCustomOptionsEnablement((DefaultTreeModel) myOptionsTree.getModel(), enablementMap);
     }
 
     @Override

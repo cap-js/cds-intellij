@@ -2,19 +2,21 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CustomCodeStyleSettings;
+import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.*;
 
+import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.BOOLEAN;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.getFieldValue;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.setFieldValue;
 import static java.util.stream.Collectors.toMap;
 
 public class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
     public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new LinkedHashMap<>();
-    public static final Map<CdsCodeStyleOption.Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
+    public static final Map<Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
 
     public CdsCodeStyleSettingsBase(@NonNls @NotNull String tagName, @NotNull CodeStyleSettings container) {
         super(tagName, container);
@@ -51,13 +53,7 @@ public class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
     public JSONObject getNonDefaultSettings() {
         var map = OPTIONS.entrySet().stream()
                 .map(optionEntry -> {
-                    final Object value;
-                    try {
-                        value = getFieldValue(this, optionEntry.getKey(), null);
-                    } catch (NoSuchFieldException | IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-
+                    Object value = getValue(optionEntry.getKey());
                     CdsCodeStyleOption<?> option = optionEntry.getValue();
                     if (!option.defaultValue.equals(value)) {
                         if (option.values.length > 0) {
@@ -70,5 +66,24 @@ public class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
                 .filter(Objects::nonNull)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
         return new JSONObject(map);
+    }
+
+    private Object getValue(String name) {
+        final Object value;
+        try {
+            value = getFieldValue(this, name, null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return value;
+    }
+
+    public Map<String, Boolean> getChildOptionsEnablement(Category category) {
+        return OPTIONS.values().stream()
+                .filter(option -> option.category == category)
+                .filter(option -> option.type == BOOLEAN && !option.children.isEmpty())
+                .flatMap(parent -> parent.children.stream()
+                        .map(child -> Map.entry(child, (boolean) getValue(parent.name))))
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }
