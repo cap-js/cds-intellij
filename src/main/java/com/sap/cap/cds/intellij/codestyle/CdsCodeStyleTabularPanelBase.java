@@ -336,6 +336,13 @@ public abstract class CdsCodeStyleTabularPanelBase extends CustomizableLanguageC
     }
 
     @Override
+    public void setOptionsEnablement(Map<String, Boolean> enablementMap) {
+        myOptions.stream()
+                .filter(option -> enablementMap.containsKey(option.getOptionName()))
+                .forEach(option -> option.setEnabled(enablementMap.get(option.getOptionName())));
+    }
+
+    @Override
     public boolean isModified(CodeStyleSettings settings) {
         TableCellEditor editor = myTreeTable.getCellEditor();
         if (editor != null) {
@@ -414,12 +421,12 @@ public abstract class CdsCodeStyleTabularPanelBase extends CustomizableLanguageC
         final @Nullable String groupName;
         private boolean myEnabled = true;
 
-        protected Option(@NotNull String optionName,
+        protected Option(@NotNull String name,
                          @NotNull String label,
                          @Nullable String groupName,
                          @Nullable OptionAnchor anchor,
                          @Nullable String anchorOptionName) {
-            super(optionName, anchor, anchorOptionName);
+            super(name, anchor, anchorOptionName);
             this.label = label;
             this.groupName = groupName;
         }
