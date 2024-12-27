@@ -8,6 +8,8 @@ import com.intellij.psi.codeStyle.CodeStyleSettingsListener;
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
 import org.jetbrains.annotations.NotNull;
 
+// TODO test .cdsprettier.json reading/updating on a project level
+
 @Service(Service.Level.PROJECT)
 public final class CdsProjectCodeStyleSettingsService {
 
