@@ -8,7 +8,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.platform.lsp.api.LspServer;
 import com.intellij.platform.lsp.api.LspServerManager;
 import com.intellij.platform.lsp.api.LspServerManagerListener;
-import com.intellij.platform.lsp.api.LspServerState;
 import com.intellij.testFramework.ExpectedHighlightingData;
 import com.intellij.testFramework.PlatformTestUtil;
 import com.intellij.testFramework.fixtures.CodeInsightTestFixture;

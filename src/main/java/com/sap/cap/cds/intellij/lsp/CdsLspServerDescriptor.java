@@ -100,7 +100,7 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
                 throw new UnsupportedOperationException("Formatting command line not supported");
             }
         }
-        ;
+
         if (commandLines.get(kind) == null) {
             throw new RuntimeException("Failed to create command line for %s".formatted(kind));
         }
