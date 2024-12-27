@@ -2,10 +2,10 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.application.options.CodeStyle;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
-import com.intellij.testFramework.fixtures.BasePlatformTestCase;
+import com.intellij.testFramework.LightPlatformTestCase;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
 
-public class CdsCodeStyleMainPanelTest extends BasePlatformTestCase {
+public class CdsCodeStyleMainPanelTest extends LightPlatformTestCase {
 
     CdsCodeStyleMainPanel panel;
 

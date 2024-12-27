@@ -2,13 +2,13 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.application.options.CodeStyle;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
-import com.intellij.testFramework.fixtures.BasePlatformTestCase;
+import com.intellij.testFramework.LightPlatformTestCase;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category.SPACES;
 
-public class CdsCodeStyleTabularPanelTest extends BasePlatformTestCase {
+public class CdsCodeStyleTabularPanelTest extends LightPlatformTestCase {
 
     private final Category category = SPACES;
     private CdsCodeStyleTabularPanel panel;
