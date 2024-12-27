@@ -18,7 +18,7 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
     public static final String LABEL = "Code Style";
 
     @Override
-    public CustomCodeStyleSettings createCustomSettings(CodeStyleSettings settings) {
+    public CustomCodeStyleSettings createCustomSettings(@NotNull CodeStyleSettings settings) {
         return new CdsCodeStyleSettings(settings);
     }
 

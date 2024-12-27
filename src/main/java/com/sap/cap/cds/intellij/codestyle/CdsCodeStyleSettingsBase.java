@@ -14,7 +14,7 @@ import static com.sap.cap.cds.intellij.util.ReflectionUtil.getFieldValue;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.setFieldValue;
 import static java.util.stream.Collectors.toMap;
 
-public class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
+public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
     public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new LinkedHashMap<>();
     public static final Map<Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
 

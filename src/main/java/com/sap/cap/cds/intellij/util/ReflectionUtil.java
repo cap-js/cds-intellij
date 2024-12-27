@@ -41,6 +41,7 @@ public class ReflectionUtil {
                         changedChildIndexes.add(i);
                     }
                 } catch (NoSuchFieldException | IllegalAccessException e) {
+                    // TODO logging
                     e.printStackTrace();
                 }
             } else {

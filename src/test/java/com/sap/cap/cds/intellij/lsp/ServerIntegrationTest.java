@@ -1,6 +1,6 @@
-package com.sap.cap.cds.intellij;
+package com.sap.cap.cds.intellij.lsp;
 
-import com.intellij.testFramework.fixtures.*;
+import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
 
 import static com.sap.cap.cds.intellij.TestUtil.checkDiagnostics;
 

@@ -42,13 +42,13 @@ public class CdsCodeStyleOption<T> {
     /**
      * Optional values for the option. Used as dropdown values in UI.
      */
-    public final @Nullable CdsCodeStyleSettings.Enum[] values;
+    public final CdsCodeStyleSettings.Enum[] values;
     /**
      * Type of the option.
      */
     public final Type type;
 
-    public CdsCodeStyleOption(String name, Type type, T defaultValue, String label, String group, Category category, @Nullable String parent, List<String> children, @Nullable CdsCodeStyleSettings.Enum... values) {
+    public CdsCodeStyleOption(String name, Type type, T defaultValue, String label, String group, Category category, @Nullable String parent, @Nullable List<String> children, CdsCodeStyleSettings.Enum... values) {
         this.name = name;
         this.type = type;
         this.label = label;
@@ -56,7 +56,7 @@ public class CdsCodeStyleOption<T> {
         this.group = group;
         this.category = category;
         this.parent = parent;
-        this.children = children;
+        this.children = children == null ? List.of() : children;
         this.values = values;
     }
 
