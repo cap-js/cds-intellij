@@ -62,17 +62,20 @@ public class CdsLspServerDescriptorTest extends BasePlatformTestCase {
 
         // Man-in-the-middle should log stdin data
         String data = "FOO INPUT 01234567890123456789";
-        BufferedWriter mitmStdin = process.outputWriter();
-        mitmStdin.write(data);
-        mitmStdin.flush();
+        try (BufferedWriter mitmStdin = process.outputWriter()) {
+            mitmStdin.write(data);
+            mitmStdin.flush();
+        }
         Thread.sleep(500);
-        String logged = new String(new FileInputStream(logPath).readAllBytes()).replaceAll("\\d{4}-[\\dTZ:.-]+", "NOW");
-        assertTrue(Pattern.compile("> NOW.*" + data).matcher(logged).find());
+        try (FileInputStream stream = new FileInputStream(logPath)) {
+            String logged = new String(stream.readAllBytes()).replaceAll("\\d{4}-[\\dTZ:.-]+", "NOW");
+            assertTrue(Pattern.compile("> NOW.*" + data).matcher(logged).find());
+        }
 
         System.clearProperty("DEBUG");
     }
 
-    public void testIsSupportedFile() throws IOException {
+    public void testIsSupportedFile() {
         TempDirTestFixture fixture = this.createTempDirTestFixture();
         CdsLspServerDescriptor serverDescriptor = new CdsLspServerDescriptor(getProject(), "name");
         assertTrue(serverDescriptor.isSupportedFile(fixture.createFile("a.cds")));

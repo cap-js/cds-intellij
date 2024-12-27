@@ -49,7 +49,7 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
 
     private static ComparableVersion getRequiredNodejsVersion() {
         String serverPkgPath = resolve(RELATIVE_SERVER_PKG_PATH);
-        String rawVersion = "";
+        String rawVersion;
         try {
             String serverPkg = new String(Files.readAllBytes(Paths.get(serverPkgPath)));
             rawVersion = getPropertyAtPath(serverPkg, new String[]{"engines", "node"}).toString();
@@ -73,32 +73,25 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
         }
         final String nodeInterpreterPath = getInterpreter(REQUIRED_NODEJS_VERSION).getInterpreterSystemDependentPath();
         switch (kind) {
-            case SERVER -> {
-                commandLines.put(CommandLineKind.SERVER,
-                        new GeneralCommandLine(
-                                nodeInterpreterPath,
-                                resolve(RELATIVE_SERVER_PATH),
-                                "--stdio"
-                        ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose")
-                );
-            }
-            case SERVER_DEBUG -> {
-                String nodeJsPath = nodeInterpreterPath;
-                commandLines.put(CommandLineKind.SERVER_DEBUG,
-                        new GeneralCommandLine(
-                                nodeJsPath,
-                                resolve(RELATIVE_MITM_PATH),
-                                resolve(RELATIVE_LOG_PATH),
-                                nodeJsPath,
-                                "--inspect",
-                                resolve(RELATIVE_SERVER_PATH),
-                                "--stdio"
-                        ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug")
-                );
-            }
-            case CLI_FORMAT -> {
-                throw new UnsupportedOperationException("Formatting command line not supported");
-            }
+            case SERVER -> commandLines.put(CommandLineKind.SERVER,
+                    new GeneralCommandLine(
+                            nodeInterpreterPath,
+                            resolve(RELATIVE_SERVER_PATH),
+                            "--stdio"
+                    ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose")
+            );
+            case SERVER_DEBUG -> commandLines.put(CommandLineKind.SERVER_DEBUG,
+                    new GeneralCommandLine(
+                            nodeInterpreterPath,
+                            resolve(RELATIVE_MITM_PATH),
+                            resolve(RELATIVE_LOG_PATH),
+                            nodeInterpreterPath,
+                            "--inspect",
+                            resolve(RELATIVE_SERVER_PATH),
+                            "--stdio"
+                    ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug")
+            );
+            case CLI_FORMAT -> throw new UnsupportedOperationException("Formatting command line not supported");
         }
 
         if (commandLines.get(kind) == null) {

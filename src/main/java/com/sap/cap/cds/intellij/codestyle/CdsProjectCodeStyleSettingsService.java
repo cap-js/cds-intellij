@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.codeStyle.CodeStyleSettingsChangeEvent;
 import com.intellij.psi.codeStyle.CodeStyleSettingsListener;
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
+import org.jetbrains.annotations.NotNull;
 
 @Service(Service.Level.PROJECT)
 public final class CdsProjectCodeStyleSettingsService {
@@ -18,7 +19,7 @@ public final class CdsProjectCodeStyleSettingsService {
         CodeStyleSettingsManager manager = CodeStyleSettingsManager.getInstance(project);
         manager.subscribe(new CodeStyleSettingsListener() {
             @Override
-            public void codeStyleSettingsChanged(CodeStyleSettingsChangeEvent event) {
+            public void codeStyleSettingsChanged(@NotNull CodeStyleSettingsChangeEvent event) {
                 prettierJsonService.saveSettingsToFile(getSettings());
             }
         });
