@@ -307,7 +307,7 @@ public abstract class CdsCodeStyleTabularPanelBase extends CustomizableLanguageC
     protected abstract void initTables();
 
     @Override
-    public void addOption(CdsCodeStyleOption<?> option) {
+    public void addOption(CdsCodeStyleOption option) {
         if (option.type == BOOLEAN) {
             myOptions.add(new BooleanOption(option.name, option.label, option.group, option.getAnchor(), option.getAnchorOptionName()));
         } else if (option.type == ENUM) {

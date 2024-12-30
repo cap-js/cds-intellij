@@ -106,7 +106,7 @@ public class CdsCodeStyleCheckboxesPanel extends OptionTreeWithPreviewPanel impl
     }
 
     @Override
-    public void addOption(CdsCodeStyleOption<?> option) {
+    public void addOption(CdsCodeStyleOption option) {
         if (option.type == BOOLEAN) {
             showCustomOption(CdsCodeStyleSettings.class, option.name, option.label, option.group, option.getAnchor(), option.getAnchorOptionName());
         }
