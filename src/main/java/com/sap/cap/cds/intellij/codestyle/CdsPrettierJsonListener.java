@@ -13,6 +13,8 @@ import java.util.Objects;
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
 import static com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonService.PRETTIER_JSON;
 
+// TODO handle file deletion as well
+
 public class CdsPrettierJsonListener implements AsyncFileListener {
     @Override
     public @Nullable ChangeApplier prepareChange(@NotNull List<? extends @NotNull VFileEvent> list) {
