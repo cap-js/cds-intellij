@@ -11,11 +11,11 @@ import org.jetbrains.annotations.NotNull;
 // TODO test .cdsprettier.json reading/updating on a project level
 
 @Service(Service.Level.PROJECT)
-public final class CdsProjectCodeStyleSettingsService {
+public final class CdsCodeStyleProjectSettingsService {
 
     private final Project project;
 
-    public CdsProjectCodeStyleSettingsService(Project project) {
+    public CdsCodeStyleProjectSettingsService(Project project) {
         this.project = project;
         CdsPrettierJsonService prettierJsonService = project.getService(CdsPrettierJsonService.class);
         CodeStyleSettingsManager manager = CodeStyleSettingsManager.getInstance(project);

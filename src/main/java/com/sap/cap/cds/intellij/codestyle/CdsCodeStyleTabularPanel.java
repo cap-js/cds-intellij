@@ -64,6 +64,6 @@ public class CdsCodeStyleTabularPanel extends CdsCodeStyleTabularPanelBase imple
         super.apply(settings);
         CdsCodeStyleSettings cdsSettings = settings.getCustomSettings(CdsCodeStyleSettings.class);
         setOptionsEnablement(cdsSettings.getChildOptionsEnablement(category));
-        CdsPreviewFormattingService.acceptSettings(cdsSettings);
+        CdsCodeStylePreviewFormattingService.acceptSettings(cdsSettings);
     }
 }

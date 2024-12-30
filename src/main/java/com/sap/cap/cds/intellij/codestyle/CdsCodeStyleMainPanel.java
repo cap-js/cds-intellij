@@ -16,9 +16,9 @@ public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
 
         // Enable saving of code-style settings
         for (Project project : ProjectManager.getInstance().getOpenProjects()) {
-            project.getService(CdsProjectCodeStyleSettingsService.class);
+            project.getService(CdsCodeStyleProjectSettingsService.class);
         }
-        getApplication().getService(CdsDefaultCodeStyleSettingsService.class);
+        getApplication().getService(CdsCodeStyleDefaultSettingsService.class);
     }
 
     @Override

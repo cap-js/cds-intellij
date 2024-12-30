@@ -24,7 +24,7 @@ public class CdsPrettierJsonListener implements AsyncFileListener {
                 .distinct()
                 .forEach(project -> {
                     getApplication().invokeLater(() -> {
-                        project.getService(CdsProjectCodeStyleSettingsService.class).updateSettingsFromFile();
+                        project.getService(CdsCodeStyleProjectSettingsService.class).updateSettingsFromFile();
                     });
                 });
         return null;
