@@ -46,6 +46,11 @@ The set of features will grow with future releases, aligned with the development
     <applicationListeners>
         <listener
                 topic="com.intellij.ide.AppLifecycleListener"
+                class="com.sap.cap.cds.intellij.lifecycle.IdeLifecycleListener"
+                activeInHeadlessMode="true" activeInTestMode="true"
+        />
+        <listener
+                topic="com.intellij.ide.AppLifecycleListener"
                 class="com.sap.cap.cds.intellij.textmate.CdsTextMateBundleManager"
                 activeInHeadlessMode="true" activeInTestMode="true"
         />
