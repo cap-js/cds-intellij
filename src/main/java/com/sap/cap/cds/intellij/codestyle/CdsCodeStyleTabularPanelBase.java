@@ -47,11 +47,8 @@ import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.*;
 
 // Mostly copied from {@link com.intellij.application.options.codeStyle.OptionTableWithPreviewPanel}.
 
-// TODO clean up unneeded corners
-
 public abstract class CdsCodeStyleTabularPanelBase extends CustomizableLanguageCodeStylePanel implements CdsCodeStylePanel {
     private static final Logger LOG = Logger.getInstance(CdsCodeStyleTabularPanelBase.class);
-
     private static final KeyStroke ENTER_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
     public final ColumnInfo TITLE = new ColumnInfo("TITLE") {
         @Override
@@ -316,6 +313,8 @@ public abstract class CdsCodeStyleTabularPanelBase extends CustomizableLanguageC
             myOptions.add(new IntOption(option.name, option.label, option.group, option.getAnchor(), option.getAnchorOptionName(), 0, 100, (int) option.defaultValue));
         }
     }
+
+    // TODO enable option searching, cf. CodeStyleAbstractConfigurable
 
     @Override
     public @NotNull Set<String> processListOptions() {
