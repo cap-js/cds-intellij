@@ -179,8 +179,6 @@ tasks.register('patchJavaSrc', Exec) {
     }
 }
 
-// TODO copy before install
-
 tasks.register('copyLsp', Copy) {
     mustRunAfter prepareSandbox
     from './lsp'
