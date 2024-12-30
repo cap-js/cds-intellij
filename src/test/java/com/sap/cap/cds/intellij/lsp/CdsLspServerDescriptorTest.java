@@ -1,26 +1,26 @@
-package com.sap.cap.cds.intellij;
+package com.sap.cap.cds.intellij.lsp;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.intellij.testFramework.fixtures.TempDirTestFixture;
-import com.sap.cap.cds.intellij.lsp.ServerDescriptor;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.regex.Pattern;
-
-import static org.junit.Assert.assertNotEquals;
 
 /*
  * TODO try to write model-level functional tests instead of unit tests (cf. https://plugins.jetbrains.com/docs/intellij/testing-plugins.html)
  */
 
-public class ServerDescriptorTest extends BasePlatformTestCase {
+public class CdsLspServerDescriptorTest extends BasePlatformTestCase {
     public void testCommandLine() {
         Process process = null;
         try {
-            process = new ServerDescriptor(getProject(), "name")
-                    .getCommandLine()
+            process = new CdsLspServerDescriptor(getProject(), "name")
+                    .getServerCommandLine()
                     .createProcess();
         } catch (ExecutionException e) {
             assertNull("unexpected exception", e.getMessage());
@@ -39,7 +39,7 @@ public class ServerDescriptorTest extends BasePlatformTestCase {
         Process process = null;
         GeneralCommandLine commandLine = null;
         try {
-            commandLine = new ServerDescriptor(getProject(), "name").getCommandLine();
+            commandLine = new CdsLspServerDescriptor(getProject(), "name").getServerCommandLine();
         } catch (ExecutionException e) {
             assertNull("unexpected exception", e.getMessage());
         }
@@ -62,21 +62,22 @@ public class ServerDescriptorTest extends BasePlatformTestCase {
 
         // Man-in-the-middle should log stdin data
         String data = "FOO INPUT 01234567890123456789";
-        BufferedWriter mitmStdin = process.outputWriter();
-        mitmStdin.write(data);
-        mitmStdin.flush();
+        try (BufferedWriter mitmStdin = process.outputWriter()) {
+            mitmStdin.write(data);
+            mitmStdin.flush();
+        }
         Thread.sleep(500);
-        String logged = new String(new FileInputStream(logPath).readAllBytes()).replaceAll("\\d{4}-[\\dTZ:.-]+", "NOW");
-        assertTrue(Pattern.compile("> NOW.*" + data).matcher(logged).find());
+        try (FileInputStream stream = new FileInputStream(logPath)) {
+            String logged = new String(stream.readAllBytes()).replaceAll("\\d{4}-[\\dTZ:.-]+", "NOW");
+            assertTrue(Pattern.compile("> NOW.*" + data).matcher(logged).find());
+        }
 
         System.clearProperty("DEBUG");
     }
 
-    // TODO test real initialization of server
-
-    public void testIsSupportedFile() throws IOException {
+    public void testIsSupportedFile() {
         TempDirTestFixture fixture = this.createTempDirTestFixture();
-        ServerDescriptor serverDescriptor = new ServerDescriptor(getProject(), "name");
+        CdsLspServerDescriptor serverDescriptor = new CdsLspServerDescriptor(getProject(), "name");
         assertTrue(serverDescriptor.isSupportedFile(fixture.createFile("a.cds")));
         assertFalse(serverDescriptor.isSupportedFile(fixture.createFile("a.txt")));
     }

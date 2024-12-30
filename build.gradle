@@ -1,5 +1,5 @@
-import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 plugins {
     id 'java'
@@ -35,6 +35,8 @@ dependencies {
     implementation 'org.apache.maven:maven-artifact:3.9.9'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.11.0'
     testCompileOnly 'junit:junit:4.13.2'
+    testCompileOnly 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testCompileOnly 'org.mockito:mockito-core:5.14.2'
 
     intellijPlatform {
         String type = project.findProperty('platformType')
@@ -96,6 +98,10 @@ tasks {
         archiveFileName = project.findProperty('archiveName')
     }
 
+    compileJava {
+        dependsOn 'patchJavaSrc'
+    }
+
     verifyPlugin {
         dependsOn 'copyLsp'
     }
@@ -117,7 +123,7 @@ tasks {
 
 tasks.register('syncSandboxIdeConf', Copy) {
     onlyIf { hasLocalProperties.get() }
-    into "${tasks.named('prepareSandbox_runWebStorm').map{it.defaultDestinationDirectory}.get().get()}/../config"
+    into "${tasks.named('prepareSandbox_runWebStorm').map { it.defaultDestinationDirectory }.get().get()}/../config"
     into('keymaps') {
         from "${project.findProperty('local.ideConfDir')}/keymaps"
     }
@@ -141,22 +147,21 @@ tasks.register('syncSandboxIdeConf', Copy) {
     }
 }
 
-tasks.register('rmLspNodeModules', Delete) {
-    def cdsLspFromTar = provider {
-        return project.findProperty('local.cdsLspFromTar') == 'true'
+tasks.register('rmCdsLspNodeModules', Delete) {
+    def localRmCdsLspNodeModules = provider {
+        return project.findProperty('local.rmCdsLspNodeModules') == 'true'
     }
-    onlyIf { cdsLspFromTar.get() }
-    mustRunAfter prepareSandbox, prepareSandbox_runWebStorm
-    delete 'lsp/node_modules'
+    onlyIf { localRmCdsLspNodeModules.get() }
+    delete 'lsp/node_modules/@sap/cds-lsp'
 }
 
 tasks.register('installLsp', Exec) {
     def noNodeModules = provider {
         // re-evaluated on each gradle run
-        return !file('lsp/node_modules/@sap/cds-lsp').exists() || project.findProperty('local.cdsLspFromTar') == 'true'
+        return !file('lsp/node_modules/@sap/cds-lsp').exists() || project.findProperty('local.rmCdsLspNodeModules') == 'true'
     }
     onlyIf { noNodeModules.get() }
-    dependsOn rmLspNodeModules
+    dependsOn rmCdsLspNodeModules
     workingDir './lsp'
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine 'cmd', '/c', 'npm', 'install', '--no-package-lock'
@@ -165,24 +170,31 @@ tasks.register('installLsp', Exec) {
     }
 }
 
+tasks.register('patchJavaSrc', Exec) {
+    dependsOn installLsp
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', 'node', 'src\\js\\codestyle\\patchJavaSrc.js'
+    } else {
+        commandLine 'sh', '-c', 'src/js/codestyle/patchJavaSrc.js'
+    }
+}
+
 // TODO copy before install
 
 tasks.register('copyLsp', Copy) {
-    dependsOn installLsp
-    mustRunAfter 'buildSearchableOptions'
+    mustRunAfter prepareSandbox
     from './lsp'
-    into "${tasks.named('prepareSandbox').map{it.pluginDirectory}.get().get()}/lib/cds-lsp"
+    into "${tasks.named('prepareSandbox').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
 
 tasks.register('copyLspToRunWebStorm', Copy) {
-    dependsOn installLsp
-    mustRunAfter 'buildSearchableOptions'
+    mustRunAfter prepareSandbox_runWebStorm
     from './lsp'
-    into "${tasks.named('prepareSandbox_runWebStorm').map{it.pluginDirectory}.get().get()}/lib/cds-lsp"
+    into "${tasks.named('prepareSandbox_runWebStorm').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
 
 tasks.register('copyLspToInstrumented', Copy) {
-    dependsOn installLsp
+    mustRunAfter prepareTestSandbox
     from './lsp'
     into './build/instrumented/cds-lsp'
 }
