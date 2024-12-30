@@ -9,8 +9,7 @@ import java.util.List;
 
 import static com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider.SettingsType.*;
 
-// TODO remove T
-public class CdsCodeStyleOption<T> {
+public class CdsCodeStyleOption {
     /**
      * Name of the option (camelCase). Used as configuration key.
      */
@@ -22,7 +21,7 @@ public class CdsCodeStyleOption<T> {
     /**
      * Default value of the option.
      */
-    public final T defaultValue;
+    public final Object defaultValue;
     /**
      * Group within category (sentence case). Used as collapsable section title in UI.
      */
@@ -48,7 +47,7 @@ public class CdsCodeStyleOption<T> {
      */
     public final Type type;
 
-    public CdsCodeStyleOption(String name, Type type, T defaultValue, String label, String group, Category category, @Nullable String parent, @Nullable List<String> children, CdsCodeStyleSettings.Enum... values) {
+    public CdsCodeStyleOption(String name, Type type, Object defaultValue, String label, String group, Category category, @Nullable String parent, @Nullable List<String> children, CdsCodeStyleSettings.Enum... values) {
         this.name = name;
         this.type = type;
         this.label = label;

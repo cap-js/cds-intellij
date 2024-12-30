@@ -15,7 +15,7 @@ import static com.sap.cap.cds.intellij.util.ReflectionUtil.setFieldValue;
 import static java.util.stream.Collectors.toMap;
 
 public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
-    public static final Map<String, CdsCodeStyleOption<?>> OPTIONS = new LinkedHashMap<>();
+    public static final Map<String, CdsCodeStyleOption> OPTIONS = new LinkedHashMap<>();
     public static final Map<Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
 
     public CdsCodeStyleSettingsBase(@NonNls @NotNull String tagName, @NotNull CodeStyleSettings container) {
@@ -26,7 +26,7 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
         return OPTIONS.get(name).values[id].getLabel();
     }
 
-    private static int getEnumId(CdsCodeStyleOption<?> option, String label) {
+    private static int getEnumId(CdsCodeStyleOption option, String label) {
         return Arrays.stream(option.values).filter(v -> v.getLabel().equals(label)).findFirst().orElseThrow().getId();
     }
 
@@ -54,7 +54,7 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
         var map = OPTIONS.entrySet().stream()
                 .map(optionEntry -> {
                     Object value = getValue(optionEntry.getKey());
-                    CdsCodeStyleOption<?> option = optionEntry.getValue();
+                    CdsCodeStyleOption option = optionEntry.getValue();
                     if (!option.defaultValue.equals(value)) {
                         if (option.values.length > 0) {
                             return Map.entry(optionEntry.getKey(), getEnumLabel(optionEntry.getKey(), (int) value));

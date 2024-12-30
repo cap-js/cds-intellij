@@ -14,7 +14,7 @@ import static org.junit.Assert.assertArrayEquals;
 public class CdsCodeStyleOptionTest extends LightPlatformTestCase {
 
     public void testCdsCodeStyleOptionBoolean() {
-        CdsCodeStyleOption<?> option = new CdsCodeStyleOption<>("name", BOOLEAN, false, "label", "group", COMMENTS, "parent", null);
+        CdsCodeStyleOption option = new CdsCodeStyleOption("name", BOOLEAN, false, "label", "group", COMMENTS, "parent", null);
 
         assertEquals(option.children, List.of());
         assertEquals(option.getAnchor(), AFTER);
@@ -22,7 +22,7 @@ public class CdsCodeStyleOptionTest extends LightPlatformTestCase {
     }
 
     public void testCdsCodeStyleOptionEnum() {
-        CdsCodeStyleOption<?> option = new CdsCodeStyleOption<>("name", ENUM, AS_IS, "label", "group", ALIGNMENT, null, null, CdsCodeStyleSettings.CqlKeywordCapitalization.values());
+        CdsCodeStyleOption option = new CdsCodeStyleOption("name", ENUM, AS_IS, "label", "group", ALIGNMENT, null, null, CdsCodeStyleSettings.CqlKeywordCapitalization.values());
 
         assertEquals(option.children, List.of());
         assertNull(option.getAnchor());
@@ -32,7 +32,7 @@ public class CdsCodeStyleOptionTest extends LightPlatformTestCase {
     }
 
     public void testCdsCodeStyleOptionInt() {
-        CdsCodeStyleOption<?> option = new CdsCodeStyleOption<>("name", INT, 0, "label", "group", BLANK_LINES, null, List.of("child1", "child2"));
+        CdsCodeStyleOption option = new CdsCodeStyleOption("name", INT, 0, "label", "group", BLANK_LINES, null, List.of("child1", "child2"));
 
         assertEquals(option.children, List.of("child1", "child2"));
     }

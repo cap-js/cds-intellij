@@ -5,7 +5,7 @@ import java.util.Map;
 public interface CdsCodeStylePanel {
     CdsCodeStyleOption.Category getCategory();
 
-    void addOption(CdsCodeStyleOption<?> option);
+    void addOption(CdsCodeStyleOption option);
 
     void setOptionsEnablement(Map<String, Boolean> enablementMap);
 }

@@ -142,7 +142,7 @@ ${n = `${t}public static final String SAMPLE_SRC = `.length, sample.replace(/^/g
 
 ${t}static {
 ${options.map(opt =>
-    `${t}${t}OPTIONS.put("${opt.name}", new CdsCodeStyleOption<>("${opt.name}", ${opt.type}, ${opt.default}, "${opt.label}", "${opt.group}", ${opt.category}, ` +
+    `${t}${t}OPTIONS.put("${opt.name}", new CdsCodeStyleOption("${opt.name}", ${opt.type}, ${opt.default}, "${opt.label}", "${opt.group}", ${opt.category}, ` +
     `${opt.parent ? `"${opt.parent}"` : 'null'}, List.of(${opt.children?.map(c => `"${c}"`).join(', ') ?? ''})` +
     `${
         opt.values ? ', ' + opt.values.map(v => `${getEnumName(opt.name)}.${getEnumValueName(v)}`).join(', ') : ''
