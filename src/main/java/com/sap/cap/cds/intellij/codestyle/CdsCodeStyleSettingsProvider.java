@@ -62,12 +62,6 @@ public class CdsCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvi
                 .forEach(panel::addOption);
     }
 
-
-    @Override
-    protected void customizeDefaults(@NotNull CommonCodeStyleSettings commonSettings, CommonCodeStyleSettings.@NotNull IndentOptions indentOptions) {
-        // TODO set default values?
-    }
-
     private static class CdsCodeStyleConfigurable extends CodeStyleAbstractConfigurable {
 
         /**
