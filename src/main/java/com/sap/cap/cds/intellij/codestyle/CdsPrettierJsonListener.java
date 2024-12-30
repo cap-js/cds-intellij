@@ -4,9 +4,11 @@ import com.intellij.openapi.project.ProjectLocator;
 import com.intellij.openapi.vfs.AsyncFileListener;
 import com.intellij.openapi.vfs.newvfs.events.VFileContentChangeEvent;
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent;
+import com.sap.cap.cds.intellij.util.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,7 +28,12 @@ public class CdsPrettierJsonListener implements AsyncFileListener {
                 .distinct()
                 .forEach(project -> {
                     getApplication().invokeLater(() -> {
-                        project.getService(CdsCodeStyleProjectSettingsService.class).updateSettingsFromFile();
+                        try {
+                            project.getService(CdsCodeStyleProjectSettingsService.class).updateSettingsFromFile();
+                        } catch (IOException e) {
+                            // TODO project-specific logger
+                            Logger.CODE_STYLE.error("Failed to update code-style settings from file for project [%s]".formatted(project.getName()), e);
+                        }
                     });
                 });
         return null;

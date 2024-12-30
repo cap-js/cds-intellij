@@ -33,20 +33,16 @@ public final class CdsPrettierJsonService {
         }
     }
 
-    public void loadSettingsFromFile(@NotNull CdsCodeStyleSettings settings) {
+    public void loadSettingsFromFile(@NotNull CdsCodeStyleSettings settings) throws IOException {
         if (!jsonFile.exists()) {
             return;
         }
-        try {
-            JSONObject json = new JSONObject(readString(jsonFile.toPath()));
-            settings.loadFrom(json);
-        } catch (IOException e) {
-            Logger.CODE_STYLE.error("Failed to read [%s]".formatted(jsonFile), e);
-        }
+        JSONObject json = new JSONObject(readString(jsonFile.toPath()));
+        settings.loadFrom(json);
     }
 
     public void saveSettingsToFile(@NotNull CdsCodeStyleSettings settings) {
-        String json = settings.getNonDefaultSettings().toString(JSON_INDENT);
+       String json = settings.getNonDefaultSettings().toString(JSON_INDENT);
         if (!json.equals(jsonWritten)) {
             try (FileWriter writer = new FileWriter(jsonFile)) {
                 writer.write(json);
