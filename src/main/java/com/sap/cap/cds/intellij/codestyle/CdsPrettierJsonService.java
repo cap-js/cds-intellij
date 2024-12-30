@@ -1,6 +1,7 @@
 package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.openapi.components.Service;
+import com.intellij.openapi.components.Service.Level;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.sap.cap.cds.intellij.util.Logger;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import static com.intellij.openapi.project.ProjectUtil.guessProjectDir;
 import static java.nio.file.Files.readString;
 
-@Service(Service.Level.PROJECT)
+@Service(Level.PROJECT)
 public final class CdsPrettierJsonService {
 
     public static final String PRETTIER_JSON = ".cdsprettier.json";
@@ -42,7 +43,7 @@ public final class CdsPrettierJsonService {
     }
 
     public void saveSettingsToFile(@NotNull CdsCodeStyleSettings settings) {
-       String json = settings.getNonDefaultSettings().toString(JSON_INDENT);
+        String json = settings.getNonDefaultSettings().toString(JSON_INDENT);
         if (!json.equals(jsonWritten)) {
             try (FileWriter writer = new FileWriter(jsonFile)) {
                 writer.write(json);

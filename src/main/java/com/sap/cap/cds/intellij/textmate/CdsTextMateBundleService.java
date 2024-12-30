@@ -1,33 +1,24 @@
 package com.sap.cap.cds.intellij.textmate;
 
 
-import com.intellij.ide.AppLifecycleListener;
-import com.intellij.ide.plugins.DynamicPluginListener;
-import com.intellij.ide.plugins.IdeaPluginDescriptor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.startup.ProjectActivity;
-import com.intellij.openapi.startup.StartupActivity;
+import com.intellij.openapi.components.Service;
+import com.intellij.openapi.components.Service.Level;
 import com.intellij.util.PathUtil;
-import com.sap.cap.cds.intellij.CdsPlugin;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import com.sap.cap.cds.intellij.util.Logger;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.plugins.textmate.TextMateServiceImpl;
 import org.jetbrains.plugins.textmate.configuration.TextMateUserBundlesSettings;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
+import static com.intellij.util.PathUtil.getJarPathForClass;
 import static com.sap.cap.cds.intellij.util.StackUtil.getCaller;
 import static com.sap.cap.cds.intellij.util.StackUtil.getMethod;
 
-public class CdsTextMateBundleManager implements AppLifecycleListener, /*obsolete*/ StartupActivity, /* replacement*/ ProjectActivity, DynamicPluginListener {
-
-    public static final CdsTextMateBundleManager INSTANCE = new CdsTextMateBundleManager();
+@Service(Level.APP)
+public final class CdsTextMateBundleService {
 
     private volatile Boolean isBundleRegistered = false;
 
@@ -45,7 +36,7 @@ public class CdsTextMateBundleManager implements AppLifecycleListener, /*obsolet
 
     @NotNull
     private static String getBundlePath() {
-        Path thisPath = Paths.get(PathUtil.getJarPathForClass(CdsTextMateBundleManager.class));
+        Path thisPath = Paths.get(getJarPathForClass(CdsTextMateBundleService.class));
         return thisPath
                 .getParent()
                 .resolve(CdsTextMateBundle.RELATIVE_PATH)
@@ -67,40 +58,10 @@ public class CdsTextMateBundleManager implements AppLifecycleListener, /*obsolet
         TextMateServiceImpl.getInstance().reloadEnabledBundles();
     }
 
-    private void unregisterBundle() {
+    public void unregisterBundle() {
         TextMateUserBundlesSettings settings = getBundlesSettings();
         logBundlePresent(settings);
         settings.disableBundle(getBundlePath());
         TextMateServiceImpl.getInstance().reloadEnabledBundles();
-    }
-
-    /**
-     * Overridden listener methods
-     */
-
-    @Override
-    public void appFrameCreated(@NotNull List<String> commandLineArgs) {
-        registerBundle();
-    }
-
-    @Override
-    public void runActivity(@NotNull Project project) {
-        registerBundle();
-    }
-
-    @Nullable
-    @Override
-    public Object execute(@NotNull Project project, @NotNull Continuation<? super Unit> continuation) {
-        registerBundle();
-        return null;
-    }
-
-    @Override
-    public void beforePluginUnload(@NotNull IdeaPluginDescriptor pluginDescriptor, boolean isUpdate) {
-        if (isUpdate || !CdsPlugin.PACKAGE.equals(pluginDescriptor.getPluginId().toString())) {
-            return;
-        }
-
-        unregisterBundle();
     }
 }

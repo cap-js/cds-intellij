@@ -50,28 +50,11 @@ The set of features will grow with future releases, aligned with the development
                 activeInHeadlessMode="true" activeInTestMode="true"
         />
         <listener
-                topic="com.intellij.ide.AppLifecycleListener"
-                class="com.sap.cap.cds.intellij.textmate.CdsTextMateBundleManager"
-                activeInHeadlessMode="true" activeInTestMode="true"
-        />
-        <listener
-                topic="com.intellij.openapi.startup.StartupActivity"
-                class="com.sap.cap.cds.intellij.textmate.CdsTextMateBundleManager"
-                activeInHeadlessMode="true" activeInTestMode="true"
-        />
-        <listener
                 topic="com.intellij.ide.plugins.DynamicPluginListener"
-                class="com.sap.cap.cds.intellij.textmate.CdsTextMateBundleManager"
+                class="com.sap.cap.cds.intellij.lifecycle.PluginLifecycleListener"
                 activeInHeadlessMode="true" activeInTestMode="true"
         />
     </applicationListeners>
-    <projectListeners>
-        <listener
-                topic="com.intellij.openapi.startup.ProjectActivity"
-                class="com.sap.cap.cds.intellij.textmate.CdsTextMateBundleManager"
-                activeInHeadlessMode="true" activeInTestMode="true"
-        />
-    </projectListeners>
 
     <change-notes><![CDATA[ <h3>Added</h3>
 <ul>
