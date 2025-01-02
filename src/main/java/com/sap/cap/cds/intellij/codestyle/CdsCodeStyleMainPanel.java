@@ -7,8 +7,6 @@ import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import org.jetbrains.annotations.NotNull;
 
-import static com.intellij.openapi.application.ApplicationManager.getApplication;
-
 public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
 
     protected CdsCodeStyleMainPanel(CodeStyleSettings currentSettings, @NotNull CodeStyleSettings settings) {
@@ -16,9 +14,8 @@ public class CdsCodeStyleMainPanel extends TabbedLanguageCodeStylePanel {
 
         // Enable saving of code-style settings
         for (Project project : ProjectManager.getInstance().getOpenProjects()) {
-            project.getService(CdsProjectCodeStyleSettingsService.class);
+            project.getService(CdsCodeStyleSettingsService.class);
         }
-        getApplication().getService(CdsDefaultCodeStyleSettingsService.class);
     }
 
     @Override

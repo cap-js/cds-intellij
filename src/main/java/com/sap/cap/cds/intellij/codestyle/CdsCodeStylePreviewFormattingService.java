@@ -16,13 +16,13 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsProvider.SAMPLE_FILE_NAME;
-import static com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonService.PRETTIER_JSON;
+import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsService.PRETTIER_JSON;
 import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.getFormattingCommandLine;
 import static com.sap.cap.cds.intellij.util.FileUtil.createTempDir;
 import static java.nio.file.Files.readString;
 import static java.nio.file.Files.write;
 
-public class CdsPreviewFormattingService implements FormattingService {
+public class CdsCodeStylePreviewFormattingService implements FormattingService {
 
     private static final Map<String, String> formattedByPrettierJson = new HashMap<>();
     private static Path prettierJsonPath;
@@ -30,9 +30,9 @@ public class CdsPreviewFormattingService implements FormattingService {
     private static Path samplePath;
     private static String prettierJson = "{}";
 
-    CdsPreviewFormattingService() {
+    CdsCodeStylePreviewFormattingService() {
         try {
-            tempDir = createTempDir(CdsPreviewFormattingService.class.getName() + "_");
+            tempDir = createTempDir(CdsCodeStylePreviewFormattingService.class.getName() + "_");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
