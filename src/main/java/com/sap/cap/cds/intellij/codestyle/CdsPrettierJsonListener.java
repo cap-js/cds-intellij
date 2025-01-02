@@ -28,11 +28,7 @@ public class CdsPrettierJsonListener implements AsyncFileListener {
                 .distinct()
                 .forEach(project -> {
                     getApplication().invokeLater(() -> {
-                        try {
-                            project.getService(CdsCodeStyleSettingsService.class).updateProjectSettingsFromFile();
-                        } catch (IOException e) {
-                            logger(project.getName()).CODE_STYLE().error("Failed to update code-style settings from file", e);
-                        }
+                        project.getService(CdsCodeStyleSettingsService.class).updateProjectSettingsFromFile();
                     });
                 });
         return null;

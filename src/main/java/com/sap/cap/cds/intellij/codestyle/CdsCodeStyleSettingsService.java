@@ -4,7 +4,6 @@ import com.intellij.application.options.CodeStyle;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettingsChangeEvent;
 import com.intellij.psi.codeStyle.CodeStyleSettingsListener;
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
@@ -36,22 +35,25 @@ public final class CdsCodeStyleSettingsService {
         manager.subscribe(new CodeStyleSettingsListener() {
             @Override
             public void codeStyleSettingsChanged(@NotNull CodeStyleSettingsChangeEvent event) {
-                prettierJsonManager.saveSettingsToFile(getSettings());
+                updateSettingsFile();
             }
         });
+    }
+
+    public boolean isSettingsFilePresent() {
+        return prettierJsonManager.isJsonFilePresent();
     }
 
     public CdsCodeStyleSettings getSettings() {
         return CodeStyle.getSettings(project).getCustomSettings(CdsCodeStyleSettings.class);
     }
 
-    public void updateProjectSettings(CodeStyleSettings settings) {
-        CodeStyle.setMainProjectSettings(project, settings);
+    public void updateSettingsFile() {
         prettierJsonManager.saveSettingsToFile(getSettings());
     }
 
-    public void updateProjectSettingsFromFile() throws IOException {
-        if (CodeStyle.usesOwnSettings(project)) {
+    public void updateProjectSettingsFromFile() {
+        if (CodeStyle.usesOwnSettings(project) && isSettingsFilePresent()) {
             prettierJsonManager.loadSettingsFromFile(getSettings());
         }
     }
@@ -73,11 +75,17 @@ public final class CdsCodeStyleSettingsService {
             }
         }
 
-        void loadSettingsFromFile(@NotNull CdsCodeStyleSettings settings) throws IOException {
-            if (!jsonFile.exists()) {
-                return;
+        boolean isJsonFilePresent() {
+            return jsonFile.exists();
+        }
+
+        void loadSettingsFromFile(@NotNull CdsCodeStyleSettings settings) {
+            JSONObject json = null;
+            try {
+                json = new JSONObject(readString(jsonFile.toPath()));
+            } catch (IOException e) {
+                logger.error("Failed to read [%s]".formatted(jsonFile), e);
             }
-            JSONObject json = new JSONObject(readString(jsonFile.toPath()));
             settings.loadFrom(json);
         }
 
