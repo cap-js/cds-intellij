@@ -26,13 +26,13 @@ public final class CdsCodeStyleSettingsService {
     public static final String PRETTIER_JSON = ".cdsprettier.json";
     private final Project project;
     private final com.intellij.openapi.diagnostic.Logger logger;
-    private final CdsPrettierJsonManager prettierJsonManager = new CdsPrettierJsonManager();
+    private final CdsPrettierJsonManager prettierJsonManager;
 
     public CdsCodeStyleSettingsService(Project project) {
         this.project = project;
         this.logger = logger(project.getName()).CODE_STYLE();
-        CodeStyleSettingsManager manager = CodeStyleSettingsManager.getInstance(project);
-        manager.subscribe(new CodeStyleSettingsListener() {
+        prettierJsonManager = new CdsPrettierJsonManager();
+        CodeStyleSettingsManager.getInstance(project).subscribe(new CodeStyleSettingsListener() {
             @Override
             public void codeStyleSettingsChanged(@NotNull CodeStyleSettingsChangeEvent event) {
                 updateSettingsFile();
