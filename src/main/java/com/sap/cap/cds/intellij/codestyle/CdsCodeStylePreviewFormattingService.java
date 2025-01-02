@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleProjectSettingsService.PRETTIER_JSON;
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsProvider.SAMPLE_FILE_NAME;
+import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsService.PRETTIER_JSON;
 import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.getFormattingCommandLine;
 import static com.sap.cap.cds.intellij.util.FileUtil.createTempDir;
 import static java.nio.file.Files.readString;

@@ -22,14 +22,14 @@ import static java.nio.file.Files.readString;
 // TODO test .cdsprettier.json reading/updating on a project level
 
 @Service(Service.Level.PROJECT)
-public final class CdsCodeStyleProjectSettingsService {
+public final class CdsCodeStyleSettingsService {
 
     public static final String PRETTIER_JSON = ".cdsprettier.json";
     private final Project project;
     private final com.intellij.openapi.diagnostic.Logger logger;
     private final CdsPrettierJsonManager prettierJsonManager = new CdsPrettierJsonManager();
 
-    public CdsCodeStyleProjectSettingsService(Project project) {
+    public CdsCodeStyleSettingsService(Project project) {
         this.project = project;
         this.logger = logger(project.getName()).CODE_STYLE();
         CodeStyleSettingsManager manager = CodeStyleSettingsManager.getInstance(project);
@@ -45,12 +45,12 @@ public final class CdsCodeStyleProjectSettingsService {
         return CodeStyle.getSettings(project).getCustomSettings(CdsCodeStyleSettings.class);
     }
 
-    public void updateSettings(CodeStyleSettings settings) {
+    public void updateProjectSettings(CodeStyleSettings settings) {
         CodeStyle.setMainProjectSettings(project, settings);
         prettierJsonManager.saveSettingsToFile(getSettings());
     }
 
-    public void updateSettingsFromFile() throws IOException {
+    public void updateProjectSettingsFromFile() throws IOException {
         if (CodeStyle.usesOwnSettings(project)) {
             prettierJsonManager.loadSettingsFromFile(getSettings());
         }

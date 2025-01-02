@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
-import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleProjectSettingsService.PRETTIER_JSON;
+import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsService.PRETTIER_JSON;
 import static com.sap.cap.cds.intellij.util.Logger.logger;
 
 // TODO handle file deletion as well
@@ -29,7 +29,7 @@ public class CdsPrettierJsonListener implements AsyncFileListener {
                 .forEach(project -> {
                     getApplication().invokeLater(() -> {
                         try {
-                            project.getService(CdsCodeStyleProjectSettingsService.class).updateSettingsFromFile();
+                            project.getService(CdsCodeStyleSettingsService.class).updateProjectSettingsFromFile();
                         } catch (IOException e) {
                             logger(project.getName()).CODE_STYLE().error("Failed to update code-style settings from file", e);
                         }
