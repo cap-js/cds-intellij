@@ -4,7 +4,6 @@ import com.intellij.openapi.project.ProjectLocator;
 import com.intellij.openapi.vfs.AsyncFileListener;
 import com.intellij.openapi.vfs.newvfs.events.VFileContentChangeEvent;
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent;
-import com.sap.cap.cds.intellij.util.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,6 +13,7 @@ import java.util.Objects;
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
 import static com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonService.PRETTIER_JSON;
+import static com.sap.cap.cds.intellij.util.Logger.logger;
 
 // TODO handle file deletion as well
 
@@ -31,8 +31,7 @@ public class CdsPrettierJsonListener implements AsyncFileListener {
                         try {
                             project.getService(CdsCodeStyleProjectSettingsService.class).updateSettingsFromFile();
                         } catch (IOException e) {
-                            // TODO project-specific logger
-                            Logger.CODE_STYLE.error("Failed to update code-style settings from file for project [%s]".formatted(project.getName()), e);
+                            logger(project.getName()).CODE_STYLE().error("Failed to update code-style settings from file", e);
                         }
                     });
                 });

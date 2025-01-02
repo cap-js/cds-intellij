@@ -3,7 +3,6 @@ package com.sap.cap.cds.intellij.textmate;
 
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.components.Service.Level;
-import com.intellij.util.PathUtil;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import com.sap.cap.cds.intellij.util.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +30,7 @@ public final class CdsTextMateBundleService {
 
     private static void logBundlePresent(TextMateUserBundlesSettings settings) {
         boolean isBundlePresent = settings.getBundles().values().stream().anyMatch(value -> CdsLanguage.LABEL.equals(value.getName()));
-        Logger.PLUGIN.info("TextMate bundle present: " + isBundlePresent);
+        Logger.TM_BUNDLE.info("TextMate bundle present before action: " + isBundlePresent);
     }
 
     @NotNull
