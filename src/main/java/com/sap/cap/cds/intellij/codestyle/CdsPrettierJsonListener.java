@@ -7,13 +7,11 @@ import com.intellij.openapi.vfs.newvfs.events.VFileEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsService.PRETTIER_JSON;
-import static com.sap.cap.cds.intellij.util.Logger.logger;
 
 // TODO handle file deletion as well
 
@@ -28,7 +26,10 @@ public class CdsPrettierJsonListener implements AsyncFileListener {
                 .distinct()
                 .forEach(project -> {
                     getApplication().invokeLater(() -> {
-                        project.getService(CdsCodeStyleSettingsService.class).updateProjectSettingsFromFile();
+                        CdsCodeStyleSettingsService service = project.getService(CdsCodeStyleSettingsService.class);
+                        if (service.isSettingsReallyChanged()) {
+                            service.updateProjectSettingsFromFile();
+                        }
                     });
                 });
         return null;

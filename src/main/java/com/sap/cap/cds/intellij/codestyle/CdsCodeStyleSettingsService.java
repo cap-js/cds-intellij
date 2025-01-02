@@ -44,8 +44,8 @@ public final class CdsCodeStyleSettingsService {
         return prettierJsonManager.isJsonFilePresent();
     }
 
-    public CdsCodeStyleSettings getSettings() {
-        return CodeStyle.getSettings(project).getCustomSettings(CdsCodeStyleSettings.class);
+    public boolean isSettingsReallyChanged() {
+        return prettierJsonManager.isSettingsReallyChanged();
     }
 
     public void updateSettingsFile() {
@@ -56,6 +56,10 @@ public final class CdsCodeStyleSettingsService {
         if (CodeStyle.usesOwnSettings(project) && isSettingsFilePresent()) {
             prettierJsonManager.loadSettingsFromFile(getSettings());
         }
+    }
+
+    private CdsCodeStyleSettings getSettings() {
+        return CodeStyle.getSettings(project).getCustomSettings(CdsCodeStyleSettings.class);
     }
 
     private final class CdsPrettierJsonManager {
@@ -80,13 +84,19 @@ public final class CdsCodeStyleSettingsService {
         }
 
         void loadSettingsFromFile(@NotNull CdsCodeStyleSettings settings) {
-            JSONObject json = null;
+            String json = readJson();
+            if (json != null) {
+                settings.loadFrom(new JSONObject(json));
+            }
+        }
+
+        private String readJson() {
             try {
-                json = new JSONObject(readString(jsonFile.toPath()));
+                return readString(jsonFile.toPath());
             } catch (IOException e) {
                 logger.error("Failed to read [%s]".formatted(jsonFile), e);
             }
-            settings.loadFrom(json);
+            return null;
         }
 
         void saveSettingsToFile(@NotNull CdsCodeStyleSettings settings) {
@@ -109,5 +119,8 @@ public final class CdsCodeStyleSettingsService {
             return file;
         }
 
+        public boolean isSettingsReallyChanged() {
+            return !jsonWritten.equals(readJson());
+        }
     }
 }
