@@ -41,7 +41,9 @@ public final class CdsCodeStyleProjectSettingsService {
     }
 
     public void updateSettingsFromFile() throws IOException {
-        CdsPrettierJsonService prettierJsonService = project.getService(CdsPrettierJsonService.class);
-        prettierJsonService.loadSettingsFromFile(getSettings());
+        if (CodeStyle.usesOwnSettings(project)) {
+            CdsPrettierJsonService prettierJsonService = project.getService(CdsPrettierJsonService.class);
+            prettierJsonService.loadSettingsFromFile(getSettings());
+        }
     }
 }
