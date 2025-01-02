@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
-import static com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonService.PRETTIER_JSON;
+import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleProjectSettingsService.PRETTIER_JSON;
 import static com.sap.cap.cds.intellij.util.Logger.logger;
 
 // TODO handle file deletion as well
