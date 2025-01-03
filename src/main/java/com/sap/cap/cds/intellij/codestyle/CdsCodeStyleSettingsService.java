@@ -71,11 +71,14 @@ public final class CdsCodeStyleSettingsService {
 
         CdsPrettierJsonManager() {
             // assuming no changes to project directory
-            VirtualFile projectDir = guessProjectDir(project);
+            VirtualFile guessed = guessProjectDir(project);
+            String projectDir = guessed != null
+                    ? guessed.getPath()
+                    : project.getBasePath();
             if (projectDir == null) {
                 // TODO handle IDE settings
             } else {
-                jsonFile = getJsonFile(projectDir.getPath());
+                jsonFile = getJsonFile(projectDir);
             }
         }
 
@@ -102,6 +105,10 @@ public final class CdsCodeStyleSettingsService {
         void saveSettingsToFile(@NotNull CdsCodeStyleSettings settings) {
             String json = settings.getNonDefaultSettings().toString(JSON_INDENT);
             if (!json.equals(jsonWritten)) {
+                if (!jsonFile.getParentFile().exists()) {
+                    logger.debug("Directory [%s] does not exist".formatted(jsonFile.getParentFile()));
+                    return;
+                }
                 try (FileWriter writer = new FileWriter(jsonFile)) {
                     writer.write(json);
                     jsonWritten = json;
