@@ -1,5 +1,6 @@
 package com.sap.cap.cds.intellij.util;
 
+import com.intellij.openapi.project.Project;
 import com.sap.cap.cds.intellij.CdsPlugin;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsProvider;
 import com.sap.cap.cds.intellij.textmate.CdsTextMateBundle;
@@ -19,11 +20,11 @@ public class Logger {
 
     private Logger() {}
 
-    Logger(String project) {
-        this.project = " [%s]".formatted(project);
+    Logger(Project project) {
+        this.project = " [%s]".formatted(project.getName());
     }
 
-    public static Logger logger(String project) {
+    public static Logger logger(Project project) {
         return new Logger(project);
     }
 

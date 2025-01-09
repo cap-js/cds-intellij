@@ -2,36 +2,52 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.openapi.project.ProjectLocator;
 import com.intellij.openapi.vfs.AsyncFileListener;
-import com.intellij.openapi.vfs.newvfs.events.VFileContentChangeEvent;
+import com.intellij.openapi.vfs.newvfs.events.VFileCreateEvent;
+import com.intellij.openapi.vfs.newvfs.events.VFileDeleteEvent;
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
+import static com.intellij.openapi.vfs.VfsUtil.collectChildrenRecursively;
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsService.PRETTIER_JSON;
 
-// TODO handle file deletion as well
-
 public class CdsPrettierJsonListener implements AsyncFileListener {
-    @Override
-    public @Nullable ChangeApplier prepareChange(@NotNull List<? extends @NotNull VFileEvent> list) {
-        list.stream()
-                // NOTE this is also triggered by programmatic changes to the file
-                .filter(event -> event instanceof VFileContentChangeEvent && ((VFileContentChangeEvent) event).getFile().getName().equals(PRETTIER_JSON))
-                .map(event -> getApplication().getService(ProjectLocator.class).guessProjectForFile(event.getFile()))
+    private static void handle(Stream<? extends @NotNull VFileEvent> stream) {
+        ProjectLocator projectLocator = getApplication().getService(ProjectLocator.class);
+        stream
+                .flatMap(event -> event instanceof VFileCreateEvent e && e.getFile() != null && e.getFile().isDirectory()
+                        ? collectChildrenRecursively(e.getFile()).stream()
+                        : Stream.of(event.getFile()))
+                .filter(Objects::nonNull)
+                .filter(file -> file.getName().equals(PRETTIER_JSON))
+                .map(projectLocator::guessProjectForFile)
                 .filter(Objects::nonNull)
                 .distinct()
                 .forEach(project -> {
-                    getApplication().invokeLater(() -> {
-                        CdsCodeStyleSettingsService service = project.getService(CdsCodeStyleSettingsService.class);
-                        if (service.isSettingsReallyChanged()) {
-                            service.updateProjectSettingsFromFile();
-                        }
-                    });
+                    CdsCodeStyleSettingsService service = project.getService(CdsCodeStyleSettingsService.class);
+                    if (service.isSettingsReallyChanged()) {
+                        service.updateProjectSettingsFromFile();
+                    }
                 });
-        return null;
+    }
+
+    @Override
+    public @Nullable ChangeApplier prepareChange(@NotNull List<? extends @NotNull VFileEvent> list) {
+        return new ChangeApplier() {
+            @Override
+            public void beforeVfsChange() {
+                handle(list.stream().filter(event -> event instanceof VFileDeleteEvent));
+            }
+
+            @Override
+            public void afterVfsChange() {
+                handle(list.stream().filter(event -> !(event instanceof VFileDeleteEvent)));
+            }
+        };
     }
 }

@@ -110,6 +110,7 @@ tasks {
 
     test {
         dependsOn 'copyLspToInstrumented'
+        exclude '**/*TestBase.class'
     }
 
     jar {

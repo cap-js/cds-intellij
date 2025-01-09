@@ -8,6 +8,7 @@ import com.intellij.psi.codeStyle.CodeStyleSettingsChangeEvent;
 import com.intellij.psi.codeStyle.CodeStyleSettingsListener;
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -17,8 +18,6 @@ import java.io.IOException;
 import static com.intellij.openapi.project.ProjectUtil.guessProjectDir;
 import static com.sap.cap.cds.intellij.util.Logger.logger;
 import static java.nio.file.Files.readString;
-
-// TODO test .cdsprettier.json reading/updating on a project level
 
 @Service(Service.Level.PROJECT)
 public final class CdsCodeStyleSettingsService {
@@ -30,7 +29,7 @@ public final class CdsCodeStyleSettingsService {
 
     public CdsCodeStyleSettingsService(Project project) {
         this.project = project;
-        this.logger = logger(project.getName()).CODE_STYLE();
+        this.logger = logger(project).CODE_STYLE();
         prettierJsonManager = new CdsPrettierJsonManager();
         CodeStyleSettingsManager.getInstance(project).subscribe(new CodeStyleSettingsListener() {
             @Override
@@ -53,8 +52,13 @@ public final class CdsCodeStyleSettingsService {
     }
 
     public void updateProjectSettingsFromFile() {
-        if (CodeStyle.usesOwnSettings(project) && isSettingsFilePresent()) {
-            prettierJsonManager.loadSettingsFromFile(getSettings());
+        if (CodeStyle.usesOwnSettings(project)) {
+            if (isSettingsFilePresent()) {
+                prettierJsonManager.loadSettingsFromFile(getSettings());
+            } else {
+                prettierJsonManager.reset();
+                CodeStyle.setMainProjectSettings(project, CodeStyleSettingsManager.getInstance(project).createSettings());
+            }
         }
     }
 
@@ -75,25 +79,31 @@ public final class CdsCodeStyleSettingsService {
             String projectDir = guessed != null
                     ? guessed.getPath()
                     : project.getBasePath();
-            if (projectDir == null) {
-                // TODO handle IDE settings
-            } else {
+            if (projectDir != null) {
                 jsonFile = getJsonFile(projectDir);
             }
+            reset();
         }
 
         boolean isJsonFilePresent() {
-            return jsonFile.exists();
+            return jsonFile != null && jsonFile.exists();
         }
 
         void loadSettingsFromFile(@NotNull CdsCodeStyleSettings settings) {
             String json = readJson();
             if (json != null) {
-                settings.loadFrom(new JSONObject(json));
+                try {
+                    settings.loadFrom(new JSONObject(json));
+                } catch (JSONException e) {
+                    logger.error("Failed to parse JSON '%s'".formatted(json), e);
+                }
             }
         }
 
         private String readJson() {
+            if (!isJsonFilePresent()) {
+                return null;
+            }
             try {
                 return readString(jsonFile.toPath());
             } catch (IOException e) {
@@ -103,19 +113,27 @@ public final class CdsCodeStyleSettingsService {
         }
 
         void saveSettingsToFile(@NotNull CdsCodeStyleSettings settings) {
-            String json = settings.getNonDefaultSettings().toString(JSON_INDENT);
-            if (!json.equals(jsonWritten)) {
-                if (!jsonFile.getParentFile().exists()) {
-                    logger.debug("Directory [%s] does not exist".formatted(jsonFile.getParentFile()));
-                    return;
-                }
-                try (FileWriter writer = new FileWriter(jsonFile)) {
-                    writer.write(json);
-                    jsonWritten = json;
-                } catch (IOException e) {
-                    logger.error("Failed to write [%s]".formatted(jsonFile), e);
-                }
+            if (jsonFile == null) {
+                return;
             }
+            String json = settings.getNonDefaultSettings().toString(JSON_INDENT);
+            if (json.equals(jsonWritten)) {
+                return;
+            }
+            if (!jsonFile.getParentFile().exists()) {
+                logger.debug("Directory [%s] does not exist".formatted(jsonFile.getParentFile()));
+                return;
+            }
+            try (FileWriter writer = new FileWriter(jsonFile)) {
+                writer.write(json);
+                jsonWritten = json;
+            } catch (IOException e) {
+                logger.error("Failed to write [%s]".formatted(jsonFile), e);
+            }
+        }
+
+        void reset() {
+            jsonWritten = null;
         }
 
         @NotNull File getJsonFile(String projectDir) {
@@ -127,7 +145,7 @@ public final class CdsCodeStyleSettingsService {
         }
 
         public boolean isSettingsReallyChanged() {
-            return !jsonWritten.equals(readJson());
+            return jsonWritten == null || !jsonWritten.equals(readJson());
         }
     }
 }
