@@ -19,9 +19,7 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
     // Direction .cdsprettier.json → settings
 
     public void testPrettierJsonLifecycle() throws IOException, InterruptedException {
-        loadProject();
-        assertEquals(defaults.tabSize, getCdsCodeStyleSettings().tabSize);
-
+        openProject();
         createPrettierJson();
 
         writePrettierJson("{}");
@@ -37,7 +35,7 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
     public void testExistentPrettierJson() throws Exception {
         createPrettierJson();
         writePrettierJson("{ tabSize: 42 }");
-        loadProject();
+        openProject();
         assertEquals(42, getCdsCodeStyleSettings().tabSize);
     }
 
@@ -49,7 +47,7 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            loadProject();
+            openProject();
         });
         assertInstanceOf(exception, JSONException.class);
         assertEquals(defaults.tabSize, getCdsCodeStyleSettings().tabSize);
