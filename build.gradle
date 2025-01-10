@@ -38,7 +38,6 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.11.4'
     testCompileOnly 'junit:junit:4.13.2'
     testCompileOnly 'org.junit.jupiter:junit-jupiter:5.11.4'
-    testCompileOnly 'org.mockito:mockito-core:5.14.2'
 
     intellijPlatform {
         String type = project.findProperty('platformType')
