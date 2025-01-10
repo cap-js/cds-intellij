@@ -4,12 +4,12 @@ import com.intellij.application.options.CodeStyle;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettingsChangeEvent;
 import com.intellij.psi.codeStyle.CodeStyleSettingsListener;
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -39,6 +39,10 @@ public final class CdsCodeStyleSettingsService {
         });
     }
 
+    private static @NotNull CdsCodeStyleSettings getIdeSettings() {
+        return CodeStyle.getDefaultSettings().getCustomSettings(CdsCodeStyleSettings.class);
+    }
+
     public boolean isSettingsFilePresent() {
         return prettierJsonManager.isJsonFilePresent();
     }
@@ -58,6 +62,13 @@ public final class CdsCodeStyleSettingsService {
             } else {
                 prettierJsonManager.reset();
                 CodeStyle.setMainProjectSettings(project, CodeStyleSettingsManager.getInstance(project).createSettings());
+            }
+        } else if (isSettingsFilePresent()) { // deletion of .cdsprettier.json has no effect
+            String prettierJson = prettierJsonManager.readJson();
+            if (prettierJson != null && !getIdeSettings().equals(prettierJson)) {
+                CodeStyleSettings projectSettings = CodeStyleSettingsManager.getInstance().createSettings();
+                projectSettings.getCustomSettings(CdsCodeStyleSettings.class).loadFrom(prettierJson);
+                CodeStyle.setMainProjectSettings(project, projectSettings);
             }
         }
     }
@@ -93,7 +104,7 @@ public final class CdsCodeStyleSettingsService {
             String json = readJson();
             if (json != null) {
                 try {
-                    settings.loadFrom(new JSONObject(json));
+                    settings.loadFrom(json);
                 } catch (JSONException e) {
                     logger.error("Failed to parse JSON '%s'".formatted(json), e);
                 }

@@ -57,6 +57,22 @@ public class CdsCodeStyleSettingsTest extends LightPlatformTestCase {
         }
     }
 
+    public void testEquals() {
+        var settings = new CdsCodeStyleSettings(createTestSettings());
+        String json = settings.getNonDefaultSettings().toString();
+        assertTrue(settings.equals(json));
+        settings.alignTypes = !settings.alignTypes;
+        assertFalse(settings.equals(json));
+    }
+
+    public void testEqualsSameClass() {
+        var settings1 = new CdsCodeStyleSettings(createTestSettings());
+        var settings2 = new CdsCodeStyleSettings(createTestSettings());
+        assertTrue(settings1.equals(settings2));
+        settings1.alignAs = !settings1.alignAs;
+        assertFalse(settings1.equals(settings2));
+    }
+
     public void testChildOptionsEnablement() throws NoSuchFieldException, IllegalAccessException {
         var settings = new CdsCodeStyleSettings(createTestSettings());
         CdsCodeStyleOption.Category category = ALIGNMENT;

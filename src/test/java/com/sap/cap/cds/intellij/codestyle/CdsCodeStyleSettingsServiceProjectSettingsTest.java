@@ -1,7 +1,6 @@
 package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.application.options.CodeStyle;
-import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,12 +17,17 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
         setPerProjectSettings(true);
     }
 
-    // Direction .cdsprettier.json → settings
+    public void testUsesProjectSettings() {
+        openProject();
+        assertTrue(CodeStyle.usesOwnSettings(project));
+    }
 
     public void testDefaultSettings() {
         openProject();
         assertEquals(defaults.tabSize, getCdsCodeStyleSettings().tabSize);
     }
+
+    // Direction .cdsprettier.json → settings
 
     public void testPrettierJsonLifecycle() throws IOException, InterruptedException {
         openProject();

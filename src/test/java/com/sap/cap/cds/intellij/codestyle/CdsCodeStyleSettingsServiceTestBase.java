@@ -43,6 +43,14 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
         prettierJson = projectDir.resolve(PRETTIER_JSON).toFile();
     }
 
+    @Override
+    protected void tearDown() throws Exception {
+        if (project != null) {
+            PlatformTestUtil.forceCloseProjectWithoutSaving(project);
+        }
+        super.tearDown();
+    }
+
     private @NotNull File getTempDirectory() throws IOException {
         File tempDirectory = createTempDirectory();
         refreshVfsForDirAndChildren(tempDirectory.toPath());
@@ -106,6 +114,6 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
 
     @NotNull
     protected CdsCodeStyleSettings getCdsCodeStyleSettings() {
-        return CodeStyle.getProjectOrDefaultSettings(project).getCustomSettings(CdsCodeStyleSettings.class);
+        return CodeStyle.getSettings(project).getCustomSettings(CdsCodeStyleSettings.class);
     }
 }
