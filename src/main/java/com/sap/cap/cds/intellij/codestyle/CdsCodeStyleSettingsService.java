@@ -4,12 +4,12 @@ import com.intellij.application.options.CodeStyle;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettingsChangeEvent;
 import com.intellij.psi.codeStyle.CodeStyleSettingsListener;
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -39,6 +39,10 @@ public final class CdsCodeStyleSettingsService {
         });
     }
 
+    private static @NotNull CdsCodeStyleSettings getIdeSettings() {
+        return CodeStyle.getDefaultSettings().getCustomSettings(CdsCodeStyleSettings.class);
+    }
+
     public boolean isSettingsFilePresent() {
         return prettierJsonManager.isJsonFilePresent();
     }
@@ -59,6 +63,13 @@ public final class CdsCodeStyleSettingsService {
                 prettierJsonManager.reset();
                 CodeStyle.setMainProjectSettings(project, CodeStyleSettingsManager.getInstance(project).createSettings());
             }
+        } else if (isSettingsFilePresent()) { // deletion of .cdsprettier.json has no effect
+            String prettierJson = prettierJsonManager.readJson();
+            if (prettierJson != null && !getIdeSettings().equals(prettierJson)) {
+                CodeStyleSettings projectSettings = CodeStyleSettingsManager.getInstance().createSettings();
+                projectSettings.getCustomSettings(CdsCodeStyleSettings.class).loadFrom(prettierJson);
+                CodeStyle.setMainProjectSettings(project, projectSettings);
+            }
         }
     }
 
@@ -71,7 +82,7 @@ public final class CdsCodeStyleSettingsService {
         static final int JSON_INDENT = 2;
 
         File jsonFile;
-        String jsonWritten;
+        String jsonCached;
 
         CdsPrettierJsonManager() {
             // assuming no changes to project directory
@@ -93,7 +104,7 @@ public final class CdsCodeStyleSettingsService {
             String json = readJson();
             if (json != null) {
                 try {
-                    settings.loadFrom(new JSONObject(json));
+                    settings.loadFrom(json);
                 } catch (JSONException e) {
                     logger.error("Failed to parse JSON '%s'".formatted(json), e);
                 }
@@ -105,7 +116,7 @@ public final class CdsCodeStyleSettingsService {
                 return null;
             }
             try {
-                return readString(jsonFile.toPath());
+                return jsonCached = readString(jsonFile.toPath());
             } catch (IOException e) {
                 logger.error("Failed to read [%s]".formatted(jsonFile), e);
             }
@@ -117,7 +128,7 @@ public final class CdsCodeStyleSettingsService {
                 return;
             }
             String json = settings.getNonDefaultSettings().toString(JSON_INDENT);
-            if (json.equals(jsonWritten)) {
+            if (json.equals(jsonCached)) {
                 return;
             }
             if (!jsonFile.getParentFile().exists()) {
@@ -126,14 +137,14 @@ public final class CdsCodeStyleSettingsService {
             }
             try (FileWriter writer = new FileWriter(jsonFile)) {
                 writer.write(json);
-                jsonWritten = json;
+                jsonCached = json;
             } catch (IOException e) {
                 logger.error("Failed to write [%s]".formatted(jsonFile), e);
             }
         }
 
         void reset() {
-            jsonWritten = null;
+            jsonCached = null;
         }
 
         @NotNull File getJsonFile(String projectDir) {
@@ -145,7 +156,7 @@ public final class CdsCodeStyleSettingsService {
         }
 
         public boolean isSettingsReallyChanged() {
-            return jsonWritten == null || !jsonWritten.equals(readJson());
+            return jsonCached == null || !jsonCached.equals(readJson());
         }
     }
 }

@@ -43,9 +43,17 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
         prettierJson = projectDir.resolve(PRETTIER_JSON).toFile();
     }
 
+    @Override
+    protected void tearDown() throws Exception {
+        if (project != null) {
+            PlatformTestUtil.forceCloseProjectWithoutSaving(project);
+        }
+        super.tearDown();
+    }
+
     private @NotNull File getTempDirectory() throws IOException {
         File tempDirectory = createTempDirectory();
-        refreshVfsFor(tempDirectory);
+        refreshVfsForDirAndChildren(tempDirectory.toPath());
         return tempDirectory;
     }
 
@@ -59,30 +67,44 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        refreshVfsFor(prettierJson);
-    }
-
-    private void refreshVfsFor(File file) {
-        LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file);
-    }
-
-    protected void writePrettierJson(String settings) throws IOException {
-        if (!isPrettierJsonPresent()) {
-            throw new IOException("Invalid test setup: create .cdsprettier.json first");
-        }
-        WriteAction.runAndWait(() -> getVFile(prettierJson).setBinaryContent(settings.getBytes()));
-    }
-
-    private boolean isPrettierJsonPresent() {
-        return prettierJson.exists();
     }
 
     protected void deletePrettierJson() throws IOException {
+        refreshVfsForFile(prettierJson, false);
         WriteAction.runAndWait(() -> getVFile(prettierJson).delete(this));
-        refreshVfsFor(prettierJson);
     }
 
-    protected void loadProject() {
+    protected void writePrettierJson(String settings) throws IOException {
+        if (!prettierJson.exists()) {
+            throw new IOException(".cdsprettier.json does not exist");
+        }
+        refreshVfsForFile(prettierJson, false);
+        WriteAction.runAndWait(() -> getVFile(prettierJson).setBinaryContent(settings.getBytes()));
+    }
+
+    protected String readPrettierJson() throws IOException {
+        if (!prettierJson.exists()) {
+            throw new IOException(".cdsprettier.json does not exist");
+        }
+        refreshVfsForFile(prettierJson, true);
+        return new String(requireNonNull(getVFile(prettierJson).contentsToByteArray()));
+    }
+
+    protected void refreshVfsForFile(File file, boolean includingContent) {
+        VirtualFile vFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file);
+        if (includingContent && vFile != null) {
+            vFile.refresh(false, true);
+        }
+    }
+
+    protected void refreshVfsForDirAndChildren(Path dir) {
+        VirtualFile vFile = LocalFileSystem.getInstance().refreshAndFindFileByNioFile(dir);
+        if (vFile != null) {
+            requireNonNull(vFile).refresh(false, true);
+        }
+    }
+
+    protected void openProject() {
         project = PlatformTestUtil.loadAndOpenProject(projectDir, getTestRootDisposable());
         WriteAction.runAndWait(() -> {
             Module module = ModuleManager.getInstance(project).newModule(projectDir.resolve("test.iml").toString(), "ffo");
@@ -92,6 +114,6 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
 
     @NotNull
     protected CdsCodeStyleSettings getCdsCodeStyleSettings() {
-        return CodeStyle.getProjectOrDefaultSettings(project).getCustomSettings(CdsCodeStyleSettings.class);
+        return CodeStyle.getSettings(project).getCustomSettings(CdsCodeStyleSettings.class);
     }
 }

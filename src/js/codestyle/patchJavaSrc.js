@@ -154,7 +154,7 @@ ${Object.entries(categoryGroups).map(([category, groups]) =>
 ).join('\n')}
 ${t}}
 ${t}public CdsCodeStyleSettings(CodeStyleSettings settings) {
-${t}${t}super("CDSCodeStyleSettings", settings);
+${t}${t}super(settings);
 ${t}}
 
 ${options.map(opt => `${t}public ${opt.fieldType} ${opt.name} = ${opt.default};`).join('\n')}

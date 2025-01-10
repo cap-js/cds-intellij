@@ -1,9 +1,9 @@
 package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.psi.codeStyle.CodeStyleSettings;
+import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
 import com.intellij.psi.codeStyle.CustomCodeStyleSettings;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Category;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
@@ -18,8 +18,8 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
     public static final Map<String, CdsCodeStyleOption> OPTIONS = new LinkedHashMap<>();
     public static final Map<Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
 
-    public CdsCodeStyleSettingsBase(@NonNls @NotNull String tagName, @NotNull CodeStyleSettings container) {
-        super(tagName, container);
+    CdsCodeStyleSettingsBase(@NotNull CodeStyleSettings container) {
+        super("CDSCodeStyleSettings", container);
     }
 
     private static String getEnumLabel(String name, int id) {
@@ -30,7 +30,8 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
         return Arrays.stream(option.values).filter(v -> v.getLabel().equals(label)).findFirst().orElseThrow().getId();
     }
 
-    public void loadFrom(JSONObject json) {
+    public void loadFrom(String prettierJson) {
+        var json = new JSONObject(prettierJson);
         OPTIONS.forEach((name, option) -> {
             if (!json.has(name)) {
                 return;
@@ -48,6 +49,24 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
                 }
             }
         });
+    }
+
+    public boolean equals(String prettierJson) {
+        CodeStyleSettings container = CodeStyleSettingsManager.getInstance().createSettings();
+        CdsCodeStyleSettings other = container.getCustomSettings(CdsCodeStyleSettings.class);
+        other.loadFrom(prettierJson);
+        return this.equals(other);
+    }
+
+    public boolean equals(CdsCodeStyleSettings other) {
+        return OPTIONS.keySet().stream()
+                .allMatch(name -> {
+                    try {
+                        return Objects.equals(getFieldValue(this, name, null), getFieldValue(other, name, null));
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
     }
 
     public JSONObject getNonDefaultSettings() {
