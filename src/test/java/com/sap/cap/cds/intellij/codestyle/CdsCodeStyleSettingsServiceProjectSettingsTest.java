@@ -1,6 +1,10 @@
 package com.sap.cap.cds.intellij.codestyle;
 
+import com.intellij.application.options.CodeStyle;
+import com.intellij.psi.codeStyle.CodeStyleSettings;
+import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -14,14 +18,16 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
         setPerProjectSettings(true);
     }
 
-    // TODO test other direction
-
     // Direction .cdsprettier.json → settings
+
+    public void testDefaultSettings() {
+        openProject();
+        assertEquals(defaults.tabSize, getCdsCodeStyleSettings().tabSize);
+    }
 
     public void testPrettierJsonLifecycle() throws IOException, InterruptedException {
         openProject();
         createPrettierJson();
-
         writePrettierJson("{}");
         assertEquals(defaults.tabSize, getCdsCodeStyleSettings().tabSize);
 
@@ -51,6 +57,21 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
         });
         assertInstanceOf(exception, JSONException.class);
         assertEquals(defaults.tabSize, getCdsCodeStyleSettings().tabSize);
+    }
+
+    // Direction settings → .cdsprettier.json
+
+    public void testCdsPrettierJsonCreation() throws IOException {
+        openProject();
+        assertEquals("{}", readPrettierJson()); // from project settings
+    }
+
+    public void testSettingChanged() throws IOException {
+        openProject();
+        getCdsCodeStyleSettings().tabSize = 42;
+        CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged();
+
+        assertEquals(42, new JSONObject(readPrettierJson()).get("tabSize"));
     }
 
 }

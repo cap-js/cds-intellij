@@ -68,7 +68,7 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
 
     protected void writePrettierJson(String settings) throws IOException {
         if (!prettierJson.exists()) {
-            throw new IOException("Invalid test setup: create .cdsprettier.json first");
+            throw new IOException(".cdsprettier.json does not exist");
         }
         refreshVfsForFile(prettierJson, false);
         WriteAction.runAndWait(() -> getVFile(prettierJson).setBinaryContent(settings.getBytes()));
@@ -76,7 +76,7 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
 
     protected String readPrettierJson() throws IOException {
         if (!prettierJson.exists()) {
-            throw new IOException("Invalid test setup: create .cdsprettier.json first");
+            throw new IOException(".cdsprettier.json does not exist");
         }
         refreshVfsForFile(prettierJson, true);
         return new String(requireNonNull(getVFile(prettierJson).contentsToByteArray()));
