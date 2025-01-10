@@ -11,10 +11,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-/*
- * TODO try to write model-level functional tests instead of unit tests (cf. https://plugins.jetbrains.com/docs/intellij/testing-plugins.html)
- */
-
 public class CdsLspServerDescriptorTest extends BasePlatformTestCase {
     public void testCommandLine() {
         Process process = null;
