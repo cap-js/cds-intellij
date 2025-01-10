@@ -14,6 +14,10 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
         setPerProjectSettings(true);
     }
 
+    // TODO test other direction
+
+    // Direction .cdsprettier.json → settings
+
     public void testPrettierJsonLifecycle() throws IOException, InterruptedException {
         loadProject();
         assertEquals(defaults.tabSize, getCdsCodeStyleSettings().tabSize);
