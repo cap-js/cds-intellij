@@ -144,7 +144,7 @@ public class CdsCodeStyleSettings extends CdsCodeStyleSettingsBase {
         CATEGORY_GROUPS.put(Category.OTHER, Set.of("Other"));
     }
     public CdsCodeStyleSettings(CodeStyleSettings settings) {
-        super("CDSCodeStyleSettings", settings);
+        super(settings);
     }
 
     public boolean alignActionNames = true;

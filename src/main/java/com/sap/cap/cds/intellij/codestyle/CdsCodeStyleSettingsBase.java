@@ -18,8 +18,8 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
     public static final Map<String, CdsCodeStyleOption> OPTIONS = new LinkedHashMap<>();
     public static final Map<Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
 
-    public CdsCodeStyleSettingsBase(@NonNls @NotNull String tagName, @NotNull CodeStyleSettings container) {
-        super(tagName, container);
+    CdsCodeStyleSettingsBase(@NotNull CodeStyleSettings container) {
+        super("CDSCodeStyleSettings", container);
     }
 
     private static String getEnumLabel(String name, int id) {
