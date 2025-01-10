@@ -71,7 +71,7 @@ public final class CdsCodeStyleSettingsService {
         static final int JSON_INDENT = 2;
 
         File jsonFile;
-        String jsonWritten;
+        String jsonCached;
 
         CdsPrettierJsonManager() {
             // assuming no changes to project directory
@@ -105,7 +105,7 @@ public final class CdsCodeStyleSettingsService {
                 return null;
             }
             try {
-                return readString(jsonFile.toPath());
+                return jsonCached = readString(jsonFile.toPath());
             } catch (IOException e) {
                 logger.error("Failed to read [%s]".formatted(jsonFile), e);
             }
@@ -117,7 +117,7 @@ public final class CdsCodeStyleSettingsService {
                 return;
             }
             String json = settings.getNonDefaultSettings().toString(JSON_INDENT);
-            if (json.equals(jsonWritten)) {
+            if (json.equals(jsonCached)) {
                 return;
             }
             if (!jsonFile.getParentFile().exists()) {
@@ -126,14 +126,14 @@ public final class CdsCodeStyleSettingsService {
             }
             try (FileWriter writer = new FileWriter(jsonFile)) {
                 writer.write(json);
-                jsonWritten = json;
+                jsonCached = json;
             } catch (IOException e) {
                 logger.error("Failed to write [%s]".formatted(jsonFile), e);
             }
         }
 
         void reset() {
-            jsonWritten = null;
+            jsonCached = null;
         }
 
         @NotNull File getJsonFile(String projectDir) {
@@ -145,7 +145,7 @@ public final class CdsCodeStyleSettingsService {
         }
 
         public boolean isSettingsReallyChanged() {
-            return jsonWritten == null || !jsonWritten.equals(readJson());
+            return jsonCached == null || !jsonCached.equals(readJson());
         }
     }
 }
