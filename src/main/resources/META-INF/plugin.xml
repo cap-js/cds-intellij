@@ -59,15 +59,20 @@ The set of features will grow with future releases, aligned with the development
 
     <change-notes><![CDATA[ <h3>Added</h3>
 <ul>
-    <li>CDS Formatting Options can now be configured under Settings > Editor > Code Style > CDS. Options depending on a switched-off option are disabled.</li>
+    <li>CDS Formatting Options can now be configured under Settings > Editor > Code Style > CDS.
+        <ul>
+            <li>A .cdsprettier.json file in the project root is kept in sync with the options for consumption by the cds-lsp server.
+            <li>Options depending on a switched-off option are disabled.
+        </ul>
+    </li>
 </ul>
 <h3>Changed</h3>
 <ul>
     <li>include @sap/cds-lsp 8.5.1 with the following changes since 8.4.3:
         <ul>
-            <li> enabling `newParser` via `cds.env` will no longer interfere with language server
-            <li> improved telemetry messages
-            <li> With `@sap/cds 8.5.0` one of the default locations for translation folders (`assets/i18n`) was removed
+            <li>enabling `newParser` via `cds.env` will no longer interfere with language server
+            <li>improved telemetry messages
+            <li>With `@sap/cds 8.5.0` one of the default locations for translation folders (`assets/i18n`) was removed
         </ul>
     </li>
 </ul> ]]></change-notes>
