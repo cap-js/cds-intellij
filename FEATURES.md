@@ -1,6 +1,7 @@
 ## Features
 
-The [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-server-protocol.html#supported-features) already enables a set of useful language features:
+The [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-server-protocol.html#supported-features)
+already enables a set of useful language features:
 
 | Feature                  | API Support | Server Support | LSP Request                     | Remarks                                                                                        |
 |--------------------------|:-----------:|:--------------:|---------------------------------|------------------------------------------------------------------------------------------------|
@@ -13,7 +14,7 @@ The [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-serv
 | Quick Fixes              |      ✔      |       ✔        | textDocument/codeAction         |                                                                                                |
 | Intention Actions        |      ✔      |       –        | textDocument/codeAction         | E.g. Refactoring or Organize Imports. No server support yet.                                   |
 | Find References          |      ✔      |       ✔        | textDocument/references         |                                                                                                |
-| Semantic Tokens          |      –      |       ✔        | textDocument/semanticTokens     | Improved highlighting: server dynamically assigns token semantics.                             |
+| Semantic Tokens          |      ✔      |       ✔        | textDocument/semanticTokens     | Improved highlighting: server dynamically assigns token semantics.                             |
 | Document Highlights etc. |      –      |       ✔        | (various)                       | Requested by us, ETA unclear.                                                                  |
 
 ### Examples
@@ -42,11 +43,11 @@ The [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-serv
 
 ![Demo of Document Formatting (after)](.assets/document_formatting2.png)
 
-
 ### Upcoming
 
 Depending on the IntelliJ platform development roadmap, we expect to see more features available in the near future.
 These will enable *SAP CDS Language Support for IntelliJ* to provide:
+
 - Code structure
 - Highlighting of occurrences in same file
 - Navigation via import path or symbol name
