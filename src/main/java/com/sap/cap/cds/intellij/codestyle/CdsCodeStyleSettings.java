@@ -145,6 +145,9 @@ public class CdsCodeStyleSettings extends CdsCodeStyleSettingsBase {
     }
     public CdsCodeStyleSettings(CodeStyleSettings settings) {
         super(settings);
+        settings.initIndentOptions();
+        settings.getIndentOptions().INDENT_SIZE = this.tabSize;
+        settings.getIndentOptions().USE_TAB_CHARACTER = false;
     }
 
     public boolean alignActionNames = true;

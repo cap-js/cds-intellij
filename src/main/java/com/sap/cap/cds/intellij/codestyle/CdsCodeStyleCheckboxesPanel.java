@@ -78,6 +78,7 @@ public class CdsCodeStyleCheckboxesPanel extends OptionTreeWithPreviewPanel impl
         super.apply(settings); // Applies settings from UI to the settings object
         CdsCodeStyleSettings cdsSettings = settings.getCustomSettings(CdsCodeStyleSettings.class);
         setOptionsEnablement(cdsSettings.getChildOptionsEnablement(category));
+        settings.getIndentOptions().INDENT_SIZE = cdsSettings.tabSize;
         CdsCodeStylePreviewFormattingService.acceptSettings(cdsSettings);
     }
 

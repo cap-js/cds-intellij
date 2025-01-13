@@ -135,6 +135,7 @@ const options = Object.entries(optsFromSchema)
 
 const t = '    ';
 
+// START CLASS BODY
 const classBody = `
 ${t}public static final String SAMPLE_SRC = """
 ${n = `${t}public static final String SAMPLE_SRC = `.length, sample.replace(/^/gm, ' '.repeat(n))}
@@ -155,6 +156,9 @@ ${Object.entries(categoryGroups).map(([category, groups]) =>
 ${t}}
 ${t}public CdsCodeStyleSettings(CodeStyleSettings settings) {
 ${t}${t}super(settings);
+${t}${t}settings.initIndentOptions();
+${t}${t}settings.getIndentOptions().INDENT_SIZE = this.tabSize;
+${t}${t}settings.getIndentOptions().USE_TAB_CHARACTER = false;
 ${t}}
 
 ${options.map(opt => `${t}public ${opt.fieldType} ${opt.name} = ${opt.default};`).join('\n')}
@@ -167,6 +171,7 @@ ${t}${t}int getId();
 ${t}}
 
 `;
+// END CLASS BODY
 
 const patchedSrc = src.replace(
     /(?<=public class CdsCodeStyleSettings [\w ]*\{\n).*(?=^})/sm,
