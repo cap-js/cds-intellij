@@ -185,12 +185,12 @@ public abstract class CdsCodeStyleTabularPanelBase extends CustomizableLanguageC
         };
         myPanel.add(scrollPane
                 , new GridBagConstraints(0, 0, 1, 1, 0, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        JBInsets.emptyInsets(), 0, 0));
+                        new JBInsets(0, 0, 0, 0), 0, 0));
 
         final JPanel previewPanel = createPreviewPanel();
         myPanel.add(previewPanel,
                 new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        JBInsets.emptyInsets(), 0, 0));
+                        new JBInsets(0, 0, 0, 0), 0, 0));
 
         installPreviewPanel(previewPanel);
         addPanelToWatch(myPanel);
