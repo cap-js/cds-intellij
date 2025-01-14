@@ -1,7 +1,6 @@
 package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.testFramework.LightPlatformTestCase;
-import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -40,26 +39,18 @@ public class CdsCodeStyleSettingsTest extends LightPlatformTestCase {
 
     public void testGetNonDefaultSettings() throws NoSuchFieldException, IllegalAccessException {
         var settings = new CdsCodeStyleSettings(createTestSettings());
-        JSONObject json;
+        assertEquals("{}", settings.getNonDefaultSettings());
 
-        {
-            json = settings.getNonDefaultSettings();
-            assertEquals(0, json.length());
-        }
-
-        {
-            var firstBooleanOption = CdsCodeStyleSettings.OPTIONS.values().stream()
-                    .filter(option -> option.type == CdsCodeStyleOption.Type.BOOLEAN)
-                    .findFirst().orElseThrow();
-            setFieldValue(settings, firstBooleanOption.name, !(boolean) firstBooleanOption.defaultValue);
-            json = settings.getNonDefaultSettings();
-            assertEquals(1, json.length());
-        }
+        var firstBooleanOption = CdsCodeStyleSettings.OPTIONS.values().stream()
+                .filter(option -> option.type == CdsCodeStyleOption.Type.BOOLEAN)
+                .findFirst().orElseThrow();
+        setFieldValue(settings, firstBooleanOption.name, !(boolean) firstBooleanOption.defaultValue);
+        assertTrue(settings.getNonDefaultSettings().length() > 2);
     }
 
     public void testEquals() {
         var settings = new CdsCodeStyleSettings(createTestSettings());
-        String json = settings.getNonDefaultSettings().toString();
+        String json = settings.getNonDefaultSettings();
         assertTrue(settings.equals(json));
         settings.alignTypes = !settings.alignTypes;
         assertFalse(settings.equals(json));

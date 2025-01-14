@@ -42,7 +42,7 @@ public class CdsCodeStylePreviewFormattingService implements FormattingService {
     }
 
     public static void acceptSettings(CdsCodeStyleSettings settings) {
-        prettierJson = settings.getNonDefaultSettings().toString();
+        prettierJson = settings.getNonDefaultSettings();
     }
 
     private static void resetSampleSrc() {

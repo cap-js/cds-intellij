@@ -67,7 +67,7 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
 
     public void testCdsPrettierJsonCreation() throws IOException {
         openProject();
-        assertEquals(defaults.toJSONObject().toString().replaceAll("\\s", ""), readPrettierJson().replaceAll("\\s", ""));
+        assertEquals(defaults.toJSON().replaceAll("\\s", ""), readPrettierJson().replaceAll("\\s", ""));
     }
 
     public void testSettingChanged() throws IOException {
