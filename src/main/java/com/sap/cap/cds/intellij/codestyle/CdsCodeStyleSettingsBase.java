@@ -78,6 +78,13 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
         return new JSONObject(map);
     }
 
+    public JSONObject toJSONObject() {
+        var map = OPTIONS.values().stream()
+                .map(this::getEntry)
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return new JSONObject(map);
+    }
+
     private Map.Entry<String, ?> getEntry(CdsCodeStyleOption option) {
         Object value = getValue(option.name);
         return option.type == ENUM

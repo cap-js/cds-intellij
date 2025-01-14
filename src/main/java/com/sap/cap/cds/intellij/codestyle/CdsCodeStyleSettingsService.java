@@ -127,7 +127,7 @@ public final class CdsCodeStyleSettingsService {
             if (jsonFile == null) {
                 return;
             }
-            String json = settings.getNonDefaultSettings().toString(JSON_INDENT);
+            String json = settings.toJSONObject().toString(JSON_INDENT);
             if (json.equals(jsonCached)) {
                 return;
             }
