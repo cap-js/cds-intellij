@@ -20,7 +20,6 @@ public class CdsCodeStyleTabularPanel extends CdsCodeStyleTabularPanelBase imple
         super(settings);
         this.category = category;
         init();
-
         getEditor().getSettings().setRightMarginShown(false);
     }
 

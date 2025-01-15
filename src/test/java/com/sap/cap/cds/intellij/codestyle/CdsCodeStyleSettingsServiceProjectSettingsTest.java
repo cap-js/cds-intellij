@@ -67,7 +67,7 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
 
     public void testCdsPrettierJsonCreation() throws IOException {
         openProject();
-        assertEquals("{}", readPrettierJson()); // from project settings
+        assertEquals(defaults.toJSON(), readPrettierJson());
     }
 
     public void testSettingChanged() throws IOException {
@@ -76,6 +76,14 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
         CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged();
 
         assertEquals(42, new JSONObject(readPrettierJson()).get("tabSize"));
+    }
+
+    public void testCompletesPartialPrettierJson() throws IOException {
+        createPrettierJson();
+        writePrettierJson("{ tabSize: 1 }");
+        openProject();
+        CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged();
+        assertTrue(readPrettierJson().split("\n").length >= CdsCodeStyleSettings.OPTIONS.size() + 2);
     }
 
 }

@@ -79,8 +79,6 @@ public final class CdsCodeStyleSettingsService {
 
     private final class CdsPrettierJsonManager {
 
-        static final int JSON_INDENT = 2;
-
         File jsonFile;
         String jsonCached;
 
@@ -127,7 +125,7 @@ public final class CdsCodeStyleSettingsService {
             if (jsonFile == null) {
                 return;
             }
-            String json = settings.getNonDefaultSettings().toString(JSON_INDENT);
+            String json = settings.toJSON();
             if (json.equals(jsonCached)) {
                 return;
             }

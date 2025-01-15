@@ -10,8 +10,10 @@ import org.json.JSONObject;
 import java.util.*;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.BOOLEAN;
+import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.ENUM;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.getFieldValue;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.setFieldValue;
+import static com.sap.cap.cds.intellij.util.StringUtil.toSortedString;
 import static java.util.stream.Collectors.toMap;
 
 public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
@@ -69,22 +71,26 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
                 });
     }
 
-    public JSONObject getNonDefaultSettings() {
-        var map = OPTIONS.entrySet().stream()
-                .map(optionEntry -> {
-                    Object value = getValue(optionEntry.getKey());
-                    CdsCodeStyleOption option = optionEntry.getValue();
-                    if (!option.defaultValue.equals(value)) {
-                        if (option.values.length > 0) {
-                            return Map.entry(optionEntry.getKey(), getEnumLabel(optionEntry.getKey(), (int) value));
-                        }
-                        return Map.entry(optionEntry.getKey(), value);
-                    }
-                    return null;
-                })
-                .filter(Objects::nonNull)
+    public String getNonDefaultSettings() {
+        var map = OPTIONS.values().stream()
+                .filter(option -> !option.defaultValue.equals(getValue(option.name)))
+                .map(this::getEntry)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-        return new JSONObject(map);
+        return toSortedString(new JSONObject(map));
+    }
+
+    public String toJSON() {
+        var map = OPTIONS.values().stream()
+                .map(this::getEntry)
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return toSortedString(new JSONObject(map));
+    }
+
+    private Map.Entry<String, ?> getEntry(CdsCodeStyleOption option) {
+        Object value = getValue(option.name);
+        return option.type == ENUM
+                ? Map.entry(option.name, getEnumLabel(option.name, (int) value))
+                : Map.entry(option.name, value);
     }
 
     private Object getValue(String name) {
