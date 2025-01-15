@@ -45,7 +45,13 @@ public class CdsCodeStyleSettingsTest extends LightPlatformTestCase {
                 .filter(option -> option.type == CdsCodeStyleOption.Type.BOOLEAN)
                 .findFirst().orElseThrow();
         setFieldValue(settings, firstBooleanOption.name, !(boolean) firstBooleanOption.defaultValue);
-        assertTrue(settings.getNonDefaultSettings().length() > 2);
+        assertTrue(settings.getNonDefaultSettings().contains(firstBooleanOption.name));
+    }
+
+    public void testToJSON() {
+        var settings = new CdsCodeStyleSettings(createTestSettings());
+        String json = settings.toJSON();
+        assertTrue(json.split("\n").length >= CdsCodeStyleSettings.OPTIONS.size() + 2);
     }
 
     public void testEquals() {
