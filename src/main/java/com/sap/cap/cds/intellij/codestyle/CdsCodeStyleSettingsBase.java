@@ -11,9 +11,9 @@ import java.util.*;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.BOOLEAN;
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.ENUM;
+import static com.sap.cap.cds.intellij.util.JsonUtil.toSortedString;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.getFieldValue;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.setFieldValue;
-import static com.sap.cap.cds.intellij.util.StringUtil.toSortedString;
 import static java.util.stream.Collectors.toMap;
 
 public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
