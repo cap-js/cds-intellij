@@ -18,8 +18,9 @@ public class JsonUtil {
     // JSONObject.toString() does not guarantee the order of keys
     public static String toSortedString(JSONObject jsonObject) {
         String string = jsonObject.toString(StringUtil.JSON_INDENT);
-        if (string.trim().matches("\\{\\s*}")) {
-            return "{}"; // avoid unnecessary blank lines between braces
+        if (string.trim().matches("\\{\\s*[^,]*}")) {
+            // 0 to 1 entries
+            return string;
         }
         return "{\n" +
                 Stream.of(string.split(",?\n"))
@@ -29,6 +30,13 @@ public class JsonUtil {
                         .orElse("")
                         .replaceFirst("\\s+$", "")
                 + "\n}";
-
     }
+
+    public static boolean isJsonEqual(String json1, String json2) {
+        if ("".equals(json1) ^ "".equals(json2)) {
+            return false;
+        }
+        return new JSONObject(json1).similar(new JSONObject(json2));
+    }
+
 }
