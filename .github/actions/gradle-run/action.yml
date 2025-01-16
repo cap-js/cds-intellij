@@ -10,19 +10,6 @@ runs:
   using: composite
 
   steps:
-    - name: Set Home and Gradle User Home
-      shell: bash
-      run: |
-        echo "HOME=/github/home" >> $GITHUB_ENV
-        echo "GRADLE_USER_HOME=~/.gradle" >> $GITHUB_ENV
-
-    - name: Debug Paths
-      shell: bash
-      run: |
-        echo "Current User: $(whoami)"
-        echo "Home Directory: $HOME"
-        echo "Gradle User Home: $GRADLE_USER_HOME"
-
     - name: Install fontconfig
       # required for headless gradle
       run: |
@@ -46,9 +33,9 @@ runs:
       uses: actions/cache@v3
       with:
         path: |
-          ~/.gradle/caches/modules-2
-          ~/.gradle/caches/build-cache-1
-          ~/.gradle/wrapper
+          /root/.gradle/caches/modules-2
+          /root/.gradle/caches/build-cache-1
+          /root/.gradle/wrapper
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', 'gradle.properties', 'settings.gradle') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
