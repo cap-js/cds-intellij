@@ -29,14 +29,15 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
 
     // Direction .cdsprettier.json → settings
 
-    public void testPrettierJsonLifecycle() throws IOException, InterruptedException {
+    public void testPrettierJsonLifecycle() throws IOException {
         openProject();
         createPrettierJson();
         writePrettierJson("{}");
         assertEquals(defaults.tabSize, getCdsCodeStyleSettings().tabSize);
 
-        writePrettierJson("{ tabSize: 42 }");
+        writePrettierJson("{ \"tabSize\": %d, \"alignAs\": %b }".formatted(42, !defaults.alignAs));
         assertEquals(42, getCdsCodeStyleSettings().tabSize);
+        assertEquals(!defaults.alignAs, getCdsCodeStyleSettings().alignAs);
 
         deletePrettierJson();
         assertEquals(defaults.tabSize, getCdsCodeStyleSettings().tabSize);
@@ -47,6 +48,16 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
         writePrettierJson("{ tabSize: 42 }");
         openProject();
         assertEquals(42, getCdsCodeStyleSettings().tabSize);
+    }
+
+    public void testDoNotReformatExistingPrettierJsonIfNoChanges() throws Exception {
+        createPrettierJson();
+        String json = "{ \"tabSize\": 19, \"alignAs\": true }";
+        writePrettierJson(json);
+        openProject();
+
+        CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged();
+        assertEquals(json, readPrettierJson());
     }
 
     public void testInvalidPrettierJson() {

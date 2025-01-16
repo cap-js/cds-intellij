@@ -49,8 +49,8 @@ public final class CdsCodeStyleSettingsService {
         return prettierJsonManager.isJsonFilePresent();
     }
 
-    public boolean isSettingsReallyChanged() {
-        return prettierJsonManager.isSettingsReallyChanged();
+    public boolean isSettingsFileChanged() {
+        return prettierJsonManager.isSettingsFileChanged();
     }
 
     public void updateSettingsFile() {
@@ -128,14 +128,14 @@ public final class CdsCodeStyleSettingsService {
             if (jsonFile == null) {
                 return;
             }
-            String json = settings.toJSON();
-            if (json.equals(jsonCached)) {
-                return;
-            }
             if (!jsonFile.getParentFile().exists()) {
                 logger.debug("Directory [%s] does not exist".formatted(jsonFile.getParentFile()));
                 return;
             }
+            if (settings.equals(jsonCached)) {
+                return;
+            }
+            String json = settings.toJSON();
             try (FileWriter writer = new FileWriter(jsonFile)) {
                 writer.write(json);
                 jsonCached = json;
@@ -156,8 +156,8 @@ public final class CdsCodeStyleSettingsService {
             return file;
         }
 
-        public boolean isSettingsReallyChanged() {
-            return jsonCached == null || !jsonCached.equals(readJson());
+        public boolean isSettingsFileChanged() {
+            return !isJsonEqual(jsonCached, readJson());
         }
     }
 }
