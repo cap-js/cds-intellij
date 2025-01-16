@@ -23,6 +23,16 @@ runs:
         echo "Home Directory: $HOME"
         echo "Gradle User Home: $GRADLE_USER_HOME"
 
+    - name: Install fontconfig
+      # required for headless gradle
+      run: |
+        apt-get -y update
+        apt-get -y install fontconfig
+      shell: bash
+      env:
+        DEBIAN_FRONTEND: noninteractive
+        TZ: Etc/UTC
+
     - uses: actions/setup-node@v4
       with:
         node-version: 20
