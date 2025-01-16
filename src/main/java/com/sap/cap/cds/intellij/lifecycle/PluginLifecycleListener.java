@@ -15,13 +15,11 @@ public class PluginLifecycleListener implements DynamicPluginListener {
         getApplication().getService(CdsTextMateBundleService.class).registerBundle();
     }
 
-    // TODO also on plugin disablement
     @Override
     public void beforePluginUnload(@NotNull IdeaPluginDescriptor pluginDescriptor, boolean isUpdate) {
-        if (!CdsPlugin.PACKAGE.equals(pluginDescriptor.getPluginId().toString())) {
+        if (!CdsPlugin.ID.equals(pluginDescriptor.getPluginId().toString())) {
             return;
         }
-
         getApplication().getService(CdsTextMateBundleService.class).unregisterBundle();
     }
 

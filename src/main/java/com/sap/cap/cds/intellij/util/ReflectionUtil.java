@@ -41,8 +41,7 @@ public class ReflectionUtil {
                         changedChildIndexes.add(i);
                     }
                 } catch (NoSuchFieldException | IllegalAccessException e) {
-                    // TODO logging
-                    e.printStackTrace();
+                    Logger.PLUGIN.error(e);
                 }
             } else {
                 setNodesEnablement(child, model, enablementMap);
