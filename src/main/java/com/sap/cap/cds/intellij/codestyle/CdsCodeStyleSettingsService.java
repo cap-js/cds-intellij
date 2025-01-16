@@ -132,6 +132,9 @@ public final class CdsCodeStyleSettingsService {
                 logger.debug("Directory [%s] does not exist".formatted(jsonFile.getParentFile()));
                 return;
             }
+            if (!jsonFile.exists() && settings.isDefault()) {
+                return;
+            }
             if (!jsonCached.isEmpty() && settings.equals(jsonCached)) {
                 return;
             }

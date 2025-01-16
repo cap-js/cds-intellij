@@ -25,7 +25,7 @@ import static java.util.Objects.requireNonNull;
 public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
     protected CdsCodeStyleSettings defaults;
     protected Project project;
-    private File prettierJson;
+    protected File prettierJson;
     private Path projectDir;
     private VirtualFile projectDirVFile;
 

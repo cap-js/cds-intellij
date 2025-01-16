@@ -67,15 +67,16 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
 
     // Direction settings → .cdsprettier.json
 
-    public void testCdsPrettierJsonCreation() throws IOException {
+    public void testProjectOpenedWithDefaultSettings_noCdsPrettierJsonCreation() throws IOException {
         openProject();
-        assertTrue(isJsonEqual("{}", readPrettierJson()));
+        assertFalse(prettierJson.exists());
     }
 
     public void testSettingChanged() throws IOException {
         openProject();
         getCdsCodeStyleSettings().tabSize = 42;
         CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged();
+        assertTrue(prettierJson.exists());
         assertEquals(42, new JSONObject(readPrettierJson()).get("tabSize"));
     }
 
@@ -92,7 +93,7 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
         assertTrue(isJsonEqual(expected, readPrettierJson()));
     }
 
-    public void testDoNotReformatExistingPrettierJsonIfNoChanges() throws Exception {
+    public void testNoChanges_doNotReformatExistingPrettierJson() throws Exception {
         createPrettierJson();
         String json = "{ \"tabSize\": 19, \"alignAs\": true }";
         writePrettierJson(json);

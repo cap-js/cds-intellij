@@ -75,6 +75,11 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
                 });
     }
 
+    public boolean isDefault() {
+        return OPTIONS.values().stream()
+                .allMatch(option -> option.defaultValue.equals(getValue(option.name)));
+    }
+
     public String getNonDefaultSettings() {
         var map = OPTIONS.values().stream()
                 .filter(option -> !option.defaultValue.equals(getValue(option.name)))
