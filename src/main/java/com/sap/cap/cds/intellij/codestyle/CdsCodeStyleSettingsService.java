@@ -2,6 +2,7 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.application.options.CodeStyle;
 import com.intellij.openapi.components.Service;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
@@ -16,6 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import static com.intellij.openapi.project.ProjectUtil.guessProjectDir;
+import static com.sap.cap.cds.intellij.util.JsonUtil.isJsonEqual;
 import static com.sap.cap.cds.intellij.util.Logger.logger;
 import static java.nio.file.Files.readString;
 
@@ -24,7 +26,7 @@ public final class CdsCodeStyleSettingsService {
 
     public static final String PRETTIER_JSON = ".cdsprettier.json";
     private final Project project;
-    private final com.intellij.openapi.diagnostic.Logger logger;
+    private final Logger logger;
     private final CdsPrettierJsonManager prettierJsonManager;
 
     public CdsCodeStyleSettingsService(Project project) {
@@ -47,8 +49,8 @@ public final class CdsCodeStyleSettingsService {
         return prettierJsonManager.isJsonFilePresent();
     }
 
-    public boolean isSettingsReallyChanged() {
-        return prettierJsonManager.isSettingsReallyChanged();
+    public boolean isSettingsFileChanged() {
+        return prettierJsonManager.isSettingsFileChanged();
     }
 
     public void updateSettingsFile() {
@@ -65,7 +67,7 @@ public final class CdsCodeStyleSettingsService {
             }
         } else if (isSettingsFilePresent()) { // deletion of .cdsprettier.json has no effect
             String prettierJson = prettierJsonManager.readJson();
-            if (prettierJson != null && !getIdeSettings().equals(prettierJson)) {
+            if (!prettierJson.isEmpty() && !getIdeSettings().equals(prettierJson)) {
                 CodeStyleSettings projectSettings = CodeStyleSettingsManager.getInstance().createSettings();
                 projectSettings.getCustomSettings(CdsCodeStyleSettings.class).loadFrom(prettierJson);
                 CodeStyle.setMainProjectSettings(project, projectSettings);
@@ -80,7 +82,7 @@ public final class CdsCodeStyleSettingsService {
     private final class CdsPrettierJsonManager {
 
         File jsonFile;
-        String jsonCached;
+        @NotNull String jsonCached = "";
 
         CdsPrettierJsonManager() {
             // assuming no changes to project directory
@@ -100,7 +102,7 @@ public final class CdsCodeStyleSettingsService {
 
         void loadSettingsFromFile(@NotNull CdsCodeStyleSettings settings) {
             String json = readJson();
-            if (json != null) {
+            if (!json.isEmpty()) {
                 try {
                     settings.loadFrom(json);
                 } catch (JSONException e) {
@@ -109,30 +111,34 @@ public final class CdsCodeStyleSettingsService {
             }
         }
 
+        @NotNull
         private String readJson() {
             if (!isJsonFilePresent()) {
-                return null;
+                return "";
             }
             try {
                 return jsonCached = readString(jsonFile.toPath());
             } catch (IOException e) {
                 logger.error("Failed to read [%s]".formatted(jsonFile), e);
             }
-            return null;
+            return "";
         }
 
         void saveSettingsToFile(@NotNull CdsCodeStyleSettings settings) {
             if (jsonFile == null) {
                 return;
             }
-            String json = settings.toJSON();
-            if (json.equals(jsonCached)) {
-                return;
-            }
             if (!jsonFile.getParentFile().exists()) {
                 logger.debug("Directory [%s] does not exist".formatted(jsonFile.getParentFile()));
                 return;
             }
+            if (!jsonFile.exists() && settings.isDefault()) {
+                return;
+            }
+            if (!jsonCached.isEmpty() && settings.equals(jsonCached)) {
+                return;
+            }
+            String json = settings.getLoadedOrNonDefaultSettings();
             try (FileWriter writer = new FileWriter(jsonFile)) {
                 writer.write(json);
                 jsonCached = json;
@@ -142,7 +148,7 @@ public final class CdsCodeStyleSettingsService {
         }
 
         void reset() {
-            jsonCached = null;
+            jsonCached = "";
         }
 
         @NotNull File getJsonFile(String projectDir) {
@@ -153,8 +159,8 @@ public final class CdsCodeStyleSettingsService {
             return file;
         }
 
-        public boolean isSettingsReallyChanged() {
-            return jsonCached == null || !jsonCached.equals(readJson());
+        public boolean isSettingsFileChanged() {
+            return !isJsonEqual(jsonCached, readJson());
         }
     }
 }

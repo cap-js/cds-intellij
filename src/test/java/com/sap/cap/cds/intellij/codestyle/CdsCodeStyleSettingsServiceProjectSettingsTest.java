@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import static com.intellij.testFramework.LoggedErrorProcessor.executeAndReturnLoggedError;
+import static com.sap.cap.cds.intellij.util.JsonUtil.isJsonEqual;
 
 public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyleSettingsServiceTestBase {
 
@@ -29,14 +30,15 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
 
     // Direction .cdsprettier.json → settings
 
-    public void testPrettierJsonLifecycle() throws IOException, InterruptedException {
+    public void testPrettierJsonLifecycle() throws IOException {
         openProject();
         createPrettierJson();
         writePrettierJson("{}");
         assertEquals(defaults.tabSize, getCdsCodeStyleSettings().tabSize);
 
-        writePrettierJson("{ tabSize: 42 }");
+        writePrettierJson("{ \"tabSize\": %d, \"alignAs\": %b }".formatted(42, !defaults.alignAs));
         assertEquals(42, getCdsCodeStyleSettings().tabSize);
+        assertEquals(!defaults.alignAs, getCdsCodeStyleSettings().alignAs);
 
         deletePrettierJson();
         assertEquals(defaults.tabSize, getCdsCodeStyleSettings().tabSize);
@@ -65,25 +67,40 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
 
     // Direction settings → .cdsprettier.json
 
-    public void testCdsPrettierJsonCreation() throws IOException {
+    public void testProjectOpenedWithDefaultSettings_noCdsPrettierJsonCreation() throws IOException {
         openProject();
-        assertEquals(defaults.toJSON(), readPrettierJson());
+        assertFalse(prettierJson.exists());
     }
 
     public void testSettingChanged() throws IOException {
         openProject();
         getCdsCodeStyleSettings().tabSize = 42;
         CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged();
-
+        assertTrue(prettierJson.exists());
         assertEquals(42, new JSONObject(readPrettierJson()).get("tabSize"));
     }
 
-    public void testCompletesPartialPrettierJson() throws IOException {
+    public void testWriteOnlyLoadedOrNonDefaultOptions() throws Exception {
         createPrettierJson();
-        writePrettierJson("{ tabSize: 1 }");
+        writePrettierJson("{ \"tabSize\": %d, \"alignAs\": %b }".formatted(defaults.tabSize, !defaults.alignAs));
         openProject();
+        assertEquals(defaults.tabSize, getCdsCodeStyleSettings().tabSize);
+        assertEquals(!defaults.alignAs, getCdsCodeStyleSettings().alignAs);
+
+        getCdsCodeStyleSettings().alignTypes = !defaults.alignTypes;
         CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged();
-        assertTrue(readPrettierJson().split("\n").length >= CdsCodeStyleSettings.OPTIONS.size() + 2);
+        String expected = "{ \"tabSize\": %d, \"alignAs\": %b, \"alignTypes\": %b }".formatted(defaults.tabSize, !defaults.alignAs, !defaults.alignTypes);
+        assertTrue(isJsonEqual(expected, readPrettierJson()));
+    }
+
+    public void testNoChanges_doNotReformatExistingPrettierJson() throws Exception {
+        createPrettierJson();
+        String json = "{ \"tabSize\": 19, \"alignAs\": true }";
+        writePrettierJson(json);
+        openProject();
+
+        CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged();
+        assertEquals(json, readPrettierJson());
     }
 
 }

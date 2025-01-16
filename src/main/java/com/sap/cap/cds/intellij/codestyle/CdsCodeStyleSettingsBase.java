@@ -11,14 +11,16 @@ import java.util.*;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.BOOLEAN;
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.ENUM;
+import static com.sap.cap.cds.intellij.util.JsonUtil.toJSONObject;
+import static com.sap.cap.cds.intellij.util.JsonUtil.toSortedString;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.getFieldValue;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.setFieldValue;
-import static com.sap.cap.cds.intellij.util.StringUtil.toSortedString;
 import static java.util.stream.Collectors.toMap;
 
 public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
     public static final Map<String, CdsCodeStyleOption> OPTIONS = new LinkedHashMap<>();
     public static final Map<Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
+    protected final List<String> loadedOptions = new ArrayList<>();
 
     CdsCodeStyleSettingsBase(@NotNull CodeStyleSettings container) {
         super("CDSCodeStyleSettings", container);
@@ -33,13 +35,15 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
     }
 
     public void loadFrom(String prettierJson) {
-        var json = new JSONObject(prettierJson);
+        loadedOptions.clear();
+        var json = toJSONObject(prettierJson);
         OPTIONS.forEach((name, option) -> {
             if (!json.has(name)) {
                 return;
             }
             final var value = json.get(name);
             if (value != null) {
+                loadedOptions.add(name);
                 try {
                     if (option.values.length > 0) {
                         setFieldValue(this, name, getEnumId(option, (String) value));
@@ -71,9 +75,22 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
                 });
     }
 
+    public boolean isDefault() {
+        return OPTIONS.values().stream()
+                .allMatch(option -> option.defaultValue.equals(getValue(option.name)));
+    }
+
     public String getNonDefaultSettings() {
         var map = OPTIONS.values().stream()
                 .filter(option -> !option.defaultValue.equals(getValue(option.name)))
+                .map(this::getEntry)
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return toSortedString(new JSONObject(map));
+    }
+
+    public String getLoadedOrNonDefaultSettings() {
+        var map = OPTIONS.values().stream()
+                .filter(option -> loadedOptions.contains(option.name) || !option.defaultValue.equals(getValue(option.name)))
                 .map(this::getEntry)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
         return toSortedString(new JSONObject(map));
