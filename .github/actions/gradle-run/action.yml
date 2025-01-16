@@ -10,6 +10,12 @@ runs:
   using: composite
 
   steps:
+    - name: Debug Environment
+      run: |
+        echo "Current User: $(whoami)"
+        echo "Home Directory: $HOME"
+        echo "Gradle User Home: ${GRADLE_USER_HOME:-$HOME/.gradle}"
+
     - name: Install fontconfig
       # required for headless gradle
       run: |
