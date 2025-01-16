@@ -11,6 +11,7 @@ runs:
 
   steps:
     - name: Debug Environment
+      shell: bash
       run: |
         echo "Current User: $(whoami)"
         echo "Home Directory: $HOME"
@@ -29,11 +30,13 @@ runs:
       uses: actions/cache@v3
       with:
         path: |
-          ~/.gradle/caches
+          ~/.gradle/caches/modules-2
+          ~/.gradle/caches/build-cache-1
           ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
+
 
     - name: Test
       if: ${{ contains(inputs.steps, 'test') }}
