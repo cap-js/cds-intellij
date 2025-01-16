@@ -132,10 +132,10 @@ public final class CdsCodeStyleSettingsService {
                 logger.debug("Directory [%s] does not exist".formatted(jsonFile.getParentFile()));
                 return;
             }
-            if (settings.equals(jsonCached)) {
+            if (!jsonCached.isEmpty() && settings.equals(jsonCached)) {
                 return;
             }
-            String json = settings.toJSON();
+            String json = settings.getLoadedOrNonDefaultSettings();
             try (FileWriter writer = new FileWriter(jsonFile)) {
                 writer.write(json);
                 jsonCached = json;

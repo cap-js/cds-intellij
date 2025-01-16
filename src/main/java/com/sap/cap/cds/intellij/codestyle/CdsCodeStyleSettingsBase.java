@@ -20,6 +20,7 @@ import static java.util.stream.Collectors.toMap;
 public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
     public static final Map<String, CdsCodeStyleOption> OPTIONS = new LinkedHashMap<>();
     public static final Map<Category, Set<String>> CATEGORY_GROUPS = new LinkedHashMap<>();
+    protected final List<String> loadedOptions = new ArrayList<>();
 
     CdsCodeStyleSettingsBase(@NotNull CodeStyleSettings container) {
         super("CDSCodeStyleSettings", container);
@@ -34,6 +35,7 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
     }
 
     public void loadFrom(String prettierJson) {
+        loadedOptions.clear();
         var json = toJSONObject(prettierJson);
         OPTIONS.forEach((name, option) -> {
             if (!json.has(name)) {
@@ -41,6 +43,7 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
             }
             final var value = json.get(name);
             if (value != null) {
+                loadedOptions.add(name);
                 try {
                     if (option.values.length > 0) {
                         setFieldValue(this, name, getEnumId(option, (String) value));
@@ -75,6 +78,14 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
     public String getNonDefaultSettings() {
         var map = OPTIONS.values().stream()
                 .filter(option -> !option.defaultValue.equals(getValue(option.name)))
+                .map(this::getEntry)
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return toSortedString(new JSONObject(map));
+    }
+
+    public String getLoadedOrNonDefaultSettings() {
+        var map = OPTIONS.values().stream()
+                .filter(option -> loadedOptions.contains(option.name) || !option.defaultValue.equals(getValue(option.name)))
                 .map(this::getEntry)
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
         return toSortedString(new JSONObject(map));
