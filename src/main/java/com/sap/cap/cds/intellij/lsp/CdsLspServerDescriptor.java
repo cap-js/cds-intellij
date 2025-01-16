@@ -10,7 +10,6 @@ import com.intellij.platform.lsp.api.customization.LspFormattingSupport;
 import com.intellij.util.io.BaseOutputReader;
 import com.sap.cap.cds.intellij.CdsFileType;
 import com.sap.cap.cds.intellij.util.ErrorUtil;
-import com.sap.cap.cds.intellij.util.NodeJsUtil;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,6 +21,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import static com.sap.cap.cds.intellij.util.JsonUtil.getPropertyAtPath;
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.extractVersion;
 import static com.sap.cap.cds.intellij.util.NodeJsUtil.getInterpreter;
 import static com.sap.cap.cds.intellij.util.PathUtil.resolve;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -35,12 +35,12 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
     private static final ComparableVersion REQUIRED_NODEJS_VERSION = getRequiredNodejsVersion();
     private static final String RELATIVE_MITM_PATH = "cds-lsp/mitm.js";
     private static final String RELATIVE_LOG_PATH = "cds-lsp/stdio.json";
-    private static final Map<CommandLineKind, GeneralCommandLine> commandLines = new EnumMap<>(CommandLineKind.class);
+    private static final Map<CommandLineKind, GeneralCommandLine> COMMAND_LINES = new EnumMap<>(CommandLineKind.class);
 
     static {
-        commandLines.put(CommandLineKind.SERVER, null);
-        commandLines.put(CommandLineKind.SERVER_DEBUG, null);
-        commandLines.put(CommandLineKind.CLI_FORMAT, null);
+        COMMAND_LINES.put(CommandLineKind.SERVER, null);
+        COMMAND_LINES.put(CommandLineKind.SERVER_DEBUG, null);
+        COMMAND_LINES.put(CommandLineKind.CLI_FORMAT, null);
     }
 
     public CdsLspServerDescriptor(@NotNull Project project, @NotNull String presentableName) {
@@ -56,7 +56,7 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
         } catch (Exception e) {
             throw new RuntimeException("Cannot determine Node.js version required by CDS Language Server at [%s]".formatted(serverPkgPath), e);
         }
-        return NodeJsUtil.extractVersion(rawVersion);
+        return extractVersion(rawVersion);
     }
 
     private static boolean isDebugCdsLsp() {
@@ -68,19 +68,19 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
     }
 
     private static GeneralCommandLine getServerCommandLine(CommandLineKind kind) {
-        if (commandLines.get(kind) != null) {
-            return commandLines.get(kind);
+        if (COMMAND_LINES.get(kind) != null) {
+            return COMMAND_LINES.get(kind);
         }
         final String nodeInterpreterPath = getInterpreter(REQUIRED_NODEJS_VERSION).getInterpreterSystemDependentPath();
         switch (kind) {
-            case SERVER -> commandLines.put(CommandLineKind.SERVER,
+            case SERVER -> COMMAND_LINES.put(CommandLineKind.SERVER,
                     new GeneralCommandLine(
                             nodeInterpreterPath,
                             resolve(RELATIVE_SERVER_PATH),
                             "--stdio"
                     ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose")
             );
-            case SERVER_DEBUG -> commandLines.put(CommandLineKind.SERVER_DEBUG,
+            case SERVER_DEBUG -> COMMAND_LINES.put(CommandLineKind.SERVER_DEBUG,
                     new GeneralCommandLine(
                             nodeInterpreterPath,
                             resolve(RELATIVE_MITM_PATH),
@@ -94,18 +94,18 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
             case CLI_FORMAT -> throw new UnsupportedOperationException("Formatting command line not supported");
         }
 
-        if (commandLines.get(kind) == null) {
+        if (COMMAND_LINES.get(kind) == null) {
             throw new RuntimeException("Failed to create command line for %s".formatted(kind));
         }
-        return commandLines.get(kind);
+        return COMMAND_LINES.get(kind);
     }
 
     public static GeneralCommandLine getFormattingCommandLine(Path cwd, Path srcPath) {
-        if (commandLines.get(CommandLineKind.CLI_FORMAT) != null) {
-            return commandLines.get(CommandLineKind.CLI_FORMAT);
+        if (COMMAND_LINES.get(CommandLineKind.CLI_FORMAT) != null) {
+            return COMMAND_LINES.get(CommandLineKind.CLI_FORMAT);
         }
 
-        commandLines.put(CommandLineKind.CLI_FORMAT,
+        COMMAND_LINES.put(CommandLineKind.CLI_FORMAT,
                 new GeneralCommandLine(
                         getInterpreter(REQUIRED_NODEJS_VERSION).getInterpreterSystemDependentPath(),
                         resolve(RELATIVE_FORMAT_CLI_PATH),
@@ -113,7 +113,7 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
                         srcPath.toString()
                 ).withWorkDirectory(cwd.toString())
         );
-        return commandLines.get(CommandLineKind.CLI_FORMAT);
+        return COMMAND_LINES.get(CommandLineKind.CLI_FORMAT);
     }
 
     public GeneralCommandLine getServerCommandLine() throws ExecutionException {

@@ -13,21 +13,20 @@ import java.util.Optional;
 
 public class NodeJsUtil {
 
-    // TODO cache result?
     public static NodeJsLocalInterpreter getInterpreter(ComparableVersion requiredVersion) {
-        Logger.PLUGIN.debug("Searching for Node.js interpreter with required version %s".formatted(requiredVersion));
+        Logger.PLUGIN.debug("Searching for Node.js >= v%s".formatted(requiredVersion));
 
         for (NodeJsLocalInterpreter interpreter : NodeJsLocalInterpreterManager.getInstance().getInterpreters()) {
-            Optional<ComparableVersion> version = getRuntimeVersion(interpreter.getInterpreterSystemDependentPath());
+            Optional<ComparableVersion> version = getVersion(interpreter.getInterpreterSystemDependentPath());
             if (version.isEmpty()) {
                 continue;
             }
             if (version.get().compareTo(requiredVersion) >= 0) {
-                Logger.PLUGIN.debug("Found suitable Node.js interpreter [%s] with version %s".formatted(interpreter.getInterpreterSystemDependentPath(), version.get()));
+                Logger.PLUGIN.debug("Found suitable Node.js interpreter [%s]".formatted(interpreter.getInterpreterSystemDependentPath()));
                 return interpreter;
             }
         }
-        throw new RuntimeException("No suitable Node.js interpreter found with required version %s (searched %d interpreters)"
+        throw new RuntimeException("No suitable Node.js interpreter found with version >= %s (searched %d interpreters)"
                 .formatted(requiredVersion, NodeJsLocalInterpreterManager.getInstance().getInterpreters().size()));
     }
 
@@ -35,7 +34,7 @@ public class NodeJsUtil {
         return new ComparableVersion(rawVersion.replaceAll("[^0-9.]", ""));
     }
 
-    public static Optional<ComparableVersion> getRuntimeVersion(String nodeJsPath) {
+    private static Optional<ComparableVersion> getVersion(String nodeJsPath) {
         try {
             Process process = new GeneralCommandLine(nodeJsPath, "--version").createProcess();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
