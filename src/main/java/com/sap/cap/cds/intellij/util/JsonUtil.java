@@ -8,12 +8,16 @@ import java.util.stream.Stream;
 public class JsonUtil {
 
     public static Object getPropertyAtPath(String json, String[] path) {
-        JSONObject jsonObject = new JSONObject(json);
+        JSONObject jsonObject = toJSONObject(json);
         for (int i = 0; i < path.length - 1; i++) {
             String key = path[i];
             jsonObject = jsonObject.getJSONObject(key);
         }
         return jsonObject.get(path[path.length - 1]);
+    }
+
+    public static JSONObject toJSONObject(@NotNull String json) {
+        return new JSONObject(json.isEmpty() ? "{}" : json);
     }
 
     // JSONObject.toString() does not guarantee the order of keys

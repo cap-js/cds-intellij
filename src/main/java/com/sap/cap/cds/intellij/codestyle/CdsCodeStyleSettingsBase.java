@@ -11,6 +11,7 @@ import java.util.*;
 
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.BOOLEAN;
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleOption.Type.ENUM;
+import static com.sap.cap.cds.intellij.util.JsonUtil.toJSONObject;
 import static com.sap.cap.cds.intellij.util.JsonUtil.toSortedString;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.getFieldValue;
 import static com.sap.cap.cds.intellij.util.ReflectionUtil.setFieldValue;
@@ -33,7 +34,7 @@ public abstract class CdsCodeStyleSettingsBase extends CustomCodeStyleSettings {
     }
 
     public void loadFrom(String prettierJson) {
-        var json = new JSONObject(prettierJson);
+        var json = toJSONObject(prettierJson);
         OPTIONS.forEach((name, option) -> {
             if (!json.has(name)) {
                 return;
