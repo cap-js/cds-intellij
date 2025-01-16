@@ -9,10 +9,13 @@ import static com.sap.cap.cds.intellij.util.JsonUtil.toSortedString;
 public class JsonUtilTest extends LightPlatformTestCase {
 
     public void testIsJsonEqual() {
+        assertTrue(isJsonEqual("", ""));
         assertTrue(isJsonEqual("{}", "{}"));
         assertTrue(isJsonEqual("{ \"a\":  1}", "{\"a\": 1}"));
         assertTrue(isJsonEqual("{\"a\": 1, \"b\": 2}", "{\"b\": 2, \"a\": 1}"));
 
+        assertFalse(isJsonEqual("{}", ""));
+        assertFalse(isJsonEqual("", "{}"));
         assertFalse(isJsonEqual("{}", "{\"a\": 1}"));
         assertFalse(isJsonEqual("{\"a\": 1}", "{\"a\": 2}"));
         assertFalse(isJsonEqual("{\"a\": 1}", "{\"b\": 1}"));

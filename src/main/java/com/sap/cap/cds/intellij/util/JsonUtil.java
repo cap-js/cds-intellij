@@ -1,5 +1,6 @@
 package com.sap.cap.cds.intellij.util;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.stream.Stream;
@@ -32,8 +33,11 @@ public class JsonUtil {
                 + "\n}";
     }
 
-    public static boolean isJsonEqual(String json1, String json2) {
-        if ("".equals(json1) ^ "".equals(json2)) {
+    public static boolean isJsonEqual(@NotNull String json1, @NotNull String json2) {
+        if (json1.isEmpty() && json2.isEmpty()) {
+            return true;
+        }
+        if (json1.isEmpty() ^ json2.isEmpty()) {
             return false;
         }
         return new JSONObject(json1).similar(new JSONObject(json2));
