@@ -10,12 +10,18 @@ runs:
   using: composite
 
   steps:
-    - name: Debug Environment
+    - name: Set Home and Gradle User Home
+      shell: bash
+      run: |
+        echo "HOME=/github/home" >> $GITHUB_ENV
+        echo "GRADLE_USER_HOME=~/.gradle" >> $GITHUB_ENV
+
+    - name: Debug Paths
       shell: bash
       run: |
         echo "Current User: $(whoami)"
         echo "Home Directory: $HOME"
-        echo "Gradle User Home: ${GRADLE_USER_HOME:-$HOME/.gradle}"
+        echo "Gradle User Home: $GRADLE_USER_HOME"
 
     - uses: actions/setup-node@v4
       with:
@@ -33,7 +39,7 @@ runs:
           ~/.gradle/caches/modules-2
           ~/.gradle/caches/build-cache-1
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', 'gradle.properties', 'settings.gradle') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
 
