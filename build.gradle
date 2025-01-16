@@ -61,6 +61,12 @@ java {
     }
 }
 
+sourceSets {
+    main {
+        java.srcDirs("src/main/java", "src/main/kotlin")
+    }
+}
+
 intellijPlatform {
     buildSearchableOptions = false
     autoReload = /* set to true to enable plugin reload on FS changes inside plugin */ false
