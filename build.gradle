@@ -1,5 +1,7 @@
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.tasks.VerifyPluginTask
+
 
 plugins {
     id 'java'
@@ -68,6 +70,17 @@ intellijPlatform {
             String version = project.findProperty('platformVersion')
             ide(type, version)
         }
+        failureLevel = [
+                VerifyPluginTask.FailureLevel.INTERNAL_API_USAGES,
+                VerifyPluginTask.FailureLevel.COMPATIBILITY_WARNINGS,
+                VerifyPluginTask.FailureLevel.COMPATIBILITY_PROBLEMS,
+                VerifyPluginTask.FailureLevel.SCHEDULED_FOR_REMOVAL_API_USAGES,
+                VerifyPluginTask.FailureLevel.OVERRIDE_ONLY_API_USAGES,
+                VerifyPluginTask.FailureLevel.NON_EXTENDABLE_API_USAGES,
+                VerifyPluginTask.FailureLevel.PLUGIN_STRUCTURE_WARNINGS,
+                VerifyPluginTask.FailureLevel.MISSING_DEPENDENCIES,
+                VerifyPluginTask.FailureLevel.INVALID_PLUGIN
+        ]
     }
 }
 
