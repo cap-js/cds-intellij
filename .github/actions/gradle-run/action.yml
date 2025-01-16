@@ -29,11 +29,24 @@ runs:
         distribution: zulu
         java-version: 21
 
+    - name: Cache Gradle dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          /root/.gradle/caches/modules-2
+          /root/.gradle/caches/build-cache-1
+          /root/.gradle/wrapper
+          !~/.gradle/caches/modules-2/files-*
+        key: ${{ runner.os }}-gradle-${{ hashFiles('build.gradle', 'gradle.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+
     - name: Test
       if: ${{ contains(inputs.steps, 'test') }}
       shell: bash
       run: |
-        ./gradlew test --info
+        ./gradlew test --info --no-daemon
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
@@ -46,11 +59,11 @@ runs:
       if: ${{ contains(inputs.steps, 'build') }}
       shell: bash
       run: |
-        ./gradlew verifyPlugin buildPlugin
+        ./gradlew verifyPlugin buildPlugin --no-daemon
         ls -la build/distributions
 
     - name: Publish
       if: ${{ contains(inputs.steps, 'publish') }}
       shell: bash
       run: |
-        ./gradlew publishPlugin --info
+        ./gradlew publishPlugin --info --no-daemon
