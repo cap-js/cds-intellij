@@ -592,8 +592,7 @@ public abstract class CdsCodeStyleTabularPanelBase extends CustomizableLanguageC
                     myCurrentEditor = myOptionsEditor;
                     myOptionsEditor.setCell(table, row, column);
                     myOptionsEditor.setText(String.valueOf(node.getValue()));
-                    //noinspection ConfusingArgumentToVarargsMethod
-                    myOptionsEditor.setOptions(((SelectionOption) node.getKey()).options);
+                    myOptionsEditor.setOptions((Object[]) ((SelectionOption) node.getKey()).options);
                     myOptionsEditor.setDefaultValue(node.getValue());
                 }
             }
