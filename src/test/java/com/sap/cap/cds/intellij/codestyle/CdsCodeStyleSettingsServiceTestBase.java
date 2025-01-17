@@ -32,7 +32,6 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
     protected File prettierJson;
     private Path projectDir;
     private VirtualFile projectDirVFile;
-    private @NotNull VirtualFile someCdsVFile;
 
     protected static void setPerProjectSettings(boolean perProjectSettings) {
         CodeStyleSettingsManager.getInstance().USE_PER_PROJECT_SETTINGS = perProjectSettings;
@@ -46,7 +45,6 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
         projectDir = tempDirectory.toPath();
         projectDirVFile = getVFile(tempDirectory);
         prettierJson = projectDir.resolve(PRETTIER_JSON).toFile();
-        someCdsVFile = getVFile(projectDir.resolve(SOME_CDS).toFile());
     }
 
     @Override
@@ -128,7 +126,7 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
 
     protected void openCdsFile() {
         FileEditorManager fileEditorManager = FileEditorManager.getInstance(project);
-        fileEditorManager.openFile(someCdsVFile, false);
+        fileEditorManager.openFile(getVFile(projectDir.resolve(SOME_CDS).toFile()), false);
     }
 
     @NotNull
