@@ -9,8 +9,6 @@ class ProjectLifecycleListener : ProjectActivity {
         val service = project.getService(CdsCodeStyleSettingsService::class.java)
         if (service.isSettingsFilePresent) {
             service.updateProjectSettingsFromFile()
-        } else {
-            service.updateSettingsFile()
         }
     }
 }

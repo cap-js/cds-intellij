@@ -6,6 +6,7 @@ import com.intellij.platform.lsp.api.LspServer;
 import com.intellij.platform.lsp.api.lsWidget.LspServerWidgetItem;
 import com.sap.cap.cds.intellij.CdsFileType;
 import com.sap.cap.cds.intellij.CdsIcons;
+import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsService;
 import com.sap.cap.cds.intellij.lang.CdsLanguage;
 import kotlin.jvm.internal.Intrinsics;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +19,7 @@ public class CdsLspServerSupportProvider implements com.intellij.platform.lsp.ap
         if (!CdsFileType.EXTENSION.equals(virtualFile.getExtension())) {
             return;
         }
+        project.getService(CdsCodeStyleSettingsService.class).updateSettingsFile();
         lspServerStarter.ensureServerStarted(new CdsLspServerDescriptor(project, CdsLanguage.LABEL));
     }
 
