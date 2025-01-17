@@ -67,16 +67,34 @@ public class CdsCodeStyleSettingsServiceProjectSettingsTest extends CdsCodeStyle
 
     // Direction settings → .cdsprettier.json
 
+    // TODO test project open with non-project settings → no .cdsprettier.json
+
     public void testProjectOpenedWithDefaultSettings_noCdsPrettierJsonCreation() throws IOException {
         openProject();
         assertFalse(prettierJson.exists());
     }
 
-    public void testSettingChanged() throws IOException {
+    public void testSettingChanged_createsPrettierJsonOnlyIfCdsEditorOpen() throws IOException {
+        CodeStyleSettingsManager codeStyleSettingsManager = CodeStyleSettingsManager.getInstance(project);
+
         openProject();
         getCdsCodeStyleSettings().tabSize = 42;
-        CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged();
+        codeStyleSettingsManager.notifyCodeStyleSettingsChanged();
+        assertFalse(prettierJson.exists());
+
+        createCdsFile();
+        openCdsFile();
+        codeStyleSettingsManager.notifyCodeStyleSettingsChanged();
         assertTrue(prettierJson.exists());
+        assertEquals(42, new JSONObject(readPrettierJson()).get("tabSize"));
+    }
+
+    public void testSettingChangedWithExistingCdsPrettierJson_updatesFile() throws IOException {
+        openProject();
+        createPrettierJson();
+        writePrettierJson("{}");
+        getCdsCodeStyleSettings().tabSize = 42;
+        CodeStyleSettingsManager.getInstance(project).notifyCodeStyleSettingsChanged();
         assertEquals(42, new JSONObject(readPrettierJson()).get("tabSize"));
     }
 

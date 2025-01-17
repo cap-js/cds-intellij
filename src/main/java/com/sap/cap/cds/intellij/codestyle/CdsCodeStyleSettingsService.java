@@ -3,12 +3,14 @@ package com.sap.cap.cds.intellij.codestyle;
 import com.intellij.application.options.CodeStyle;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CodeStyleSettingsChangeEvent;
 import com.intellij.psi.codeStyle.CodeStyleSettingsListener;
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
+import com.sap.cap.cds.intellij.CdsFileType;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 
@@ -20,6 +22,7 @@ import static com.intellij.openapi.project.ProjectUtil.guessProjectDir;
 import static com.sap.cap.cds.intellij.util.JsonUtil.isJsonEqual;
 import static com.sap.cap.cds.intellij.util.Logger.logger;
 import static java.nio.file.Files.readString;
+import static java.util.Arrays.stream;
 
 @Service(Service.Level.PROJECT)
 public final class CdsCodeStyleSettingsService {
@@ -36,13 +39,25 @@ public final class CdsCodeStyleSettingsService {
         CodeStyleSettingsManager.getInstance(project).subscribe(new CodeStyleSettingsListener() {
             @Override
             public void codeStyleSettingsChanged(@NotNull CodeStyleSettingsChangeEvent event) {
-                updateSettingsFile();
+                if (shouldBeSavedImmediately()) {
+                    updateSettingsFile();
+                }
             }
         });
     }
 
     private static @NotNull CdsCodeStyleSettings getIdeSettings() {
         return CodeStyle.getDefaultSettings().getCustomSettings(CdsCodeStyleSettings.class);
+    }
+
+    private boolean shouldBeSavedImmediately() {
+        if (isSettingsFilePresent()) {
+            return true;
+        }
+
+        FileEditorManager fileEditorManager = FileEditorManager.getInstance(project);
+        return stream(fileEditorManager.getOpenFiles())
+                .anyMatch(file -> CdsFileType.EXTENSION.equalsIgnoreCase(file.getExtension()));
     }
 
     public boolean isSettingsFilePresent() {

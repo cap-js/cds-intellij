@@ -2,6 +2,7 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.application.options.CodeStyle;
 import com.intellij.openapi.application.WriteAction;
+import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
@@ -23,6 +24,9 @@ import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings("NewClassNamingConvention")
 public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
+
+    private static final String SOME_CDS = "a.cds";
+
     protected CdsCodeStyleSettings defaults;
     protected Project project;
     protected File prettierJson;
@@ -69,6 +73,14 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
         }
     }
 
+    protected void createCdsFile() {
+        try {
+            WriteAction.computeAndWait(() -> projectDirVFile.findOrCreateChildData(this, SOME_CDS));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     protected void deletePrettierJson() throws IOException {
         refreshVfsForFile(prettierJson, false);
         WriteAction.runAndWait(() -> getVFile(prettierJson).delete(this));
@@ -110,6 +122,11 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
             Module module = ModuleManager.getInstance(project).newModule(projectDir.resolve("test.iml").toString(), "ffo");
             ModuleRootModificationUtil.addContentRoot(module, projectDir.toString());
         });
+    }
+
+    protected void openCdsFile() {
+        FileEditorManager fileEditorManager = FileEditorManager.getInstance(project);
+        fileEditorManager.openFile(getVFile(projectDir.resolve(SOME_CDS).toFile()), false);
     }
 
     @NotNull
