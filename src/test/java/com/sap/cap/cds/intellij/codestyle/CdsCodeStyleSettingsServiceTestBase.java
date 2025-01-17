@@ -2,6 +2,7 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.application.options.CodeStyle;
 import com.intellij.openapi.application.WriteAction;
+import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
@@ -23,11 +24,15 @@ import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings("NewClassNamingConvention")
 public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
+
+    private static final String SOME_CDS = "a.cds";
+
     protected CdsCodeStyleSettings defaults;
     protected Project project;
     protected File prettierJson;
     private Path projectDir;
     private VirtualFile projectDirVFile;
+    private @NotNull VirtualFile someCdsVFile;
 
     protected static void setPerProjectSettings(boolean perProjectSettings) {
         CodeStyleSettingsManager.getInstance().USE_PER_PROJECT_SETTINGS = perProjectSettings;
@@ -41,6 +46,7 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
         projectDir = tempDirectory.toPath();
         projectDirVFile = getVFile(tempDirectory);
         prettierJson = projectDir.resolve(PRETTIER_JSON).toFile();
+        someCdsVFile = getVFile(projectDir.resolve(SOME_CDS).toFile());
     }
 
     @Override
@@ -64,6 +70,14 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
     protected void createPrettierJson() {
         try {
             WriteAction.computeAndWait(() -> projectDirVFile.findOrCreateChildData(this, PRETTIER_JSON));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected void createCdsFile() {
+        try {
+            WriteAction.computeAndWait(() -> projectDirVFile.findOrCreateChildData(this, SOME_CDS));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -110,6 +124,11 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
             Module module = ModuleManager.getInstance(project).newModule(projectDir.resolve("test.iml").toString(), "ffo");
             ModuleRootModificationUtil.addContentRoot(module, projectDir.toString());
         });
+    }
+
+    protected void openCdsFile() {
+        FileEditorManager fileEditorManager = FileEditorManager.getInstance(project);
+        fileEditorManager.openFile(someCdsVFile, false);
     }
 
     @NotNull
