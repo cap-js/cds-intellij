@@ -35,7 +35,6 @@ runs:
       with:
         path: |
           /root/.gradle/caches/modules-2
-          !~/.gradle/caches/modules-2/files-*
           /root/.gradle/caches/build-cache-1
           /root/.gradle/wrapper
         key: ${{ runner.os }}-gradle-${{ hashFiles('build.gradle', 'gradle.properties') }}
@@ -72,3 +71,14 @@ runs:
       shell: bash
       run: |
         ./gradlew publishPlugin --info --no-daemon
+
+    - name: Keep only small files for caching, which are faster to compress than to download
+      run: |
+        # Good thresholds as per measurement: currently 500 kB, more future-proof 900 kB.
+        # Reason for latter: request duration dominated by ~constant request overhead, but compression time to decrease. 
+        # Measurements: cache size (uncompr.) 1800 MB, compr. time 230 s, restoration time 6 s
+        # Assumptions: req. overhead 60 ms, current download rate 110 MB/s
+        find /root/.gradle/caches/modules-2     -type f -size +900k -delete
+        find /root/.gradle/caches/build-cache-1 -type f -size +900k -delete
+        find /root/.gradle/wrapper              -type f -size +900k -delete
+      shell: bash
