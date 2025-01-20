@@ -34,9 +34,8 @@ runs:
       with:
         path: |
           /root/.gradle/caches/modules-2
-          /root/.gradle/caches/build-cache-1
-          /root/.gradle/wrapper
           !~/.gradle/caches/modules-2/files-*
+          /root/.gradle/wrapper
         key: ${{ runner.os }}-gradle-${{ hashFiles('build.gradle', 'gradle.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
