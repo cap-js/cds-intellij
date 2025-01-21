@@ -43,6 +43,10 @@ already enables a set of useful language features:
 
 ![Demo of Document Formatting (after)](.assets/document_formatting2.png)
 
+#### Adjust the Code Style
+
+![Demo of Code Style Settings](.assets/code_style_settings.png)
+
 ### Upcoming
 
 Depending on the IntelliJ platform development roadmap, we expect to see more features available in the near future.
