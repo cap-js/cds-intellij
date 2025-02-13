@@ -19,29 +19,53 @@ The set of features will grow with future releases, aligned with the development
     <depends>org.jetbrains.plugins.textmate</depends>
     <depends>NodeJS</depends>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <fileType
-                name="cds"
-                implementationClass="com.sap.cap.cds.intellij.CdsFileType"
-                fieldName="INSTANCE"
-                language="cds"
-                extensions="cds"/>
 
-        <lang.substitutor language="cds" order="first"
-                          implementationClass="com.sap.cap.cds.intellij.lang.CdsLanguageSubstitutor"/>
+<!--    <extensions defaultExtensionNs="com.intellij">-->
+<!--        <fileType-->
+<!--                name="cds"-->
+<!--                implementationClass="com.sap.cap.cds.intellij.CdsFileType"-->
+<!--                fieldName="INSTANCE"-->
+<!--                language="cds"-->
+<!--                extensions="cds"/>-->
 
-        <langCodeStyleSettingsProvider
-                implementation="com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsProvider"/>
+<!--        <lang.substitutor language="cds" order="first"-->
+<!--                          implementationClass="com.sap.cap.cds.intellij.lang.CdsLanguageSubstitutor"/>-->
 
-        <formattingService implementation="com.sap.cap.cds.intellij.codestyle.CdsCodeStylePreviewFormattingService"/>
+<!--        <langCodeStyleSettingsProvider-->
+<!--                implementation="com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsProvider"/>-->
 
-        <platform.lsp.serverSupportProvider implementation="com.sap.cap.cds.intellij.lsp.CdsLspServerSupportProvider"/>
+<!--        <formattingService implementation="com.sap.cap.cds.intellij.codestyle.CdsCodeStylePreviewFormattingService"/>-->
 
-        <notificationGroup id="com.sap.cap.cds.intellij.notifications"
-                           displayType="BALLOON"/>
+<!--        <platform.lsp.serverSupportProvider implementation="com.sap.cap.cds.intellij.lsp.CdsLspServerSupportProvider"/>-->
 
-        <vfs.asyncListener implementation="com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonListener"/>
-        <postStartupActivity implementation="com.sap.cap.cds.intellij.lifecycle.ProjectLifecycleListener"/>
+<!--        <notificationGroup id="com.sap.cap.cds.intellij.notifications"-->
+<!--                           displayType="BALLOON"/>-->
+
+<!--        <vfs.asyncListener implementation="com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonListener"/>-->
+<!--        <postStartupActivity implementation="com.sap.cap.cds.intellij.lifecycle.ProjectLifecycleListener"/>-->
+
+
+<!--    </extensions>-->
+
+    <depends>com.redhat.devtools.lsp4ij</depends>
+
+    <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
+        <server id="cds"
+                name="CDS Language Server"
+                factoryClass="com.sap.cap.cds.intellij.lsp4ij.CdsLanguageServerFactory">
+            <description><![CDATA[
+        Some description written in HTML to display it in the LSP consoles view and Language Servers settings.
+        ]]>
+            </description>
+        </server>
+
+        <fileNamePatternMapping patterns="*.cds;*.json"
+                                serverId="cds"
+                                languageId="cds"/>
+
+<!--        <languageMapping language="cds"-->
+<!--                         serverId="cds"-->
+<!--                         languageId="cds"/>-->
     </extensions>
 
     <applicationListeners>
