@@ -1,5 +1,6 @@
 package com.sap.cap.cds.intellij.lsp4ij;
 
+import com.intellij.openapi.vfs.VirtualFile;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.ServerCapabilities;
@@ -20,6 +21,9 @@ public class CdsLanguageServer extends OSProcessStreamConnectionProvider {
         super.setCommandLine(commandLine);
     }
 
+    public Object getInitializationOptions(VirtualFile rootUri) {
+        return CdsLanguageClient.getInitializationOptions();
+    }
 
 //    @Override
 //    public CompletableFuture<InitializeResult> initialize(InitializeParams params) {
