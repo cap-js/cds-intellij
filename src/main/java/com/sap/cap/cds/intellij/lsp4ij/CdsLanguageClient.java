@@ -6,13 +6,14 @@ import com.intellij.openapi.project.Project;
 import com.redhat.devtools.lsp4ij.client.LanguageClientImpl;
 import com.redhat.devtools.lsp4ij.server.definition.launching.UserDefinedLanguageClient;
 import kotlinx.serialization.json.Json;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class CdsLanguageClient extends LanguageClientImpl /*TODO: try UserDefinedLanguageClient*/ {
+public class CdsLanguageClient extends LanguageClientImpl /*TODO: try UserDefinedLanguageClient or IndexAwareLanguageClient*/ {
     public CdsLanguageClient(Project project) {
         super(project);
     }
@@ -23,6 +24,20 @@ public class CdsLanguageClient extends LanguageClientImpl /*TODO: try UserDefine
     }
 
     @Override
+    protected Object findSettings(@Nullable String section) {
+        Object settings = super.findSettings(section);
+        return settings;
+    }
+
+    // TODO: derive from UserDefinedLanguageClient and get this for free: sends workspace/didChangeConfiguration after server init
+//    @Override
+//    public void handleServerStatusChanged(ServerStatus serverStatus) {
+//        if (serverStatus == ServerStatus.started) {
+//            triggerChangeConfiguration();
+//        }
+//    }
+
+    @Override
     public void telemetryEvent(Object object) {
         // TODO: can we use this to send telemetry data to out open telemetry cloud?
         super.telemetryEvent(object);
@@ -31,6 +46,11 @@ public class CdsLanguageClient extends LanguageClientImpl /*TODO: try UserDefine
 
     public JsonObject getSettings() {
 
+        return CdsLanguageClient.getInitializationOptions();
+
+    }
+
+    public static JsonObject getInitializationOptions() {
         // TODO cds.trace.level (off) -> verbose (set env and restart)
         // TODO implement ActiveEditorChanged request
 
@@ -45,7 +65,7 @@ public class CdsLanguageClient extends LanguageClientImpl /*TODO: try UserDefine
 
         var settings = new JsonObject(); // new HashMap<String, Object>();
 
-        var cds = addChild.run(settings, "cds");
+        var cds = settings; // addChild.run(settings, "cds"); // "cds" is not included in VSCode's initializationOptions
 
         var compiler = addChild.run(cds, "compiler");
         compiler.addProperty("markMissingI18nDefault", true);                       // cds.compiler.markMissingI18nDefault (false) -> true
@@ -85,7 +105,6 @@ public class CdsLanguageClient extends LanguageClientImpl /*TODO: try UserDefine
 
         return settings;
     }
-
 
 }
 
