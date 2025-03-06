@@ -67,7 +67,7 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
         return (debug != null) && debug.contains("cds-lsp");
     }
 
-    private static GeneralCommandLine getServerCommandLine(CommandLineKind kind) {
+    public static GeneralCommandLine getServerCommandLine(CommandLineKind kind) {
         if (COMMAND_LINES.get(kind) != null) {
             return COMMAND_LINES.get(kind);
         }
@@ -76,20 +76,22 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
             case SERVER -> COMMAND_LINES.put(CommandLineKind.SERVER,
                     new GeneralCommandLine(
                             nodeInterpreterPath,
+                            "--enable-source-maps",
                             resolve(RELATIVE_SERVER_PATH),
                             "--stdio"
-                    ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose")
+                    ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose").withCharset(UTF_8)
             );
             case SERVER_DEBUG -> COMMAND_LINES.put(CommandLineKind.SERVER_DEBUG,
                     new GeneralCommandLine(
                             nodeInterpreterPath,
+                            "--enable-source-maps",
                             resolve(RELATIVE_MITM_PATH),
                             resolve(RELATIVE_LOG_PATH),
                             nodeInterpreterPath,
                             "--inspect",
                             resolve(RELATIVE_SERVER_PATH),
                             "--stdio"
-                    ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug")
+                    ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug").withCharset(UTF_8)
             );
             case CLI_FORMAT -> throw new UnsupportedOperationException("Formatting command line not supported");
         }
@@ -118,11 +120,8 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
 
     public GeneralCommandLine getServerCommandLine() throws ExecutionException {
         CommandLineKind kind = isDebugCdsLsp() ? CommandLineKind.SERVER_DEBUG : CommandLineKind.SERVER;
-        return getServerCommandLine(kind)
-                // TODO check if this is really needed:
-                // Suppress ANSI escape sequences in cds-compiler output
-                .withEnvironment("NO_COLOR", "1")
-                .withCharset(UTF_8);
+        return getServerCommandLine(kind);
+//                .withCharset(UTF_8);
     }
 
     @NotNull
@@ -168,7 +167,7 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
         };
     }
 
-    private enum CommandLineKind {
+    public enum CommandLineKind {
         SERVER,
         SERVER_DEBUG,
         CLI_FORMAT

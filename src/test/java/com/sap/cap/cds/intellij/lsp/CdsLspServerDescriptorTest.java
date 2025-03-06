@@ -24,7 +24,7 @@ public class CdsLspServerDescriptorTest extends BasePlatformTestCase {
         assertNotNull(process);
 
         String[] args = process.info().arguments().get();
-        String cdsLspPath = args[0];
+        String cdsLspPath = args[1];
         assertTrue(cdsLspPath.contains("/dist/"));
     }
 
@@ -43,9 +43,9 @@ public class CdsLspServerDescriptorTest extends BasePlatformTestCase {
 
         // It should be the MITM script
         String[] args = commandLine.getParametersList().getArray();
-        String mitmPath = args[0];
+        String mitmPath = args[1];
         assertTrue(mitmPath.contains("mitm"));
-        String logPath = args[1];
+        String logPath = args[2];
         new File(logPath).delete();
 
         try {
