@@ -13,7 +13,10 @@ public class CdsLanguageServer extends OSProcessStreamConnectionProvider {
     }
 
     public Object getInitializationOptions(VirtualFile rootUri) {
+        // TODO: in LSP accept cds top-level node but also accept current non-cds second-level nodes. Then use cds here and also adapt vscode to send cds.
+        //  Idea: LSP pulls settings. This allows to pull non-cds settings if needed
         return CdsLanguageClient.getInitializationOptions().get("cds");
+
 
         // TODO: we want to keep our server alive. Default is to shut it down when the last CDS file is closed.
 //        Project project = ...

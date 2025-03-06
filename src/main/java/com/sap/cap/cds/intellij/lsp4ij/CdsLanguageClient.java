@@ -6,11 +6,14 @@ import com.intellij.openapi.project.Project;
 import com.redhat.devtools.lsp4ij.client.LanguageClientImpl;
 import com.redhat.devtools.lsp4ij.server.definition.launching.UserDefinedLanguageClient;
 import kotlinx.serialization.json.Json;
+import org.eclipse.lsp4j.ApplyWorkspaceEditParams;
+import org.eclipse.lsp4j.ApplyWorkspaceEditResponse;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class CdsLanguageClient extends LanguageClientImpl /*TODO: try UserDefinedLanguageClient or IndexAwareLanguageClient*/ {
@@ -37,10 +40,40 @@ public class CdsLanguageClient extends LanguageClientImpl /*TODO: try UserDefine
 //        }
 //    }
 
+
+
+    // TODO: register command/url handler for analyze dependency's "command:cds.analyzeDependencies", then...
+    /*
+CompletableFuture<List<Application>> applications =
+  LanguageServerManager.getInstance(project)
+    .getLanguageServer("myLanguageServerId")
+    .thenApply(languageServerItem ->
+                    languageServerItem != null ? languageServerItem.getServer() // here getServer is used because we are sure that server is initialized
+                    : null)
+    .thenCompose(ls -> {
+      if (ls == null) {
+          return CompletableFuture.completedFuture(Collections.emptyList());
+      }
+      MyCustomServerAPI myServer = (MyCustomServerAPI) ls;
+      return myServer.getApplications();}  // custom request or other stuff...
+    );
+     */
+
+
+
     @Override
     public void telemetryEvent(Object object) {
         // TODO: can we use this to send telemetry data to out open telemetry cloud?
         super.telemetryEvent(object);
+    }
+
+
+
+
+    @Override
+    public CompletableFuture<ApplyWorkspaceEditResponse> applyEdit(ApplyWorkspaceEditParams params) {
+        // TODO: maintain translation should save the properties file Q: do we need to register for .properties files, too? We want a didChangeFile event to be send to the server
+        return super.applyEdit(params);
     }
 
 
@@ -65,7 +98,9 @@ public class CdsLanguageClient extends LanguageClientImpl /*TODO: try UserDefine
 
         var settings = new JsonObject(); // new HashMap<String, Object>();
 
-        var cds = settings; // addChild.run(settings, "cds"); // "cds" is not included in VSCode's initializationOptions
+        var cds = addChild.run(settings, "cds");
+
+        addChild.run(cds, "codeLensStatistics").addProperty("enabled", true); // cds.codeLensStatistics.enabled (false) -> true
 
         var compiler = addChild.run(cds, "compiler");
         compiler.addProperty("markMissingI18nDefault", true);                       // cds.compiler.markMissingI18nDefault (false) -> true
