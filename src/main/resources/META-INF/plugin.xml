@@ -54,7 +54,7 @@ The set of features will grow with future releases, aligned with the development
                 name="CDS Language Server"
                 factoryClass="com.sap.cap.cds.intellij.lsp4ij.CdsLanguageServerFactory">
             <description><![CDATA[
-        <h5>SAP CDS Language Support</h5>
+        <h2>SAP CDS Language Support</h2>
         ]]>
             </description>
 
@@ -97,7 +97,8 @@ The set of features will grow with future releases, aligned with the development
 
 
 
-    <change-notes><![CDATA[ <h3>Added</h3>
+    <change-notes><![CDATA[
+<h3>Added</h3>
 <ul>
     <li>Adds support for <i>Community Editions</i> of IntelliJ IDEs</li>
 </ul> ]]></change-notes>
