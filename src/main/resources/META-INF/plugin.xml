@@ -15,7 +15,7 @@
 The set of features will grow with future releases, aligned with the development of the JetBrains IntelliJ LSP API.]]></description>
 
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.modules.ultimate</depends>
+<!--    <depends>com.intellij.modules.ultimate</depends>-->
     <depends>org.jetbrains.plugins.textmate</depends>
 <!--    <depends>NodeJS</depends>-->
 
@@ -110,5 +110,7 @@ The set of features will grow with future releases, aligned with the development
 <h3>Added</h3>
 <ul>
     <li>Adds support for <i>Community Editions</i> of IntelliJ IDEs</li>
+    <li>Removed dependency to NodeJS plugin (only available in WebStorm and IDEA Ultimate)</li>
+    <li>Removed dependency to IDEA Ultimate</li>
 </ul> ]]></change-notes>
 </idea-plugin>
