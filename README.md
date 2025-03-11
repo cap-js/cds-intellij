@@ -23,9 +23,7 @@ Look at our [comprehensive list of features](./FEATURES.md).
 
 ### Supported IDEs
 
-This plugin is compatible with the latest **paid** IntelliJ IDEs including IDEA Ultimate and WebStorm.  Check https://www.jetbrains.com/ to find out which option is best for you.
-
-> The LSP API is only available in commercial IntelliJ IDEs, which is why the plugin doesn't run in the free variants (such as IntelliJ Community).
+This plugin is compatible with a [variety of IntelliJ IDEs](https://plugins.jetbrains.com/plugin/25209-sap-cds-language-support), **paid** and **community** editions, including IDEA and WebStorm.  Check https://www.jetbrains.com/ to find out which option is best for you.
 
 ### Operating Systems
 
@@ -40,7 +38,7 @@ Prepare your environment:
    on your computer if not already present.
 2. Register the new Node.js installation in your IntelliJ IDE by going to *File > Settings > Languages & Frameworks > Node.js* and [adding the Node.js interpreter](https://www.jetbrains.com/help/idea/node-js-interpreters.html#ws_node_interpreters_dialog_open).
 3. If you have installed the SAP CDS Language Support for IntelliJ plugin from a ZIP file before, uninstall it.
-     - Note: we have reset the current plugin version to `1.0.0` for the first JetBrains Marketplace release, to clarify that the feature set (based on the current LSP API) is still incomplete.
+     - Note: we have reset the current plugin version to `1.0.0` for the first JetBrains Marketplace release, to clarify that the feature set is still incomplete.
 
 Install or update the plugin:
 
@@ -69,9 +67,9 @@ SAP CDS Language Support for IntelliJ is based on the following components:
 
 | Component                                                                                       | Role                                                                             | Publisher              |
 |-------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|------------------------|
-| [CDS Language Server](https://www.npmjs.com/package/@sap/cds-lsp) (cds-lsp, running on Node.js) | SAP CDS Language Support                                                             | SAP                    |
+| [CDS Language Server](https://www.npmjs.com/package/@sap/cds-lsp) (cds-lsp, running on Node.js) | SAP CDS Language Support                                                         | SAP                    |
 | CDS TextMate bundle                                                                             | CDS syntax highlighting                                                          | (shipped with cds-lsp) |
-| [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-server-protocol.html)   | [LSP](https://microsoft.github.io/language-server-protocol/) support in IntelliJ | JetBrains              |
+| [LSP4IJ extension](https://plugins.jetbrains.com/plugin/23257-lsp4ij)                           | [LSP](https://microsoft.github.io/language-server-protocol/) support in IntelliJ | Red Hat                |
 
 
 ### Known Issues
