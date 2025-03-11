@@ -71,7 +71,7 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
         if (COMMAND_LINES.get(kind) != null) {
             return COMMAND_LINES.get(kind);
         }
-        final String nodeInterpreterPath = getInterpreter(REQUIRED_NODEJS_VERSION).getInterpreterSystemDependentPath();
+        final String nodeInterpreterPath = getInterpreter(REQUIRED_NODEJS_VERSION);//.getInterpreterSystemDependentPath();
         switch (kind) {
             case SERVER -> COMMAND_LINES.put(CommandLineKind.SERVER,
                     new GeneralCommandLine(
@@ -109,7 +109,7 @@ public class CdsLspServerDescriptor extends ProjectWideLspServerDescriptor {
 
         COMMAND_LINES.put(CommandLineKind.CLI_FORMAT,
                 new GeneralCommandLine(
-                        getInterpreter(REQUIRED_NODEJS_VERSION).getInterpreterSystemDependentPath(),
+                        getInterpreter(REQUIRED_NODEJS_VERSION),//.getInterpreterSystemDependentPath(),
                         resolve(RELATIVE_FORMAT_CLI_PATH),
                         "-f",
                         srcPath.toString()

@@ -17,7 +17,7 @@ The set of features will grow with future releases, aligned with the development
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.ultimate</depends>
     <depends>org.jetbrains.plugins.textmate</depends>
-    <depends>NodeJS</depends>
+<!--    <depends>NodeJS</depends>-->
 
 
     <extensions defaultExtensionNs="com.intellij">
@@ -43,6 +43,15 @@ The set of features will grow with future releases, aligned with the development
 
         <vfs.asyncListener implementation="com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonListener"/>
         <postStartupActivity implementation="com.sap.cap.cds.intellij.lifecycle.ProjectLifecycleListener"/>
+
+        <applicationService
+                serviceImplementation="com.sap.cap.cds.intellij.settings.AppSettings"/>
+        <applicationConfigurable
+                parentId="language"
+                instance="com.sap.cap.cds.intellij.settings.AppSettingsConfigurable"
+                id="com.sap.cap.cds.intellij.settings.AppSettingsConfigurable"
+                displayName="CDS"/>
+
 
 
     </extensions>
