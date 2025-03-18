@@ -58,7 +58,7 @@ public class AppSettingsComponent {
             return "";
         }
 
-        var version = verifyNodeVersion(nodeJsPath, "v20.18.1"); // TODO: read required version from LSP
+        var version = verifyNodeVersion(nodeJsPath, "v20.18.1"); // TODO: read required version from LSP package.json
         if (version.isEmpty()) {
             return "";
         }
