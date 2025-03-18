@@ -21,15 +21,7 @@ public class CdsLanguageServerFactory implements LanguageServerFactory { // TODO
 
     @Override // If you need to provide client specific features
     public @NotNull LanguageClientImpl createLanguageClient(@NotNull Project project) {
-        var client = new CdsLanguageClient(project);
-//        var features = client.getClientFeatures(); // TODO: uses wrapper, available after connect
-//        var wrapper = features.getServerWrapper();
-//        wrapper.getClientFeatures().getCodeLensFeature()
-//        wrapper.getServerCapabilities().getExecuteCommandProvider()
-//        wrapper.getClass().getDeclaredMethod() // TODO try reflection
-//        features.setServerWrapper(new CdsLanguageServerWrapper(project, wrapper.getServerDefinition())); // TODO: wrapper first available after connect. Q: can we hook this?
-//        features.initializeParams(new InitializeParams());
-        return client;
+        return new CdsLanguageClient(project);
     }
 
     @Override // If you need to expose a custom server API
@@ -40,8 +32,8 @@ public class CdsLanguageServerFactory implements LanguageServerFactory { // TODO
     @Override
     public @NotNull LSPClientFeatures createClientFeatures() {
         var features = new CdsLspClientFeatures()
-//                .setServerInstaller() // TODO
-//                .setEditorFeatures() // TODO
+//                .setServerInstaller() // TODO: install latest cds-lsp on-the-fly, maybe blue/green like for annotation modeler
+//                .setEditorFeatures() // TODO: API already documented but not yet released
                 .setWorkspaceSymbolFeature(new CdsWorkspaceSymbolFeature())
                 .setSemanticTokensFeature(new CdsSemanticTokensFeature())
                 .setProgressFeature(new CdsProgressFeature())
@@ -50,9 +42,6 @@ public class CdsLanguageServerFactory implements LanguageServerFactory { // TODO
                 .setFoldingRangeFeature(new CdsFoldingRangeFeature())
                 .setDiagnosticFeature(new CdsDiagnosticFeature())
                 .setCodeActionFeature(new CdsCodeActionFeature());
-        // Q: where is EditorFeature? Docs mentions it, but not in the API
         return features;
     }
-
-
 }

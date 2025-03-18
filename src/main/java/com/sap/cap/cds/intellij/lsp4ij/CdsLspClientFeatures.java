@@ -42,9 +42,6 @@ public class CdsLspClientFeatures extends LSPClientFeatures {
         return super.isEnabled(file);
     }
 
-    // Idea: setXYFeature(new MyXyFeature()); to tweak the client features
-
-
     @Override
     public @Nullable URI getFileUri(@NotNull VirtualFile file) {
         // Idea: canonicalize URI like VSCode's uriConverters
@@ -72,8 +69,5 @@ String getBlockCommentPrefix(PsiFile file)	Returns the language grammar block co
 String getBlockCommentSuffix(PsiFile file)	Returns the language grammar block comment suffix for the file.
 String getStatementTerminatorCharacters(PsiFile file)	Returns the language grammar statement terminator characters for the file.
      */
-
-
-
-
+    
 }

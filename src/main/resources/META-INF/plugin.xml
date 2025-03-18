@@ -36,8 +36,6 @@ The set of features will grow with future releases, aligned with the development
 
         <formattingService implementation="com.sap.cap.cds.intellij.codestyle.CdsCodeStylePreviewFormattingService"/>
 
-<!--        <platform.lsp.serverSupportProvider implementation="com.sap.cap.cds.intellij.lsp.CdsLspServerSupportProvider"/>-->
-
 <!--        <notificationGroup id="com.sap.cap.cds.intellij.notifications"-->
 <!--                           displayType="BALLOON"/>-->
 
@@ -51,8 +49,6 @@ The set of features will grow with future releases, aligned with the development
                 instance="com.sap.cap.cds.intellij.settings.AppSettingsConfigurable"
                 id="com.sap.cap.cds.intellij.settings.AppSettingsConfigurable"
                 displayName="CDS"/>
-
-
 
     </extensions>
 

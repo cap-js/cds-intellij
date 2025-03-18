@@ -10,6 +10,8 @@ import static java.nio.file.Files.createDirectories;
 public class FileUtil {
 
     public static Path createTempDir(String prefix) throws IOException {
+        // TODO: replace with Files.createTempDirectory()
+
         Path tempDir = Paths.get(System.getProperty("java.io.tmpdir"));
         Path subDir = tempDir.resolve(prefix + randomString(8));
         createDirectories(subDir);

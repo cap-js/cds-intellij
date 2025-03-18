@@ -78,12 +78,13 @@ CompletableFuture<List<Application>> applications =
 
 
     public JsonObject getSettings() {
-
         return CdsLanguageClient.getInitializationOptions();
-
     }
 
     public static JsonObject getInitializationOptions() {
+        // TODO: implement all settings in IntelliJ settings under Languages->CDS, read them here and return them
+
+
         // TODO cds.trace.level (off) -> verbose (set env and restart)
         // TODO implement ActiveEditorChanged request
 
@@ -145,6 +146,5 @@ CompletableFuture<List<Application>> applications =
 
 
 interface AddChild {
-//    Map<String,Object> run(Map<String,Object> parent, String child);
     JsonObject run(JsonObject parent, String child);
 }
