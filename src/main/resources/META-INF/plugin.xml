@@ -103,10 +103,8 @@ The set of features will grow with future releases, aligned with the development
 
 
     <change-notes><![CDATA[
-<h3>Added</h3>
+<h3>Changed</h3>
 <ul>
-    <li>Adds support for <i>Community Editions</i> of IntelliJ IDEs</li>
-    <li>Removed dependency to NodeJS plugin (only available in WebStorm and IDEA Ultimate)</li>
-    <li>Removed dependency to IDEA Ultimate</li>
+    <li>Consuming @sap/cds-lsp 8.8.1 using the new CDS parser support</li>
 </ul> ]]></change-notes>
 </idea-plugin>
