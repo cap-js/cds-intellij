@@ -15,6 +15,8 @@ import java.util.stream.Stream;
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
 import static com.intellij.openapi.vfs.VfsUtil.collectChildrenRecursively;
 import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsService.PRETTIER_JSON;
+import static com.sap.cap.cds.intellij.util.Logger.logger;
+import static com.sap.cap.cds.intellij.util.LoggerScope.CODE_STYLE;
 
 public class CdsPrettierJsonListener implements AsyncFileListener {
     private static void handle(Stream<? extends @NotNull VFileEvent> stream) {
@@ -31,6 +33,7 @@ public class CdsPrettierJsonListener implements AsyncFileListener {
                 .forEach(project -> {
                     CdsCodeStyleSettingsService service = project.getService(CdsCodeStyleSettingsService.class);
                     if (service.isSettingsFileChanged()) {
+                        logger(project).scope(CODE_STYLE).debug(".cdsprettier.json changed");
                         service.updateProjectSettingsFromFile();
                     }
                 });
