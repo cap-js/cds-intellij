@@ -11,7 +11,7 @@ class ProjectLifecycleListener : ProjectActivity {
     override suspend fun execute(project: Project) {
         val service = project.getService(CdsCodeStyleSettingsService::class.java)
         if (service.isSettingsFilePresent) {
-            logger(project).scope(CODE_STYLE).debug("Project with .cdsprettier.json opened: ${project.name}")
+            logger(project, CODE_STYLE).debug("Project with .cdsprettier.json opened")
             service.updateProjectSettingsFromFile()
         }
     }

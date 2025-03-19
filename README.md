@@ -114,7 +114,7 @@ After restarting the IDE, find the logs in the [plugin directory](https://intell
 
 To include debug logs produced by the LSP client (part of the IDE) and the SAP CDS Language Support for IntelliJ plugin, you need to enable the corresponding settings in the IDE:
 - Open the *Help* menu and select *Diagnostic Tools > Debug Log Settings…*.
-- In the dialog that opens, add the following lines:
+- In the dialog that opens, add the following lines (omit sub-categories if not needed):
 ```
 com.intellij.platform.lsp
 cds-intellij

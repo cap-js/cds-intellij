@@ -33,7 +33,7 @@ public class CdsPrettierJsonListener implements AsyncFileListener {
                 .forEach(project -> {
                     CdsCodeStyleSettingsService service = project.getService(CdsCodeStyleSettingsService.class);
                     if (service.isSettingsFileChanged()) {
-                        logger(project).scope(CODE_STYLE).debug(".cdsprettier.json changed");
+                        logger(project, CODE_STYLE).debug(".cdsprettier.json changed");
                         service.updateProjectSettingsFromFile();
                     }
                 });

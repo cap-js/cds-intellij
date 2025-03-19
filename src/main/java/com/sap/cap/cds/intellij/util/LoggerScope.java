@@ -9,9 +9,9 @@ public enum LoggerScope {
     TM_BUNDLE("%s/%s".formatted(CdsPlugin.LABEL, CdsTextMateBundle.LABEL)),
     CODE_STYLE("%s/%s".formatted(CdsPlugin.LABEL, CdsCodeStyleSettingsProvider.LABEL));
 
-    final String scope;
+    final String label;
 
     LoggerScope(String scope) {
-        this.scope = scope;
+        this.label = scope;
     }
 }

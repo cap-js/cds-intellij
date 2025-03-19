@@ -2,15 +2,13 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.application.options.CodeStyle;
 import com.intellij.openapi.components.Service;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
-import com.intellij.psi.codeStyle.CodeStyleSettingsChangeEvent;
-import com.intellij.psi.codeStyle.CodeStyleSettingsListener;
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
 import com.sap.cap.cds.intellij.CdsFileType;
+import com.sap.cap.cds.intellij.util.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 
@@ -35,15 +33,12 @@ public final class CdsCodeStyleSettingsService {
 
     public CdsCodeStyleSettingsService(Project project) {
         this.project = project;
-        this.logger = logger(project).scope(CODE_STYLE);
+        this.logger = logger(project, CODE_STYLE);
         prettierJsonManager = new CdsPrettierJsonManager();
-        CodeStyleSettingsManager.getInstance(project).subscribe(new CodeStyleSettingsListener() {
-            @Override
-            public void codeStyleSettingsChanged(@NotNull CodeStyleSettingsChangeEvent event) {
-                logger.debug("Code-style settings changed");
-                if (shouldBeSavedImmediately()) {
-                    updateSettingsFile();
-                }
+        CodeStyleSettingsManager.getInstance(project).subscribe(event -> {
+            logger.debug("Code-style settings changed");
+            if (shouldBeSavedImmediately()) {
+                updateSettingsFile();
             }
         });
     }
@@ -147,7 +142,7 @@ public final class CdsCodeStyleSettingsService {
             }
             try {
                 jsonCached = readString(jsonFile.toPath());
-                logger.debug("Read settings: %s".formatted(jsonCached));
+                logger.debug("Read settings: %s".formatted(jsonCached.replaceAll(" *\n *", " ")));
                 return jsonCached;
             } catch (IOException e) {
                 logger.error("Failed to read [%s]".formatted(jsonFile), e);
