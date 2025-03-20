@@ -4,40 +4,51 @@ import com.intellij.openapi.project.Project;
 import com.sap.cap.cds.intellij.CdsPlugin;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsProvider;
 import com.sap.cap.cds.intellij.textmate.CdsTextMateBundle;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 import static com.intellij.openapi.diagnostic.Logger.getInstance;
 
 public class Logger {
 
-    public static final com.intellij.openapi.diagnostic.Logger PLUGIN = com.intellij.openapi.diagnostic.Logger.getInstance(CdsPlugin.LABEL);
+    public static final com.intellij.openapi.diagnostic.Logger PLUGIN = getInstance(CdsPlugin.LABEL);
 
     public static final com.intellij.openapi.diagnostic.Logger TM_BUNDLE = getInstance("%s/%s".formatted(CdsPlugin.LABEL, CdsTextMateBundle.LABEL));
 
     public static final com.intellij.openapi.diagnostic.Logger CODE_STYLE = getInstance("%s/%s".formatted(CdsPlugin.LABEL, CdsCodeStyleSettingsProvider.LABEL));
 
-    private String project;
+    private static final Map<CacheKey, Logger> INSTANCES = new java.util.concurrent.ConcurrentHashMap<>();
 
-    private Logger() {}
+    private final Project project;
+    private final com.intellij.openapi.diagnostic.Logger logger;
 
-    Logger(Project project) {
-        this.project = " [%s]".formatted(project.getName());
+    private Logger(Project project, com.intellij.openapi.diagnostic.Logger ijLogger) {
+        this.project = project;
+        this.logger = ijLogger;
     }
 
-    public static Logger logger(Project project) {
-        return new Logger(project);
+    public static Logger logger(Project project, LoggerScope scope) {
+        return INSTANCES.computeIfAbsent(new CacheKey(project, scope), k -> new Logger(project, getInstance(scope.label)));
     }
 
-    public com.intellij.openapi.diagnostic.@NotNull Logger PLUGIN() {
-        return getInstance("%s%s".formatted(CdsPlugin.LABEL, project));
+    public void debug(String message) {
+        logger.debug("[%s] %s".formatted(project.getName(), message));
     }
 
-    public com.intellij.openapi.diagnostic.@NotNull Logger TM_BUNDLE() {
-        return getInstance("%s/%s%s".formatted(CdsPlugin.LABEL, CdsTextMateBundle.LABEL, project));
+    public void info(String message) {
+        logger.info("[%s] %s".formatted(project.getName(), message));
     }
 
-    public com.intellij.openapi.diagnostic.@NotNull Logger CODE_STYLE() {
-        return getInstance("%s/%s%s".formatted(CdsPlugin.LABEL, CdsCodeStyleSettingsProvider.LABEL, project));
+    public void warn(String message) {
+        logger.warn("[%s] %s".formatted(project.getName(), message));
+    }
+
+    public void error(String message) {
+        logger.error("[%s] %s".formatted(project.getName(), message));
+    }
+
+    public void error(String message, Throwable t) {
+        logger.error("[%s] %s".formatted(project.getName(), message), t);
     }
 
 }
