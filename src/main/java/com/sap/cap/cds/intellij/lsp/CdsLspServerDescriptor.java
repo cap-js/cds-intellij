@@ -16,7 +16,7 @@ import static com.sap.cap.cds.intellij.util.NodeJsUtil.getInterpreter;
 import static com.sap.cap.cds.intellij.util.PathUtil.resolve;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class CdsLspServerDescriptor /*extends ProjectWideLspServerDescriptor*/ {
+public class CdsLspServerDescriptor {
 
     public static final String RELATIVE_SERVER_BASE_PATH = "cds-lsp/node_modules/@sap/cds-lsp/";
     private static final String RELATIVE_SERVER_PATH = RELATIVE_SERVER_BASE_PATH + "dist/main.js";
@@ -57,7 +57,7 @@ public class CdsLspServerDescriptor /*extends ProjectWideLspServerDescriptor*/ {
         if (COMMAND_LINES.get(kind) != null) {
             return COMMAND_LINES.get(kind);
         }
-        final String nodeInterpreterPath = getInterpreter(REQUIRED_NODEJS_VERSION);//.getInterpreterSystemDependentPath();
+        final String nodeInterpreterPath = getInterpreter(REQUIRED_NODEJS_VERSION);
         switch (kind) {
             case SERVER -> COMMAND_LINES.put(CommandLineKind.SERVER,
                     new GeneralCommandLine(
@@ -95,18 +95,13 @@ public class CdsLspServerDescriptor /*extends ProjectWideLspServerDescriptor*/ {
 
         COMMAND_LINES.put(CommandLineKind.CLI_FORMAT,
                 new GeneralCommandLine(
-                        getInterpreter(REQUIRED_NODEJS_VERSION),//.getInterpreterSystemDependentPath(),
+                        getInterpreter(REQUIRED_NODEJS_VERSION),
                         resolve(RELATIVE_FORMAT_CLI_PATH),
                         "-f",
                         srcPath.toString()
                 ).withWorkDirectory(cwd.toString())
         );
         return COMMAND_LINES.get(CommandLineKind.CLI_FORMAT);
-    }
-
-    public GeneralCommandLine getServerCommandLine() throws ExecutionException {
-        CommandLineKind kind = isDebugCdsLsp() ? CommandLineKind.SERVER_DEBUG : CommandLineKind.SERVER;
-        return getServerCommandLine(kind);
     }
 
     public enum CommandLineKind {
