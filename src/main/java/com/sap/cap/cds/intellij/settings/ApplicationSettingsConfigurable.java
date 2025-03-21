@@ -37,33 +37,25 @@ final class AppSettingsConfigurable implements Configurable {
 
     @Override
     public boolean isModified() {
-        AppSettings.State state =
-                Objects.requireNonNull(AppSettings.getInstance().getState());
-        return !mySettingsComponent.getNodeJsPathText().equals(state.nodeJsPath)
-//                || mySettingsComponent.getIdeaUserStatus() != state.ideaStatus
-                ;
+        AppSettings.State state = Objects.requireNonNull(AppSettings.getInstance().getState());
+        return !mySettingsComponent.getNodeJsPathText().equals(state.nodeJsPath);
 
     }
 
     @Override
     public void apply() {
-        AppSettings.State state =
-                Objects.requireNonNull(AppSettings.getInstance().getState());
+        AppSettings.State state = Objects.requireNonNull(AppSettings.getInstance().getState());
         state.nodeJsPath = mySettingsComponent.getNodeJsPathText();
-//        state.ideaStatus = mySettingsComponent.getIdeaUserStatus();
     }
 
     @Override
     public void reset() {
-        AppSettings.State state =
-                Objects.requireNonNull(AppSettings.getInstance().getState());
+        AppSettings.State state = Objects.requireNonNull(AppSettings.getInstance().getState());
         mySettingsComponent.setNodeJsPathText(state.nodeJsPath);
-//        mySettingsComponent.setIdeaUserStatus(state.ideaStatus);
     }
 
     @Override
     public void disposeUIResources() {
         mySettingsComponent = null;
     }
-
 }

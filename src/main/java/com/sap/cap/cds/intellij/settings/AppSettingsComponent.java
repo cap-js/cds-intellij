@@ -162,13 +162,4 @@ public class AppSettingsComponent {
     public void setNodeJsPathText(@NotNull String newText) {
         nodeJsPathText.setText(newText);
     }
-
-//    public boolean getIdeaUserStatus() {
-//        return myIdeaUserStatus.isSelected();
-//    }
-
-//    public void setIdeaUserStatus(boolean newStatus) {
-//        myIdeaUserStatus.setSelected(newStatus);
-//    }
-
 }

@@ -4,17 +4,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.project.Project;
 import com.redhat.devtools.lsp4ij.client.LanguageClientImpl;
-import com.redhat.devtools.lsp4ij.server.definition.launching.UserDefinedLanguageClient;
-import kotlinx.serialization.json.Json;
 import org.eclipse.lsp4j.ApplyWorkspaceEditParams;
 import org.eclipse.lsp4j.ApplyWorkspaceEditResponse;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public class CdsLanguageClient extends LanguageClientImpl /*TODO: try UserDefinedLanguageClient or IndexAwareLanguageClient*/ {
     public CdsLanguageClient(Project project) {

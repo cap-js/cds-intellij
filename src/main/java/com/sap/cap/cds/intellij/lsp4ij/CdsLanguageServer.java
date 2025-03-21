@@ -8,7 +8,7 @@ import com.redhat.devtools.lsp4ij.server.OSProcessStreamConnectionProvider;
 public class CdsLanguageServer extends OSProcessStreamConnectionProvider {
 
     public CdsLanguageServer() {
-        var cmd = CdsLspServerDescriptor.getServerCommandLine(CdsLspServerDescriptor.CommandLineKind.SERVER_DEBUG);//.withCharset(UTF_8);
+        var cmd = CdsLspServerDescriptor.getServerCommandLine(CdsLspServerDescriptor.CommandLineKind.SERVER_DEBUG);
         super.setCommandLine(cmd);
     }
 

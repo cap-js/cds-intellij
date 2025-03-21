@@ -23,8 +23,7 @@ public final class AppSettings
     private State myState = new State();
 
     public static AppSettings getInstance() {
-        return ApplicationManager.getApplication()
-                .getService(AppSettings.class);
+        return ApplicationManager.getApplication().getService(AppSettings.class);
     }
 
     @Override
