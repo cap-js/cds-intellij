@@ -36,20 +36,18 @@ Prepare your environment:
 
 1. Install [![required Node.js version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fwww.unpkg.com%2F%40sap%2Fcds-lsp%2Fpackage.json&query=%24.engines.node&label=Node.js&cacheSeconds=3600)](https://nodejs.org/en/)
    on your computer if not already present.
-2. Register the new Node.js installation in your IntelliJ IDE by going to *File > Settings > Languages & Frameworks > Node.js* and [adding the Node.js interpreter](https://www.jetbrains.com/help/idea/node-js-interpreters.html#ws_node_interpreters_dialog_open).
+2. Register the new Node.js installation in your IntelliJ IDE by going to *File > Settings > Languages & Frameworks > CDS*.
 3. If you have installed the SAP CDS Language Support for IntelliJ plugin from a ZIP file before, uninstall it.
      - Note: we have reset the current plugin version to `1.0.0` for the first JetBrains Marketplace release, to clarify that the feature set is still incomplete.
 
 Install or update the plugin:
 
 1. In your IntelliJ IDE, go to *File > Settings > Plugins*.
-2. Click the *Marketplace* tab.
+2. Click the _Marketplace_ tab.
 3. Search for "SAP CDS Language Support" and click *Install*.
 
-Alternatively, you can install the plugin from the JetBrains Marketplace:
-
-1. Go to the [plugin homepage](https://plugins.jetbrains.com/plugin/25209-sap-cds-language-support) and hit the "Install to …" button.
-2. Open your IntelliJ IDE and follow the instructions in the dialog that appears.
+**Note:** Support for **_Community_** editions of IntelliJ IDEs is currently in **beta** stage and requires manual installation
+from [GitHub](https://github.com/cap-js/cds-intellij/releases). Tap `Shift` **twice**, then select _Install Plugin from Disk..._
 
 
 ## How to Obtain Support
@@ -78,7 +76,7 @@ SAP CDS Language Support for IntelliJ is based on the following components:
 
 | Symptom                                                                                        | Solution                                                                                                                                                                                                           |
 |------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| SAP CDS Language Support for IntelliJ is not enabled in the IDE.                               | 🚫 The plugin is not compatible with the **free** IntelliJ **Community** Edition. Make sure you are using a commercial IntelliJ IDE such as IDEA Ultimate or WebStorm.                                             |
+| SAP CDS Language Support for IntelliJ is not enabled in the IDE.                               | 1.x versions of the plugin are not compatible with the **free** IntelliJ **Community** Edition. Make sure you are using a version ≥ 2.x of the plugin.                                                             |
 | SAP CDS Language Support for IntelliJ version 7 or 8 cannot be updated to the current version. | The plugin version has been reset to 1.0.0 for the first JetBrains Marketplace release. Uninstall the previous version of the plugin. Install the latest version from the JetBrains Marketplace.                   |
 | CDS file icons are missing and/or no syntax highlighting                                       | Uninstall any previous versions of the plugin *(File > Settings > Plugins)*. Remove the 'cds' TextMate Bundle *(File > Settings > Editor > TextMate Bundles)*. Restart the IDE. Install the latest plugin version. |
 
@@ -89,7 +87,7 @@ Depending on the kind of problem encountered, you may want to include the logs f
 
 #### IDE Logs
 
-Logs produced by the IDE can be found by opening the *Help* menu and selecting *Show Log in <platform-dependent tool>*.
+Logs produced by the IDE can be found by opening the _Help_ menu and selecting *Show Log in <platform-dependent tool>*.
 See [Locating IDE log files](https://intellij-support.jetbrains.com/hc/en-us/articles/207241085-Locating-IDE-log-files) for more information.
 
 #### Language Server Protocol (LSP) Logs
@@ -113,7 +111,7 @@ After restarting the IDE, find the logs in the [plugin directory](https://intell
 #### LSP Client and Plugin Logs
 
 To include debug logs produced by the LSP client (part of the IDE) and the SAP CDS Language Support for IntelliJ plugin, you need to enable the corresponding settings in the IDE:
-- Open the *Help* menu and select *Diagnostic Tools > Debug Log Settings…*.
+- Open the _Help_ menu and select _Diagnostic Tools > Debug Log Settings…_.
 - In the dialog that opens, add the following lines (omit sub-categories if not needed):
 ```
 com.intellij.platform.lsp
@@ -121,7 +119,7 @@ cds-intellij
 cds-intellij/TextMate Bundle
 cds-intellij/Code Style
 ```
-- Click *OK* to save the settings.
+- Click _OK_ to save the settings.
 
 #### LSP Server Logs
 
@@ -129,10 +127,11 @@ The LSP server logs to its own file, which you can locate by opening your system
 
 Hint: depending on your operating system, the temporary directory may be at one of the following locations:
 
-| OS           | Default location                        | Environment variables | Command                            |
-|--------------|-----------------------------------------|-----------------------|------------------------------------|
-| Windows      | C:\Users\\[username]\AppData\Local\Temp | %TEMP%                |                                    |
-| macOS, Linux | /tmp                                    | $TMPDIR               | node -e "console.log(os.tmpdir())" |
+| OS      | Default location                         | Environment variables | Command                            |
+|---------|------------------------------------------|-----------------------|------------------------------------|
+| Windows | C:\Users\\<username\>\AppData\Local\Temp | %TEMP%                |                                    |
+| macOS   | n/a                                      | $TMPDIR               | node -e "console.log(os.tmpdir())" |
+| Linux   | /tmp                                     | $TMPDIR               | node -e "console.log(os.tmpdir())" |
 
 
 ## Contributing
