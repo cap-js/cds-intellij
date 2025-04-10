@@ -2,8 +2,6 @@ package com.sap.cap.cds.intellij.util;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
-//import com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreter;
-//import com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreterManager;
 import com.sap.cap.cds.intellij.settings.AppSettings;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 
@@ -11,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Optional;
+
+import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
 
 public class NodeJsUtil {
 
@@ -25,8 +25,7 @@ public class NodeJsUtil {
 //            Optional<ComparableVersion> version = getVersion(interpreter.getInterpreterSystemDependentPath());
 //            if (version.isEmpty()) {
 //                continue;
-//            }
-//            if (version.get().compareTo(requiredVersion) >= 0) {
+//            } if (version.get().compareTo(requiredVersion) >= 0) {
 //                Logger.PLUGIN.debug("Found suitable Node.js interpreter [%s]".formatted(interpreter.getInterpreterSystemDependentPath()));
 //                return interpreter;
 //            }
@@ -39,7 +38,7 @@ public class NodeJsUtil {
         return new ComparableVersion(rawVersion.replaceAll("[^0-9.]", ""));
     }
 
-    private static Optional<ComparableVersion> getVersion(String nodeJsPath) {
+    public static Optional<ComparableVersion> getVersion(String nodeJsPath) {
         try {
             Process process = new GeneralCommandLine(nodeJsPath, "--version").createProcess();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
@@ -57,6 +56,10 @@ public class NodeJsUtil {
             Logger.PLUGIN.error("Failed to read version from [%s]: failed to start process".formatted(nodeJsPath), e);
             return Optional.empty();
         }
+    }
+
+    public static boolean isNodeVersionSufficient(ComparableVersion version) {
+        return version.compareTo(REQUIRED_NODEJS_VERSION) >= 0;
     }
 
 }
