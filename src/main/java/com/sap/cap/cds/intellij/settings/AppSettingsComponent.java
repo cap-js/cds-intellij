@@ -32,7 +32,7 @@ public class AppSettingsComponent {
 
     public AppSettingsComponent() {
         myMainPanel = FormBuilder.createFormBuilder()
-                .addLabeledComponent(new JBLabel("Path to Node.JS executable"), nodeJsPathText, 1, false)
+                .addLabeledComponent(new JBLabel("Path to Node.js executable"), nodeJsPathText, 1, false)
 //                .addComponent(myIdeaUserStatus, 1)
                 .addComponent(nodeStatus, 1)
                 .addComponentFillVertically(new JPanel(), 0)
@@ -90,14 +90,14 @@ public class AppSettingsComponent {
         var result = executeCli(cmd, "node");
 
         if (result.isPresent() && new File(result.get()).isFile()) {
-            Logger.PLUGIN.debug("Found Node.JS at [%s]".formatted(result.get()));
+            Logger.PLUGIN.debug("Found Node.js at [%s]".formatted(result.get()));
             nodeJsPathText.setText(result.get());
-            nodeStatus.setText("Node.JS found");
+            nodeStatus.setText("Node.js found");
             nodeStatus.setBackground(null);
             return result;
         }
 
-        nodeStatus.setText("Node.JS not found");
+        nodeStatus.setText("Node.js not found");
         nodeStatus.setBackground(JBColor.RED);
         return Optional.empty();
     }
@@ -107,19 +107,19 @@ public class AppSettingsComponent {
         if (result.isPresent()) {
             var version = result.get();
             if (isNodeVersionSufficient(nodeJsPath)) {
-                Logger.PLUGIN.debug("Node.JS version [%s] is sufficient".formatted(version));
-                nodeStatus.setText("Node.JS found and sufficient");
+                Logger.PLUGIN.debug("Node.js version [%s] is sufficient".formatted(version));
+                nodeStatus.setText("Node.js found and sufficient");
                 nodeStatus.setBackground(null);
                 return Optional.of(version);
             } else {
-                Logger.PLUGIN.debug("Node.JS version [%s] is insufficient".formatted(version));
-                nodeStatus.setText("Node.JS found but insufficient (%s required, you have %s)".formatted(REQUIRED_NODEJS_VERSION, version));
+                Logger.PLUGIN.debug("Node.js version [%s] is insufficient".formatted(version));
+                nodeStatus.setText("Node.js found but insufficient (%s required, you have %s)".formatted(REQUIRED_NODEJS_VERSION, version));
                 nodeStatus.setBackground(JBColor.RED);
                 return Optional.empty();
             }
         }
 
-        nodeStatus.setText("Node.JS could not be determined, please set manually");
+        nodeStatus.setText("Node.js could not be determined, please set manually");
         nodeStatus.setBackground(JBColor.RED);
         return Optional.empty();
     }

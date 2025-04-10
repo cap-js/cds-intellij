@@ -25,8 +25,7 @@ public class NodeJsUtil {
 //            Optional<ComparableVersion> version = getVersion(interpreter.getInterpreterSystemDependentPath());
 //            if (version.isEmpty()) {
 //                continue;
-//            }
-//            if (version.get().compareTo(requiredVersion) >= 0) {
+//            } if (version.get().compareTo(requiredVersion) >= 0) {
 //                Logger.PLUGIN.debug("Found suitable Node.js interpreter [%s]".formatted(interpreter.getInterpreterSystemDependentPath()));
 //                return interpreter;
 //            }
