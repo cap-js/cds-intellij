@@ -57,8 +57,17 @@ The set of features will grow with future releases, aligned with the development
         />
     </applicationListeners>
 
-    <change-notes><![CDATA[ <h3>Fixed</h3>
+    <change-notes><![CDATA[ <h3>Changed</h3>
 <ul>
-    <li>Create .cdsprettier.json only for CDS projects, determined by a .cds file being opened. This applies to the events of project create, project open, and settings confirmation.
+    <li>Compatibility with platform 2025.1
+    <li>Include @sap/cds-lsp 8.9.1 with the following changes since 8.5.1:
+        <ul>
+            <li>minimum required NodeJS version is now 20.15.1</li>
+            <li>fixed formatting of annotations in parentheses with values containing spaces</li>
+            <li>fixed auto-update of **Annotation Modeler** plugin</li>
+            <li>fixed _Document highlights_ which sometimes showed wrong ranges for namespaces</li>
+            <li>use new CDS parser</li>
+        </ul>
+    </li>
 </ul> ]]></change-notes>
 </idea-plugin>
