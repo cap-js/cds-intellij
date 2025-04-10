@@ -38,7 +38,7 @@ public class NodeJsUtil {
         return new ComparableVersion(rawVersion.replaceAll("[^0-9.]", ""));
     }
 
-    private static Optional<ComparableVersion> getVersion(String nodeJsPath) {
+    public static Optional<ComparableVersion> getVersion(String nodeJsPath) {
         try {
             Process process = new GeneralCommandLine(nodeJsPath, "--version").createProcess();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
@@ -58,11 +58,8 @@ public class NodeJsUtil {
         }
     }
 
-    public static boolean isNodeVersionSufficient(String nodeJsPath) {
-        Optional<ComparableVersion> version = getVersion(nodeJsPath);
-        return version
-                .filter(comparableVersion -> comparableVersion.compareTo(REQUIRED_NODEJS_VERSION) >= 0)
-                .isPresent();
+    public static boolean isNodeVersionSufficient(ComparableVersion version) {
+        return version.compareTo(REQUIRED_NODEJS_VERSION) >= 0;
     }
 
 }

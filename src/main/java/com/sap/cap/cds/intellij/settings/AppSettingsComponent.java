@@ -8,6 +8,7 @@ import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.FormBuilder;
 import com.sap.cap.cds.intellij.util.Logger;
+import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -18,6 +19,7 @@ import java.io.InputStreamReader;
 import java.util.Optional;
 
 import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.getVersion;
 import static com.sap.cap.cds.intellij.util.NodeJsUtil.isNodeVersionSufficient;
 
 /**
@@ -72,8 +74,7 @@ public class AppSettingsComponent {
             return "";
         }
 
-        var version = verifyNodeVersion(nodeJsPath);
-        if (version.isEmpty()) {
+        if (!verifyNodeVersion(nodeJsPath)) {
             return "";
         }
 
@@ -102,25 +103,24 @@ public class AppSettingsComponent {
         return Optional.empty();
     }
 
-    private Optional<String> verifyNodeVersion(String nodeJsPath) {
-        var result = executeCli(nodeJsPath, "-v");
-        if (result.isPresent()) {
-            var version = result.get();
-            if (isNodeVersionSufficient(nodeJsPath)) {
-                Logger.PLUGIN.debug("Node.js version [%s] is sufficient".formatted(version));
-                nodeStatus.setText("Node.js found and sufficient");
-                nodeStatus.setBackground(null);
-                return Optional.of(version);
-            } else {
-                Logger.PLUGIN.debug("Node.js version [%s] is insufficient".formatted(version));
-                nodeStatus.setText("Node.js found but insufficient (%s required, you have %s)".formatted(REQUIRED_NODEJS_VERSION, version));
-                nodeStatus.setBackground(JBColor.RED);
-                return Optional.empty();
-            }
+    private boolean verifyNodeVersion(String nodeJsPath) {
+        Optional<ComparableVersion> version = getVersion(nodeJsPath);
+        if (version.isEmpty()) {
+            nodeStatus.setText("Node.js not found. Please set path to executable");
+            nodeStatus.setBackground(JBColor.RED);
+            return false;
         }
-
-        nodeStatus.setText("Node.js could not be determined, please set manually");
-        nodeStatus.setBackground(JBColor.RED);
-        return Optional.empty();
+        ComparableVersion nodeVersion = version.get();
+        if (isNodeVersionSufficient(nodeVersion)) {
+            Logger.PLUGIN.debug("Node.js version [%s] is sufficient".formatted(nodeVersion));
+            nodeStatus.setText("Node.js found and sufficient");
+            nodeStatus.setBackground(null);
+            return true;
+        } else {
+            Logger.PLUGIN.debug("Node.js version [%s] is insufficient".formatted(nodeVersion));
+            nodeStatus.setText("Node.js found but outdated (required: %s but found: %s)".formatted(REQUIRED_NODEJS_VERSION, nodeVersion));
+            nodeStatus.setBackground(JBColor.RED);
+            return false;
+        }
     }
 }
