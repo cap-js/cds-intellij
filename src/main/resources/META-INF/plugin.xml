@@ -15,9 +15,10 @@
 The set of features will grow with future releases, aligned with the development of the JetBrains IntelliJ LSP API.]]></description>
 
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.modules.ultimate</depends>
+<!--    <depends>com.intellij.modules.ultimate</depends>-->
     <depends>org.jetbrains.plugins.textmate</depends>
-    <depends>NodeJS</depends>
+<!--    <depends>NodeJS</depends>-->
+
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType
@@ -35,13 +36,48 @@ The set of features will grow with future releases, aligned with the development
 
         <formattingService implementation="com.sap.cap.cds.intellij.codestyle.CdsCodeStylePreviewFormattingService"/>
 
-        <platform.lsp.serverSupportProvider implementation="com.sap.cap.cds.intellij.lsp.CdsLspServerSupportProvider"/>
-
-        <notificationGroup id="com.sap.cap.cds.intellij.notifications"
-                           displayType="BALLOON"/>
+<!--        <notificationGroup id="com.sap.cap.cds.intellij.notifications"-->
+<!--                           displayType="BALLOON"/>-->
 
         <vfs.asyncListener implementation="com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonListener"/>
         <postStartupActivity implementation="com.sap.cap.cds.intellij.lifecycle.ProjectLifecycleListener"/>
+
+        <applicationService
+                serviceImplementation="com.sap.cap.cds.intellij.settings.AppSettings"/>
+        <applicationConfigurable
+                parentId="language"
+                instance="com.sap.cap.cds.intellij.settings.AppSettingsConfigurable"
+                id="com.sap.cap.cds.intellij.settings.AppSettingsConfigurable"
+                displayName="CDS"/>
+
+    </extensions>
+
+    <depends>com.redhat.devtools.lsp4ij</depends>
+
+    <extensions defaultExtensionNs="com.redhat.devtools.lsp4ij">
+        <server id="cds"
+                name="CDS Language Server"
+                factoryClass="com.sap.cap.cds.intellij.lsp4ij.CdsLanguageServerFactory">
+            <description><![CDATA[
+        <h2>SAP CDS Language Support</h2>
+        ]]>
+            </description>
+
+        </server>
+
+        <fileNamePatternMapping patterns="*.cds;*.json"
+                                serverId="cds"
+                                languageId="cds"/>
+
+        <languageMapping language="cds"
+                         serverId="cds"
+                         languageId="cds"/>
+
+
+
+<!-- TODO? e.g. csn or json       <languageMapping language="XML"-->
+<!--                         serverId="myLanguageServerId"-->
+<!--                         documentMatcher="my.language.server.MyDocumentMatcher"/>-->
     </extensions>
 
     <applicationListeners>
@@ -57,8 +93,19 @@ The set of features will grow with future releases, aligned with the development
         />
     </applicationListeners>
 
-    <change-notes><![CDATA[ <h3>Fixed</h3>
+
+    <actions>
+        <action id="cds.analyzeDependencies"
+                class="com.sap.cap.cds.intellij.command.AnalyzeDependenciesAction"/>
+
+    </actions>
+
+
+
+    <change-notes><![CDATA[
+<h3>Changed</h3>
 <ul>
-    <li>Create .cdsprettier.json only for CDS projects, determined by a .cds file being opened. This applies to the events of project create, project open, and settings confirmation.
+    <li>Consuming @sap/cds-lsp 8.9.0</li>
+    <li>Consuming <a href="https://github.com/redhat-developer/lsp4ij/releases/tag/0.12.0">LSP4IJ 0.12.0</a> (which fixes some IDE freezes among others)</li>
 </ul> ]]></change-notes>
 </idea-plugin>

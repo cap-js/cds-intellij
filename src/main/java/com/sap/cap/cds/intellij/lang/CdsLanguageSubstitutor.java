@@ -14,6 +14,8 @@ public class CdsLanguageSubstitutor extends LanguageSubstitutor {
         if (virtualFile.getName().endsWith(CdsFileType.DOT_EXTENSION)) {
             return CdsLanguage.INSTANCE;
         }
+        // TODO? if csn files -> CDS
+        // TODO? if json files -> inspect and potentially return CDS
         return null;
     }
 }

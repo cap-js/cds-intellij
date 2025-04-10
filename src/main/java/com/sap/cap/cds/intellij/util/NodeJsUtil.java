@@ -2,8 +2,7 @@ package com.sap.cap.cds.intellij.util;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreter;
-import com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreterManager;
+import com.sap.cap.cds.intellij.settings.AppSettings;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 
 import java.io.BufferedReader;
@@ -11,30 +10,35 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Optional;
 
+import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
+
 public class NodeJsUtil {
 
-    public static NodeJsLocalInterpreter getInterpreter(ComparableVersion requiredVersion) {
+    public static String getInterpreter(ComparableVersion requiredVersion) {
         Logger.PLUGIN.debug("Searching for Node.js >= v%s".formatted(requiredVersion));
 
-        for (NodeJsLocalInterpreter interpreter : NodeJsLocalInterpreterManager.getInstance().getInterpreters()) {
-            Optional<ComparableVersion> version = getVersion(interpreter.getInterpreterSystemDependentPath());
-            if (version.isEmpty()) {
-                continue;
-            }
-            if (version.get().compareTo(requiredVersion) >= 0) {
-                Logger.PLUGIN.debug("Found suitable Node.js interpreter [%s]".formatted(interpreter.getInterpreterSystemDependentPath()));
-                return interpreter;
-            }
-        }
-        throw new RuntimeException("No suitable Node.js interpreter found with version >= %s (searched %d interpreters)"
-                .formatted(requiredVersion, NodeJsLocalInterpreterManager.getInstance().getInterpreters().size()));
+        AppSettings instance = AppSettings.getInstance();
+//        instance.loadState();
+        String nodeJsPath = instance.getState().nodeJsPath;
+        return nodeJsPath == null || nodeJsPath.isBlank() ? "node" : nodeJsPath;
+//        for (NodeJsLocalInterpreter interpreter : NodeJsLocalInterpreterManager.getInstance().getInterpreters()) {
+//            Optional<ComparableVersion> version = getVersion(interpreter.getInterpreterSystemDependentPath());
+//            if (version.isEmpty()) {
+//                continue;
+//            } if (version.get().compareTo(requiredVersion) >= 0) {
+//                Logger.PLUGIN.debug("Found suitable Node.js interpreter [%s]".formatted(interpreter.getInterpreterSystemDependentPath()));
+//                return interpreter;
+//            }
+//        }
+//        throw new RuntimeException("No suitable Node.js interpreter found with version >= %s (searched %d interpreters)"
+//                .formatted(requiredVersion, NodeJsLocalInterpreterManager.getInstance().getInterpreters().size()));
     }
 
     public static ComparableVersion extractVersion(String rawVersion) {
         return new ComparableVersion(rawVersion.replaceAll("[^0-9.]", ""));
     }
 
-    private static Optional<ComparableVersion> getVersion(String nodeJsPath) {
+    public static Optional<ComparableVersion> getVersion(String nodeJsPath) {
         try {
             Process process = new GeneralCommandLine(nodeJsPath, "--version").createProcess();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
@@ -52,6 +56,10 @@ public class NodeJsUtil {
             Logger.PLUGIN.error("Failed to read version from [%s]: failed to start process".formatted(nodeJsPath), e);
             return Optional.empty();
         }
+    }
+
+    public static boolean isNodeVersionSufficient(ComparableVersion version) {
+        return version.compareTo(REQUIRED_NODEJS_VERSION) >= 0;
     }
 
 }

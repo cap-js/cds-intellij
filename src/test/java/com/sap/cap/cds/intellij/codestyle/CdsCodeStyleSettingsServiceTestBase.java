@@ -2,6 +2,7 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.application.options.CodeStyle;
 import com.intellij.openapi.application.WriteAction;
+import com.intellij.openapi.fileEditor.FileEditor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -124,9 +125,9 @@ public class CdsCodeStyleSettingsServiceTestBase extends HeavyPlatformTestCase {
         });
     }
 
-    protected void openCdsFile() {
+    protected FileEditor[] openCdsFile() {
         FileEditorManager fileEditorManager = FileEditorManager.getInstance(project);
-        fileEditorManager.openFile(getVFile(projectDir.resolve(SOME_CDS).toFile()), false);
+        return fileEditorManager.openFile(getVFile(projectDir.resolve(SOME_CDS).toFile()), false);
     }
 
     @NotNull
