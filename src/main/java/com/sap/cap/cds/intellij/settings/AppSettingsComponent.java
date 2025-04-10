@@ -16,8 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.isNodeVersionSufficient;
 
 /**
  * Supports creating and managing a {@link JPanel} for the Settings Dialog.
@@ -40,6 +41,19 @@ public class AppSettingsComponent {
         nodeStatus.setOpaque(true);
     }
 
+    public static Optional<String> executeCli(String... args) {
+        // TODO? what if the IDE wasn't started from a terminal i.e. without an env? Will the GeneralCommandLine work and use the default shell?
+        try {
+            Process process = new GeneralCommandLine(args).createProcess();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String output = reader.readLine();
+            return output == null ? Optional.empty() : Optional.of(output);
+        } catch (ExecutionException | IOException e) {
+            Logger.PLUGIN.error("Failed to execute [%s]".formatted(String.join(" ", args)), e);
+            return Optional.empty();
+        }
+    }
+
     public JPanel getPanel() {
         return myMainPanel;
     }
@@ -58,7 +72,7 @@ public class AppSettingsComponent {
             return "";
         }
 
-        var version = verifyNodeVersion(nodeJsPath, "v20.18.1"); // TODO: read required version from LSP package.json
+        var version = verifyNodeVersion(nodeJsPath);
         if (version.isEmpty()) {
             return "";
         }
@@ -66,6 +80,9 @@ public class AppSettingsComponent {
         return nodeJsPath;
     }
 
+    public void setNodeJsPathText(@NotNull String newText) {
+        nodeJsPathText.setText(newText);
+    }
 
     private Optional<String> findNode() {
         String cmd = Platform.current().equals(Platform.WINDOWS) ? "where" : "which";
@@ -85,23 +102,18 @@ public class AppSettingsComponent {
         return Optional.empty();
     }
 
-    private Optional<String> verifyNodeVersion(String nodeJsPath, String requiredVersion) {
-
+    private Optional<String> verifyNodeVersion(String nodeJsPath) {
         var result = executeCli(nodeJsPath, "-v");
-
         if (result.isPresent()) {
             var version = result.get();
-
-            var isOk = isNodeVersionSufficient(version, requiredVersion);
-
-            if (isOk) {
+            if (isNodeVersionSufficient(nodeJsPath)) {
                 Logger.PLUGIN.debug("Node.JS version [%s] is sufficient".formatted(version));
                 nodeStatus.setText("Node.JS found and sufficient");
                 nodeStatus.setBackground(null);
                 return Optional.of(version);
             } else {
                 Logger.PLUGIN.debug("Node.JS version [%s] is insufficient".formatted(version));
-                nodeStatus.setText("Node.JS found but insufficient (%s required, you have %s)".formatted(requiredVersion, version));
+                nodeStatus.setText("Node.JS found but insufficient (%s required, you have %s)".formatted(REQUIRED_NODEJS_VERSION, version));
                 nodeStatus.setBackground(JBColor.RED);
                 return Optional.empty();
             }
@@ -110,56 +122,5 @@ public class AppSettingsComponent {
         nodeStatus.setText("Node.JS could not be determined, please set manually");
         nodeStatus.setBackground(JBColor.RED);
         return Optional.empty();
-    }
-
-
-    Optional<int[]> parseSemVer(String version) {
-        Pattern versionPattern = Pattern.compile("^v?([1-9]\\d*)\\.(\\d+)\\.(\\d+)(?:-[a-zA-Z0-9]+)?$");
-        Matcher matcher = versionPattern.matcher(version);
-        if (matcher.matches()) {
-            return Optional.of(new int[]{Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)), Integer.parseInt(matcher.group(3))});
-        }
-        return Optional.empty();
-    }
-
-    boolean isNodeVersionSufficient(String nodeJsVersion, String requiredVersion) {
-        var actualV = parseSemVer(nodeJsVersion);
-        var requiredV = parseSemVer(requiredVersion);
-        if (actualV.isEmpty() || requiredV.isEmpty()) {
-            return false;
-        }
-
-        for (int i = 0; i < 3; i++) {
-            int a = actualV.get()[i];
-            int r = requiredV.get()[i];
-            if (a < r) {
-                Logger.PLUGIN.debug("Node.JS version [%s] is too low".formatted(nodeJsVersion));
-                return false;
-            }
-            if (r < a) {
-                Logger.PLUGIN.debug("Node.JS version [%s] is sufficient".formatted(nodeJsVersion));
-                return true;
-            }
-        }
-        return true;
-    }
-
-
-    public static Optional<String> executeCli(String... args) {
-        // TODO? what if the IDE wasn't started from a terminal i.e. without an env? Will the GeneralCommandLine work and use the default shell?
-        try {
-            Process process = new GeneralCommandLine(args).createProcess();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String output = reader.readLine();
-            return output == null ? Optional.empty() : Optional.of(output);
-        } catch (ExecutionException | IOException e) {
-            Logger.PLUGIN.error("Failed to execute [%s]".formatted(String.join(" ", args)), e);
-            return Optional.empty();
-        }
-    }
-
-
-    public void setNodeJsPathText(@NotNull String newText) {
-        nodeJsPathText.setText(newText);
     }
 }

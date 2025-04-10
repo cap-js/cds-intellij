@@ -2,8 +2,6 @@ package com.sap.cap.cds.intellij.util;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
-//import com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreter;
-//import com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreterManager;
 import com.sap.cap.cds.intellij.settings.AppSettings;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 
@@ -11,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Optional;
+
+import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
 
 public class NodeJsUtil {
 
@@ -57,6 +57,13 @@ public class NodeJsUtil {
             Logger.PLUGIN.error("Failed to read version from [%s]: failed to start process".formatted(nodeJsPath), e);
             return Optional.empty();
         }
+    }
+
+    public static boolean isNodeVersionSufficient(String nodeJsPath) {
+        Optional<ComparableVersion> version = getVersion(nodeJsPath);
+        return version
+                .filter(comparableVersion -> comparableVersion.compareTo(REQUIRED_NODEJS_VERSION) >= 0)
+                .isPresent();
     }
 
 }
