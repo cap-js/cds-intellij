@@ -4,7 +4,6 @@ import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.FormBuilder;
-import com.sap.cap.cds.intellij.util.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -61,17 +60,14 @@ public class AppSettingsComponent {
     private boolean validateAndUpdateUI() {
         String nodeJsPath = textField.getText();
         InterpreterStatus status = validateInterpreter(nodeJsPath);
-
         if (status == OK) {
-            Logger.PLUGIN.debug("version is sufficient");
-            nodejsLabel("found and sufficient", null);
+            stateHint("found and sufficient", null);
             return true;
         } else if (status == OUTDATED) {
-            Logger.PLUGIN.debug("version %s is insufficient");
-            nodejsLabel("found but outdated (required: %s)".formatted(REQUIRED_NODEJS_VERSION), RED);
+            stateHint("found but outdated (required version: %s)".formatted(REQUIRED_NODEJS_VERSION), RED);
             return false;
         } else {
-            nodejsLabel("not found. Please set path to executable", RED);
+            stateHint("not found. Please enter valid path to Node.js executable", RED);
             return false;
         }
     }
@@ -93,8 +89,8 @@ public class AppSettingsComponent {
         textField.setText(newText);
     }
 
-    private void nodejsLabel(String state, JBColor color) {
-        textField.setToolTipText("Node.js " + state);
+    private void stateHint(String state, JBColor color) {
+        textField.setToolTipText("Interpreter " + state);
         textField.setBackground(color);
     }
 }
