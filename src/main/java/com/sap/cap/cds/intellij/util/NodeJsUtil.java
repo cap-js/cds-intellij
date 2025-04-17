@@ -19,8 +19,11 @@ import static com.sap.cap.cds.intellij.util.NodeJsUtil.InterpreterStatus.*;
 public class NodeJsUtil {
 
     public static String getInterpreterFromSetting() {
-        var settingsState = Objects.requireNonNull(AppSettings.getInstance().getState());
-        return settingsState.nodeJsPath;
+        var state = Objects.requireNonNull(AppSettings.getInstance().getState());
+        if (state.nodeJsPath.isBlank()) {
+            state.nodeJsPath = getSuitableInterpreter();
+        }
+        return state.nodeJsPath;
     }
 
     public static String getSuitableInterpreter() {
@@ -29,7 +32,7 @@ public class NodeJsUtil {
         if (nodeFound.isEmpty() || validateInterpreter(nodeFound.get()) != OK) {
             nodeFound = getLocalInterpreter();
             if (nodeFound.isEmpty()) {
-                return "";
+                return "NOT_FOUND";
             }
         }
         return nodeFound.get();
