@@ -15,7 +15,7 @@ public final class AppSettings
         implements PersistentStateComponent<AppSettings.State> {
 
     public static class State {
-        @NonNls
+        @NonNls @NotNull
         public String nodeJsPath = "node";
         public boolean nodeStatus = false;
     }

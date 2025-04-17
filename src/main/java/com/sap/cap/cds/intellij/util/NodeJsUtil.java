@@ -18,20 +18,8 @@ public class NodeJsUtil {
         Logger.PLUGIN.debug("Searching for Node.js >= v%s".formatted(requiredVersion));
 
         AppSettings instance = AppSettings.getInstance();
-//        instance.loadState();
         String nodeJsPath = instance.getState().nodeJsPath;
-        return nodeJsPath == null || nodeJsPath.isBlank() ? "node" : nodeJsPath;
-//        for (NodeJsLocalInterpreter interpreter : NodeJsLocalInterpreterManager.getInstance().getInterpreters()) {
-//            Optional<ComparableVersion> version = getVersion(interpreter.getInterpreterSystemDependentPath());
-//            if (version.isEmpty()) {
-//                continue;
-//            } if (version.get().compareTo(requiredVersion) >= 0) {
-//                Logger.PLUGIN.debug("Found suitable Node.js interpreter [%s]".formatted(interpreter.getInterpreterSystemDependentPath()));
-//                return interpreter;
-//            }
-//        }
-//        throw new RuntimeException("No suitable Node.js interpreter found with version >= %s (searched %d interpreters)"
-//                .formatted(requiredVersion, NodeJsLocalInterpreterManager.getInstance().getInterpreters().size()));
+        return nodeJsPath.isBlank() ? "node" : nodeJsPath;
     }
 
     public static ComparableVersion extractVersion(String rawVersion) {
