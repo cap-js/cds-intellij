@@ -1,21 +1,17 @@
 package com.sap.cap.cds.intellij.settings;
 
-import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Platform;
-import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.FormBuilder;
+import com.sap.cap.cds.intellij.util.CliUtil;
 import com.sap.cap.cds.intellij.util.Logger;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Optional;
 
 import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
@@ -41,19 +37,6 @@ public class AppSettingsComponent {
                 .getPanel();
 
         nodeStatus.setOpaque(true);
-    }
-
-    public static Optional<String> executeCli(String... args) {
-        // TODO? what if the IDE wasn't started from a terminal i.e. without an env? Will the GeneralCommandLine work and use the default shell?
-        try {
-            Process process = new GeneralCommandLine(args).createProcess();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String output = reader.readLine();
-            return output == null ? Optional.empty() : Optional.of(output);
-        } catch (ExecutionException | IOException e) {
-            Logger.PLUGIN.error("Failed to execute [%s]".formatted(String.join(" ", args)), e);
-            return Optional.empty();
-        }
     }
 
     public JPanel getPanel() {
@@ -88,7 +71,7 @@ public class AppSettingsComponent {
     private Optional<String> findNode() {
         String cmd = Platform.current().equals(Platform.WINDOWS) ? "where" : "which";
 
-        var result = executeCli(cmd, "node");
+        var result = CliUtil.executeCli(cmd, "node");
 
         if (result.isPresent() && new File(result.get()).isFile()) {
             Logger.PLUGIN.debug("Found Node.js at [%s]".formatted(result.get()));
