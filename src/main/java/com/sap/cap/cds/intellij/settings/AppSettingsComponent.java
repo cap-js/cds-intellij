@@ -1,22 +1,19 @@
 package com.sap.cap.cds.intellij.settings;
 
-import com.intellij.execution.Platform;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.FormBuilder;
-import com.sap.cap.cds.intellij.util.CliUtil;
 import com.sap.cap.cds.intellij.util.Logger;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.io.File;
 import java.util.Optional;
 
+import static com.intellij.ui.JBColor.RED;
 import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
-import static com.sap.cap.cds.intellij.util.NodeJsUtil.getVersion;
-import static com.sap.cap.cds.intellij.util.NodeJsUtil.isNodeVersionSufficient;
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.*;
 
 /**
  * Supports creating and managing a {@link JPanel} for the Settings Dialog.
@@ -50,60 +47,48 @@ public class AppSettingsComponent {
     @NotNull
     public String getNodeJsPathText() {
         String path = nodeJsPathText.getText();
+        if (path.isBlank()) {
+            Optional<String> nodeFound = whichNode();
+            if (nodeFound.isEmpty()) {
+                nodejsLabel("not found", RED);
+                return "";
+            }
+            Logger.PLUGIN.debug("found at [%s]".formatted(path));
+            setNodeJsPathText(path);
+            nodejsLabel("found", null);
+            path = nodeFound.get();
+        }
 
-        String nodeJsPath = path.isBlank() ? findNode().orElse("") : path;
-
-        if (nodeJsPath.isBlank()) {
+        if (!verifyNodeVersion(path)) {
             return "";
         }
 
-        if (!verifyNodeVersion(nodeJsPath)) {
-            return "";
-        }
-
-        return nodeJsPath;
+        return path;
     }
 
     public void setNodeJsPathText(@NotNull String newText) {
         nodeJsPathText.setText(newText);
     }
 
-    private Optional<String> findNode() {
-        String cmd = Platform.current().equals(Platform.WINDOWS) ? "where" : "which";
-
-        var result = CliUtil.executeCli(cmd, "node");
-
-        if (result.isPresent() && new File(result.get()).isFile()) {
-            Logger.PLUGIN.debug("Found Node.js at [%s]".formatted(result.get()));
-            nodeJsPathText.setText(result.get());
-            nodeStatus.setText("Node.js found");
-            nodeStatus.setBackground(null);
-            return result;
-        }
-
-        nodeStatus.setText("Node.js not found");
-        nodeStatus.setBackground(JBColor.RED);
-        return Optional.empty();
+    private void nodejsLabel(String state, JBColor color) {
+        nodeStatus.setText("Node.js " + state);
+        nodeStatus.setBackground(color);
     }
 
     private boolean verifyNodeVersion(String nodeJsPath) {
         Optional<ComparableVersion> version = getVersion(nodeJsPath);
         if (version.isEmpty()) {
-            nodeStatus.setText("Node.js not found. Please set path to executable");
-            nodeStatus.setBackground(JBColor.RED);
+            nodejsLabel("not found. Please set path to executable", RED);
             return false;
         }
         ComparableVersion nodeVersion = version.get();
         if (isNodeVersionSufficient(nodeVersion)) {
-            Logger.PLUGIN.debug("Node.js version [%s] is sufficient".formatted(nodeVersion));
-            nodeStatus.setText("Node.js found and sufficient");
-            nodeStatus.setBackground(null);
+            Logger.PLUGIN.debug("version [%s] is sufficient".formatted(nodeVersion));
+            nodejsLabel("found and sufficient", null);
             return true;
-        } else {
-            Logger.PLUGIN.debug("Node.js version [%s] is insufficient".formatted(nodeVersion));
-            nodeStatus.setText("Node.js found but outdated (required: %s but found: %s)".formatted(REQUIRED_NODEJS_VERSION, nodeVersion));
-            nodeStatus.setBackground(JBColor.RED);
-            return false;
         }
+        Logger.PLUGIN.debug("version [%s] is insufficient".formatted(nodeVersion));
+        nodejsLabel("found but outdated (required: %s but found: %s)".formatted(REQUIRED_NODEJS_VERSION, nodeVersion), RED);
+        return false;
     }
 }
