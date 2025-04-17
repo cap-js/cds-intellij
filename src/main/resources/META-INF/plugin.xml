@@ -28,6 +28,9 @@ The set of features will grow with future releases, aligned with the development
                 language="cds"
                 extensions="cds"/>
 
+        <notificationGroup id="com.sap.cap.cds.intellij.notifications"
+                           displayType="BALLOON"/>
+
         <lang.substitutor language="cds" order="first"
                           implementationClass="com.sap.cap.cds.intellij.lang.CdsLanguageSubstitutor"/>
 

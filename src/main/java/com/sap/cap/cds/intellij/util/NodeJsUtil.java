@@ -5,6 +5,7 @@ import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreter;
 import com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreterManager;
 import com.intellij.openapi.extensions.PluginId;
+import com.sap.cap.cds.intellij.lsp.UserError;
 import com.sap.cap.cds.intellij.settings.AppSettings;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 
@@ -32,6 +33,7 @@ public class NodeJsUtil {
         if (nodeFound.isEmpty() || validateInterpreter(nodeFound.get()) != OK) {
             nodeFound = getLocalInterpreter();
             if (nodeFound.isEmpty()) {
+                UserError.show("Suitable Node.js interpreter not found. Please install at least version %s and configure it in CDS settings".formatted(REQUIRED_NODEJS_VERSION));
                 return "NOT_FOUND";
             }
         }
