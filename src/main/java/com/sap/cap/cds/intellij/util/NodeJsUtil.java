@@ -20,20 +20,16 @@ import static com.sap.cap.cds.intellij.util.NodeJsUtil.InterpreterStatus.*;
 public class NodeJsUtil {
 
     public static String getInterpreterFromSetting() {
-        var state = Objects.requireNonNull(AppSettings.getInstance().getState());
-        if (state.nodeJsPath.isBlank()) {
-            state.nodeJsPath = getSuitableInterpreter();
-        }
-        return state.nodeJsPath;
+        return Objects.requireNonNull(AppSettings.getInstance().getState()).nodeJsPath;
     }
 
-    public static String getSuitableInterpreter() {
+    public static String getInterpreterFromRegistered() {
         Logger.PLUGIN.debug("Searching for Node.js >= v%s".formatted(REQUIRED_NODEJS_VERSION));
         Optional<String> nodeFound = whichNode();
         if (nodeFound.isEmpty() || validateInterpreter(nodeFound.get()) != OK) {
             nodeFound = getLocalInterpreter();
             if (nodeFound.isEmpty()) {
-                UserError.show("Suitable Node.js interpreter not found. Please install at least version %s and configure it in CDS settings".formatted(REQUIRED_NODEJS_VERSION));
+                UserError.show("Suitable Node.js interpreter not found. Please install at least version %s and set its full path at File > Settings > Languages & Frameworks > CDS".formatted(REQUIRED_NODEJS_VERSION));
                 return "NOT_FOUND";
             }
         }
