@@ -7,7 +7,7 @@ import com.intellij.openapi.components.Storage;
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import org.jetbrains.annotations.NonNls;
 
-import static com.sap.cap.cds.intellij.util.NodeJsUtil.DEFAULT_NODEJS_PATH;
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.getInterpreterFromPathOrRegistered;
 
 @State(
         name = "com.sap.cap.cds.intellij.settings.AppSettings",
@@ -34,7 +34,7 @@ public final class AppSettings
 
     public static class State {
         @NonNls @NotNull
-        public String nodeJsPath = DEFAULT_NODEJS_PATH;
+        public String nodeJsPath = getInterpreterFromPathOrRegistered();
         public boolean nodeStatus = false;
     }
 

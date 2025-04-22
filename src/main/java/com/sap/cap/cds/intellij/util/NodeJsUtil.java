@@ -20,23 +20,27 @@ import static com.sap.cap.cds.intellij.util.NodeJsUtil.InterpreterStatus.*;
 public class NodeJsUtil {
 
     // We currently don't react to changes of registered interpreters
-    public static final String DEFAULT_NODEJS_PATH = getInterpreterFromPathOrRegistered();
+    private static String nodeJsPathCached = null;
 
     public static String getInterpreterFromSetting() {
         return Objects.requireNonNull(AppSettings.getInstance().getState()).nodeJsPath;
     }
 
-    private static String getInterpreterFromPathOrRegistered() {
-        Logger.PLUGIN.debug("Searching for Node.js >= v%s".formatted(REQUIRED_NODEJS_VERSION));
-        Optional<String> nodeFound = whichNode();
-        if (nodeFound.isEmpty() || validateInterpreter(nodeFound.get()) != OK) {
-            nodeFound = getLocalInterpreter();
-            if (nodeFound.isEmpty()) {
-                UserError.show("Suitable Node.js interpreter not found. Please install at least version %s and set its full path at File > Settings > Languages & Frameworks > CDS".formatted(REQUIRED_NODEJS_VERSION));
-                return "NOT_FOUND";
+    public static String getInterpreterFromPathOrRegistered() {
+        if (nodeJsPathCached == null) {
+            Logger.PLUGIN.debug("Searching for Node.js >= v%s".formatted(REQUIRED_NODEJS_VERSION));
+            Optional<String> nodeFound = whichNode();
+            if (nodeFound.isEmpty() || validateInterpreter(nodeFound.get()) != OK) {
+                nodeFound = getLocalInterpreter();
+                if (nodeFound.isEmpty()) {
+                    UserError.show("Suitable Node.js interpreter not found. Please install at least version %s and set its full path at File > Settings > Languages & Frameworks > CDS".formatted(REQUIRED_NODEJS_VERSION));
+                    nodeJsPathCached = "NOT_FOUND";
+                    return nodeJsPathCached;
+                }
             }
+            nodeJsPathCached = nodeFound.get();
         }
-        return nodeFound.get();
+        return nodeJsPathCached;
     }
 
     public static InterpreterStatus validateInterpreter(String nodeJsPath) {

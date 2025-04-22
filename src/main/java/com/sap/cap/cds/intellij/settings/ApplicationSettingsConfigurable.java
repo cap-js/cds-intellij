@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.util.Objects;
 
-import static com.sap.cap.cds.intellij.util.NodeJsUtil.DEFAULT_NODEJS_PATH;
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.getInterpreterFromPathOrRegistered;
 
 /**
  * Provides controller functionality for application settings.
@@ -49,7 +49,7 @@ final class AppSettingsConfigurable implements Configurable {
         AppSettings.State state = Objects.requireNonNull(AppSettings.getInstance().getState());
         String text = mySettingsComponent.getNodeJsPathText();
         state.nodeJsPath = text.isBlank()
-                ? DEFAULT_NODEJS_PATH
+                ? getInterpreterFromPathOrRegistered()
                 : text;
     }
 
