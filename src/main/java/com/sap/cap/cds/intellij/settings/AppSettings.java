@@ -7,7 +7,7 @@ import com.intellij.openapi.components.Storage;
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import org.jetbrains.annotations.NonNls;
 
-import static com.sap.cap.cds.intellij.util.NodeJsUtil.getInterpreterFromRegistered;
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.DEFAULT_NODEJS_PATH;
 
 @State(
         name = "com.sap.cap.cds.intellij.settings.AppSettings",
@@ -15,8 +15,6 @@ import static com.sap.cap.cds.intellij.util.NodeJsUtil.getInterpreterFromRegiste
 )
 public final class AppSettings
         implements PersistentStateComponent<AppSettings.State> {
-
-    private static final String DEFAULT_NODEJS_PATH = getInterpreterFromRegistered();
 
     private State myState = new State();
 

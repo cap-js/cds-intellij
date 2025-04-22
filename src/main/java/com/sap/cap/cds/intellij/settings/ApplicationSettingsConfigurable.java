@@ -7,6 +7,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.util.Objects;
 
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.DEFAULT_NODEJS_PATH;
+
 /**
  * Provides controller functionality for application settings.
  */
@@ -45,7 +47,10 @@ final class AppSettingsConfigurable implements Configurable {
     @Override
     public void apply() {
         AppSettings.State state = Objects.requireNonNull(AppSettings.getInstance().getState());
-        state.nodeJsPath = mySettingsComponent.getNodeJsPathText();
+        String text = mySettingsComponent.getNodeJsPathText();
+        state.nodeJsPath = text.isBlank()
+                ? DEFAULT_NODEJS_PATH
+                : text;
     }
 
     @Override

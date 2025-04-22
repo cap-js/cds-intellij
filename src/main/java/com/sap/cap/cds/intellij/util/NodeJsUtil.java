@@ -19,11 +19,14 @@ import static com.sap.cap.cds.intellij.util.NodeJsUtil.InterpreterStatus.*;
 
 public class NodeJsUtil {
 
+    // We currently don't react to changes of registered interpreters
+    public static final String DEFAULT_NODEJS_PATH = getInterpreterFromPathOrRegistered();
+
     public static String getInterpreterFromSetting() {
         return Objects.requireNonNull(AppSettings.getInstance().getState()).nodeJsPath;
     }
 
-    public static String getInterpreterFromRegistered() {
+    private static String getInterpreterFromPathOrRegistered() {
         Logger.PLUGIN.debug("Searching for Node.js >= v%s".formatted(REQUIRED_NODEJS_VERSION));
         Optional<String> nodeFound = whichNode();
         if (nodeFound.isEmpty() || validateInterpreter(nodeFound.get()) != OK) {
