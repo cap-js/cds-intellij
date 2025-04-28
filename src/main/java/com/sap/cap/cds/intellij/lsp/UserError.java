@@ -12,13 +12,4 @@ public class UserError {
     public static void show(String message) {
         Notifications.Bus.notify(new Notification("com.sap.cap.cds.intellij.notifications", "CDS language server", message, NotificationType.ERROR));
     }
-
-    /**
-     * Shows an error message in the IDE with a cause.
-     * @param message The error message to show.
-     * @param cause The cause of the error.
-     */
-    public static void show(String message, Throwable cause) {
-        UserError.show(message.replaceFirst("\\p{Punct}\\s*$", ". Original error: ") + cause.getMessage());
-    }
 }
