@@ -7,18 +7,14 @@ import com.intellij.openapi.components.Storage;
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import org.jetbrains.annotations.NonNls;
 
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.getInterpreterFromPathOrRegistered;
+
 @State(
         name = "com.sap.cap.cds.intellij.settings.AppSettings",
         storages = @Storage("SapCdsLanguageSupportPlugin.xml")
 )
 public final class AppSettings
         implements PersistentStateComponent<AppSettings.State> {
-
-    public static class State {
-        @NonNls
-        public String nodeJsPath = "node";
-        public boolean nodeStatus = false;
-    }
 
     private State myState = new State();
 
@@ -34,6 +30,12 @@ public final class AppSettings
     @Override
     public void loadState(@NotNull State state) {
         myState = state;
+    }
+
+    public static class State {
+        @NonNls @NotNull
+        public String nodeJsPath = getInterpreterFromPathOrRegistered();
+        public boolean nodeStatus = false;
     }
 
 }

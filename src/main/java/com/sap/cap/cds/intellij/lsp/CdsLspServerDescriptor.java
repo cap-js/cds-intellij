@@ -1,6 +1,5 @@
 package com.sap.cap.cds.intellij.lsp;
 
-import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 
@@ -12,7 +11,7 @@ import java.util.Map;
 
 import static com.sap.cap.cds.intellij.util.JsonUtil.getPropertyAtPath;
 import static com.sap.cap.cds.intellij.util.NodeJsUtil.extractVersion;
-import static com.sap.cap.cds.intellij.util.NodeJsUtil.getInterpreter;
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.getInterpreterFromSetting;
 import static com.sap.cap.cds.intellij.util.PathUtil.resolve;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -57,7 +56,7 @@ public class CdsLspServerDescriptor {
         if (COMMAND_LINES.get(kind) != null) {
             return COMMAND_LINES.get(kind);
         }
-        final String nodeInterpreterPath = getInterpreter(REQUIRED_NODEJS_VERSION);
+        final String nodeInterpreterPath = getInterpreterFromSetting();
         switch (kind) {
             case SERVER -> COMMAND_LINES.put(CommandLineKind.SERVER,
                     new GeneralCommandLine(
@@ -95,7 +94,7 @@ public class CdsLspServerDescriptor {
 
         COMMAND_LINES.put(CommandLineKind.CLI_FORMAT,
                 new GeneralCommandLine(
-                        getInterpreter(REQUIRED_NODEJS_VERSION),
+                        getInterpreterFromSetting(),
                         resolve(RELATIVE_FORMAT_CLI_PATH),
                         "-f",
                         srcPath.toString()
