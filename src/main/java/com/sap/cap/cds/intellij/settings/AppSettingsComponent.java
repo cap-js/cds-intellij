@@ -23,12 +23,12 @@ import static com.sap.cap.cds.intellij.util.NodeJsUtil.validateInterpreter;
 public class AppSettingsComponent {
 
     private final JPanel myMainPanel;
-    private final JBTextField textField = new JBTextField();
+    private final JBTextField nodeJsPathText = new JBTextField();
     //    private final JBCheckBox myIdeaUserStatus = new JBCheckBox("IntelliJ IDEA user");
 
         public AppSettingsComponent() {
         myMainPanel = FormBuilder.createFormBuilder()
-                .addLabeledComponent(new JBLabel("Path to Node.js executable"), textField, 1, false)
+                .addLabeledComponent(new JBLabel("Path to Node.js executable"), nodeJsPathText, 1, false)
 //                .addComponent(myIdeaUserStatus, 1)
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
@@ -39,9 +39,9 @@ public class AppSettingsComponent {
                 return validateAndUpdateUI();
             }
         };
-        textField.setInputVerifier(verifier);
+        nodeJsPathText.setInputVerifier(verifier);
 
-        textField.getDocument().addDocumentListener(new DocumentListener() {
+        nodeJsPathText.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 validateAndUpdateUI();
@@ -58,7 +58,7 @@ public class AppSettingsComponent {
     };
 
     private boolean validateAndUpdateUI() {
-        String nodeJsPath = textField.getText();
+        String nodeJsPath = nodeJsPathText.getText();
         InterpreterStatus status = validateInterpreter(nodeJsPath);
         if (status == OK) {
             stateHint("found and sufficient", null);
@@ -77,20 +77,20 @@ public class AppSettingsComponent {
     }
 
     public JComponent getPreferredFocusedComponent() {
-        return textField;
+        return nodeJsPathText;
     }
 
     @NotNull
     public String getNodeJsPathText() {
-        return textField.getText();
+        return nodeJsPathText.getText();
     }
 
     public void setNodeJsPathText(@NotNull String newText) {
-        textField.setText(newText);
+        nodeJsPathText.setText(newText);
     }
 
     private void stateHint(String state, JBColor color) {
-        textField.setToolTipText("Interpreter " + state);
-        textField.setBackground(color);
+        nodeJsPathText.setToolTipText("Interpreter " + state);
+        nodeJsPathText.setBackground(color);
     }
 }
