@@ -6,7 +6,7 @@ import org.jetbrains.intellij.platform.gradle.tasks.VerifyPluginTask
 plugins {
     id 'java'
     id 'org.jetbrains.intellij.platform' version '2.0.1'
-    id 'org.jetbrains.kotlin.jvm' version '2.1.20'
+    id 'org.jetbrains.kotlin.jvm' version '2.1.21'
 }
 
 def hasLocalProperties = provider {
