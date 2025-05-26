@@ -46,11 +46,13 @@ dependencies {
         String version = project.findProperty('platformVersion')
         create(type, version)
 
-        bundledPlugins(['com.intellij.java', 'NodeJS', 'org.jetbrains.plugins.textmate'
-//                        , 'com.redhat.devtools.lsp4ij'
+        bundledPlugins([
+                'com.intellij.java',
+                'NodeJS',
+                'org.jetbrains.plugins.textmate'
         ])
 
-        plugin("com.redhat.devtools.lsp4ij:0.13.0")
+        plugin('com.redhat.devtools.lsp4ij:0.13.0')
 
         instrumentationTools()
         pluginVerifier()
