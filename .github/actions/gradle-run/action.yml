@@ -33,7 +33,7 @@ runs:
       if: ${{ contains(inputs.steps, 'test') }}
       shell: bash
       run: |
-        ./gradlew test --info --no-daemon
+        ./gradlew test --info --stacktrace --no-daemon
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
@@ -46,7 +46,7 @@ runs:
       if: ${{ contains(inputs.steps, 'build') }}
       shell: bash
       run: |
-        ./gradlew verifyPlugin buildPlugin --no-daemon
+        ./gradlew verifyPlugin buildPlugin --info --stacktrace --no-daemon
         ls -la build/distributions
 
     - name: Publish

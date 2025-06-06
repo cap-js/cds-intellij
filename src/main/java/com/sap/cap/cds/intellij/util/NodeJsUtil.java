@@ -53,7 +53,7 @@ public class NodeJsUtil {
         if (isNodeVersionSufficient(nodeVersion)) {
             Logger.PLUGIN.debug("Node.js interpreter at [%s] with version [%s] is sufficient".formatted(nodeJsPath, nodeVersion));
             return OK;
-        };
+        }
         Logger.PLUGIN.debug("Node.js interpreter at [%s] with version [%s] is outdated".formatted(nodeJsPath, nodeVersion));
         return OUTDATED;
     }
