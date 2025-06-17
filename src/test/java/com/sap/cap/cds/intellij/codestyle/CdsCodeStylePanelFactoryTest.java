@@ -30,14 +30,14 @@ public class CdsCodeStylePanelFactoryTest extends LightPlatformTestCase {
 
         CdsCodeStylePanelFactory factory = new CdsCodeStylePanelFactory(createTestSettings());
         CodeStyleAbstractPanel panel = factory.createTabPanel(allBooleanCategory);
-        assertEquals(panel.getClass(), CdsCodeStyleCheckboxesPanel.class);
+        assertEquals(CdsCodeStyleCheckboxesPanel.class, panel.getClass());
         panels.add(panel);
     }
 
     public void testCdsCodeStylePanelFactoryNotAllBoolean() {
         CdsCodeStylePanelFactory factory = new CdsCodeStylePanelFactory(createTestSettings());
         CodeStyleAbstractPanel panel = factory.createTabPanel(WRAPPING_AND_BRACES);
-        assertEquals(panel.getClass(), CdsCodeStyleTabularPanel.class);
+        assertEquals(CdsCodeStyleTabularPanel.class, panel.getClass());
         panels.add(panel);
     }
 

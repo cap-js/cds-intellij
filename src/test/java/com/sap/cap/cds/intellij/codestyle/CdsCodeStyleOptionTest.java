@@ -17,8 +17,8 @@ public class CdsCodeStyleOptionTest extends LightPlatformTestCase {
         CdsCodeStyleOption option = new CdsCodeStyleOption("name", BOOLEAN, false, "label", "group", COMMENTS, "parent", null);
 
         assertEquals(option.children, List.of());
-        assertEquals(option.getAnchor(), AFTER);
-        assertEquals(option.getAnchorOptionName(), "parent");
+        assertEquals(AFTER, option.getAnchor());
+        assertEquals("parent", option.getAnchorOptionName());
     }
 
     public void testCdsCodeStyleOptionEnum() {
