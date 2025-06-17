@@ -117,7 +117,7 @@ tasks {
     patchPluginXml {
         version = project.findProperty('pluginVersion')
         sinceBuild = project.findProperty('pluginSinceBuild')
-        untilBuild = project.findProperty('pluginUntilBuild')
+        untilBuild = provider { null }
     }
 
     buildPlugin {
