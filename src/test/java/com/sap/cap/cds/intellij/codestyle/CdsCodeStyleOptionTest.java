@@ -16,7 +16,7 @@ public class CdsCodeStyleOptionTest extends LightPlatformTestCase {
     public void testCdsCodeStyleOptionBoolean() {
         CdsCodeStyleOption option = new CdsCodeStyleOption("name", BOOLEAN, false, "label", "group", COMMENTS, "parent", null);
 
-        assertEquals(option.children, List.of());
+        assertEquals(List.of(), option.children);
         assertEquals(AFTER, option.getAnchor());
         assertEquals("parent", option.getAnchorOptionName());
     }
@@ -24,16 +24,16 @@ public class CdsCodeStyleOptionTest extends LightPlatformTestCase {
     public void testCdsCodeStyleOptionEnum() {
         CdsCodeStyleOption option = new CdsCodeStyleOption("name", ENUM, AS_IS, "label", "group", ALIGNMENT, null, null, CdsCodeStyleSettings.CqlKeywordCapitalization.values());
 
-        assertEquals(option.children, List.of());
+        assertEquals(List.of(), option.children);
         assertNull(option.getAnchor());
         assertNull(option.getAnchorOptionName());
-        assertArrayEquals(option.getValuesLabels(), stream(CdsCodeStyleSettings.CqlKeywordCapitalization.values()).map(CdsCodeStyleSettings.Enum::getLabel).toArray(String[]::new));
-        assertArrayEquals(option.getValuesIds(), stream(CdsCodeStyleSettings.CqlKeywordCapitalization.values()).map(CdsCodeStyleSettings.Enum::getId).mapToInt(Integer::intValue).toArray());
+        assertArrayEquals(stream(CdsCodeStyleSettings.CqlKeywordCapitalization.values()).map(CdsCodeStyleSettings.Enum::getLabel).toArray(String[]::new), option.getValuesLabels());
+        assertArrayEquals(stream(CdsCodeStyleSettings.CqlKeywordCapitalization.values()).map(CdsCodeStyleSettings.Enum::getId).mapToInt(Integer::intValue).toArray(), option.getValuesIds());
     }
 
     public void testCdsCodeStyleOptionInt() {
         CdsCodeStyleOption option = new CdsCodeStyleOption("name", INT, 0, "label", "group", BLANK_LINES, null, List.of("child1", "child2"));
 
-        assertEquals(option.children, List.of("child1", "child2"));
+        assertEquals(List.of("child1", "child2"), option.children);
     }
 }
