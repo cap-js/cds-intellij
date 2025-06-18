@@ -111,6 +111,7 @@ public class CdsCodeStyleSettings extends CdsCodeStyleSettingsBase {
         OPTIONS.put("alignTypes", new CdsCodeStyleOption("alignTypes", BOOLEAN, true, "Align types of elements", "Types of elements", ALIGNMENT, null, List.of("alignColonsBeforeTypes", "alignEqualsAfterTypes", "alignTypesWithinBlock", "alignCompositionStructToRight")));
         OPTIONS.put("alignTypesWithinBlock", new CdsCodeStyleOption("alignTypesWithinBlock", BOOLEAN, true, "Within block", "Types of elements", ALIGNMENT, "alignTypes", List.of()));
         OPTIONS.put("alignValuesInAnnotations", new CdsCodeStyleOption("alignValuesInAnnotations", BOOLEAN, true, "Values", "Annotations", ALIGNMENT, "alignAnnotations", List.of()));
+        OPTIONS.put("boolOpsAtLineEnd", new CdsCodeStyleOption("boolOpsAtLineEnd", BOOLEAN, false, "Position 'and', 'or' operators at line end", "Other", OTHER, null, List.of()));
         OPTIONS.put("cqlKeywordCapitalization", new CdsCodeStyleOption("cqlKeywordCapitalization", ENUM, CqlKeywordCapitalization.LOWER.getId(), "Capitalization style of CQL keywords", "Other", OTHER, null, List.of(), CqlKeywordCapitalization.LOWER, CqlKeywordCapitalization.UPPER, CqlKeywordCapitalization.TITLE, CqlKeywordCapitalization.AS_IS));
         OPTIONS.put("finalNewline", new CdsCodeStyleOption("finalNewline", BOOLEAN, true, "Final newline", "Other", WRAPPING_AND_BRACES, null, List.of()));
         OPTIONS.put("formatDocComments", new CdsCodeStyleOption("formatDocComments", BOOLEAN, false, "Format markdown in doc comments", "Format markdown in doc comments", COMMENTS, null, List.of("maxDocCommentLine")));
@@ -168,6 +169,7 @@ public class CdsCodeStyleSettings extends CdsCodeStyleSettingsBase {
     public boolean alignTypes = true;
     public boolean alignTypesWithinBlock = true;
     public boolean alignValuesInAnnotations = true;
+    public boolean boolOpsAtLineEnd = false;
     public int cqlKeywordCapitalization = CqlKeywordCapitalization.LOWER.getId();
     public boolean finalNewline = true;
     public boolean formatDocComments = false;
