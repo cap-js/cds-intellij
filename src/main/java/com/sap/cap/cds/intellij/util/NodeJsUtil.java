@@ -65,9 +65,9 @@ public class NodeJsUtil {
         }
 
         try {
-            Class<?> managerClass = Class.forName("com.intellij.lang.javascript.interpreters.NodeJsLocalInterpreterManager");
+            Class<?> managerClass = Class.forName("com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreterManager");
             Object instance = managerClass.getMethod("getInstance").invoke(null);
-            Class<?> interpreterClass = Class.forName("com.intellij.lang.javascript.interpreters.NodeJsLocalInterpreter");
+            Class<?> interpreterClass = Class.forName("com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreter");
             List<?> interpreters = (List<?>) managerClass.getMethod("getInterpreters").invoke(instance);
             for (Object interpreter : interpreters) {
                 String path = (String) interpreterClass.getMethod("getInterpreterSystemDependentPath").invoke(interpreter);
