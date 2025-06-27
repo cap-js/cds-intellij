@@ -1,7 +1,7 @@
 package com.sap.cap.cds.intellij.util;
 
 import com.intellij.execution.Platform;
-import com.intellij.ide.plugins.PluginManagerCore;
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.extensions.PluginId;
 import com.sap.cap.cds.intellij.lsp.UserError;
 import com.sap.cap.cds.intellij.settings.AppSettings;
@@ -58,7 +58,8 @@ public class NodeJsUtil {
     }
 
     private static Optional<String> getLocalInterpreter() {
-        boolean isPluginAvailable = PluginManagerCore.isPluginInstalled(PluginId.getId("NodeJS"));
+        PluginId pluginId = PluginId.getId("NodeJS");
+        boolean isPluginAvailable = PluginManager.isPluginInstalled(pluginId);
         if (!isPluginAvailable) {
             return Optional.empty();
         }
