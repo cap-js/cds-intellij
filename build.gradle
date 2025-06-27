@@ -105,6 +105,15 @@ intellijPlatformTesting.runIde {
             dependsOn 'copyLspToRunWebStorm', 'syncSandboxIdeConf'
         }
     }
+    runIC {
+        type = IntelliJPlatformType.IntellijIdeaCommunity
+        if (project.hasProperty('local.ideDirIC')) {
+            localPath = project.file(project.findProperty('local.ideDirIC'))
+        }
+        task {
+            dependsOn 'copyLspToRunIC', 'syncSandboxIdeConfIC'
+        }
+    }
 }
 
 tasks {
@@ -177,6 +186,32 @@ tasks.register('syncSandboxIdeConf', Copy) {
     }
 }
 
+tasks.register('syncSandboxIdeConfIC', Copy) {
+    onlyIf { hasLocalProperties.get() }
+    into "${tasks.named('prepareSandbox_runIC').map { it.defaultDestinationDirectory }.get().get()}/../config"
+    into('keymaps') {
+        from "${project.findProperty('local.ideConfDirIC')}/keymaps"
+    }
+    into('options') {
+        from "${project.findProperty('local.ideConfDirIC')}/options/ide.general.xml"
+    }
+    into('options') {
+        from "${project.findProperty('local.ideConfDirIC')}/options/laf.xml"
+    }
+    into('options') {
+        from "${project.findProperty('local.ideConfDirIC')}/options/trusted-paths.xml"
+    }
+    into('options/linux') {
+        from "${project.findProperty('local.ideConfDirIC')}/options/linux"
+    }
+    into('options/mac') {
+        from "${project.findProperty('local.ideConfDirIC')}/options/mac"
+    }
+    into('options/windows') {
+        from "${project.findProperty('local.ideConfDirIC')}/options/windows"
+    }
+}
+
 tasks.register('rmCdsLspNodeModules', Delete) {
     def localRmCdsLspNodeModules = provider {
         return project.findProperty('local.rmCdsLspNodeModules') == 'true'
@@ -219,6 +254,12 @@ tasks.register('copyLspToRunWebStorm', Copy) {
     mustRunAfter prepareSandbox_runWebStorm
     from './lsp'
     into "${tasks.named('prepareSandbox_runWebStorm').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
+}
+
+tasks.register('copyLspToRunIC', Copy) {
+    mustRunAfter prepareSandbox_runIC
+    from './lsp'
+    into "${tasks.named('prepareSandbox_runIC').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
 
 tasks.register('copyLspToInstrumented', Copy) {
