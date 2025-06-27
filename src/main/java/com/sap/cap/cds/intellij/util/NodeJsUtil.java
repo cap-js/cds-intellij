@@ -2,14 +2,13 @@ package com.sap.cap.cds.intellij.util;
 
 import com.intellij.execution.Platform;
 import com.intellij.ide.plugins.PluginManagerCore;
-import com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreter;
-import com.intellij.javascript.nodejs.interpreter.local.NodeJsLocalInterpreterManager;
 import com.intellij.openapi.extensions.PluginId;
 import com.sap.cap.cds.intellij.lsp.UserError;
 import com.sap.cap.cds.intellij.settings.AppSettings;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -63,19 +62,28 @@ public class NodeJsUtil {
         if (!isPluginAvailable) {
             return Optional.empty();
         }
-        List<NodeJsLocalInterpreter> interpreters = NodeJsLocalInterpreterManager.getInstance().getInterpreters();
-        for (NodeJsLocalInterpreter interpreter : interpreters) {
-            Optional<ComparableVersion> version = getVersion(interpreter.getInterpreterSystemDependentPath());
-            if (version.isEmpty()) {
-                continue;
+
+        try {
+            Class<?> managerClass = Class.forName("com.intellij.lang.javascript.interpreters.NodeJsLocalInterpreterManager");
+            Object instance = managerClass.getMethod("getInstance").invoke(null);
+            Class<?> interpreterClass = Class.forName("com.intellij.lang.javascript.interpreters.NodeJsLocalInterpreter");
+            List<?> interpreters = (List<?>) managerClass.getMethod("getInterpreters").invoke(instance);
+            for (Object interpreter : interpreters) {
+                String path = (String) interpreterClass.getMethod("getInterpreterSystemDependentPath").invoke(interpreter);
+                if (path != null && !path.isEmpty()) {
+                    Optional<ComparableVersion> version = getVersion(path);
+                    if (version.isPresent() && isNodeVersionSufficient(version.get())) {
+                        Logger.PLUGIN.debug("Local Node.js interpreter at [%s] with version [%s] is sufficient".formatted(path, version.get()));
+                        return Optional.of(path);
+                    }
+                }
             }
-            if (isNodeVersionSufficient(version.get())) {
-                Logger.PLUGIN.debug("Local Node.js interpreter at [%s] with version [%s] is sufficient".formatted(interpreter.getInterpreterSystemDependentPath(), version.get()));
-                return Optional.of(interpreter.getInterpreterSystemDependentPath());
-            }
+            Logger.PLUGIN.debug("Suitable local Node.js interpreter not found (searched %d interpreters)".formatted(interpreters.size()));
+            return Optional.empty();
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            Logger.PLUGIN.debug("Error accessing Node.js local interpreter manager: %s".formatted(e.getMessage()));
+            return Optional.empty();
         }
-        Logger.PLUGIN.debug("Suitable local Node.js interpreter not found (searched %d interpreters)".formatted(interpreters.size()));
-        return Optional.empty();
     }
 
     private static Optional<String> whichNode() {
