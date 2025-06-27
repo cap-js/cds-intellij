@@ -48,8 +48,6 @@ dependencies {
 
         bundledPlugins([
                 'com.intellij.java',
-                'NodeJS',
-                'JavaScript',
                 'org.jetbrains.plugins.textmate'
         ])
 
