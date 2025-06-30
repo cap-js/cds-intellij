@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "@sap/cds-lsp": "9.0.1"
+    "@sap/cds-lsp": "9.1.0"
   }
 }
