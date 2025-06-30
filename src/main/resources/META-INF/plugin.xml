@@ -109,6 +109,20 @@ The set of features will grow with future releases, aligned with the development
 <h3>Changed</h3>
 <ul>
     <li>Update to latest <i>lsp4ij</i> version 0.14.2
+    <li>Include @sap/cds-lsp 9.1.0 with the following changes since 9.0.1:
+        <ul>
+            <li>Performance/Responsiveness:
+                <ul>
+                  <li>Reduce "lagging red underline" while typing - configurable via user setting cds.workspace.fastDiagnosticsMode
+                  <li>Outdated compilations in background are aborted fast. This increases responsiveness and reduces CPU usage and is especially useful for large projects with many files.
+                </ul>
+            </li>
+            <li>Formatter: New option argsInNewLine to put multiple arguments to e.g. function calls on a new line
+            <li>Formatter: Chained method-like function calls are now broken into separate lines
+            <li>fix: Formatter: Original empty lines are now correctly preserved before single-lined blocks
+            <li>fix: Formatter: Separate alignment of annotations before resp. within projection-like entities
+        </ul>
+    </li>
 </ul>
 <h3>Fixed</h3>
 <ul>
