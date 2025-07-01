@@ -40,7 +40,8 @@ final class AppSettingsConfigurable implements Configurable {
     @Override
     public boolean isModified() {
         AppSettings.State state = Objects.requireNonNull(AppSettings.getInstance().getState());
-        return !mySettingsComponent.getNodeJsPathText().equals(state.nodeJsPath);
+        return !(mySettingsComponent.getNodeJsPathText().equals(state.nodeJsPath) &&
+                mySettingsComponent.getCdsLspEnvText().equals(state.cdsLspEnv));
 
     }
 
@@ -51,12 +52,14 @@ final class AppSettingsConfigurable implements Configurable {
         state.nodeJsPath = text.isBlank()
                 ? getInterpreterFromPathOrRegistered()
                 : text;
+        state.cdsLspEnv = mySettingsComponent.getCdsLspEnvText();
     }
 
     @Override
     public void reset() {
         AppSettings.State state = Objects.requireNonNull(AppSettings.getInstance().getState());
         mySettingsComponent.setNodeJsPathText(state.nodeJsPath);
+        mySettingsComponent.setCdsLspEnvText(state.cdsLspEnv);
     }
 
     @Override

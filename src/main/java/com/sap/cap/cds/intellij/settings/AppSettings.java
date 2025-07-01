@@ -35,6 +35,7 @@ public final class AppSettings
     public static class State {
         @NonNls @NotNull
         public String nodeJsPath = getInterpreterFromPathOrRegistered();
+        public String cdsLspEnv = "";
         public boolean nodeStatus = false;
     }
 

@@ -10,8 +10,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import static com.sap.cap.cds.intellij.util.JsonUtil.getPropertyAtPath;
-import static com.sap.cap.cds.intellij.util.NodeJsUtil.extractVersion;
-import static com.sap.cap.cds.intellij.util.NodeJsUtil.getInterpreterFromSetting;
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.*;
 import static com.sap.cap.cds.intellij.util.PathUtil.resolve;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -56,6 +55,7 @@ public class CdsLspServerDescriptor {
         if (COMMAND_LINES.get(kind) != null) {
             return COMMAND_LINES.get(kind);
         }
+        Map<String, String> envMap = getCdsLspEnvMapFromSetting();
         final String nodeInterpreterPath = getInterpreterFromSetting();
         switch (kind) {
             case SERVER -> COMMAND_LINES.put(CommandLineKind.SERVER,
@@ -64,7 +64,10 @@ public class CdsLspServerDescriptor {
                             "--enable-source-maps",
                             resolve(RELATIVE_SERVER_PATH),
                             "--stdio"
-                    ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose").withCharset(UTF_8)
+                    )
+                            .withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose")
+                            .withEnvironment(envMap)
+                            .withCharset(UTF_8)
             );
             case SERVER_DEBUG -> COMMAND_LINES.put(CommandLineKind.SERVER_DEBUG,
                     new GeneralCommandLine(
@@ -76,7 +79,10 @@ public class CdsLspServerDescriptor {
                             "--inspect",
                             resolve(RELATIVE_SERVER_PATH),
                             "--stdio"
-                    ).withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug").withCharset(UTF_8)
+                    )
+                            .withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug")
+                            .withEnvironment(envMap)
+                            .withCharset(UTF_8)
             );
             case CLI_FORMAT -> throw new UnsupportedOperationException("Formatting command line not supported");
         }
