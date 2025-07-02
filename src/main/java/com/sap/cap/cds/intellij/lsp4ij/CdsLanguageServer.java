@@ -1,15 +1,15 @@
 package com.sap.cap.cds.intellij.lsp4ij;
+
 import com.intellij.openapi.vfs.VirtualFile;
-import com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor;
 import com.redhat.devtools.lsp4ij.server.OSProcessStreamConnectionProvider;
+import com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor;
 
 
 
 public class CdsLanguageServer extends OSProcessStreamConnectionProvider {
 
     public CdsLanguageServer() {
-        var cmd = CdsLspServerDescriptor.getServerCommandLine(CdsLspServerDescriptor.CommandLineKind.SERVER_DEBUG);
-        super.setCommandLine(cmd);
+        super.setCommandLine(CdsLspServerDescriptor.getServerCommandLine());
     }
 
     public Object getInitializationOptions(VirtualFile rootUri) {
