@@ -71,8 +71,8 @@ public class NodeJsUtil {
                         throw new IllegalArgumentException("%s is not a valid env setting".formatted(pair));
                     }
                     String[] split = pair.split("=");
-                    String val = split.length > 1 ? split[1] : "";
-                    result.put(split[0], val);
+                    String val = split.length > 1 ? split[1].trim() : "";
+                    result.put(split[0].trim(), val);
                 });
         return result;
     }
