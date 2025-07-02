@@ -59,14 +59,27 @@ The set of features will grow with future releases, aligned with the development
 
     <change-notes><![CDATA[ <h3>Changed</h3>
 <ul>
-    <li>Compatibility with platform 2025.1
-    <li>Include @sap/cds-lsp 8.9.1 with the following changes since 8.5.1:
+    <li>Include @sap/cds-lsp 9.1.0 with the following changes since 8.9.1:
         <ul>
-            <li>minimum required NodeJS version is now 20.15.1</li>
-            <li>fixed formatting of annotations in parentheses with values containing spaces</li>
-            <li>fixed auto-update of **Annotation Modeler** plugin</li>
-            <li>fixed _Document highlights_ which sometimes showed wrong ranges for namespaces</li>
-            <li>use new CDS parser</li>
+            <li>Support Node.js 24
+            <li>Performance/Responsiveness:
+                <li>Reduce "lagging red underline" while typing - configurable via user setting `cds.workspace.fastDiagnosticsMode`
+                <li>Outdated compilations in background are aborted fast. This increases responsiveness and reduces CPU usage and is especially useful for large projects with many files.
+            </li>
+            <li>Hovering over errors shown explanation for many error types
+            <li>Hovering over built-in types shows documentation
+            <li>Where-used functionality now based on new index
+            <li>Formatter: New option `boolOpsAtLineEnd` to position `and`, `or` operators at line end
+            <li>Formatter: New option `argsInNewLine` to put multiple arguments to e.g. function calls on a new line
+            <li>Formatter: Chained method-like function calls are now broken into separate lines
+            <li>Formatter: More compact formatting of `case` statements
+            <li>Formatter fixes:
+                <li>Original empty lines are now correctly preserved before single-lined blocks
+                <li>Separate alignment of annotations before resp. within projection-like entities
+                <li>Separate alignment of annotations to entity and select items
+                <li>Highlighting of parenthesized annotations with strings containing a colon
+                <li>Highlighting of comments in queries
+            </li>
         </ul>
     </li>
 </ul> ]]></change-notes>
