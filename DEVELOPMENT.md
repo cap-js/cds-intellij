@@ -2,33 +2,34 @@
 
 ### Sandbox IDE
 
+#### Configuration
+
+To configure the location of the sandbox IDE, create a file *local.properties* next to *gradle.properties*.
+
+In this file, you can set a number of optional properties to be used by Gradle.
+Note that keys should always start with `local.`. Search *build.gradle* for this prefix to find all known local settings.
+
+Sample values for Linux:
+
+```properties
+# All properties should start with 'local.'
+local.ideDir=/opt/webstorm
+local.ideDirIC=/opt/intellij-community
+# to copy your keymaps and various settings to the sandbox IDE on each run:
+local.ideConfDir=/home/your_user/.config/JetBrains/WebStorm2025.1
+local.ideConfDirIC=/home/your_user/.config/JetBrains/IdeaIC2025.1
+```
+
+#### Running the Sandbox IDE
+
 Depending on the type of IntelliJ-based IDE you have installed locally, run one of the following commands:
 
-- `./gradlew runIde` for IntelliJ IDEA
 - `./gradlew runWebStorm` for WebStorm
+- `./gradlew runIC` for IntelliJ IDEA
 
 This will start the
 corresponding [sandbox IDEA instance](https://plugins.jetbrains.com/docs/intellij/ide-development-instance.html) with
 the plugin installed.
-
-#### Synchronize local IDE settings
-
-In order to use your local IDE settings (such as hotkeys or themes) with the sandbox IDE:
-
-1. Create a file *local.properties* next to *gradle.properties*.
-2. Write the following line to the file:
-   `local.ideConfDir = /path/to/config/dir/e.g./WebStorm2024.2`
-
-From now on, settings (keymaps and various options) will be copied from the local configuration dir to that of the
-sandbox IDE on each run.
-
-### Local Gradle settings
-
-In *local.properties*, you can set a number of properties to be used by Gradle.
-Note that keys should always start with `local.`. Search in *build.gradle* for this prefix to find all known local
-settings.
-
-Any such properties are optional. Remove or comment out an existing entry to disable the corresponding feature.
 
 ### Debugging the LSP Server
 
