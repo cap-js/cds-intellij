@@ -68,7 +68,6 @@ The set of features will grow with future releases, aligned with the development
             </li>
             <li>Hovering over errors shown explanation for many error types
             <li>Hovering over built-in types shows documentation
-            <li>Where-used functionality now based on new index
             <li>Formatter: New option `boolOpsAtLineEnd` to position `and`, `or` operators at line end
             <li>Formatter: New option `argsInNewLine` to put multiple arguments to e.g. function calls on a new line
             <li>Formatter: Chained method-like function calls are now broken into separate lines
