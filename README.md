@@ -83,16 +83,29 @@ SAP CDS Language Support for IntelliJ is based on the following components:
 ### Logs
 
 To aid support, please include relevant log files in your report.
-Depending on the kind of problem encountered, you may want to include the logs from the **IDE**, the **LSP client** and/or the **LSP server**.
+Depending on the kind of problem encountered, you may want to include the logs from the **IDE**, the **LSP client**, the **Plugin**, the **client–server (stdio) communication**, and/or the **LSP server**.
 
 #### IDE Logs
 
 Logs produced by the IDE can be found by opening the _Help_ menu and selecting *Show Log in <platform-dependent tool>*.
 See [Locating IDE log files](https://intellij-support.jetbrains.com/hc/en-us/articles/207241085-Locating-IDE-log-files) for more information.
 
-#### Language Server Protocol (LSP) Logs
+#### LSP Client and Plugin Logs
 
-Logging of the stdio communication between the LSP client and server (i.e., the protocol messages) can be activated by modifying your IDE's `vmoptions` file:
+To include debug logs produced by the LSP client (part of the IDE platform) and the SAP CDS Language Support for IntelliJ plugin, you need to enable the corresponding settings in the IDE:
+- Open the _Help_ menu and select _Diagnostic Tools > Debug Log Settings…_.
+- In the dialog that opens, add the following lines (omit sub-categories if not needed):
+```
+com.intellij.platform.lsp
+cds-intellij
+cds-intellij/TextMate Bundle
+cds-intellij/Code Style
+```
+- Click _OK_ to save the settings.
+
+#### Plugin Debug Mode
+
+To enable further logging and debugging, enable **plugin debug mode** by setting the following environment variable for your IDE by modifying your IDE's `vmoptions` file:
 - Edit the file specific to your IntelliJ installation by opening the IDE and going to *Help > Edit Custom VM Options...*.
 - Add the following line:
 ```
@@ -104,24 +117,18 @@ Alternatively, set the following environment variable for your IDE:
 DEBUG=cds-lsp
 ```
 
-These settings will also enable verbose logging for the LSP server (see below).
+Restart the IDE to apply the changes.
 
-After restarting the IDE, find the logs in the [plugin directory](https://intellij-support.jetbrains.com/hc/en-us/articles/206544519-Directories-used-by-the-IDE-to-store-settings-caches-plugins-and-logs), at `lib/cds-lsp/stdio.json`.
+This setting will enable:
+- logging of the **stdio communication** between the LSP client and server (i.e., the protocol messages),
+- **tracing** for the LSP server (see below),
+- Node.js **debugging** for the LSP server, allowing you to attach a debugger.
 
-#### LSP Client and Plugin Logs
+##### STDIO Logs
 
-To include debug logs produced by the LSP client (part of the IDE) and the SAP CDS Language Support for IntelliJ plugin, you need to enable the corresponding settings in the IDE:
-- Open the _Help_ menu and select _Diagnostic Tools > Debug Log Settings…_.
-- In the dialog that opens, add the following lines (omit sub-categories if not needed):
-```
-com.intellij.platform.lsp
-cds-intellij
-cds-intellij/TextMate Bundle
-cds-intellij/Code Style
-```
-- Click _OK_ to save the settings.
+Find the stdio logs in the [plugin directory](https://intellij-support.jetbrains.com/hc/en-us/articles/206544519-Directories-used-by-the-IDE-to-store-settings-caches-plugins-and-logs), at `lib/cds-lsp/stdio.json`.
 
-#### LSP Server Logs
+##### LSP Server Logs and Tracing
 
 The LSP server logs to its own file, which you can locate by opening your system temporary directory, then the sub-folder `cdxlsp`, and finally heading to the file most recently modified at the time of the reported problem.
 
@@ -133,15 +140,20 @@ Hint: depending on your operating system, the temporary directory may be at one 
 | macOS   | n/a                                      | $TMPDIR               | node -e "console.log(os.tmpdir())" |
 | Linux   | /tmp                                     | $TMPDIR               | node -e "console.log(os.tmpdir())" |
 
-##### Local logging
+###### Local Logs
 
 Alternatively, you can create a subfolder `.cds-lsp` in your workspace and restart the IDE. The LSP server will then write its logs to that folder instead of the system temporary directory.
 
-##### Log level
+###### Trace Level
 
-To increase the verbosity of the LSP server logs, you can add the setting `CDS_LSP_TRACE_COMPONENTS=*:debug` to the environment variables for the LSP server by going to *File > Settings > Languages & Frameworks > CDS* in your IDE and adding it to the _Additional env for LSP server_ field (separate multiple entries with a semicolon). Restart the IDE to apply the changes.
+LSP-server tracing is set to level `verbose` by default in _plugin debug mode_.
 
-Note that for large projects, the LSP server may produce a lot of logs, which may negatively impact performance. Use this setting only for debugging purposes.
+To verbosity, add the setting `CDS_LSP_TRACE_COMPONENTS=*:debug` to the environment variables for the LSP server by going to *File > Settings > Languages & Frameworks > CDS* in your IDE and adding it to the _Additional env for LSP server_ field (separate multiple env variables with a semicolon). Restart the IDE to apply the changes.
+
+Available trace levels are `infrastructure`, `error`, `warning`, `info`, `verbose`, and `debug` (ascending verbosity).
+To disable tracing, set `CDS_LSP_TRACE_COMPONENTS=` (empty value).
+
+Note that for large projects, more verbose tracing may significantly inflate logs and negatively impact performance. Use it with care.
 
 
 ## Contributing
