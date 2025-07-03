@@ -30,7 +30,7 @@ jobs:
         run: |
           echo RELEASE_TAG=$(awk '/pluginVersion/ { print $3 }' gradle.properties) >> $GITHUB_OUTPUT
           echo "TODAY_DATE=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
-          echo "CHANGE_LOG=$(awk '/<change-notes>/ { a=1; next } a==1 && /^<ul>/ { a=2 } a==2 { if (/<\/change-notes>/) x=1; gsub(/^[ \t]+|\]\].*/, ""); ORS=" "; print; if (x==1) exit }' src/main/resources/META-INF/plugin.xml)" >> $GITHUB_OUTPUT
+          echo "CHANGE_LOG=$(awk '/<change-notes>/ { a=1; next } a==1 && /^<ul>/ { a=2 } a==2 { if (/<\/change-notes>/) x=1; gsub(/^[ \t]+|\]\].*/, ""); gsub(/[\"\`]/, "\\&"); ORS=" "; print; if (x==1) exit }' src/main/resources/META-INF/plugin.xml)" >> $GITHUB_OUTPUT
 
       - run: |
           echo "${{ steps.setenv.outputs.RELEASE_TAG }}"
