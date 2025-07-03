@@ -104,7 +104,7 @@ Alternatively, set the following environment variable for your IDE:
 DEBUG=cds-lsp
 ```
 
-These settings will also enable debug logging for the LSP server.
+These settings will also enable verbose logging for the LSP server (see below).
 
 After restarting the IDE, find the logs in the [plugin directory](https://intellij-support.jetbrains.com/hc/en-us/articles/206544519-Directories-used-by-the-IDE-to-store-settings-caches-plugins-and-logs), at `lib/cds-lsp/stdio.json`.
 
@@ -132,6 +132,16 @@ Hint: depending on your operating system, the temporary directory may be at one 
 | Windows | C:\Users\\<username\>\AppData\Local\Temp | %TEMP%                |                                    |
 | macOS   | n/a                                      | $TMPDIR               | node -e "console.log(os.tmpdir())" |
 | Linux   | /tmp                                     | $TMPDIR               | node -e "console.log(os.tmpdir())" |
+
+##### Local logging
+
+Alternatively, you can create a subfolder `.cds-lsp` in your workspace and restart the IDE. The LSP server will then write its logs to that folder instead of the system temporary directory.
+
+##### Log level
+
+To increase the verbosity of the LSP server logs, you can add the setting `CDS_LSP_TRACE_COMPONENTS=*:debug` to the environment variables for the LSP server by going to *File > Settings > Languages & Frameworks > CDS* in your IDE and adding it to the _Additional env for LSP server_ field (separate multiple entries with a semicolon). Restart the IDE to apply the changes.
+
+Note that for large projects, the LSP server may produce a lot of logs, which may negatively impact performance. Use this setting only for debugging purposes.
 
 
 ## Contributing

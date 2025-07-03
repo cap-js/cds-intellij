@@ -88,7 +88,7 @@ public class CdsLspServerDescriptor {
                             resolve(RELATIVE_SERVER_PATH),
                             "--stdio"
                     )
-                            .withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:debug")
+                            .withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose")
                             .withEnvironment(envMap)
                             .withCharset(UTF_8)
             );
