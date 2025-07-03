@@ -25,7 +25,7 @@ local.ideConfDirIC=/home/your_user/.config/JetBrains/IdeaIC2025.1
 Depending on the type of IntelliJ-based IDE you have installed locally, run one of the following commands:
 
 - `./gradlew runWebStorm` for WebStorm
-- `./gradlew runIC` for IntelliJ IDEA
+- `./gradlew runIC` for IntelliJ IDEA Community Edition
 
 This will start the
 corresponding [sandbox IDEA instance](https://plugins.jetbrains.com/docs/intellij/ide-development-instance.html) with
