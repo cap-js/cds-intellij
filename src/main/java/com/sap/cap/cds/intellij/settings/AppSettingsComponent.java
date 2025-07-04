@@ -39,9 +39,20 @@ public class AppSettingsComponent {
             public boolean verify(JComponent input) {
                 return validateAndUpdateUI();
             }
+
+            @Override
+            public boolean shouldYieldFocus(JComponent input) {
+                return true;
+            }
+
+            @Override
+            public boolean shouldYieldFocus(JComponent source, JComponent target) {
+                return true;
+            }
         };
         nodeJsPathText.setInputVerifier(verifier);
         cdsLspEnvText.setInputVerifier(verifier);
+        validateAndUpdateUI();
 
         DocumentListener listener = new DocumentListener() {
             @Override
@@ -65,7 +76,7 @@ public class AppSettingsComponent {
 
     private boolean validateAndUpdateUI() {
         boolean valid = true;
-        String nodeJsPath = nodeJsPathText.getText();
+        String nodeJsPath = getNodeJsPathText();
         InterpreterStatus status = validateInterpreter(nodeJsPath);
         if (status == OK) {
             nodeJsPathStateHint("found and sufficient", null);
@@ -77,7 +88,7 @@ public class AppSettingsComponent {
             valid = false;
         }
         try {
-            getCdsLspEnvMap(cdsLspEnvText.getText());
+            getCdsLspEnvMap(getCdsLspEnvText());
             cdsLspEnvStateHint("valid", null);
         } catch (Throwable e) {
             valid = false;
@@ -96,7 +107,7 @@ public class AppSettingsComponent {
 
     @NotNull
     public String getNodeJsPathText() {
-        return nodeJsPathText.getText();
+        return nodeJsPathText.getText().trim();
     }
 
     public void setNodeJsPathText(@NotNull String newText) {
@@ -104,7 +115,7 @@ public class AppSettingsComponent {
     }
 
     public String getCdsLspEnvText() {
-        return cdsLspEnvText.getText();
+        return cdsLspEnvText.getText().trim();
     }
 
     public void setCdsLspEnvText(@NotNull String newText) {

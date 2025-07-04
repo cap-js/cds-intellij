@@ -39,7 +39,7 @@ public class NodeJsUtil {
                 nodeFound = getLocalInterpreter();
                 if (nodeFound.isEmpty()) {
                     UserError.show("Suitable Node.js interpreter not found. Please install at least version %s and set its full path at File > Settings > Languages & Frameworks > CDS".formatted(REQUIRED_NODEJS_VERSION));
-                    nodeJsPathCached = "NOT_FOUND";
+                    nodeJsPathCached = "";
                     return nodeJsPathCached;
                 }
             }
@@ -49,6 +49,10 @@ public class NodeJsUtil {
     }
 
     public static InterpreterStatus validateInterpreter(String nodeJsPath) {
+        if (nodeJsPath == null || nodeJsPath.isBlank()) {
+            Logger.PLUGIN.debug("Node.js interpreter path is empty");
+            return NOT_FOUND;
+        }
         Optional<ComparableVersion> version = getVersion(nodeJsPath);
         if (version.isEmpty()) {
             Logger.PLUGIN.debug("Node.js interpreter at [%s] not found".formatted(nodeJsPath));
@@ -64,6 +68,9 @@ public class NodeJsUtil {
     }
 
     public static Map<String, String> getCdsLspEnvMap(String cdsLspEnv) {
+        if (cdsLspEnv == null || cdsLspEnv.isBlank()) {
+            return Collections.emptyMap();
+        }
         Map<String, String> result = new HashMap<>();
         Arrays.stream(cdsLspEnv.split(";"))
                 .forEach(pair -> {
