@@ -108,8 +108,9 @@ CompletableFuture<List<Application>> applications =
         var symbols = addChild.run(completion, "workspaceSymbols");
         symbols.addProperty("minPrefixLength", 2);                                  // cds.completion.workspaceSymbols.minPrefixLength (-1) -> 2
 
-//        var contributions = addChild.run(cds, "contributions");
-//        contributions.put("enablement", Collections.singletonMap("odata", true)); // cds.contributions.enablement.odata (true) -> TODO: UI option
+        var contributions = addChild.run(cds, "contributions");
+        var enablement = addChild.run(contributions, "enablement");
+        enablement.addProperty("odata", false);                                    // cds.contributions.enablement.odata (true) -> false
 
         cds.addProperty("diagnosticsSeverity", "Info");                             // cds.diagnosticsSeverity (Warning) -> Info
 
