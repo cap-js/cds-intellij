@@ -89,7 +89,7 @@ intellijPlatform {
                 VerifyPluginTask.FailureLevel.OVERRIDE_ONLY_API_USAGES,
                 VerifyPluginTask.FailureLevel.NON_EXTENDABLE_API_USAGES,
                 VerifyPluginTask.FailureLevel.PLUGIN_STRUCTURE_WARNINGS,
-                VerifyPluginTask.FailureLevel.MISSING_DEPENDENCIES,
+                /* VerifyPluginTask.FailureLevel.MISSING_DEPENDENCIES, // due to optional deps */
                 VerifyPluginTask.FailureLevel.INVALID_PLUGIN
         ]
     }
@@ -115,6 +115,7 @@ intellijPlatformTesting.runIde {
         }
     }
 }
+
 
 tasks {
     wrapper {

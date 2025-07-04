@@ -106,6 +106,10 @@ The set of features will grow with future releases, aligned with the development
 
 
     <change-notes><![CDATA[
+<h3>Added</h3>
+<ul>
+    <li>User setting for additional environment variables for the CDS Language Server
+</ul>
 <h3>Changed</h3>
 <ul>
     <li>Update to latest <i>lsp4ij</i> version 0.14.2

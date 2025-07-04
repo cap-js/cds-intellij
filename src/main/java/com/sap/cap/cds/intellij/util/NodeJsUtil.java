@@ -9,9 +9,7 @@ import org.apache.maven.artifact.versioning.ComparableVersion;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
 import static com.sap.cap.cds.intellij.util.NodeJsUtil.InterpreterStatus.*;
@@ -23,6 +21,14 @@ public class NodeJsUtil {
 
     public static String getInterpreterFromSetting() {
         return Objects.requireNonNull(AppSettings.getInstance().getState()).nodeJsPath;
+    }
+
+    public static Map<String, String> getCdsLspEnvMapFromSetting() {
+        try {
+            return getCdsLspEnvMap(Objects.requireNonNull(AppSettings.getInstance().getState()).cdsLspEnv);
+        } catch (IllegalArgumentException e) {
+            return Collections.emptyMap();
+        }
     }
 
     public static String getInterpreterFromPathOrRegistered() {
@@ -55,6 +61,20 @@ public class NodeJsUtil {
         }
         Logger.PLUGIN.debug("Node.js interpreter at [%s] with version [%s] is outdated".formatted(nodeJsPath, nodeVersion));
         return OUTDATED;
+    }
+
+    public static Map<String, String> getCdsLspEnvMap(String cdsLspEnv) {
+        Map<String, String> result = new HashMap<>();
+        Arrays.stream(cdsLspEnv.split(";"))
+                .forEach(pair -> {
+                    if (!pair.matches("[_A-Z0-9]+=[^=]*")) {
+                        throw new IllegalArgumentException("%s is not a valid env setting".formatted(pair));
+                    }
+                    String[] split = pair.split("=");
+                    String val = split.length > 1 ? split[1].trim() : "";
+                    result.put(split[0].trim(), val);
+                });
+        return result;
     }
 
     private static Optional<String> getLocalInterpreter() {
