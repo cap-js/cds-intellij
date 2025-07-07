@@ -91,48 +91,76 @@ CompletableFuture<List<Application>> applications =
         };
 
 
-        var settings = new JsonObject(); // new HashMap<String, Object>();
+        var settings = new JsonObject();
 
         var cds = addChild.run(settings, "cds");
 
-        addChild.run(cds, "codeLensStatistics").addProperty("enabled", true); // cds.codeLensStatistics.enabled (false) -> true
+        // cds.codeLensStatistics.enabled (false) - this is an undocumented technical feature
+        addChild.run(cds, "codeLensStatistics").addProperty("enabled", false);
 
-        var compiler = addChild.run(cds, "compiler");
-        compiler.addProperty("markMissingI18nDefault", true);                       // cds.compiler.markMissingI18nDefault (false) -> true
+        var cds_compiler = addChild.run(cds, "compiler");
 
-        var completion = addChild.run(cds, "completion");
-        var docFiles = new JsonArray();
-        docFiles.add("README.md");
-        completion.add("docFiles", docFiles); // cds.completion.docFiles -> ['README.md']
-        completion.addProperty("formatSnippets", true);                             // cds.completion.formatSnippets (false) -> true
-        var symbols = addChild.run(completion, "workspaceSymbols");
-        symbols.addProperty("minPrefixLength", 2);                                  // cds.completion.workspaceSymbols.minPrefixLength (-1) -> 2
+        // cds.compiler.markMissingI18nDefault (false)
+        cds_compiler.addProperty("markMissingI18nDefault", false);
 
-        var contributions = addChild.run(cds, "contributions");
-        var enablement = addChild.run(contributions, "enablement");
-        enablement.addProperty("odata", false);                                    // cds.contributions.enablement.odata (true) -> false
+        var cds_completion = addChild.run(cds, "completion");
 
-        cds.addProperty("diagnosticsSeverity", "Info");                             // cds.diagnosticsSeverity (Warning) -> Info
+        // cds.completion.docFiles -> ['README.md']
+        {
+            var docFiles = new JsonArray();
+            docFiles.add("README.md");
+            cds_completion.add("docFiles", docFiles);
+        }
 
-        var outline = addChild.run(cds, "outline");
-        outline.addProperty("semantical", true);                                    // cds.outline.semantical (false) -> true
+        // cds.completion.formatSnippets (false)
+        cds_completion.addProperty("formatSnippets", false);
 
-        var quickfix = addChild.run(cds, "quickfix");
-        quickfix.addProperty("importArtifact", true);                               // cds.quickfix.importArtifact (false) -> true
+        // Do not suggest Workspace Symbols in code completion, this is currently a performance killer for larger projects
+        var cds_completion_workspaceSymbols = addChild.run(cds_completion, "workspaceSymbols");
+        cds_completion_workspaceSymbols.addProperty("minPrefixLength", -1); // disable
+//      cds_completion_workspaceSymbols.addProperty("maxProposals", -1); // all
 
-//        var refactoring = addChild.run(cds, "refactoring");
-//        var files = addChild.run(refactoring, "files");
-//        files.put("delete", Collections.singletonMap("enabled", true));     // cds.refactoring.files.delete.enabled (true)
-//        files.put("rename", Collections.singletonMap("enabled", true));     // cds.refactoring.files.rename.enabled (true)
+        // Disable Annotation Modeler for now (slow for large projects, needs LSP throttling)
+        {
+            var cds_contributions = addChild.run(cds, "contributions");
+            var cds_contributions_enablement = addChild.run(cds_contributions, "enablement");
+            cds_contributions_enablement.addProperty("odata", false);                                    // cds.contributions.enablement.odata (true) -> false
+        }
 
-        var semanticHighlighting = addChild.run(cds, "semanticHighlighting");
-        semanticHighlighting.addProperty("enabled", true);                          // cds.semanticHighlighting.enabled (false) -> true
+        // cds.diagnosticsSeverity (Warning)
+        cds.addProperty("diagnosticsSeverity", "Warning");
 
-//        var typeGenerator = addChild.run(cds, "typeGenerator");
-//        typeGenerator.put("enabled", true);                                 // cds.typeGenerator.enabled (true) -> TODO: test
+        // Use semantical (hierarchical) outline
+        var cds_outline = addChild.run(cds, "outline");
+        cds_outline.addProperty("semantical", true);                                    // cds.outline.semantical (false) -> true
 
-        var whereused = addChild.run(cds, "whereused");
-        whereused.addProperty("showStringConstants", true);                         // cds.whereused.showStringConstants (false) -> true
+        // Do not check unknown artifacts if present in workspace (requires Workspace Symbols => currently slow)
+        var cds_quickfix = addChild.run(cds, "quickfix");
+        cds_quickfix.addProperty("importArtifact", false);
+
+        // Disable using path refactorings (currently slow in LSP)
+        {
+            var cds_refactoring = addChild.run(cds, "refactoring");
+            var cds_refactoring_files = addChild.run(cds_refactoring, "files");
+
+            var cds_refactoring_files_delete = addChild.run(cds_refactoring_files, "delete");
+            cds_refactoring_files_delete.addProperty("enabled", false);
+
+            var cds_refactoring_files_rename = addChild.run(cds_refactoring_files, "rename");
+            cds_refactoring_files_rename.addProperty("enabled", false);
+        }
+
+        // Semantic Highlighting off
+        var cds_semanticHighlighting = addChild.run(cds, "semanticHighlighting");
+        cds_semanticHighlighting.addProperty("enabled", false);
+
+        // Enable typer (true)
+        var cds_typeGenerator = addChild.run(cds, "typeGenerator");
+        cds_typeGenerator.addProperty("enabled", true);
+
+        // Do not find same string literals (false)
+        var cds_whereused = addChild.run(cds, "whereused");
+        cds_whereused.addProperty("showStringConstants", false);
 
         return settings;
     }
