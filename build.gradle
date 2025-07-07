@@ -37,7 +37,7 @@ dependencies {
     implementation 'org.jetbrains:annotations:26.0.2'
     implementation 'org.json:json:20250517'
     implementation 'org.apache.maven:maven-artifact:3.9.10'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.3'
     testCompileOnly 'junit:junit:4.13.2'
     testCompileOnly 'org.junit.jupiter:junit-jupiter:5.13.3'
 
