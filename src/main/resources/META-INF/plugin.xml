@@ -130,7 +130,9 @@ The set of features will grow with future releases, aligned with the development
 </ul>
 <h3>Fixed</h3>
 <ul>
-    <li>Build on IC platform type
+    <li>Optimized server settings to improve editing performance (e.g. 2 orders of magnitude for initial Code Completion in a large repo)
+    <li>Improve UX and validation of CDS settings
+    <li>Build on IC platform type for consistency
 </ul>
 ]]></change-notes>
 </idea-plugin>
