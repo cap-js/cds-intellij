@@ -114,22 +114,21 @@ The set of features will grow with future releases, aligned with the development
 <h3>Added</h3>
 <ul>
     <li>Support for <i>Community Editions</i> of IntelliJ IDEs
-        <br/>Plugin is now based on the <i>LSP4IJ</i> plugin - in case you wonder why this gets installed as well
+        <br/>(The plugin is now based on the <i>LSP4IJ</i> plugin, which therefor gets installed in addition)
+    <li>IDE features unlocked via LSP4IJ 0.14.2:
+    <ul>
+        <li>Highlight Usages in File (highlights symbol usages)
+        <li>Structure Tool Window (populates and updates the file structure panel)
+        <li>Navigate Symbol... (find/list symbols in workspace)</li>
+        <li>On-the-fly Code Formatting (format block when finishing it with <code>}</code> or <code>;</code>)
+        <li>Format Selected Code
+    </ul>
     <li>User settings:
         <ul>
             <li>Node.js interpreter path (to modify result of automatic search)
             <li>Additional environment variables for CDS Language Server
         </ul>
     </li>
-    <li>IDE features unlocked via LSP4IJ 0.14.2:
-    <ul>
-        <li>Highlight Usages in File (highlights symbol usages)
-        <li>Structure Tool Window (populates and updates the file structure panel)
-        <li>Navigate Symbol... (find/list symbols in workspace)</li>
-        <li>On-the-fly Code Formatting (format block when finishing it with "}" or ";")
-        <li>Format Selected Code
-        <li>Semantic Selection (extends or shrinks selection based on code structure)
-    </ul>
 </ul>
 <h3>Changed</h3>
 <ul>
