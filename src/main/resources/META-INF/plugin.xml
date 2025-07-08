@@ -7,6 +7,10 @@
     <li>Syntax highlighting</li>
     <li>Code completion</li>
     <li>Goto definition</li>
+    <li>Find references</li>
+    <li>Highlight usages in file</li>
+    <li>Structure tool window (Outline)</li>
+    <li>Navigate Symbol... (symbols in workspace)</li>
     <li>Hover documentation</li>
     <li>Document formatting</li>
     <li>Diagnostics</li>
@@ -110,28 +114,26 @@ The set of features will grow with future releases, aligned with the development
 <h3>Added</h3>
 <ul>
     <li>Support for <i>Community Editions</i> of IntelliJ IDEs
+        <br/>Plugin is now based on the <i>LSP4IJ</i> plugin - in case you wonder why this gets installed as well
     <li>User settings:
         <ul>
             <li>Node.js interpreter path (to modify result of automatic search)
             <li>Additional environment variables for CDS Language Server
         </ul>
     </li>
-    <li>IDE features unlocked via lsp4ij 0.14.2:
+    <li>IDE features unlocked via LSP4IJ 0.14.2:
     <ul>
-        <li>Code Vision (displays context info such as usages)
         <li>Highlight Usages in File (highlights symbol usages)
         <li>Structure Tool Window (populates and updates the file structure panel)
-        <li>On-the-fly Code Formatting (code formatting as you type)
-        <li>Selection-based Code Formatting (formatting of only a selected block of code)
+        <li>Navigate Symbol... (find/list symbols in workspace)</li>
+        <li>On-the-fly Code Formatting (format block when finishing it with "}" or ";")
+        <li>Format Selected Code
         <li>Semantic Selection (extends or shrinks selection based on code structure)
-        <li>File Rename Synchronization (synchronizes the language server with file renames)
-        <li>Global Symbol Search (navigation to a workspace symbol)
-        <li>Safe Rename Refactoring (updates references on file rename)
     </ul>
 </ul>
 <h3>Changed</h3>
 <ul>
-    <li>Already search suitable Node.js interpreter on first plugin start
+    <li>Search suitable Node.js interpreter on first start of plugin
 </ul>
 ]]></change-notes>
 </idea-plugin>
