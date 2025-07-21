@@ -129,6 +129,7 @@ The set of features will grow with future releases, aligned with the development
             <li>Additional environment variables for CDS Language Server
         </ul>
     </li>
+    <li>Code-Style setting to put multiple parenthesized arguments or filters on a new line
 </ul>
 <h3>Changed</h3>
 <ul>
