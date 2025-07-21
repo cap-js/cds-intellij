@@ -13,8 +13,6 @@ import javax.swing.event.DocumentListener;
 import static com.intellij.ui.JBColor.RED;
 import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
 import static com.sap.cap.cds.intellij.util.NodeJsUtil.*;
-import static com.sap.cap.cds.intellij.util.NodeJsUtil.InterpreterStatus.OK;
-import static com.sap.cap.cds.intellij.util.NodeJsUtil.InterpreterStatus.OUTDATED;
 
 /**
  * Supports creating and managing a {@link JPanel} for the Settings Dialog.
@@ -75,17 +73,14 @@ public class AppSettingsComponent {
     };
 
     private boolean validateAndUpdateUI() {
-        boolean valid = true;
-        String nodeJsPath = getNodeJsPathText();
-        InterpreterStatus status = validateInterpreter(nodeJsPath);
-        if (status == OK) {
-            nodeJsPathStateHint("found and sufficient", null);
-        } else if (status == OUTDATED) {
-            nodeJsPathStateHint("found but outdated (required version: %s)".formatted(REQUIRED_NODEJS_VERSION), RED);
-            valid = false;
-        } else {
-            nodeJsPathStateHint("not found. Please enter valid path to Node.js executable", RED);
-            valid = false;
+        boolean valid = false;
+        switch (checkInterpreter(getNodeJsPathText())) {
+            case OK -> {
+                nodeJsPathStateHint("found and sufficient", null)
+                valid = true;
+            }
+            case OUTDATED -> nodeJsPathStateHint("found but outdated (required version: %s)".formatted(REQUIRED_NODEJS_VERSION), RED);
+            case NOT_FOUND -> nodeJsPathStateHint("not found. Please enter valid path to Node.js executable", RED);
         }
         try {
             getCdsLspEnvMap(getCdsLspEnvText());
