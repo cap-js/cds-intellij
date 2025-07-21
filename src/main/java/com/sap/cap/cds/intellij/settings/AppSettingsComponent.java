@@ -76,7 +76,7 @@ public class AppSettingsComponent {
         boolean valid = false;
         switch (checkInterpreter(getNodeJsPathText())) {
             case OK -> {
-                nodeJsPathStateHint("found and sufficient", null)
+                nodeJsPathStateHint("found and sufficient", null);
                 valid = true;
             }
             case OUTDATED -> nodeJsPathStateHint("found but outdated (required version: %s)".formatted(REQUIRED_NODEJS_VERSION), RED);

@@ -4,9 +4,11 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
+import com.sap.cap.cds.intellij.util.NodeJsUtil;
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import org.jetbrains.annotations.NonNls;
 
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.checkInterpreter;
 import static com.sap.cap.cds.intellij.util.NodeJsUtil.getInterpreterFromPathOrRegistered;
 
 @State(
@@ -19,7 +21,12 @@ public final class AppSettings
     private State myState = new State();
 
     public static AppSettings getInstance() {
-        return ApplicationManager.getApplication().getService(AppSettings.class);
+        AppSettings instance = ApplicationManager.getApplication().getService(AppSettings.class);
+        State state = instance.getState();
+        if (state != null && checkInterpreter(state.nodeJsPath) != NodeJsUtil.InterpreterStatus.OK) {
+            state.nodeJsPath = getInterpreterFromPathOrRegistered();
+        }
+        return instance;
     }
 
     @Override
@@ -34,7 +41,7 @@ public final class AppSettings
 
     public static class State {
         @NonNls @NotNull
-        public String nodeJsPath = getInterpreterFromPathOrRegistered();
+        public String nodeJsPath = getInterpreterFromPathOrRegistered(); // on first plugin start
         public String cdsLspEnv = "";
         public boolean nodeStatus = false;
     }
