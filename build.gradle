@@ -5,7 +5,7 @@ import org.jetbrains.intellij.platform.gradle.tasks.VerifyPluginTask
 
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij.platform' version '2.0.1'
+    id 'org.jetbrains.intellij.platform' version '2.6.0'
     id 'org.jetbrains.kotlin.jvm' version '2.2.0'
 }
 
@@ -38,8 +38,8 @@ dependencies {
     implementation 'org.json:json:20250517'
     implementation 'org.apache.maven:maven-artifact:3.9.11'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.3'
-    testCompileOnly 'junit:junit:4.13.2'
-    testCompileOnly 'org.junit.jupiter:junit-jupiter:5.13.3'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.3'
 
     intellijPlatform {
         String type = project.findProperty('platformType')
@@ -102,7 +102,7 @@ intellijPlatformTesting.runIde {
             localPath = project.file(project.findProperty('local.ideDir'))
         }
         task {
-            dependsOn 'copyLspToRunWebStorm', 'syncSandboxIdeConf'
+            dependsOn 'copyLsp_runWebStorm', 'syncSandboxIdeConf'
         }
     }
     runIC {
@@ -111,7 +111,7 @@ intellijPlatformTesting.runIde {
             localPath = project.file(project.findProperty('local.ideDirIC'))
         }
         task {
-            dependsOn 'copyLspToRunIC', 'syncSandboxIdeConfIC'
+            dependsOn 'copyLsp_runIC', 'syncSandboxIdeConfIC'
         }
     }
 }
@@ -142,7 +142,7 @@ tasks {
     }
 
     test {
-        dependsOn 'copyLspToInstrumented'
+        dependsOn 'copyLsp_test'
         exclude '**/*TestBase.class'
     }
 
@@ -251,20 +251,20 @@ tasks.register('copyLsp', Copy) {
     into "${tasks.named('prepareSandbox').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
 
-tasks.register('copyLspToRunWebStorm', Copy) {
+tasks.register('copyLsp_runWebStorm', Copy) {
     mustRunAfter prepareSandbox_runWebStorm
     from './lsp'
     into "${tasks.named('prepareSandbox_runWebStorm').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
 
-tasks.register('copyLspToRunIC', Copy) {
+tasks.register('copyLsp_runIC', Copy) {
     mustRunAfter prepareSandbox_runIC
     from './lsp'
     into "${tasks.named('prepareSandbox_runIC').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
 
-tasks.register('copyLspToInstrumented', Copy) {
+tasks.register('copyLsp_test', Copy) {
     mustRunAfter prepareTestSandbox
     from './lsp'
-    into './build/instrumented/cds-lsp'
+    into "${tasks.named('prepareTestSandbox').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
