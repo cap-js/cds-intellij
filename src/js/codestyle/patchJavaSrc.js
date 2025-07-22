@@ -11,7 +11,8 @@ const schema = require(schemaPath);
 const optsFromSchema = schema.properties;
 const sample = Object.values(optsFromSchema)[0].sample;
 
-const srcPath = path.resolve(__dirname, '../../../src/main/java/com/sap/cap/cds/intellij/codestyle/CdsCodeStyleSettings.java');
+const srcPath = path.resolve(__dirname, '../../../src/templates/java/com/sap/cap/cds/intellij/codestyle/CdsCodeStyleSettings.java');
+const tgtPath = path.resolve(__dirname, '../../../src/main/java/com/sap/cap/cds/intellij/codestyle/CdsCodeStyleSettings.java');
 const src = readFileSync(srcPath, 'utf8');
 
 function getGroup(label) {
@@ -174,8 +175,8 @@ ${t}}
 // END CLASS BODY
 
 const patchedSrc = src.replace(
-    /(?<=public class CdsCodeStyleSettings [\w ]*\{\n).*(?=^})/sm,
+    /(?<=public class CdsCodeStyleSettings extends CdsCodeStyleSettingsBase \{\n).*(?=^})/sm,
     classBody
 );
 
-writeFileSync(srcPath, patchedSrc, 'utf8');
+writeFileSync(tgtPath, patchedSrc, 'utf8');

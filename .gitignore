@@ -9,3 +9,6 @@ local.properties
 /build
 /lsp/node_modules/
 /src/js/.idea/
+
+# generated from template
+/src/main/java/com/sap/cap/cds/intellij/codestyle/CdsCodeStyleSettings.java
