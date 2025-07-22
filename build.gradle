@@ -102,7 +102,7 @@ intellijPlatformTesting.runIde {
             localPath = project.file(project.findProperty('local.ideDir'))
         }
         task {
-            dependsOn 'copyLspToRunWebStorm', 'syncSandboxIdeConf'
+            dependsOn 'copyLsp_runWebStorm', 'syncSandboxIdeConf'
         }
     }
     runIC {
@@ -111,7 +111,7 @@ intellijPlatformTesting.runIde {
             localPath = project.file(project.findProperty('local.ideDirIC'))
         }
         task {
-            dependsOn 'copyLspToRunIC', 'syncSandboxIdeConfIC'
+            dependsOn 'copyLsp_runIC', 'syncSandboxIdeConfIC'
         }
     }
 }
@@ -142,7 +142,7 @@ tasks {
     }
 
     test {
-        dependsOn 'copyLspToInstrumented'
+        dependsOn 'copyLsp_test'
         exclude '**/*TestBase.class'
     }
 
@@ -251,19 +251,19 @@ tasks.register('copyLsp', Copy) {
     into "${tasks.named('prepareSandbox').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
 
-tasks.register('copyLspToRunWebStorm', Copy) {
+tasks.register('copyLsp_runWebStorm', Copy) {
     mustRunAfter prepareSandbox_runWebStorm
     from './lsp'
     into "${tasks.named('prepareSandbox_runWebStorm').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
 
-tasks.register('copyLspToRunIC', Copy) {
+tasks.register('copyLsp_runIC', Copy) {
     mustRunAfter prepareSandbox_runIC
     from './lsp'
     into "${tasks.named('prepareSandbox_runIC').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
 
-tasks.register('copyLspToInstrumented', Copy) {
+tasks.register('copyLsp_test', Copy) {
     mustRunAfter prepareTestSandbox
     from './lsp'
     into './build/instrumented/cds-lsp'
