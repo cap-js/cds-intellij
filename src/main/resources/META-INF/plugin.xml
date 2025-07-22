@@ -145,6 +145,7 @@ The set of features will grow with future releases, aligned with the development
             <li>Maximum log-file size can now be increased to at most 1 GB (default limit unchanged at 10 MB)
         </ul>
     </li>
+    <li>Automatically fix invalid Node.js interpreter path in settings on plugin start or when opening settings
 </ul>
 ]]></change-notes>
 </idea-plugin>

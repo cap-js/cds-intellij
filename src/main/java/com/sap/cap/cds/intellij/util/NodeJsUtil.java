@@ -35,7 +35,7 @@ public class NodeJsUtil {
         if (nodeJsPathCached == null) {
             Logger.PLUGIN.debug("Searching for Node.js >= v%s".formatted(REQUIRED_NODEJS_VERSION));
             Optional<String> nodeFound = whichNode();
-            if (nodeFound.isEmpty() || validateInterpreter(nodeFound.get()) != OK) {
+            if (nodeFound.isEmpty() || checkInterpreter(nodeFound.get()) != OK) {
                 nodeFound = getLocalInterpreter();
                 if (nodeFound.isEmpty()) {
                     UserError.show("Suitable Node.js interpreter not found. Please install at least version %s and set its full path at File > Settings > Languages & Frameworks > CDS".formatted(REQUIRED_NODEJS_VERSION));
@@ -48,7 +48,7 @@ public class NodeJsUtil {
         return nodeJsPathCached;
     }
 
-    public static InterpreterStatus validateInterpreter(String nodeJsPath) {
+    public static InterpreterStatus checkInterpreter(String nodeJsPath) {
         if (nodeJsPath == null || nodeJsPath.isBlank()) {
             Logger.PLUGIN.debug("Node.js interpreter path is empty");
             return NOT_FOUND;
