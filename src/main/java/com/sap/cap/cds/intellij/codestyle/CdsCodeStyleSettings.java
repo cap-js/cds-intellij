@@ -54,7 +54,7 @@ public class CdsCodeStyleSettings extends CdsCodeStyleSettingsBase {
                                                             fn('z', 42) as projectId
                                                         }
                                                     actions {
-                                                        action printReport() returns Integer;
+                                                        action printReport(p: Integer, q: String) returns Integer; 
                                                         function sortTasks() returns array of Project;
                                                     };
                                             
@@ -126,13 +126,15 @@ public class CdsCodeStyleSettings extends CdsCodeStyleSettingsBase {
         OPTIONS.put("openingBraceInNewLine", new CdsCodeStyleOption("openingBraceInNewLine", BOOLEAN, false, "Line wrapping before opening brace", "Other", WRAPPING_AND_BRACES, null, List.of()));
         OPTIONS.put("selectInNewLine", new CdsCodeStyleOption("selectInNewLine", BOOLEAN, true, "Line wrapping before 'select' of entity or view", "Other", WRAPPING_AND_BRACES, null, List.of()));
         OPTIONS.put("tabSize", new CdsCodeStyleOption("tabSize", INT, 2, "Tab size", "Other", TABS_AND_INDENTS, null, List.of()));
-        OPTIONS.put("whitespaceAfterColon", new CdsCodeStyleOption("whitespaceAfterColon", BOOLEAN, true, "Blank after colon", "After colon", SPACES, null, List.of("whitespaceAfterColonInAnnotation")));
+        OPTIONS.put("whitespaceAfterColon", new CdsCodeStyleOption("whitespaceAfterColon", BOOLEAN, true, "Blank after colon", "After colon", SPACES, null, List.of("whitespaceAfterColonInAnnotation", "whitespaceAfterColonInParamList")));
         OPTIONS.put("whitespaceAfterColonInAnnotation", new CdsCodeStyleOption("whitespaceAfterColonInAnnotation", BOOLEAN, true, "Blank after colon in annotations", "After colon", SPACES, "whitespaceAfterColon", List.of()));
+        OPTIONS.put("whitespaceAfterColonInParamList", new CdsCodeStyleOption("whitespaceAfterColonInParamList", BOOLEAN, true, "Blank after colon in parameter lists", "After colon", SPACES, "whitespaceAfterColon", List.of()));
         OPTIONS.put("whitespaceAfterComma", new CdsCodeStyleOption("whitespaceAfterComma", BOOLEAN, true, "Blank after comma", "Other", SPACES, null, List.of()));
         OPTIONS.put("whitespaceAroundAlignedOps", new CdsCodeStyleOption("whitespaceAroundAlignedOps", BOOLEAN, true, "Blanks around aligned binary operators and colons", "Other", SPACES, null, List.of()));
         OPTIONS.put("whitespaceAroundBinaryOps", new CdsCodeStyleOption("whitespaceAroundBinaryOps", BOOLEAN, true, "Blanks around binary operators", "Other", SPACES, null, List.of()));
-        OPTIONS.put("whitespaceBeforeColon", new CdsCodeStyleOption("whitespaceBeforeColon", BOOLEAN, true, "Blank before colon", "Before colon", SPACES, null, List.of("whitespaceBeforeColonInAnnotation")));
+        OPTIONS.put("whitespaceBeforeColon", new CdsCodeStyleOption("whitespaceBeforeColon", BOOLEAN, true, "Blank before colon", "Before colon", SPACES, null, List.of("whitespaceBeforeColonInAnnotation", "whitespaceBeforeColonInParamList")));
         OPTIONS.put("whitespaceBeforeColonInAnnotation", new CdsCodeStyleOption("whitespaceBeforeColonInAnnotation", BOOLEAN, false, "Blank before colon in annotations", "Before colon", SPACES, "whitespaceBeforeColon", List.of()));
+        OPTIONS.put("whitespaceBeforeColonInParamList", new CdsCodeStyleOption("whitespaceBeforeColonInParamList", BOOLEAN, false, "Blank before colon in parameter lists", "Before colon", SPACES, "whitespaceBeforeColon", List.of()));
         OPTIONS.put("whitespaceWithinBrackets", new CdsCodeStyleOption("whitespaceWithinBrackets", BOOLEAN, false, "Blanks within brackets", "Other", SPACES, null, List.of()));
 
         CATEGORY_GROUPS.put(Category.TABS_AND_INDENTS, Set.of("Other"));
@@ -187,11 +189,13 @@ public class CdsCodeStyleSettings extends CdsCodeStyleSettingsBase {
     public int tabSize = 2;
     public boolean whitespaceAfterColon = true;
     public boolean whitespaceAfterColonInAnnotation = true;
+    public boolean whitespaceAfterColonInParamList = true;
     public boolean whitespaceAfterComma = true;
     public boolean whitespaceAroundAlignedOps = true;
     public boolean whitespaceAroundBinaryOps = true;
     public boolean whitespaceBeforeColon = true;
     public boolean whitespaceBeforeColonInAnnotation = false;
+    public boolean whitespaceBeforeColonInParamList = false;
     public boolean whitespaceWithinBrackets = false;
 
     public enum CqlKeywordCapitalization implements Enum {
