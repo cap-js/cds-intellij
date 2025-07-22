@@ -5,7 +5,7 @@ import org.jetbrains.intellij.platform.gradle.tasks.VerifyPluginTask
 
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij.platform' version '2.4.0'
+    id 'org.jetbrains.intellij.platform' version '2.6.0'
     id 'org.jetbrains.kotlin.jvm' version '2.2.0'
 }
 
@@ -38,8 +38,8 @@ dependencies {
     implementation 'org.json:json:20250517'
     implementation 'org.apache.maven:maven-artifact:3.9.11'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.3'
-    testCompileOnly 'junit:junit:4.13.2'
-    testCompileOnly 'org.junit.jupiter:junit-jupiter:5.13.3'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.3'
 
     intellijPlatform {
         String type = project.findProperty('platformType')
@@ -266,5 +266,5 @@ tasks.register('copyLsp_runIC', Copy) {
 tasks.register('copyLsp_test', Copy) {
     mustRunAfter prepareTestSandbox
     from './lsp'
-    into './build/instrumented/cds-lsp'
+    into "${tasks.named('prepareTestSandbox').map { it.pluginDirectory }.get().get()}/lib/cds-lsp"
 }
