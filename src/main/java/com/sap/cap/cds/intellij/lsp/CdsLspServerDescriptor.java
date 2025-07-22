@@ -6,7 +6,6 @@ import org.apache.maven.artifact.versioning.ComparableVersion;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.EnumMap;
 import java.util.Map;
 
 import static com.sap.cap.cds.intellij.util.JsonUtil.getPropertyAtPath;
@@ -23,14 +22,7 @@ public class CdsLspServerDescriptor {
     public static final ComparableVersion REQUIRED_NODEJS_VERSION = getRequiredNodejsVersion();
     private static final String RELATIVE_MITM_PATH = "cds-lsp/mitm.js";
     private static final String RELATIVE_LOG_PATH = "cds-lsp/stdio.json";
-    private static final Map<CommandLineKind, GeneralCommandLine> COMMAND_LINES = new EnumMap<>(CommandLineKind.class);
     private static final CommandLineKind SERVER_COMMAND_LINE_KIND = getServerCommandLineKind();
-
-    static {
-        COMMAND_LINES.put(CommandLineKind.SERVER, null);
-        COMMAND_LINES.put(CommandLineKind.SERVER_DEBUG, null);
-        COMMAND_LINES.put(CommandLineKind.CLI_FORMAT, null);
-    }
 
     private static ComparableVersion getRequiredNodejsVersion() {
         String serverPkgPath = resolve(RELATIVE_SERVER_PKG_PATH);
@@ -60,62 +52,43 @@ public class CdsLspServerDescriptor {
     }
 
     public static GeneralCommandLine getServerCommandLine() {
-        GeneralCommandLine cached = COMMAND_LINES.get(SERVER_COMMAND_LINE_KIND);
-        if (cached != null) {
-            return cached;
-        }
         Map<String, String> envMap = getCdsLspEnvMapFromSetting();
         final String nodeInterpreterPath = getInterpreterFromSetting();
-        switch (SERVER_COMMAND_LINE_KIND) {
-            case SERVER -> COMMAND_LINES.put(CommandLineKind.SERVER,
-                    new GeneralCommandLine(
-                            nodeInterpreterPath,
-                            "--enable-source-maps",
-                            resolve(RELATIVE_SERVER_PATH),
-                            "--stdio"
-                    )
-                            .withEnvironment(envMap)
-                            .withCharset(UTF_8)
-            );
-            case SERVER_DEBUG -> COMMAND_LINES.put(CommandLineKind.SERVER_DEBUG,
-                    new GeneralCommandLine(
-                            nodeInterpreterPath,
-                            resolve(RELATIVE_MITM_PATH),
-                            resolve(RELATIVE_LOG_PATH),
-                            nodeInterpreterPath,
-                            "--enable-source-maps",
-                            "--inspect",
-                            resolve(RELATIVE_SERVER_PATH),
-                            "--stdio"
-                    )
-                            .withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose")
-                            .withEnvironment(envMap)
-                            .withCharset(UTF_8)
-            );
-            case CLI_FORMAT -> throw new UnsupportedOperationException("Formatting command line not supported");
-        }
+        return switch (SERVER_COMMAND_LINE_KIND) {
+            case SERVER -> new GeneralCommandLine(
+                    nodeInterpreterPath,
+                    "--enable-source-maps",
+                    resolve(RELATIVE_SERVER_PATH),
+                    "--stdio"
+            )
+                    .withEnvironment(envMap)
+                    .withCharset(UTF_8);
 
-        GeneralCommandLine result = COMMAND_LINES.get(SERVER_COMMAND_LINE_KIND);
-        if (result == null) {
-            throw new RuntimeException("Failed to create command line for %s".formatted(SERVER_COMMAND_LINE_KIND));
-        }
-        return result;
+            case SERVER_DEBUG -> new GeneralCommandLine(
+                    nodeInterpreterPath,
+                    resolve(RELATIVE_MITM_PATH),
+                    resolve(RELATIVE_LOG_PATH),
+                    nodeInterpreterPath,
+                    "--enable-source-maps",
+                    "--inspect",
+                    resolve(RELATIVE_SERVER_PATH),
+                    "--stdio"
+            )
+                    .withEnvironment("CDS_LSP_TRACE_COMPONENTS", "*:verbose")
+                    .withEnvironment(envMap)
+                    .withCharset(UTF_8);
+
+            case CLI_FORMAT -> throw new UnsupportedOperationException("Formatting command line not supported");
+        };
     }
 
     public static GeneralCommandLine getFormattingCommandLine(Path cwd, Path srcPath) {
-        if (COMMAND_LINES.get(CommandLineKind.CLI_FORMAT) != null) {
-            return COMMAND_LINES.get(CommandLineKind.CLI_FORMAT);
-        }
-
-        COMMAND_LINES.put(CommandLineKind.CLI_FORMAT,
-                new GeneralCommandLine(
-                        getInterpreterFromSetting(),
-                        resolve(RELATIVE_FORMAT_CLI_PATH),
-                        "-f",
-                        srcPath.toString()
-                ).withWorkDirectory(cwd.toString())
-        );
-        return COMMAND_LINES.get(CommandLineKind.CLI_FORMAT);
+        return new GeneralCommandLine(
+                getInterpreterFromSetting(),
+                resolve(RELATIVE_FORMAT_CLI_PATH),
+                "-f",
+                srcPath.toString()
+        ).withWorkDirectory(cwd.toString());
     }
 
     public enum CommandLineKind {
