@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@sap/cds-lsp": "9.1.2"
-  }
+    "@sap/cds-lsp": "file:../../cds-lsp/cds-lsp-9.2.1.tgz"
+  },
+  "cds-lsp-branch": "fix/wslPaths"
 }
