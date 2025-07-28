@@ -130,19 +130,13 @@ Find the stdio logs in the [plugin directory](https://intellij-support.jetbrains
 
 ##### LSP Server Logs and Tracing
 
-The LSP server logs to its own file, which you can locate by opening your system temporary directory, then the sub-folder `cdxlsp`, and finally heading to the file most recently modified at the time of the reported problem.
+Open the LSP server logs by going to *Tools > CDS > LSP Server Logs > Show Log File* in your IDE. Alternatively, copy the file path by going to *Tools > CDS > LSP Server Logs > Copy Log File Path*.
 
-Hint: depending on your operating system, the temporary directory may be at one of the following locations:
-
-| OS      | Default location                         | Environment variables | Command                            |
-|---------|------------------------------------------|-----------------------|------------------------------------|
-| Windows | C:\Users\\<username\>\AppData\Local\Temp | %TEMP%                |                                    |
-| macOS   | n/a                                      | $TMPDIR               | node -e "console.log(os.tmpdir())" |
-| Linux   | /tmp                                     | $TMPDIR               | node -e "console.log(os.tmpdir())" |
+If you prefer to navigate to the log file manually, it's located in your system temporary directory, in sub-folder `cdxlsp`.
 
 ###### Local Logs
 
-Alternatively, you can create a subfolder `.cds-lsp` in your workspace and a file `.settings.json` inside. After you restart the IDE, the LSP server will then write its logs to that folder instead of the system temporary directory.
+Alternatively, if your project has a subfolder `.cds-lsp` with a file `.settings.json` inside, the LSP server will log to that folder instead.
 
 ###### Trace Level
 
