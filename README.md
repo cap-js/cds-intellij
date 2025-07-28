@@ -142,7 +142,7 @@ Hint: depending on your operating system, the temporary directory may be at one 
 
 ###### Local Logs
 
-Alternatively, you can create a subfolder `.cds-lsp` in your workspace and restart the IDE. The LSP server will then write its logs to that folder instead of the system temporary directory.
+Alternatively, you can create a subfolder `.cds-lsp` in your workspace and a file `.settings.json` inside. After you restart the IDE, the LSP server will then write its logs to that folder instead of the system temporary directory.
 
 ###### Trace Level
 
