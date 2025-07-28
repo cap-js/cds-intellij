@@ -1,17 +1,18 @@
-package com.sap.cap.cds.intellij.lspServer;
+package com.sap.cap.cds.intellij.lsp;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
+import com.sap.cap.cds.intellij.lspServer.UserError;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Optional;
 
 import static com.sap.cap.cds.intellij.util.EditorUtil.openFileInEditor;
-import static com.sap.cap.cds.intellij.util.ServerLogsUtil.findLspServerLogFile;
+import static com.sap.cap.cds.intellij.util.StdioLogsUtil.findStdioLogFile;
 
-public class ShowLspServerLogsAction extends AnAction {
+public class ShowStdioLogsAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -20,9 +21,9 @@ public class ShowLspServerLogsAction extends AnAction {
             return;
         }
 
-        Optional<File> logFile = findLspServerLogFile(project);
+        Optional<File> logFile = findStdioLogFile();
         if (logFile.isEmpty()) {
-            UserError.show("Cannot find LSP server log files.");
+            UserError.show("Cannot find stdio log file.");
             return;
         }
 
@@ -34,4 +35,5 @@ public class ShowLspServerLogsAction extends AnAction {
         Project project = e.getProject();
         e.getPresentation().setEnabledAndVisible(project != null);
     }
+
 }

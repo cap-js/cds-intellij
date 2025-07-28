@@ -118,6 +118,12 @@ The set of features will grow with future releases, aligned with the development
             <add-to-group group-id="com.sap.cap.cds.intellij.group.Cds"
                           anchor="first"/>
         </group>
+        <group id="com.sap.cap.cds.intellij.group.cds.logs.stdio"
+               text="LSP Stdio Logs"
+               popup="true">
+            <add-to-group group-id="com.sap.cap.cds.intellij.group.Cds"
+                          anchor="last"/>
+        </group>
 
         <action id="cds.analyzeDependencies"
                 class="com.sap.cap.cds.intellij.command.AnalyzeDependenciesAction"/>
@@ -135,6 +141,22 @@ The set of features will grow with future releases, aligned with the development
                 text="Copy Log File Path"
                 description="Copies the path of the most recent CDS LSP server log file to the clipboard.">
             <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.LspServer"
+                          anchor="last"/>
+        </action>
+
+        <action id="com.sap.cap.cds.intellij.showStdioLogs"
+                class="com.sap.cap.cds.intellij.lsp.ShowStdioLogsAction"
+                text="Show Log File"
+                description="Finds and opens the stdio log file.">
+            <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.stdio"
+                          anchor="first"/>
+        </action>
+
+        <action id="com.sap.cap.cds.intellij.copyStdioLogsPath"
+                class="com.sap.cap.cds.intellij.lsp.CopyStdioLogPathAction"
+                text="Copy Log File Path"
+                description="Copies the path of the stdio log file to the clipboard.">
+            <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.stdio"
                           anchor="last"/>
         </action>
     </actions>
