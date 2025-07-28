@@ -1,4 +1,4 @@
-package com.sap.cap.cds.intellij.lsp;
+package com.sap.cap.cds.intellij.lspServer;
 
 import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase;
 

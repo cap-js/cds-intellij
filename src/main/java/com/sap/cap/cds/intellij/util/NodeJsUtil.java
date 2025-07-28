@@ -3,7 +3,7 @@ package com.sap.cap.cds.intellij.util;
 import com.intellij.execution.Platform;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.extensions.PluginId;
-import com.sap.cap.cds.intellij.lsp.UserError;
+import com.sap.cap.cds.intellij.lspServer.UserError;
 import com.sap.cap.cds.intellij.settings.AppSettings;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 
@@ -11,7 +11,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
+import static com.sap.cap.cds.intellij.lspServer.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
 import static com.sap.cap.cds.intellij.util.NodeJsUtil.InterpreterStatus.*;
 
 public class NodeJsUtil {

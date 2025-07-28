@@ -123,7 +123,7 @@ The set of features will grow with future releases, aligned with the development
                 class="com.sap.cap.cds.intellij.command.AnalyzeDependenciesAction"/>
 
         <action id="com.sap.cap.cds.intellij.showLspServerLogs"
-                class="com.sap.cap.cds.intellij.lsp.ShowLspServerLogsAction"
+                class="com.sap.cap.cds.intellij.lspServer.ShowLspServerLogsAction"
                 text="Show Log File"
                 description="Finds and opens the most recent CDS LSP server log file.">
             <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.LspServer"
@@ -131,7 +131,7 @@ The set of features will grow with future releases, aligned with the development
         </action>
 
         <action id="com.sap.cap.cds.intellij.copyLspServerLogsPath"
-                class="com.sap.cap.cds.intellij.lsp.CopyLspServerLogsPathAction"
+                class="com.sap.cap.cds.intellij.lspServer.CopyLspServerLogsPathAction"
                 text="Copy Log File Path"
                 description="Copies the path of the most recent CDS LSP server log file to the clipboard.">
             <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.LspServer"

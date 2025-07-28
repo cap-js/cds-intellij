@@ -11,8 +11,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import static com.intellij.ui.JBColor.RED;
-import static com.sap.cap.cds.intellij.lsp.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
-import static com.sap.cap.cds.intellij.util.NodeJsUtil.*;
+import static com.sap.cap.cds.intellij.lspServer.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.checkInterpreter;
+import static com.sap.cap.cds.intellij.util.NodeJsUtil.getCdsLspEnvMap;
 
 /**
  * Supports creating and managing a {@link JPanel} for the Settings Dialog.

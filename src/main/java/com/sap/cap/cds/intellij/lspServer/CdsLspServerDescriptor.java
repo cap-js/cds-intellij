@@ -1,4 +1,4 @@
-package com.sap.cap.cds.intellij.lsp;
+package com.sap.cap.cds.intellij.lspServer;
 
 import com.intellij.execution.configurations.GeneralCommandLine;
 import org.apache.maven.artifact.versioning.ComparableVersion;
