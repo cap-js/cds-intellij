@@ -22,7 +22,7 @@ public class ShowLspServerLogsAction extends AnAction {
             return;
         }
 
-        Optional<File> logFile = findLspServerLogFile();
+        Optional<File> logFile = findLspServerLogFile(project);
         if (logFile.isEmpty()) {
             UserError.show("Cannot find LSP server log files.");
             return;

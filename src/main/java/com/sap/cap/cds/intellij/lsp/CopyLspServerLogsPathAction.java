@@ -14,7 +14,7 @@ public class CopyLspServerLogsPathAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        Optional<File> logFile = findLspServerLogFile();
+        Optional<File> logFile = findLspServerLogFile(e.getProject());
         if (logFile.isEmpty()) {
             UserError.show("No LSP server log files found.");
             return;

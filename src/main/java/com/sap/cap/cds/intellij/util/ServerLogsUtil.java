@@ -1,5 +1,6 @@
 package com.sap.cap.cds.intellij.util;
 
+import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -11,8 +12,31 @@ import static java.util.Comparator.comparingLong;
 public class ServerLogsUtil {
 
     // TODO filter for relevance for current project
-    // TODO consider log file in project directory
-    public static Optional<File> findLspServerLogFile() {
+    public static Optional<File> findLspServerLogFile(Project project) {
+        Optional<File> localFile = ServerLogsUtil.findLogFileInProjectDir(project);
+        if (localFile.isPresent()) {
+            return localFile;
+        }
+
+        return findLogFileInTempDir();
+    }
+
+    private static Optional<File> findLogFileInProjectDir(Project project) {
+        if (project == null || project.getBasePath() == null) {
+            return Optional.empty();
+        }
+        File projectDir = new File(project.getBasePath());
+
+        File logsDirBase = new File(projectDir, ".cds-lsp");
+        File logsDir = new File(logsDirBase, "logs");
+        if (!logsDir.exists() || !logsDir.isDirectory()) {
+            return Optional.empty();
+        }
+
+        return findRelevantLogFile(logsDir);
+    }
+
+    private static Optional<File> findLogFileInTempDir() {
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
         File lspLogDir = new File(tempDir, "cdxlsp");
 
@@ -31,7 +55,7 @@ public class ServerLogsUtil {
 
         return Arrays.stream(files)
                 .filter(File::isFile)
-                .filter(file -> file.getName().matches("(?<!_context)\\.log$"))
+                .filter(file -> file.getName().matches("^.*(?<!_context)\\.log$"))
                 .max(comparingLong(File::lastModified));
     }
 }
