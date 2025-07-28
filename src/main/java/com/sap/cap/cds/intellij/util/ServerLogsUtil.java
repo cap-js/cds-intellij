@@ -31,24 +31,24 @@ public class ServerLogsUtil {
         }
         File projectDir = new File(project.getBasePath());
 
-        File logsDirBase = new File(projectDir, ".cds-lsp");
-        File logsDir = new File(logsDirBase, "logs");
-        if (!logsDir.exists() || !logsDir.isDirectory()) {
+        File logDirBase = new File(projectDir, ".cds-lsp");
+        File logDir = new File(logDirBase, "logs");
+        if (!logDir.exists() || !logDir.isDirectory()) {
             return Optional.empty();
         }
 
-        return findRelevantLogFile(logsDir);
+        return findRelevantLogFile(logDir);
     }
 
     private static Optional<File> findLogFileInTempDir() {
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
-        File lspLogDir = new File(tempDir, "cdxlsp");
+        File logDir = new File(tempDir, "cdxlsp");
 
-        if (!lspLogDir.exists() || !lspLogDir.isDirectory()) {
+        if (!logDir.exists() || !logDir.isDirectory()) {
             return Optional.empty();
         }
 
-        return findRelevantLogFile(lspLogDir);
+        return findRelevantLogFile(logDir);
     }
 
     private static Optional<File> findRelevantLogFile(@NotNull File dir) {
