@@ -20,10 +20,10 @@ public class ServerLogsUtil {
             return Optional.empty();
         }
 
-        return findMostRecentLogFile(lspLogDir);
+        return findRelevantLogFile(lspLogDir);
     }
 
-    private static Optional<File> findMostRecentLogFile(@NotNull File dir) {
+    private static Optional<File> findRelevantLogFile(@NotNull File dir) {
         File[] files = dir.listFiles();
         if (files == null || files.length == 0) {
             return Optional.empty();
@@ -31,7 +31,7 @@ public class ServerLogsUtil {
 
         return Arrays.stream(files)
                 .filter(File::isFile)
-                .filter(file -> file.getName().endsWith(".log"))
+                .filter(file -> file.getName().matches("(?<!_context)\\.log$"))
                 .max(comparingLong(File::lastModified));
     }
 }
