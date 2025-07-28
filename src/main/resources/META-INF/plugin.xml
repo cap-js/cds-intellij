@@ -185,7 +185,7 @@ The set of features will grow with future releases, aligned with the development
     </li>
     <li>Intention to convert HTTP files to IntelliJ-compatible format (useful for .http files created with <code>cds add http</code>)
     <li>Code-Style setting to put multiple parenthesized arguments or filters on a new line
-    <li>Actions to open and copy the path of the most recent CDS LSP server log file
+    <li>Actions to open or copy the paths of the log files for LSP stdio and server tracing, respectively
 </ul>
 <h3>Changed</h3>
 <ul>
