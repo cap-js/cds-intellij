@@ -11,7 +11,11 @@ import static java.util.Comparator.comparingLong;
 
 public class ServerLogsUtil {
 
-    // TODO filter for relevance for current project
+    /**
+     * Finds the newest LSP server log file in the project directory or in the temporary directory.
+     * @param project the current project
+     * @return an Optional containing the log file if found, otherwise an empty Optional
+     */
     public static Optional<File> findLspServerLogFile(Project project) {
         Optional<File> localFile = ServerLogsUtil.findLogFileInProjectDir(project);
         if (localFile.isPresent()) {
