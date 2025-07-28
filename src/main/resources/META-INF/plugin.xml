@@ -102,9 +102,37 @@ The set of features will grow with future releases, aligned with the development
 
 
     <actions>
+        <group id="com.sap.cap.cds.intellij.group.Cds"
+               text="CDS"
+               popup="true"
+               icon="com.sap.cap.cds.intellij.CdsIcons.SERVER">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </group>
+        <group id="com.sap.cap.cds.intellij.group.cds.logs.LspServer"
+               text="LSP Server Logs"
+               popup="true">
+            <add-to-group group-id="com.sap.cap.cds.intellij.group.Cds"
+                          anchor="first"/>
+        </group>
+
         <action id="cds.analyzeDependencies"
                 class="com.sap.cap.cds.intellij.command.AnalyzeDependenciesAction"/>
 
+        <action id="com.sap.cap.cds.intellij.showLspServerLogs"
+                class="com.sap.cap.cds.intellij.lsp.ShowLspServerLogsAction"
+                text="Show Log File"
+                description="Finds and opens the most recent CDS LSP server log file.">
+            <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.LspServer"
+                          anchor="first"/>
+        </action>
+
+        <action id="com.sap.cap.cds.intellij.copyLspServerLogsPath"
+                class="com.sap.cap.cds.intellij.lsp.CopyLspServerLogsPathAction"
+                text="Copy Log File Path"
+                description="Copies the path of the most recent CDS LSP server log file to the clipboard.">
+            <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.LspServer"
+                          anchor="last"/>
+        </action>
     </actions>
 
 
@@ -130,6 +158,7 @@ The set of features will grow with future releases, aligned with the development
         </ul>
     </li>
     <li>Code-Style setting to put multiple parenthesized arguments or filters on a new line
+    <li>Actions to open and copy the path of the most recent CDS LSP server log file
 </ul>
 <h3>Changed</h3>
 <ul>
