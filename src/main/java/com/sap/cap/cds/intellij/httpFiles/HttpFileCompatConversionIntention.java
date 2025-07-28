@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 public class HttpFileCompatConversionIntention extends BaseIntentionAction {
 
-    private static final Pattern PATTERN = Pattern.compile("(?<=\\{\\{username}})(:)(?=\\{\\{password}})");
+    private static final Pattern PATTERN = Pattern.compile("(?<=\\{\\{username}}):(?=\\{\\{password}})");
 
     @NotNull
     @Override
@@ -30,7 +30,7 @@ public class HttpFileCompatConversionIntention extends BaseIntentionAction {
             return false;
         }
         VirtualFile virtualFile = psiFile.getVirtualFile();
-        if (virtualFile == null || !"httpFiles".equalsIgnoreCase(virtualFile.getExtension())) {
+        if (virtualFile == null || !"http".equalsIgnoreCase(virtualFile.getExtension())) {
             return false;
         }
         return PATTERN.matcher(editor.getDocument().getText()).find();
