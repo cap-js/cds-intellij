@@ -30,6 +30,8 @@ public class ShowStdioLogsAction extends AnAction {
         openFileInEditor(project, logFile.get());
     }
 
+    // TODO enable only in Plugin Debug Mode
+
     @Override
     public void update(@NotNull AnActionEvent e) {
         Project project = e.getProject();
