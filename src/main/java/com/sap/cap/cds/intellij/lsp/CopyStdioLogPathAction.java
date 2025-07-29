@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.Optional;
 
 import static com.sap.cap.cds.intellij.util.StdioLogsUtil.findStdioLogFile;
+import static com.sap.cap.cds.intellij.util.SupportUtil.isDebugCdsLsp;
 
 public class CopyStdioLogPathAction extends AnAction {
 
@@ -23,6 +24,11 @@ public class CopyStdioLogPathAction extends AnAction {
 
         StringSelection stringSelection = new StringSelection(logFile.get().getAbsolutePath());
         java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+    }
+
+    @Override
+    public void update(@NotNull AnActionEvent e) {
+        e.getPresentation().setEnabledAndVisible(isDebugCdsLsp());
     }
 
 }

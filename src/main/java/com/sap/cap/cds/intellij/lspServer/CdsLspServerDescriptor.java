@@ -8,9 +8,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
+import static com.sap.cap.cds.intellij.lspServer.CdsLspServerDescriptor.CommandLineKind.SERVER;
+import static com.sap.cap.cds.intellij.lspServer.CdsLspServerDescriptor.CommandLineKind.SERVER_DEBUG;
 import static com.sap.cap.cds.intellij.util.JsonUtil.getPropertyAtPath;
 import static com.sap.cap.cds.intellij.util.NodeJsUtil.*;
 import static com.sap.cap.cds.intellij.util.PathUtil.resolve;
+import static com.sap.cap.cds.intellij.util.SupportUtil.isDebugCdsLsp;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class CdsLspServerDescriptor {
@@ -38,17 +41,9 @@ public class CdsLspServerDescriptor {
 
     private static CommandLineKind getServerCommandLineKind() {
         if (isDebugCdsLsp()) {
-            return CommandLineKind.SERVER_DEBUG;
+            return SERVER_DEBUG;
         }
-        return CommandLineKind.SERVER;
-    }
-
-    private static boolean isDebugCdsLsp() {
-        String debug = System.getenv("DEBUG");
-        if (debug == null) {
-            debug = System.getProperty("DEBUG");
-        }
-        return (debug != null) && debug.contains("cds-lsp");
+        return SERVER;
     }
 
     public static GeneralCommandLine getServerCommandLine() {
