@@ -124,15 +124,17 @@ This setting will enable:
 - **tracing** for the LSP server (see below),
 - Node.js **debugging** for the LSP server, allowing you to attach a debugger.
 
-##### STDIO Logs
+##### Stdio Logs
 
-Find the stdio logs in the [plugin directory](https://intellij-support.jetbrains.com/hc/en-us/articles/206544519-Directories-used-by-the-IDE-to-store-settings-caches-plugins-and-logs), at `lib/cds-lsp/stdio.json`.
+Open the stdio logs by going to *Tools > CDS > LSP Stdio Logs > Show Log File* in your IDE. Alternatively, copy the file path by going to *Tools > CDS > LSP Stdio Logs > Copy Log File Path*.
+
+Alternatively, find the log file in the [plugin directory](https://intellij-support.jetbrains.com/hc/en-us/articles/206544519-Directories-used-by-the-IDE-to-store-settings-caches-plugins-and-logs), at `lib/cds-lsp/stdio.json`.
 
 ##### LSP Server Logs and Tracing
 
 Open the LSP server logs by going to *Tools > CDS > LSP Server Logs > Show Log File* in your IDE. Alternatively, copy the file path by going to *Tools > CDS > LSP Server Logs > Copy Log File Path*.
 
-If you prefer to navigate to the log file manually, it's located in your system temporary directory, in sub-folder `cdxlsp`.
+Alternatively, find the log file in your system temporary directory, sub-folder `cdxlsp`.
 
 ###### Local Logs
 

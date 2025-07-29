@@ -1,16 +1,14 @@
-package com.sap.cap.cds.intellij.lsp;
+package com.sap.cap.cds.intellij.lspServer;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Optional;
 
+import static com.sap.cap.cds.intellij.util.EditorUtil.openFileInEditor;
 import static com.sap.cap.cds.intellij.util.ServerLogsUtil.findLspServerLogFile;
 
 public class ShowLspServerLogsAction extends AnAction {
@@ -27,16 +25,8 @@ public class ShowLspServerLogsAction extends AnAction {
             UserError.show("Cannot find LSP server log files.");
             return;
         }
-        openFileInEditor(project, logFile.get());
-    }
 
-    private void openFileInEditor(@NotNull Project project, @NotNull File file) {
-        VirtualFile virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file);
-        if (virtualFile != null) {
-            FileEditorManager.getInstance(project).openFile(virtualFile, true);
-        } else {
-            UserError.show("Cannot open LSP server log file: " + file.getAbsolutePath());
-        }
+        openFileInEditor(project, logFile.get());
     }
 
     @Override

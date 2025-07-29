@@ -29,10 +29,8 @@ public class ServerLogsUtil {
         if (project == null || project.getBasePath() == null) {
             return Optional.empty();
         }
-        File projectDir = new File(project.getBasePath());
 
-        File logDirBase = new File(projectDir, ".cds-lsp");
-        File logDir = new File(logDirBase, "logs");
+        File logDir = new File(project.getBasePath(), ".cds-lsp/logs");
         if (!logDir.exists() || !logDir.isDirectory()) {
             return Optional.empty();
         }

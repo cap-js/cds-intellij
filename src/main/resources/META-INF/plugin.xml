@@ -106,35 +106,61 @@ The set of features will grow with future releases, aligned with the development
 
 
     <actions>
-        <group id="com.sap.cap.cds.intellij.group.Cds"
+        <!-- groups -->
+        
+        <group id="com.sap.cap.cds.intellij.group.cds"
                text="CDS"
                popup="true"
                icon="com.sap.cap.cds.intellij.CdsIcons.SERVER">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </group>
-        <group id="com.sap.cap.cds.intellij.group.cds.logs.LspServer"
+        <group id="com.sap.cap.cds.intellij.group.cds.logs.lspServer"
                text="LSP Server Logs"
                popup="true">
-            <add-to-group group-id="com.sap.cap.cds.intellij.group.Cds"
+            <add-to-group group-id="com.sap.cap.cds.intellij.group.cds"
                           anchor="first"/>
         </group>
+        <group id="com.sap.cap.cds.intellij.group.cds.logs.stdio"
+               text="LSP Stdio Logs"
+               popup="true">
+            <add-to-group group-id="com.sap.cap.cds.intellij.group.cds"
+                          anchor="last"/>
+        </group>
 
+        <!-- actions -->
+        
         <action id="cds.analyzeDependencies"
                 class="com.sap.cap.cds.intellij.command.AnalyzeDependenciesAction"/>
 
         <action id="com.sap.cap.cds.intellij.showLspServerLogs"
-                class="com.sap.cap.cds.intellij.lsp.ShowLspServerLogsAction"
+                class="com.sap.cap.cds.intellij.lspServer.ShowLspServerLogsAction"
                 text="Show Log File"
                 description="Finds and opens the most recent CDS LSP server log file.">
-            <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.LspServer"
+            <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.lspServer"
                           anchor="first"/>
         </action>
 
         <action id="com.sap.cap.cds.intellij.copyLspServerLogsPath"
-                class="com.sap.cap.cds.intellij.lsp.CopyLspServerLogsPathAction"
+                class="com.sap.cap.cds.intellij.lspServer.CopyLspServerLogPathAction"
                 text="Copy Log File Path"
                 description="Copies the path of the most recent CDS LSP server log file to the clipboard.">
-            <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.LspServer"
+            <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.lspServer"
+                          anchor="last"/>
+        </action>
+
+        <action id="com.sap.cap.cds.intellij.showStdioLogs"
+                class="com.sap.cap.cds.intellij.lsp.ShowStdioLogsAction"
+                text="Show Log File"
+                description="Finds and opens the stdio log file.">
+            <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.stdio"
+                          anchor="first"/>
+        </action>
+
+        <action id="com.sap.cap.cds.intellij.copyStdioLogsPath"
+                class="com.sap.cap.cds.intellij.lsp.CopyStdioLogPathAction"
+                text="Copy Log File Path"
+                description="Copies the path of the stdio log file to the clipboard.">
+            <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.stdio"
                           anchor="last"/>
         </action>
     </actions>
@@ -163,7 +189,7 @@ The set of features will grow with future releases, aligned with the development
     </li>
     <li>Intention to convert HTTP files to IntelliJ-compatible format (useful for .http files created with <code>cds add http</code>)
     <li>Code-Style setting to put multiple parenthesized arguments or filters on a new line
-    <li>Actions to open and copy the path of the most recent CDS LSP server log file
+    <li>Actions to open or copy the paths of the log files for LSP stdio and server tracing, respectively
 </ul>
 <h3>Changed</h3>
 <ul>
