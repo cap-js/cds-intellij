@@ -43,6 +43,10 @@ The set of features will grow with future releases, aligned with the development
 
         <formattingService implementation="com.sap.cap.cds.intellij.codestyle.CdsCodeStylePreviewFormattingService"/>
 
+        <intentionAction>
+            <className>com.sap.cap.cds.intellij.httpFiles.HttpFileCompatConversionIntention</className>
+        </intentionAction>
+
 <!--        <notificationGroup id="com.sap.cap.cds.intellij.notifications"-->
 <!--                           displayType="BALLOON"/>-->
 
@@ -157,6 +161,7 @@ The set of features will grow with future releases, aligned with the development
             <li>Additional environment variables for CDS Language Server
         </ul>
     </li>
+    <li>Intention to convert HTTP files to IntelliJ-compatible format (useful for .http files created with <code>cds add http</code>)
     <li>Code-Style setting to put multiple parenthesized arguments or filters on a new line
     <li>Actions to open and copy the path of the most recent CDS LSP server log file
 </ul>
