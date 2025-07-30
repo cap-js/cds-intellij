@@ -144,7 +144,7 @@ Alternatively, if your project has a subfolder `.cds-lsp` with a file `.settings
 
 LSP-server tracing is set to level `verbose` by default in _plugin debug mode_.
 
-To verbosity, add the setting `CDS_LSP_TRACE_COMPONENTS=*:debug` to the environment variables for the LSP server by going to *File > Settings > Languages & Frameworks > CDS* in your IDE and adding it to the _Additional env for LSP server_ field (separate multiple env variables with a semicolon). Restart the IDE to apply the changes.
+To change verbosity, add the setting `CDS_LSP_TRACE_COMPONENTS=*:debug` to the environment variables for the LSP server by going to *File > Settings > Languages & Frameworks > CDS* in your IDE and adding it to the _Additional env for LSP server_ field (separate multiple env variables with a semicolon). Restart the IDE to apply the changes.
 
 Available trace levels are `infrastructure`, `error`, `warning`, `info`, `verbose`, and `debug` (ascending verbosity).
 To disable tracing, set `CDS_LSP_TRACE_COMPONENTS=` (empty value).
