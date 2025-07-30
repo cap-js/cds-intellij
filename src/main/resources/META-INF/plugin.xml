@@ -112,7 +112,6 @@ The set of features will grow with future releases, aligned with the development
                text="CDS"
                popup="true"
                icon="com.sap.cap.cds.intellij.CdsIcons.SERVER">
-            <add-to-group group-id="ToolsMenu" anchor="last"/>
         </group>
         <group id="com.sap.cap.cds.intellij.group.cds.logs.lspServer"
                text="LSP Server Logs"
