@@ -60,6 +60,7 @@ final class AppSettingsConfigurable implements Configurable {
         AppSettings.State state = Objects.requireNonNull(AppSettings.getInstance().getState());
         mySettingsComponent.setNodeJsPathText(state.nodeJsPath);
         mySettingsComponent.setCdsLspEnvText(state.cdsLspEnv);
+        mySettingsComponent.validateAndUpdateUI();
     }
 
     @Override
