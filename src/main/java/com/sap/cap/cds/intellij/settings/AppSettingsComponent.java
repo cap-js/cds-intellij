@@ -34,12 +34,18 @@ public class AppSettingsComponent {
         nodeJsPathText.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                validateAndUpdateUI();
+                validateAndUpdateNodeJsPath();
+            }
+        });
+        cdsLspEnvText.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                validateAndUpdateEnvMap();
             }
         });
     }
 
-    public void validateAndUpdateUI() {
+    public void validateAndUpdateNodeJsPath() {
         switch (checkInterpreter(getNodeJsPathText())) {
             case OK -> {
                 nodeJsPathStateHint("found and sufficient", null);
@@ -48,6 +54,9 @@ public class AppSettingsComponent {
                     nodeJsPathStateHint("found but outdated (required version: %s)".formatted(REQUIRED_NODEJS_VERSION), RED);
             case NOT_FOUND -> nodeJsPathStateHint("not found. Please enter valid path to Node.js executable", RED);
         }
+    }
+
+    public void validateAndUpdateEnvMap() {
         try {
             getCdsLspEnvMap(getCdsLspEnvText());
             cdsLspEnvStateHint("valid", null);
