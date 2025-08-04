@@ -22,11 +22,14 @@ public final class AppSettings
 
     public static AppSettings getInstance() {
         AppSettings instance = ApplicationManager.getApplication().getService(AppSettings.class);
-        State state = instance.getState();
+        fixNodeJsPath(instance.getState());
+        return instance;
+    }
+
+    private static void fixNodeJsPath(State state) {
         if (state != null && checkInterpreter(state.nodeJsPath) != NodeJsUtil.InterpreterStatus.OK) {
             state.nodeJsPath = getInterpreterFromPathOrRegistered();
         }
-        return instance;
     }
 
     @Override

@@ -7,8 +7,8 @@ import com.intellij.util.ui.FormBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import static com.intellij.ui.JBColor.RED;
 import static com.sap.cap.cds.intellij.lspServer.CdsLspServerDescriptor.REQUIRED_NODEJS_VERSION;
@@ -23,74 +23,46 @@ public class AppSettingsComponent {
     private final JPanel myMainPanel;
     private final JBTextField nodeJsPathText = new JBTextField();
     private final JBTextField cdsLspEnvText = new JBTextField();
-    //    private final JBCheckBox myIdeaUserStatus = new JBCheckBox("IntelliJ IDEA user");
 
-        public AppSettingsComponent() {
+    public AppSettingsComponent() {
         myMainPanel = FormBuilder.createFormBuilder()
                 .addLabeledComponent(new JBLabel("Path to Node.js executable"), nodeJsPathText, 1, false)
                 .addLabeledComponent(new JBLabel("Additional env for LSP server"), cdsLspEnvText, 10, false)
-//                .addComponent(myIdeaUserStatus, 1)
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
 
-        InputVerifier verifier = new InputVerifier() {
+        nodeJsPathText.addFocusListener(new FocusAdapter() {
             @Override
-            public boolean verify(JComponent input) {
-                return validateAndUpdateUI();
+            public void focusLost(FocusEvent e) {
+                validateAndUpdateNodeJsPath();
             }
-
+        });
+        cdsLspEnvText.addFocusListener(new FocusAdapter() {
             @Override
-            public boolean shouldYieldFocus(JComponent input) {
-                return true;
+            public void focusLost(FocusEvent e) {
+                validateAndUpdateEnvMap();
             }
+        });
+    }
 
-            @Override
-            public boolean shouldYieldFocus(JComponent source, JComponent target) {
-                return true;
-            }
-        };
-        nodeJsPathText.setInputVerifier(verifier);
-        cdsLspEnvText.setInputVerifier(verifier);
-        validateAndUpdateUI();
-
-        DocumentListener listener = new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                validateAndUpdateUI();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                validateAndUpdateUI();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                validateAndUpdateUI();
-            }
-        };
-        nodeJsPathText.getDocument().addDocumentListener(listener);
-        cdsLspEnvText.getDocument().addDocumentListener(listener);
-    };
-
-    private boolean validateAndUpdateUI() {
-        boolean valid = false;
+    public void validateAndUpdateNodeJsPath() {
         switch (checkInterpreter(getNodeJsPathText())) {
             case OK -> {
                 nodeJsPathStateHint("found and sufficient", null);
-                valid = true;
             }
-            case OUTDATED -> nodeJsPathStateHint("found but outdated (required version: %s)".formatted(REQUIRED_NODEJS_VERSION), RED);
+            case OUTDATED ->
+                    nodeJsPathStateHint("found but outdated (required version: %s)".formatted(REQUIRED_NODEJS_VERSION), RED);
             case NOT_FOUND -> nodeJsPathStateHint("not found. Please enter valid path to Node.js executable", RED);
         }
+    }
+
+    public void validateAndUpdateEnvMap() {
         try {
             getCdsLspEnvMap(getCdsLspEnvText());
             cdsLspEnvStateHint("valid", null);
         } catch (Throwable e) {
-            valid = false;
             cdsLspEnvStateHint("invalid: %s".formatted(e.getMessage()), RED);
         }
-        return valid;
     }
 
     public JPanel getPanel() {

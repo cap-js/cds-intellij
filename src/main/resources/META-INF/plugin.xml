@@ -206,5 +206,8 @@ The set of features will grow with future releases, aligned with the development
     </li>
     <li>Automatically fix invalid Node.js interpreter path in settings on plugin start or when opening settings
 </ul>
+<h3>Fixed</h3>
+<ul>
+    <li>Correctly validate Node.js interpreter path when opening settings
 ]]></change-notes>
 </idea-plugin>
