@@ -1,0 +1,58 @@
+name: Prepare Local cds-lsp
+description: Conditionally clone, build, and pack a local cds-lsp dependency for npm file-url install.
+
+inputs:
+  gh_pat:
+    description: GitHub Personal Access Token
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        apt-get update
+        apt-get install -y jq
+
+    - shell: bash
+      run: |
+        dep=$(jq -r '.dependencies["@sap/cds-lsp"]' lsp/package.json)
+        branch=$(jq -r '.["cds-lsp-branch"] // "main"' lsp/package.json)
+        echo "Dependency: $dep"
+        echo "Branch: $branch"
+        if [[ $dep == file:* ]]; then
+          echo "will_prepare=true" >> $GITHUB_ENV
+          echo "cds_lsp_branch=$branch" >> $GITHUB_ENV
+        else
+          echo "will_prepare=false" >> $GITHUB_ENV
+        fi
+
+    - shell: bash
+      if: env.will_prepare == 'true'
+      run: |
+        apt-get install -y git
+
+    - shell: bash
+      if: env.will_prepare == 'true'
+      run: |
+        git config --global url."https://${GH_PAT}:x-oauth-basic@github.tools.sap/".insteadOf "https://github.tools.sap/"
+      env:
+        GH_PAT: ${{ inputs.gh_pat }}
+
+    - uses: actions/setup-node@v4
+      if: env.will_prepare == 'true'
+      with:
+        node-version: 20
+
+    - shell: bash
+      if: env.will_prepare == 'true'
+      run: |
+        git clone -b "${cds_lsp_branch}" https://github.tools.sap/cap/cds-lsp.git ../cds-lsp
+        cd ../cds-lsp
+        rm -f .npmrc
+        npm i --no-package-lock
+        npm run compile
+        npm pack
+        TARBALL=$(echo *.tgz)
+        cd ../cds-intellij/lsp
+        jq --arg tgz "file:../../cds-lsp/$TARBALL" '.dependencies["@sap/cds-lsp"]=$tgz' package.json > package.json.tmp && mv package.json.tmp package.json
