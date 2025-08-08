@@ -33,7 +33,7 @@ the plugin installed.
 
 ### Debugging the LSP Server
 
-#### Using locally-modified cds-lsp
+#### Using Locally-Modified cds-lsp
 
 To test and debug a local version of `@sap/cds-lsp` in the plugin:
 
@@ -54,8 +54,24 @@ When LSP debugging is [enabled](./README.md#language-server-protocol-lsp-logs), 
 ready for a debugger to attach.
 The server is bundled but features a source map enabling you to set breakpoints in the TypeScript code.
 
-### UI development tools
+### UI Development Tools
 
 The [Internal Actions UI Submenu](https://plugins.jetbrains.com/docs/intellij/internal-ui-sub.html) provides a set of
 tools to develop, debug, and test the plugin UI components.
 You may have to enable them in the installed IDE and/or the sandbox IDE.
+
+### Building and Testing with cds-lsp form git Branch
+
+To build and test the plugin with a version of `@sap/cds-lsp` from a git branch, create and push a branch of this repo, changing `lsp/package.json` to read:
+
+```json
+{
+  "dependencies": {
+    "@sap/cds-lsp": "file:../../cds-lsp/cds-lsp-[CDS_LSP_VERSION].tgz"
+  },
+  "cds-lsp-branch": "[CDS_LSP_BRANCH]"
+}
+```
+(insert the appropriate version and branch names).
+
+You can then use the Build and Test action in the plugin repository to build and test the plugin with this version of `@sap/cds-lsp`.
