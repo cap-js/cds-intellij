@@ -57,7 +57,7 @@ public class ServerLogsUtil {
 
         return Arrays.stream(files)
                 .filter(File::isFile)
-                .filter(file -> file.getName().matches("^.*(?<!_context)\\.log$"))
+                .filter(file -> !file.getName().matches("^(context.*|.*_context)\\.log$"))
                 .max(comparingLong(File::lastModified));
     }
 }
