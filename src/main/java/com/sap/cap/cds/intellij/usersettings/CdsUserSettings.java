@@ -57,4 +57,18 @@ public class CdsUserSettings {
         defaults.put("cds.workspaceValidationMode", "OpenEditorsOnly");
         return defaults;
     }
+
+    public static String[] getEnumValues(String settingKey) {
+        switch (settingKey) {
+                case "cds.diagnosticsSeverity": return new String[]{"Error", "Warning", "Info", "Hint"};
+                case "cds.workspace.fastDiagnosticsMode": return new String[]{"Clear", "Partial", "Full"};
+                case "cds.workspace.scanCsn": return new String[]{"BY_FILE_EXTENSION", "ALWAYS", "NEVER"};
+                case "cds.workspaceValidationMode": return new String[]{"OpenEditorsOnly", "ActiveEditorOnly", "All"};
+                default: return null;
+        }
+    }
+
+    public static boolean hasEnumValues(String settingKey) {
+        return getEnumValues(settingKey) != null;
+    }
 }

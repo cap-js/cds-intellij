@@ -23,7 +23,8 @@ const settings = Object.entries(settingsFromSchema)
   .sort(([key1], [key2]) => key1.localeCompare(key2))
   .map(([key, config]) => ({
     key,
-    defaultValue: getDefaultValue(config)
+    defaultValue: getDefaultValue(config),
+    enumValues: config.enum || null
   }));
 
 const t = '        ';
@@ -32,6 +33,19 @@ const getAllSettingsMethod = `public Map<String, Object> getAllSettings() {
         Map<String, Object> defaults = new HashMap<>();
 ${settings.map(s => `${t}defaults.put("${s.key}", ${s.defaultValue});`).join('\n')}
         return defaults;
+    }
+
+    public static String[] getEnumValues(String settingKey) {
+        switch (settingKey) {
+${settings.filter(s => s.enumValues).map(s =>
+    `${t}${t}case "${s.key}": return new String[]{${s.enumValues.map(v => `"${v}"`).join(', ')}};`
+).join('\n')}
+${t}${t}default: return null;
+        }
+    }
+
+    public static boolean hasEnumValues(String settingKey) {
+        return getEnumValues(settingKey) != null;
     }`;
 
 const patchedSrc = src.replace(

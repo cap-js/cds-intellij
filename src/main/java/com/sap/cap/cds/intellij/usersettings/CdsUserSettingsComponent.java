@@ -130,38 +130,14 @@ public class CdsUserSettingsComponent {
             return new JBCheckBox();
         }
 
-        // Check if this setting has enum values in the schema
-        String[] enumValues = getEnumValuesFromSchema(settingKey);
-        if (enumValues != null) {
+        // Check if this setting has enum values
+        if (CdsUserSettings.hasEnumValues(settingKey)) {
+            String[] enumValues = CdsUserSettings.getEnumValues(settingKey);
             JComboBox<String> combo = new JComboBox<>(enumValues);
             return combo;
         }
 
         return new JBTextField();
-    }
-
-    private String[] getEnumValuesFromSchema(String settingKey) {
-        try {
-            File schemaFile = new File(project.getBasePath(), "lsp/schemas/user-settings.json");
-            if (schemaFile.exists()) {
-                String content = Files.readString(schemaFile.toPath());
-                JSONObject schema = new JSONObject(content);
-                JSONObject properties = schema.getJSONObject("properties");
-
-                if (properties.has(settingKey)) {
-                    JSONObject setting = properties.getJSONObject(settingKey);
-                    if (setting.has("enum")) {
-                        return setting.getJSONArray("enum").toList()
-                                .stream()
-                                .map(String::valueOf)
-                                .toArray(String[]::new);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            // Fall back to null if schema reading fails
-        }
-        return null;
     }
 
     public JPanel getPanel() {
