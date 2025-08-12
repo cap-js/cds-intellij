@@ -60,7 +60,7 @@ public abstract class JsonSettingsManager<T> {
     }
 
     @NotNull
-    protected String readJson() {
+    public String readJson() {
         logger.debug("Reading settings from file");
         if (!isJsonFilePresent()) {
             return "";
