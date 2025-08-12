@@ -82,8 +82,11 @@ public abstract class JsonSettingsManager<T> {
             return;
         }
         if (!jsonFile.getParentFile().exists()) {
-            logger.debug("Directory [%s] does not exist".formatted(jsonFile.getParentFile()));
-            return;
+            logger.debug("Creating directory [%s]".formatted(jsonFile.getParentFile()));
+            if (!jsonFile.getParentFile().mkdirs()) {
+                logger.error("Failed to create directory [%s]".formatted(jsonFile.getParentFile()));
+                return;
+            }
         }
         if (!jsonCached.isEmpty() && isJsonEqual(jsonCached, json)) {
             logger.debug("Settings are equal, skipping save");

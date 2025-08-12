@@ -27,6 +27,6 @@ public final class CdsUserSettingsService extends JsonSettingsService<Map<String
 
     @Override
     protected Map<String, Object> getSettings() {
-        return CdsUserSettings.getInstance().getAllSettings();
+        return CdsUserSettings.getInstance(project).getAllSettings();
     }
 }
