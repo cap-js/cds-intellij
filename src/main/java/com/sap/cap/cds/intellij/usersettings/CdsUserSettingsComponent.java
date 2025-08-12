@@ -35,7 +35,8 @@ public class CdsUserSettingsComponent {
             String category = categoryEntry.getKey();
             List<String> settingKeys = categoryEntry.getValue();
 
-            builder.addSeparator(category, true);
+            builder.addSeparator(5);
+            builder.addLabeledComponent(new JLabel(category), new JPanel());
 
             for (String settingKey : settingKeys) {
                 Object defaultValue = allSettings.get(settingKey);
@@ -90,26 +91,40 @@ public class CdsUserSettingsComponent {
     private JComponent createControlForSetting(String settingKey, Object defaultValue) {
         if (defaultValue instanceof Boolean) {
             return new JBCheckBox();
-        } else if (settingKey.toLowerCase().contains("severity") ||
-                   settingKey.toLowerCase().contains("mode")) {
-            JComboBox<String> combo = new JComboBox<>();
-            populateComboBoxOptions(combo, settingKey);
-            return combo;
-        } else {
-            return new JBTextField();
         }
+
+        // Check if this setting has enum values in the schema
+        String[] enumValues = getEnumValuesFromSchema(settingKey);
+        if (enumValues != null) {
+            JComboBox<String> combo = new JComboBox<>(enumValues);
+            return combo;
+        }
+
+        return new JBTextField();
     }
 
-    private void populateComboBoxOptions(JComboBox<String> combo, String settingKey) {
-        if (settingKey.contains("diagnosticsSeverity")) {
-            combo.setModel(new DefaultComboBoxModel<>(new String[]{"Error", "Warning", "Info", "Hint"}));
-        } else if (settingKey.contains("validationMode")) {
-            combo.setModel(new DefaultComboBoxModel<>(new String[]{"OpenEditorsOnly", "ActiveEditorOnly", "All"}));
-        } else if (settingKey.contains("fastDiagnosticsMode")) {
-            combo.setModel(new DefaultComboBoxModel<>(new String[]{"Clear", "Partial", "Full"}));
-        } else if (settingKey.contains("scanCsn")) {
-            combo.setModel(new DefaultComboBoxModel<>(new String[]{"BY_FILE_EXTENSION", "ALWAYS", "NEVER"}));
+    private String[] getEnumValuesFromSchema(String settingKey) {
+        try {
+            File schemaFile = new File(project.getBasePath(), "lsp/schemas/user-settings.json");
+            if (schemaFile.exists()) {
+                String content = Files.readString(schemaFile.toPath());
+                JSONObject schema = new JSONObject(content);
+                JSONObject properties = schema.getJSONObject("properties");
+
+                if (properties.has(settingKey)) {
+                    JSONObject setting = properties.getJSONObject(settingKey);
+                    if (setting.has("enum")) {
+                        return setting.getJSONArray("enum").toList()
+                                .stream()
+                                .map(String::valueOf)
+                                .toArray(String[]::new);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // Fall back to null if schema reading fails
         }
+        return null;
     }
 
     public JPanel getPanel() {
