@@ -50,7 +50,8 @@ public class CdsUserSettingsComponent {
             List<String> settingKeys = categoryEntry.getValue();
 
             builder.addSeparator(5);
-            builder.addLabeledComponent(new JLabel(category), new JPanel());
+            JLabel categoryLabel = new JLabel("<html><b>" + category + "</b></html>");
+            builder.addComponent(categoryLabel);
 
             for (String settingKey : settingKeys) {
                 Object defaultValue = allSettings.get(settingKey);
