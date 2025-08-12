@@ -19,7 +19,7 @@ public class CdsUserSettingsJsonManager extends JsonSettingsManager<Map<String, 
         String json = readJson();
         if (!json.isEmpty()) {
             try {
-                // TODO: Parse JSON and update settings map
+                parseJsonIntoSettings(json, settings);
                 logger.debug("Loaded user settings from JSON");
             } catch (Exception e) {
                 logger.error("Failed to parse user settings JSON '%s'".formatted(json), e);
@@ -55,5 +55,44 @@ public class CdsUserSettingsJsonManager extends JsonSettingsManager<Map<String, 
         }
         json.append("\n}");
         return json.toString();
+    }
+
+    private void parseJsonIntoSettings(String json, Map<String, Object> settings) {
+        json = json.trim();
+        if (!json.startsWith("{") || !json.endsWith("}")) {
+            throw new IllegalArgumentException("Invalid JSON format");
+        }
+
+        String content = json.substring(1, json.length() - 1).trim();
+        if (content.isEmpty()) {
+            return;
+        }
+
+        String[] pairs = content.split(",(?=\\s*\")");
+        for (String pair : pairs) {
+            String[] keyValue = pair.split(":", 2);
+            if (keyValue.length != 2) continue;
+
+            String key = keyValue[0].trim().replaceAll("^\"|\"$", "");
+            String valueStr = keyValue[1].trim();
+
+            Object value;
+            if (valueStr.equals("true") || valueStr.equals("false")) {
+                value = Boolean.parseBoolean(valueStr);
+            } else if (valueStr.startsWith("\"") && valueStr.endsWith("\"")) {
+                value = valueStr.substring(1, valueStr.length() - 1);
+            } else {
+                try {
+                    value = Integer.parseInt(valueStr);
+                } catch (NumberFormatException e) {
+                    try {
+                        value = Double.parseDouble(valueStr);
+                    } catch (NumberFormatException ex) {
+                        value = valueStr;
+                    }
+                }
+            }
+            settings.put(key, value);
+        }
     }
 }
