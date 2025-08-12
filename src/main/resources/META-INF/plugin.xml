@@ -51,6 +51,7 @@ The set of features will grow with future releases, aligned with the development
 <!--                           displayType="BALLOON"/>-->
 
         <vfs.asyncListener implementation="com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonListener"/>
+        <vfs.asyncListener implementation="com.sap.cap.cds.intellij.usersettings.CdsUserSettingsListener"/>
         <postStartupActivity implementation="com.sap.cap.cds.intellij.lifecycle.ProjectLifecycleListener"/>
 
         <applicationService
