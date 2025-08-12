@@ -23,10 +23,24 @@ public class CdsUserSettingsComponent {
         this.project = project;
         this.service = project.getService(CdsUserSettingsService.class);
         this.mainPanel = createPanel();
-        loadCurrentSettings();
+        if (isValidProject()) {
+            loadCurrentSettings();
+        }
+    }
+
+    private boolean isValidProject() {
+        return project != null && !project.isDisposed() && project.getBasePath() != null;
     }
 
     private JPanel createPanel() {
+        if (!isValidProject()) {
+            FormBuilder builder = FormBuilder.createFormBuilder();
+            JLabel noProjectLabel = new JLabel("No project open");
+            noProjectLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            builder.addComponent(noProjectLabel);
+            return builder.getPanel();
+        }
+
         FormBuilder builder = FormBuilder.createFormBuilder();
         Map<String, Object> allSettings = CdsUserSettings.getInstance(project).getAllSettings();
         Map<String, List<String>> categoryGroups = groupSettingsByCategory(allSettings);
@@ -154,6 +168,8 @@ public class CdsUserSettingsComponent {
     }
 
     public boolean isModified() {
+        if (!isValidProject()) return false;
+
         Map<String, Object> currentSettings = loadSettingsFromFile();
         Map<String, Object> defaults = CdsUserSettings.getInstance(project).getAllSettings();
 
@@ -170,16 +186,37 @@ public class CdsUserSettingsComponent {
     }
 
     public void apply() {
+        if (!isValidProject()) return;
+
         Map<String, Object> settings = new HashMap<>();
+        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getAllSettings();
 
         for (Map.Entry<String, JComponent> entry : controls.entrySet()) {
-            settings.put(entry.getKey(), getControlValue(entry.getValue()));
+            String key = entry.getKey();
+            Object controlValue = getControlValue(entry.getValue());
+            Object defaultValue = defaults.get(key);
+
+            if (!java.util.Objects.equals(controlValue, defaultValue)) {
+                settings.put(key, controlValue);
+            }
         }
 
-        service.jsonManager.saveSettingsToFile(settings);
+        // If no non-default settings, write empty JSON
+        if (settings.isEmpty()) {
+            try {
+                File settingsFile = new File(project.getBasePath(), ".cds-lsp/.settings.json");
+                Files.writeString(settingsFile.toPath(), "{}");
+            } catch (Exception e) {
+                // Ignore write errors
+            }
+        } else {
+            service.jsonManager.saveSettingsToFile(settings);
+        }
     }
 
     public void reset() {
+        if (!isValidProject()) return;
+
         loadCurrentSettings();
     }
 
