@@ -15,9 +15,11 @@ public final class CdsUserSettingsService extends JsonSettingsService<Map<String
 
     public static final String USER_SETTINGS_JSON = ".cds-lsp/.settings.json";
     public static final String LABEL = "User Settings";
+    public final JsonSettingsManager<Map<String, Object>> jsonManager;
 
     public CdsUserSettingsService(Project project) {
         super(project, USER_SETTINGS_JSON, USER_SETTINGS);
+        this.jsonManager = createJsonManager(project, USER_SETTINGS_JSON, USER_SETTINGS);
     }
 
     @Override
