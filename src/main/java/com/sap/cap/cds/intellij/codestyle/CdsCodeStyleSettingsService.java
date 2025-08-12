@@ -58,25 +58,34 @@ public final class CdsCodeStyleSettingsService extends JsonSettingsService<CdsCo
     @Override
     public void updateProjectSettingsFromFile() {
         if (CodeStyle.usesOwnSettings(project)) {
-            if (isSettingsFilePresent()) {
-                logger.debug("Loading project-specific settings from file");
-                jsonManager.loadSettingsFromFile(getSettings());
-            } else {
-                logger.debug("Resetting project-specific settings because file is absent");
-                jsonManager.reset();
-                CodeStyle.setMainProjectSettings(project, CodeStyleSettingsManager.getInstance(project).createSettings());
-            }
+            updateProjectSpecificSettings();
         } else if (isSettingsFilePresent()) {
-            logger.debug("Loading IDE-wide settings from file");
-            String prettierJson = ((CdsPrettierJsonManager) jsonManager).readJson();
-            if (!prettierJson.isEmpty() && !getIdeSettings().equals(prettierJson)) {
-                logger.debug("Updating settings");
-                CodeStyleSettings projectSettings = CodeStyleSettingsManager.getInstance().createSettings();
-                projectSettings.getCustomSettings(CdsCodeStyleSettings.class).loadFrom(prettierJson);
-                CodeStyle.setMainProjectSettings(project, projectSettings);
-            }
+            updateIdeWideSettings();
         } else {
             logger.debug("Keeping IDE-wide settings because file is absent");
         }
+    }
+
+    private void updateProjectSpecificSettings() {
+        if (isSettingsFilePresent()) {
+            logger.debug("Loading project-specific settings from file");
+            jsonManager.loadSettingsFromFile(getSettings());
+        } else {
+            logger.debug("Resetting project-specific settings because file is absent");
+            jsonManager.reset();
+            CodeStyle.setMainProjectSettings(project, CodeStyleSettingsManager.getInstance(project).createSettings());
+        }
+    }
+
+    private void updateIdeWideSettings() {
+        logger.debug("Loading IDE-wide settings from file");
+        String prettierJson = jsonManager.readJson();
+        if (prettierJson.isEmpty() || getIdeSettings().equals(prettierJson)) {
+            return;
+        }
+        logger.debug("Updating settings");
+        CodeStyleSettings projectSettings = CodeStyleSettingsManager.getInstance().createSettings();
+        projectSettings.getCustomSettings(CdsCodeStyleSettings.class).loadFrom(prettierJson);
+        CodeStyle.setMainProjectSettings(project, projectSettings);
     }
 }
