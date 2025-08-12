@@ -24,7 +24,8 @@ const settings = Object.entries(settingsFromSchema)
   .map(([key, config]) => ({
     key,
     defaultValue: getDefaultValue(config),
-    enumValues: config.enum || null
+    enumValues: config.enum || null,
+    label: config.label || null
   }));
 
 const t = '        ';
@@ -33,6 +34,15 @@ const getAllSettingsMethod = `public Map<String, Object> getAllSettings() {
         Map<String, Object> defaults = new HashMap<>();
 ${settings.map(s => `${t}defaults.put("${s.key}", ${s.defaultValue});`).join('\n')}
         return defaults;
+    }
+
+    public static String getLabel(String settingKey) {
+        switch (settingKey) {
+${settings.filter(s => s.label).map(s =>
+    `${t}${t}case "${s.key}": return "${s.label.replace(/"/g, '\\"')}";`
+).join('\n')}
+${t}${t}default: return null;
+        }
     }
 
     public static String[] getEnumValues(String settingKey) {

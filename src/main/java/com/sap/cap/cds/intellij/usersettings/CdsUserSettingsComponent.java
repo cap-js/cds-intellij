@@ -98,31 +98,14 @@ public class CdsUserSettingsComponent {
     }
 
     private String formatLabel(String settingKey) {
+        String schemaLabel = CdsUserSettings.getLabel(settingKey);
+        if (schemaLabel != null) {
+            return schemaLabel;
+        }
+
+        // Fallback to generated label if not found in schema
         String[] parts = settingKey.split("\\.");
-        if (parts.length <= 2) {
-            return capitalizeWords(parts[parts.length - 1]);
-        }
-
-        // For nested settings, use last 2 parts but handle them better
-        String secondLast = parts[parts.length - 2];
-        String last = parts[parts.length - 1];
-
-        // Skip redundant words
-        if (secondLast.equals(last)) {
-            return capitalizeWords(last);
-        }
-
-        // Skip common suffixes that don't add meaning
-        if (last.equals("enabled")) {
-            return capitalizeWords(secondLast);
-        }
-        if (secondLast.equals("enablement")) {
-            return capitalizeWords(last);
-        }
-
-        return capitalizeWords(secondLast + " " + last);
-
-        // TODO polish special cases
+        return capitalizeWords(parts[parts.length - 1]);
     }
 
     private JComponent createControlForSetting(String settingKey, Object defaultValue) {
