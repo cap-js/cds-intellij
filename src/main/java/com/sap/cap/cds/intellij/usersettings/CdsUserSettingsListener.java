@@ -7,6 +7,7 @@ import com.sap.cap.cds.intellij.util.LoggerScope;
 
 import java.util.function.Predicate;
 
+import static com.sap.cap.cds.intellij.usersettings.CdsUserSettings.USER_SETTINGS_JSON;
 import static com.sap.cap.cds.intellij.util.LoggerScope.USER_SETTINGS;
 
 public class CdsUserSettingsListener extends JsonSettingsFileListener {
@@ -31,6 +32,6 @@ public class CdsUserSettingsListener extends JsonSettingsFileListener {
 
     @Override
     protected String getDebugMessage() {
-        return ".cds-lsp/.settings.json changed";
+        return "%s changed".formatted(USER_SETTINGS_JSON);
     }
 }

@@ -7,10 +7,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+import static com.sap.cap.cds.intellij.usersettings.CdsUserSettings.USER_SETTINGS_JSON;
+
 public class CdsUserSettingsJsonManager extends JsonSettingsManager<Map<String, Object>> {
 
     public CdsUserSettingsJsonManager(Project project) {
-        super(project, ".cds-lsp/.settings.json", LoggerScope.USER_SETTINGS);
+        super(project, USER_SETTINGS_JSON, LoggerScope.USER_SETTINGS);
     }
 
     @Override
@@ -30,6 +32,7 @@ public class CdsUserSettingsJsonManager extends JsonSettingsManager<Map<String, 
     @Override
     public void saveSettingsToFile(@NotNull Map<String, Object> settings) {
         if (settings.isEmpty()) {
+            // TODO write empty
             logger.debug("Settings are empty, skipping save");
             return;
         }

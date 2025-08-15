@@ -4,11 +4,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.FormBuilder;
-import org.json.JSONObject;
 
 import javax.swing.*;
-import java.io.File;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,10 +23,6 @@ public class CdsUserSettingsComponent {
         if (isValidProject()) {
             loadCurrentSettings();
         }
-    }
-
-    private boolean isValidProject() {
-        return project != null && !project.isDisposed() && project.getBasePath() != null;
     }
 
     private JPanel createPanel() {
@@ -70,6 +63,10 @@ public class CdsUserSettingsComponent {
 
         builder.addComponentFillVertically(new JPanel(), 0);
         return builder.getPanel();
+    }
+
+    private boolean isValidProject() {
+        return project != null && !project.isDisposed() && project.getBasePath() != null;
     }
 
     private Map<String, List<String>> groupSettingsByCategory(Map<String, Object> allSettings) {
@@ -122,6 +119,27 @@ public class CdsUserSettingsComponent {
         return new JBTextField();
     }
 
+    private void loadCurrentSettings() {
+        Map<String, Object> currentSettings = service.getSettings();
+        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaultSettings();
+
+        for (Map.Entry<String, JComponent> entry : controls.entrySet()) {
+            String key = entry.getKey();
+            Object value = currentSettings.getOrDefault(key, defaults.get(key));
+            setControlValue(entry.getValue(), value);
+        }
+    }
+
+    private void setControlValue(JComponent control, Object value) {
+        if (control instanceof JBCheckBox && value instanceof Boolean) {
+            ((JBCheckBox) control).setSelected((Boolean) value);
+        } else if (control instanceof JBTextField) {
+            ((JBTextField) control).setText(String.valueOf(value));
+        } else if (control instanceof JComboBox && value != null) {
+            ((JComboBox<Object>) control).setSelectedItem(value);
+        }
+    }
+
     public JPanel getPanel() {
         return mainPanel;
     }
@@ -129,7 +147,7 @@ public class CdsUserSettingsComponent {
     public boolean isModified() {
         if (!isValidProject()) return false;
 
-        Map<String, Object> currentSettings = loadSettingsFromFile();
+        Map<String, Object> currentSettings = service.getSettings();
         Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaultSettings();
 
         for (Map.Entry<String, JComponent> entry : controls.entrySet()) {
@@ -142,70 +160,6 @@ public class CdsUserSettingsComponent {
             }
         }
         return false;
-    }
-
-    public void apply() {
-        if (!isValidProject()) return;
-
-        Map<String, Object> settings = new HashMap<>();
-        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaultSettings();
-
-        for (Map.Entry<String, JComponent> entry : controls.entrySet()) {
-            String key = entry.getKey();
-            Object controlValue = getControlValue(entry.getValue());
-            Object defaultValue = defaults.get(key);
-
-            if (!java.util.Objects.equals(controlValue, defaultValue)) {
-                settings.put(key, controlValue);
-            }
-        }
-
-        // If no non-default settings, write empty JSON
-        if (settings.isEmpty()) {
-            try {
-                File settingsFile = new File(project.getBasePath(), ".cds-lsp/.settings.json");
-                Files.writeString(settingsFile.toPath(), "{}");
-            } catch (Exception e) {
-                // Ignore write errors
-            }
-        } else {
-            service.jsonManager.saveSettingsToFile(settings);
-        }
-    }
-
-    public void reset() {
-        if (!isValidProject()) return;
-
-        loadCurrentSettings();
-    }
-
-    private void loadCurrentSettings() {
-        Map<String, Object> currentSettings = loadSettingsFromFile();
-        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaultSettings();
-
-        for (Map.Entry<String, JComponent> entry : controls.entrySet()) {
-            String key = entry.getKey();
-            Object value = currentSettings.getOrDefault(key, defaults.get(key));
-            setControlValue(entry.getValue(), value);
-        }
-    }
-
-    private Map<String, Object> loadSettingsFromFile() {
-        try {
-            File settingsFile = new File(project.getBasePath(), ".cds-lsp/.settings.json");
-            if (settingsFile.exists()) {
-                String content = Files.readString(settingsFile.toPath());
-                JSONObject json = new JSONObject(content);
-                Map<String, Object> settings = new HashMap<>();
-                for (String key : json.keySet()) {
-                    settings.put(key, json.get(key));
-                }
-                return settings;
-            }
-        } catch (Exception e) {
-            // Fall back to defaults
-        }
-        return new HashMap<>();
     }
 
     private Object getControlValue(JComponent control) {
@@ -224,13 +178,28 @@ public class CdsUserSettingsComponent {
         return null;
     }
 
-    private void setControlValue(JComponent control, Object value) {
-        if (control instanceof JBCheckBox && value instanceof Boolean) {
-            ((JBCheckBox) control).setSelected((Boolean) value);
-        } else if (control instanceof JBTextField) {
-            ((JBTextField) control).setText(String.valueOf(value));
-        } else if (control instanceof JComboBox && value != null) {
-            ((JComboBox<Object>) control).setSelectedItem(value);
+    public void apply() {
+        if (!isValidProject()) return;
+
+        Map<String, Object> settings = new HashMap<>();
+        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaultSettings();
+
+        for (Map.Entry<String, JComponent> entry : controls.entrySet()) {
+            String key = entry.getKey();
+            Object controlValue = getControlValue(entry.getValue());
+            Object defaultValue = defaults.get(key);
+
+            if (!java.util.Objects.equals(controlValue, defaultValue)) {
+                settings.put(key, controlValue);
+            }
         }
+
+        service.jsonManager.saveSettingsToFile(settings);
+    }
+
+    public void reset() {
+        if (!isValidProject()) return;
+
+        loadCurrentSettings();
     }
 }

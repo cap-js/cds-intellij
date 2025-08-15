@@ -9,6 +9,7 @@ import java.util.Map;
 @Service(Service.Level.PROJECT)
 public class CdsUserSettings {
 
+    public static final String USER_SETTINGS_JSON = ".cds-lsp/.settings.json";
     private static Map<String, Object> defaultSettings = getDefaults();
     private Map<String, Object> settings;
 

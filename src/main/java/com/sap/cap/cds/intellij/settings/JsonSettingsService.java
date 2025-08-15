@@ -15,10 +15,10 @@ public abstract class JsonSettingsService<T> {
     protected JsonSettingsService(Project project, String fileName, LoggerScope loggerScope) {
         this.project = project;
         this.logger = logger(project, loggerScope);
-        this.jsonManager = createJsonManager(project, fileName, loggerScope);
+        this.jsonManager = createJsonManager(project);
     }
 
-    protected abstract JsonSettingsManager<T> createJsonManager(Project project, String fileName, LoggerScope loggerScope);
+    protected abstract JsonSettingsManager<T> createJsonManager(Project project);
     protected abstract T getSettings();
 
     public boolean isSettingsFilePresent() {
