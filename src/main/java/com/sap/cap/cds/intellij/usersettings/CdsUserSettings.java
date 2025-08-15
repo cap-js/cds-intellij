@@ -36,7 +36,6 @@ public class CdsUserSettings {
         defaults.put("cds.contributions.enablement.odata", true);
         defaults.put("cds.contributions.registry", "https://registry.npmjs.org/");
         defaults.put("cds.diagnosticsSeverity", "Warning");
-        defaults.put("cds.internal.inspectTokens", false);
         defaults.put("cds.outline.elements.associationComposition", true);
         defaults.put("cds.outline.semantical", false);
         defaults.put("cds.quickfix.importArtifact", false);
@@ -75,7 +74,6 @@ public class CdsUserSettings {
                 case "cds.contributions.enablement.odata": return "OData";
                 case "cds.contributions.registry": return "Registry";
                 case "cds.diagnosticsSeverity": return "Severity Level";
-                case "cds.internal.inspectTokens": return "Inspect Tokens";
                 case "cds.outline.elements.associationComposition": return "Show Association/Composition";
                 case "cds.outline.semantical": return "Semantical";
                 case "cds.quickfix.importArtifact": return "Import Artifact";

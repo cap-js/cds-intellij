@@ -208,12 +208,6 @@
       "label": "Case-Insensitive Symbols",
       "type": "boolean",
       "default": false
-    },
-    "cds.internal.inspectTokens": {
-      "category": "Internal",
-      "label": "Inspect Tokens",
-      "type": "boolean",
-      "default": false
     }
   }
 }
