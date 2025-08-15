@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.FormBuilder;
+import com.sap.cap.cds.intellij.lsp4ij.CdsLanguageServer;
 
 import javax.swing.*;
 import java.util.*;
@@ -113,7 +114,7 @@ public class CdsUserSettingsComponent {
         // Check if this setting has enum values
         if (CdsUserSettings.hasEnumValues(settingKey)) {
             String[] enumValues = CdsUserSettings.getEnumValues(settingKey);
-            return new JComboBox<>(enumValues);
+            return new JComboBox<String>(enumValues);
         }
 
         return new JBTextField();
@@ -136,7 +137,9 @@ public class CdsUserSettingsComponent {
         } else if (control instanceof JBTextField) {
             ((JBTextField) control).setText(String.valueOf(value));
         } else if (control instanceof JComboBox && value != null) {
-            ((JComboBox<Object>) control).setSelectedItem(value);
+            @SuppressWarnings("unchecked")
+            JComboBox<String> comboBox = (JComboBox<String>) control;
+            comboBox.setSelectedItem(value);
         }
     }
 
