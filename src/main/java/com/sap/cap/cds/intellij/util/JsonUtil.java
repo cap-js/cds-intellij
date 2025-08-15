@@ -1,6 +1,7 @@
 package com.sap.cap.cds.intellij.util;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.stream.Stream;
@@ -44,7 +45,11 @@ public class JsonUtil {
         if (json1.isEmpty() ^ json2.isEmpty()) {
             return false;
         }
-        return new JSONObject(json1).similar(new JSONObject(json2));
+        try {
+            return new JSONObject(json1).similar(new JSONObject(json2));
+        } catch (JSONException e) {
+            return false;
+        }
     }
 
 }
