@@ -42,7 +42,7 @@ public class CdsUserSettingsComponent {
         }
 
         FormBuilder builder = FormBuilder.createFormBuilder();
-        Map<String, Object> allSettings = CdsUserSettings.getInstance(project).getAllSettings();
+        Map<String, Object> allSettings = CdsUserSettings.getInstance(project).getDefaultSettings();
         Map<String, List<String>> categoryGroups = groupSettingsByCategory(allSettings);
 
         for (Map.Entry<String, List<String>> categoryEntry : categoryGroups.entrySet()) {
@@ -130,7 +130,7 @@ public class CdsUserSettingsComponent {
         if (!isValidProject()) return false;
 
         Map<String, Object> currentSettings = loadSettingsFromFile();
-        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getAllSettings();
+        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaultSettings();
 
         for (Map.Entry<String, JComponent> entry : controls.entrySet()) {
             String key = entry.getKey();
@@ -148,7 +148,7 @@ public class CdsUserSettingsComponent {
         if (!isValidProject()) return;
 
         Map<String, Object> settings = new HashMap<>();
-        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getAllSettings();
+        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaultSettings();
 
         for (Map.Entry<String, JComponent> entry : controls.entrySet()) {
             String key = entry.getKey();
@@ -181,7 +181,7 @@ public class CdsUserSettingsComponent {
 
     private void loadCurrentSettings() {
         Map<String, Object> currentSettings = loadSettingsFromFile();
-        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getAllSettings();
+        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaultSettings();
 
         for (Map.Entry<String, JComponent> entry : controls.entrySet()) {
             String key = entry.getKey();
