@@ -7,9 +7,8 @@ const schemaPath = path.resolve(__dirname, '../../../lsp/schemas/user-settings.j
 const schema = require(schemaPath);
 const settingsFromSchema = schema.properties;
 
-const srcPath = path.resolve(__dirname, '../../../src/templates/java/com/sap/cap/cds/intellij/usersettings/CdsUserSettings.java');
 const tgtPath = path.resolve(__dirname, '../../../src/main/java/com/sap/cap/cds/intellij/usersettings/CdsUserSettings.java');
-const src = readFileSync(srcPath, 'utf8');
+const tgt = readFileSync(tgtPath, 'utf8');
 
 function getDefaultValue(config) {
   const type = config.type;
@@ -28,43 +27,56 @@ const settings = Object.entries(settingsFromSchema)
     label: config.label || null
   }));
 
-const t = '        ';
+const t = '    ';
 
-const getDefaultSettingsMethod = `// Generated code - do not edit manually
+// Generate method bodies
+const getDefaultsBody = `
+${t}${t}Map<String, Object> defaults = new HashMap<>();
+${settings.map(s => `${t}${t}defaults.put("${s.key}", ${s.defaultValue});`).join('\n')}
+${t}${t}return defaults;`;
 
-    public Map<String, Object> getDefaultSettings() {
-        Map<String, Object> defaults = new HashMap<>();
-${settings.map(s => `${t}defaults.put("${s.key}", ${s.defaultValue});`).join('\n')}
-        return defaults;
-    }
-
-    public static String getLabel(String settingKey) {
-        switch (settingKey) {
+const getLabelBody = `
+${t}${t}switch (settingKey) {
 ${settings.filter(s => s.label).map(s =>
-    `${t}${t}case "${s.key}": return "${s.label.replace(/"/g, '\\"')}";`
+    `${t}${t}${t}case "${s.key}": return "${s.label.replace(/"/g, '\\"')}";`
 ).join('\n')}
-${t}${t}default: return null;
-        }
-    }
+${t}${t}${t}default: return null;
+${t}${t}}`;
 
-    public static String[] getEnumValues(String settingKey) {
-        switch (settingKey) {
+const getEnumValuesBody = `
+${t}${t}switch (settingKey) {
 ${settings.filter(s => s.enumValues).map(s =>
-    `${t}${t}case "${s.key}": return new String[]{${s.enumValues.map(v => `"${v}"`).join(', ')}};`
+    `${t}${t}${t}case "${s.key}": return new String[]{${s.enumValues.map(v => `"${v}"`).join(', ')}};`
 ).join('\n')}
-${t}${t}default: return null;
-        }
-    }
+${t}${t}${t}default: return null;
+${t}${t}}`;
 
-    public static boolean hasEnumValues(String settingKey) {
-        return getEnumValues(settingKey) != null;
-    }`;
+const hasEnumValuesBody = `
+${t}${t}return getEnumValues(settingKey) != null;`;
 
-const patchedSrc = src.replace(
-    /public Map<String, Object> getAllSettings\(\) \{[\s\S]*?return defaults;\s*\}/,
-    getDefaultSettingsMethod
+let patchedTgt = tgt;
+
+// Replace method bodies using simplified lookbehind patterns
+patchedTgt = patchedTgt.replace(
+    /(?<=private\s+static\s+[^\n{]*\bgetDefaults\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
+    getDefaultsBody
 );
 
-writeFileSync(tgtPath, patchedSrc, 'utf8');
+patchedTgt = patchedTgt.replace(
+    /(?<=public\s+static\s+[^\n{]*\bgetLabel\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
+    getLabelBody
+);
+
+patchedTgt = patchedTgt.replace(
+    /(?<=public\s+static\s+[^\n{]*\bgetEnumValues\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
+    getEnumValuesBody
+);
+
+patchedTgt = patchedTgt.replace(
+    /(?<=public\s+static\s+[^\n{]*\bhasEnumValues\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
+    hasEnumValuesBody
+);
+
+writeFileSync(tgtPath, patchedTgt, 'utf8');
 
 console.log('Generated CDS user settings successfully!');

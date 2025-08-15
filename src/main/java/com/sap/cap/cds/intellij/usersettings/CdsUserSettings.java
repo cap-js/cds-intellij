@@ -9,19 +9,70 @@ import java.util.Map;
 @Service(Service.Level.PROJECT)
 public class CdsUserSettings {
 
-    private final Project project;
+    private static Map<String, Object> defaultSettings = getDefaults();
+    private Map<String, Object> settings;
 
     public CdsUserSettings(Project project) {
-        this.project = project;
     }
 
     public static CdsUserSettings getInstance(Project project) {
         return project.getService(CdsUserSettings.class);
     }
 
-    // Generated code - do not edit manually
+    public static String getLabel(String settingKey) {
+        switch (settingKey) {
+            case "cds.codeLensStatistics.enabled": return "Code Lens Statistics";
+            case "cds.compiler.markMissingI18nDefault": return "Mark Missing I18n Default";
+            case "cds.compiler.showInternalErrors": return "Show Internal Errors";
+            case "cds.completion.annotations.omitRedundantTypesInSnippets": return "Omit Redundant Types in Snippets";
+            case "cds.completion.docFiles": return "Documentation Files";
+            case "cds.completion.formatSnippets": return "Format Snippets";
+            case "cds.completion.showDocumentation": return "Show Documentation";
+            case "cds.completion.workspaceSymbols.maxProposals": return "Max Proposals";
+            case "cds.completion.workspaceSymbols.minPrefixLength": return "Min Prefix Length";
+            case "cds.contributions.enablement.additionalAnalyticalAnnotations": return "Additional Analytical Annotations";
+            case "cds.contributions.enablement.odata": return "OData";
+            case "cds.contributions.registry": return "Registry";
+            case "cds.diagnosticsSeverity": return "Severity Level";
+            case "cds.outline.elements.associationComposition": return "Show Association/Composition";
+            case "cds.outline.semantical": return "Semantical";
+            case "cds.quickfix.importArtifact": return "Import Artifact";
+            case "cds.refactoring.files.delete.enabled": return "Update Usings on Delete";
+            case "cds.refactoring.files.rename.enabled": return "Update Usings on Rename";
+            case "cds.semanticHighlighting.enabled": return "Semantic Highlighting";
+            case "cds.semanticHighlighting.odata.enabled": return "OData Semantic Highlighting";
+            case "cds.typeGenerator.command": return "Command";
+            case "cds.typeGenerator.enabled": return "Enabled";
+            case "cds.typeGenerator.localInstallationOnly": return "Local Installation Only";
+            case "cds.typeGenerator.outputPath": return "Output Path";
+            case "cds.whereused.showGenericAnnotations": return "Show Generic Annotations";
+            case "cds.whereused.showStringConstants": return "Show String Literals";
+            case "cds.workspace.debounceFastChanges": return "Debounce Fast Changes";
+            case "cds.workspace.fastDiagnosticsMode": return "Fast Diagnostics Mode";
+            case "cds.workspace.scanCsn": return "Scan CSN Files";
+            case "cds.workspace.scanDependentModules": return "Scan Dependent Modules";
+            case "cds.workspaceSymbols.caseInsensitive": return "Case-Insensitive Symbols";
+            case "cds.workspaceSymbols.lazy": return "Lazy Load Symbols";
+            case "cds.workspaceValidationMode": return "Validation Mode";
+            default: return null;
+        }
+    }
 
-    public Map<String, Object> getDefaultSettings() {
+    public static boolean hasEnumValues(String settingKey) {
+        return getEnumValues(settingKey) != null;
+    }
+
+    public static String[] getEnumValues(String settingKey) {
+        switch (settingKey) {
+            case "cds.diagnosticsSeverity": return new String[]{"Error", "Warning", "Info", "Hint"};
+            case "cds.workspace.fastDiagnosticsMode": return new String[]{"Clear", "Partial", "Full"};
+            case "cds.workspace.scanCsn": return new String[]{"BY_FILE_EXTENSION", "ALWAYS", "NEVER"};
+            case "cds.workspaceValidationMode": return new String[]{"OpenEditorsOnly", "ActiveEditorOnly", "All"};
+            default: return null;
+        }
+    }
+
+    private static Map<String, Object> getDefaults() {
         Map<String, Object> defaults = new HashMap<>();
         defaults.put("cds.codeLensStatistics.enabled", false);
         defaults.put("cds.compiler.markMissingI18nDefault", false);
@@ -59,56 +110,14 @@ public class CdsUserSettings {
         return defaults;
     }
 
-    public static String getLabel(String settingKey) {
-        switch (settingKey) {
-                case "cds.codeLensStatistics.enabled": return "Code Lens Statistics";
-                case "cds.compiler.markMissingI18nDefault": return "Mark Missing I18n Default";
-                case "cds.compiler.showInternalErrors": return "Show Internal Errors";
-                case "cds.completion.annotations.omitRedundantTypesInSnippets": return "Omit Redundant Types in Snippets";
-                case "cds.completion.docFiles": return "Documentation Files";
-                case "cds.completion.formatSnippets": return "Format Snippets";
-                case "cds.completion.showDocumentation": return "Show Documentation";
-                case "cds.completion.workspaceSymbols.maxProposals": return "Max Proposals";
-                case "cds.completion.workspaceSymbols.minPrefixLength": return "Min Prefix Length";
-                case "cds.contributions.enablement.additionalAnalyticalAnnotations": return "Additional Analytical Annotations";
-                case "cds.contributions.enablement.odata": return "OData";
-                case "cds.contributions.registry": return "Registry";
-                case "cds.diagnosticsSeverity": return "Severity Level";
-                case "cds.outline.elements.associationComposition": return "Show Association/Composition";
-                case "cds.outline.semantical": return "Semantical";
-                case "cds.quickfix.importArtifact": return "Import Artifact";
-                case "cds.refactoring.files.delete.enabled": return "Update Usings on Delete";
-                case "cds.refactoring.files.rename.enabled": return "Update Usings on Rename";
-                case "cds.semanticHighlighting.enabled": return "Semantic Highlighting";
-                case "cds.semanticHighlighting.odata.enabled": return "OData Semantic Highlighting";
-                case "cds.typeGenerator.command": return "Command";
-                case "cds.typeGenerator.enabled": return "Enabled";
-                case "cds.typeGenerator.localInstallationOnly": return "Local Installation Only";
-                case "cds.typeGenerator.outputPath": return "Output Path";
-                case "cds.whereused.showGenericAnnotations": return "Show Generic Annotations";
-                case "cds.whereused.showStringConstants": return "Show String Literals";
-                case "cds.workspace.debounceFastChanges": return "Debounce Fast Changes";
-                case "cds.workspace.fastDiagnosticsMode": return "Fast Diagnostics Mode";
-                case "cds.workspace.scanCsn": return "Scan CSN Files";
-                case "cds.workspace.scanDependentModules": return "Scan Dependent Modules";
-                case "cds.workspaceSymbols.caseInsensitive": return "Case-Insensitive Symbols";
-                case "cds.workspaceSymbols.lazy": return "Lazy Load Symbols";
-                case "cds.workspaceValidationMode": return "Validation Mode";
-                default: return null;
+    public Map<String, Object> getSettings() {
+        if (settings == null) {
+            settings = getDefaultSettings();
         }
+        return settings;
     }
 
-    public static String[] getEnumValues(String settingKey) {
-        switch (settingKey) {
-                case "cds.diagnosticsSeverity": return new String[]{"Error", "Warning", "Info", "Hint"};
-                case "cds.workspace.fastDiagnosticsMode": return new String[]{"Clear", "Partial", "Full"};
-                case "cds.workspace.scanCsn": return new String[]{"BY_FILE_EXTENSION", "ALWAYS", "NEVER"};
-                case "cds.workspaceValidationMode": return new String[]{"OpenEditorsOnly", "ActiveEditorOnly", "All"};
-                default: return null;
-        }
-    }
-
-    public static boolean hasEnumValues(String settingKey) {
-        return getEnumValues(settingKey) != null;
+    public Map<String, Object> getDefaultSettings() {
+        return defaultSettings;
     }
 }
