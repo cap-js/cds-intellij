@@ -6,65 +6,56 @@
   "properties": {
     "cds.typeGenerator.outputPath": {
       "category": "Type Generator",
-      "label": "Output Path for Type Generator",
-      "description": "Specifies the output directory for generated types.",
+      "label": "Output Path",
       "type": "string",
       "default": "./@cds-models"
     },
     "cds.typeGenerator.enabled": {
       "category": "Type Generator",
-      "label": "Enable Type Generator",
-      "description": "Enables or disables the automatic type generation.",
+      "label": "Enabled",
       "type": "boolean",
       "default": false
     },
     "cds.typeGenerator.localInstallationOnly": {
       "category": "Type Generator",
-      "label": "Use Local Installation Only",
-      "description": "Use the local installation of type generator only.",
+      "label": "Local Installation Only",
       "type": "boolean",
       "default": true
     },
     "cds.typeGenerator.command": {
       "category": "Type Generator",
-      "label": "Type Generation Command",
-      "description": "The command to execute for generating types.",
+      "label": "Command",
       "type": "string",
       "default": "${typerBinary} \"${targetFile}\" --outputDirectory \"${outputDirectory}\""
     },
     "cds.diagnosticsSeverity": {
       "category": "Diagnostics",
-      "label": "Diagnostics Severity Level",
-      "description": "Sets the severity level for diagnostic messages.",
+      "label": "Severity Level",
       "type": "string",
       "enum": ["Error", "Warning", "Info", "Hint"],
       "default": "Warning"
     },
     "cds.compiler.markMissingI18nDefault": {
       "category": "Compiler",
-      "label": "Warn on Missing Translations",
-      "description": "Warns on missing translations.",
+      "label": "Mark Missing I18n Default",
       "type": "boolean",
       "default": false
     },
     "cds.compiler.showInternalErrors": {
       "category": "Compiler",
-      "label": "Show Internal Compiler Errors",
-      "description": "Displays internal errors from the compiler.",
+      "label": "Show Internal Errors",
       "type": "boolean",
       "default": false
     },
     "cds.completion.showDocumentation": {
       "category": "Completion",
-      "label": "Show Documentation in Completion",
-      "description": "Shows documentation alongside code completion suggestions.",
+      "label": "Show Documentation",
       "type": "boolean",
       "default": true
     },
     "cds.completion.docFiles": {
       "category": "Completion",
-      "label": "Markdown Files for Documentation Provider",
-      "description": "A list of markdown files to be used by documentation provider.",
+      "label": "Documentation Files",
       "type": "array",
       "items": {
         "type": "string"
@@ -74,141 +65,121 @@
     "cds.completion.formatSnippets": {
       "category": "Completion",
       "label": "Format Snippets",
-      "description": "Automatically formats code snippets upon insertion.",
       "type": "boolean",
       "default": false
     },
     "cds.outline.semantical": {
       "category": "Outline",
-      "label": "Semantical Document Outline",
-      "description": "Provides a semantical view of the document structure in the outline.",
+      "label": "Semantical",
       "type": "boolean",
       "default": false
     },
     "cds.outline.elements.associationComposition": {
       "category": "Outline",
-      "label": "Show Association/Composition in Outline",
-      "description": "Displays association and composition relationships in the document outline.",
+      "label": "Show Association/Composition",
       "type": "boolean",
       "default": true
     },
     "cds.completion.workspaceSymbols.minPrefixLength": {
       "category": "Completion",
-      "label": "Workspace Symbols Minimum Prefix Length",
-      "description": "The minimum prefix length to propose workspace symbols. -1 for no limit.",
+      "label": "Min Prefix Length",
       "type": "integer",
       "default": -1
     },
     "cds.completion.workspaceSymbols.maxProposals": {
       "category": "Completion",
-      "label": "Workspace Symbols Maximum Proposals",
-      "description": "The maximum number of symbol proposals to show from the workspace. -1 for no limit.",
+      "label": "Max Proposals",
       "type": "integer",
       "default": -1
     },
     "cds.completion.annotations.omitRedundantTypesInSnippets": {
       "category": "Completion",
       "label": "Omit Redundant Types in Snippets",
-      "description": "Prevents insertion of redundant types in annotation code snippets.",
       "type": "boolean",
       "default": false
     },
     "cds.contributions.registry": {
       "category": "Contributions",
-      "label": "Contributions Registry",
-      "description": "The URL or path to the contributions registry.",
+      "label": "Registry",
       "type": "string",
       "default": "https://registry.npmjs.org/"
     },
     "cds.contributions.enablement.additionalAnalyticalAnnotations": {
       "category": "Contributions",
-      "label": "Enable Additional Analytical Annotations",
-      "description": "Enables extended analytical annotations from contributions.",
+      "label": "Additional Analytical Annotations",
       "type": "boolean",
       "default": false
     },
     "cds.contributions.enablement.odata": {
       "category": "Contributions",
-      "label": "Enable OData Contributions",
-      "description": "Enables OData contributions.",
+      "label": "OData",
       "type": "boolean",
       "default": true
     },
     "cds.quickfix.importArtifact": {
       "category": "Quick Fix",
-      "label": "Enable Import Artifact Quick Fix",
-      "description": "Provides a quick fix to automatically import required artifacts.",
+      "label": "Import Artifact",
       "type": "boolean",
       "default": false
     },
     "cds.codeLensStatistics.enabled": {
       "category": "Editor",
-      "label": "Enable Code Lens Statistics",
-      "description": "Shows statistical information via Code Lens.",
+      "label": "Code Lens Statistics",
       "type": "boolean",
       "default": false
     },
     "cds.semanticHighlighting.enabled": {
       "category": "Editor",
-      "label": "Enable Semantic Highlighting",
-      "description": "Enables advanced syntax highlighting based on semantic analysis.",
+      "label": "Semantic Highlighting",
       "type": "boolean",
       "default": false
     },
     "cds.semanticHighlighting.odata.enabled": {
       "category": "Editor",
-      "label": "Enable OData Semantic Highlighting",
-      "description": "Enables semantic highlighting specifically for OData constructs.",
+      "label": "OData Semantic Highlighting",
       "type": "boolean",
       "default": false
     },
     "cds.refactoring.files.rename.enabled": {
       "category": "Refactoring",
-      "label": "Update Usings on File Rename",
-      "description": "Automatically updates using statements when a file is renamed.",
+      "label": "Update Usings on Rename",
       "type": "boolean",
       "default": true
     },
     "cds.refactoring.files.delete.enabled": {
       "category": "Refactoring",
-      "label": "Update Usings on File Delete",
-      "description": "Automatically updates using statements when a file is deleted.",
+      "label": "Update Usings on Delete",
       "type": "boolean",
       "default": true
     },
     "cds.whereused.showGenericAnnotations": {
       "category": "Search",
-      "label": "Show Generic Annotations in 'Where-Used'",
-      "description": "Includes generic annotations in the results of a 'where-used' search.",
+      "label": "Show Generic Annotations",
       "type": "boolean",
       "default": false
     },
     "cds.whereused.showStringConstants": {
       "category": "Search",
-      "label": "Show String Literals in 'Where-Used'",
-      "description": "Includes string literal occurrences in the results of a 'where-used' search.",
+      "label": "Show String Literals",
       "type": "boolean",
       "default": false
     },
     "cds.workspace.debounceFastChanges": {
       "category": "Workspace",
-      "label": "Debounce Fast Workspace Changes",
-      "description": "Waits for a short period of inactivity before processing rapid file changes in the workspace.",
+      "label": "Debounce Fast Changes",
       "type": "boolean",
       "default": true
     },
     "cds.workspace.fastDiagnosticsMode": {
       "category": "Workspace",
       "label": "Fast Diagnostics Mode",
-      "description": "Enables fast diagnostics before the full diagnostics are available.",
       "type": "string",
       "enum": ["Clear", "Partial", "Full"],
       "default": "Clear"
     },
     "cds.workspace.scanCsn": {
       "category": "Workspace",
-      "label": "Scan CSN Files in Workspace",
-      "description": "Defines how CSN files are scanned.",
+      "label": "Scan CSN Files",
       "type": "string",
       "enum": ["BY_FILE_EXTENSION", "ALWAYS", "NEVER"],
       "default": "BY_FILE_EXTENSION"
@@ -216,36 +187,31 @@
     "cds.workspace.scanDependentModules": {
       "category": "Workspace",
       "label": "Scan Dependent Modules",
-      "description": "Also scans modules that the current workspace depends on.",
       "type": "boolean",
       "default": false
     },
     "cds.workspaceValidationMode": {
       "category": "Workspace",
-      "label": "Workspace Validation Mode",
-      "description": "Defines how the workspace is validated.",
+      "label": "Validation Mode",
       "type": "string",
       "enum": ["OpenEditorsOnly", "ActiveEditorOnly", "All"],
       "default": "OpenEditorsOnly"
     },
     "cds.workspaceSymbols.lazy": {
       "category": "Workspace",
-      "label": "Lazy Load Workspace Symbols",
-      "description": "Loads workspace symbols on-demand to improve initial startup time.",
+      "label": "Lazy Load Symbols",
       "type": "boolean",
       "default": false
     },
     "cds.workspaceSymbols.caseInsensitive": {
       "category": "Workspace",
-      "label": "Case-Insensitive Workspace Symbols",
-      "description": "Performs case-insensitive matching for workspace symbols.",
+      "label": "Case-Insensitive Symbols",
       "type": "boolean",
       "default": false
     },
     "cds.internal.inspectTokens": {
       "category": "Internal",
       "label": "Inspect Tokens",
-      "description": "Internal setting for inspecting tokens.",
       "type": "boolean",
       "default": false
     }
