@@ -100,6 +100,7 @@ com.intellij.platform.lsp
 cds-intellij
 cds-intellij/TextMate Bundle
 cds-intellij/Code Style
+cds-intellij/Language Server
 ```
 - Click _OK_ to save the settings.
 

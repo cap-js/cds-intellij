@@ -198,6 +198,8 @@ public class CdsUserSettingsComponent {
         }
 
         service.jsonManager.saveSettingsToFile(settings);
+
+        CdsLanguageServer.restart(project);
     }
 
     public void reset() {
