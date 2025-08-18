@@ -1,6 +1,5 @@
 package com.sap.cap.cds.intellij.lsp4ij;
 
-import com.google.gson.JsonObject;
 import com.intellij.openapi.project.Project;
 import com.redhat.devtools.lsp4ij.client.LanguageClientImpl;
 import com.sap.cap.cds.intellij.usersettings.CdsUserSettingsService;
@@ -59,7 +58,7 @@ CompletableFuture<List<Application>> applications =
     @Override
     protected Object createSettings() {
         return myProject.getService(CdsUserSettingsService.class)
-                .getSettingsAsJson();
+                .getSettingsStructured();
     }
 
 }

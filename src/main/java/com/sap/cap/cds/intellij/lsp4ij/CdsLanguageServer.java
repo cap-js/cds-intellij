@@ -36,6 +36,6 @@ public class CdsLanguageServer extends OSProcessStreamConnectionProvider {
         // TODO implement ActiveEditorChanged request
 
         return project.getService(CdsUserSettingsService.class)
-                .getSettingsAsJson();
+                .getSettingsStructured();
     }
 }
