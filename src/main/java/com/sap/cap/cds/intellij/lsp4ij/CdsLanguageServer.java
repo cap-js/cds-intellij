@@ -5,6 +5,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.redhat.devtools.lsp4ij.LanguageServerManager;
 import com.redhat.devtools.lsp4ij.server.OSProcessStreamConnectionProvider;
 import com.sap.cap.cds.intellij.lspServer.CdsLspServerDescriptor;
+import com.sap.cap.cds.intellij.usersettings.CdsUserSettingsService;
 import com.sap.cap.cds.intellij.util.Logger;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,8 +14,11 @@ public class CdsLanguageServer extends OSProcessStreamConnectionProvider {
 
     public static final String ID = "cds";
     public static final String LABEL = "Language Server";
+    @NotNull
+    private final Project project;
 
-    public CdsLanguageServer() {
+    public CdsLanguageServer(@NotNull Project project) {
+        this.project = project;
         super.setCommandLine(CdsLspServerDescriptor.getServerCommandLine());
     }
 
@@ -28,6 +32,10 @@ public class CdsLanguageServer extends OSProcessStreamConnectionProvider {
     public Object getInitializationOptions(VirtualFile rootUri) {
         // TODO: in LSP accept cds top-level node but also accept current non-cds second-level nodes. Then use cds here and also adapt vscode to send cds.
         //  Idea: LSP pulls settings. This allows to pull non-cds settings if needed
-        return CdsLanguageClient.getInitializationOptions().get(ID);
+        // TODO cds.trace.level (off) -> verbose (set env and restart)
+        // TODO implement ActiveEditorChanged request
+
+        return project.getService(CdsUserSettingsService.class)
+                .getSettingsAsJson();
     }
 }
