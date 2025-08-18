@@ -114,9 +114,7 @@ public class CdsUserSettingsComponent {
         // Check if this setting has enum values
         if (CdsUserSettings.hasEnumValues(settingKey)) {
             String[] enumValues = CdsUserSettings.getEnumValues(settingKey);
-            if (enumValues != null) {
-                return new JComboBox<>(enumValues);
-            }
+            return new JComboBox<String>(enumValues);
         }
 
         return new JBTextField();
