@@ -33,11 +33,11 @@ public final class CdsUserSettingsService extends JsonSettingsService<Map<String
     public void updateSettings(Map<String, Object> newUiState) {
         Map<String, Object> currentSettings = getSettings();
         currentSettings.clear();
-        currentSettings.putAll(CdsUserSettings.getInstance(project).getDefaults());
+        currentSettings.putAll(CdsUserSettings.getDefaults());
         currentSettings.putAll(newUiState);
 
         Map<String, Object> nonDefaultSettings = new HashMap<>();
-        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaults();
+        Map<String, Object> defaults = CdsUserSettings.getDefaults();
         for (Map.Entry<String, Object> entry : currentSettings.entrySet()) {
             if (!Objects.equals(entry.getValue(), defaults.get(entry.getKey()))) {
                 nonDefaultSettings.put(entry.getKey(), entry.getValue());
