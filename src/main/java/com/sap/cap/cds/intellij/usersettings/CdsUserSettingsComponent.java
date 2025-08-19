@@ -53,11 +53,23 @@ public class CdsUserSettingsComponent {
                 controls.put(settingKey, control);
 
                 String label = formatLabel(settingKey);
+                String description = CdsUserSettings.getDescription(settingKey);
+                String htmlDescription = description != null ?
+                    "<html>" + description.replace("\n", "<br>") + "</html>" : null;
+
                 if (control instanceof JBCheckBox) {
                     ((JBCheckBox) control).setText(label);
+                    if (htmlDescription != null) {
+                        control.setToolTipText(htmlDescription);
+                    }
                     builder.addComponent(control);
                 } else {
-                    builder.addLabeledComponent(label + ":", control);
+                    JLabel labelComponent = new JLabel(label + ":");
+                    if (htmlDescription != null) {
+                        labelComponent.setToolTipText(htmlDescription);
+                        control.setToolTipText(htmlDescription);
+                    }
+                    builder.addLabeledComponent(labelComponent, control);
                 }
             }
         }

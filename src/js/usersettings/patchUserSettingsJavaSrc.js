@@ -13,7 +13,7 @@ const tgt = readFileSync(tgtPath, 'utf8');
 function getDefaultValue(config) {
   const type = config.type;
   if (type === 'boolean') return config.default;
-  if (type === 'integer') return config.default;
+  if (type === 'integer' || type === 'number') return config.default;
   if (type === 'array') return `"${Array.isArray(config.default) ? config.default.join(',') : ''}"`;
   return `"${(config.default || '').replace(/"/g, '\\"')}"`;
 }
@@ -24,7 +24,8 @@ const settings = Object.entries(settingsFromSchema)
     key,
     defaultValue: getDefaultValue(config),
     enumValues: config.enum || null,
-    label: config.label || null
+    label: config.label || null,
+    description: config.description || null
   }));
 
 const t = '    ';
@@ -39,6 +40,20 @@ const getLabelBody = `
 ${t}${t}switch (settingKey) {
 ${settings.filter(s => s.label).map(s =>
     `${t}${t}${t}case "${s.key}": return "${s.label.replace(/"/g, '\\"')}";`
+).join('\n')}
+${t}${t}${t}default: return null;
+${t}${t}}`;
+
+function formatJavaDescription(description) {
+  if (!description) return 'null';
+  const escaped = description.replace(/"/g, '\\"').replace(/\n/g, '\\n');
+  return `"${escaped}"`;
+}
+
+const getDescriptionBody = `
+${t}${t}switch (settingKey) {
+${settings.filter(s => s.description).map(s =>
+    `${t}${t}${t}case "${s.key}": return ${formatJavaDescription(s.description)};`
 ).join('\n')}
 ${t}${t}${t}default: return null;
 ${t}${t}}`;
@@ -65,6 +80,11 @@ patchedTgt = patchedTgt.replace(
 patchedTgt = patchedTgt.replace(
     /(?<=static\s+[^\n{]*\bgetLabel\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
     getLabelBody
+);
+
+patchedTgt = patchedTgt.replace(
+    /(?<=static\s+[^\n{]*\bgetDescription\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
+    getDescriptionBody
 );
 
 patchedTgt = patchedTgt.replace(

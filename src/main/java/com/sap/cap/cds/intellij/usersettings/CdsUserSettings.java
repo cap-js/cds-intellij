@@ -58,56 +58,52 @@ public class CdsUserSettings {
         }
     }
 
+    public static String getDescription(String settingKey) {
+        switch (settingKey) {
+            case "cds.compiler.markMissingI18nDefault": return "Show warning problem markers for unresolved `i18n` references.\n\n**NOTE:** For huge models it may show performance degradations";
+            case "cds.compiler.showInternalErrors": return "Print internal compiler errors to the console";
+            case "cds.completion.annotations.omitRedundantTypesInSnippets": return "Omit redundant record types in suggested snippets";
+            case "cds.completion.docFiles": return "Potential names of files to show as documentation. This is an ordered list. The first filename that exists is used.";
+            case "cds.completion.formatSnippets": return "Format snippets after applying in code completion";
+            case "cds.completion.showDocumentation": return "Show documentation in code completion";
+            case "cds.completion.workspaceSymbols.maxProposals": return "Maximum number of workspace symbols to suggest. Default is -1 (all)";
+            case "cds.completion.workspaceSymbols.minPrefixLength": return "Number of characters required to suggest (global) workspace symbols. Default is -1 (switched off - the feature may delay completion)";
+            case "cds.contributions.enablement.additionalAnalyticalAnnotations": return "Provide support for additional annotations used CAP Embedded Analytics\n\nSee [capire](https://cap.cloud.sap/docs) for details";
+            case "cds.contributions.enablement.odata": return "Provide extended annotation support for OData";
+            case "cds.contributions.registry": return "NPM registry to be used for installation/update of contributions (e.g. OData annotation support)";
+            case "cds.diagnosticsSeverity": return "Minimum severity of compiler messages to show in _Problems_ view";
+            case "cds.outline.semantical": return "Show a semantical outline structure as opposed to the (default) flat list";
+            case "cds.quickfix.importArtifact": return "Provide a _quick fix_ for artifacts not yet imported (default disabled - the feature is CPU intensive)";
+            case "cds.refactoring.files.delete.enabled": return "Adapt `using` statements in other files when deleting CDS files";
+            case "cds.refactoring.files.rename.enabled": return "Adapt `using` statements in other files when renaming CDS files";
+            case "cds.semanticHighlighting.enabled": return "Semantic highlighting of certain identifiers";
+            case "cds.typeGenerator.command": return "The command that is executed when generating model types. You can use the following variables in your command template:\n\n- `${typerBinary}`: the binary\n- `${targetFile}`: the file that is being typed\n- `${outputDirectory}`: the directory into which the type information is generated";
+            case "cds.typeGenerator.enabled": return "Generate type definitions.\nRequires `@cap-js/cds-typer` to be installed\n\n**NOTE:** This feature is still experimental (beta)";
+            case "cds.typeGenerator.outputPath": return "Directory that serves as root for the generated type definitions. Relative to the project's root";
+            case "cds.whereused.showGenericAnnotations": return "Find usages of same annotation names via _References_ command and explicit annotation definitions via _Definition_ command";
+            case "cds.whereused.showStringConstants": return "Find same string constants via _References_ command";
+            case "cds.workspace.debounceFastChanges": return "Consolidate workspace changes (e.g. by typing) to reduce the number of compilations, thus increasing performance. This is especially true for large models. Disable if you should see inconsistencies e.g. error markers not matching the corresponding identifier token";
+            case "cds.workspace.scanCsn": return "How CSN files are detected:\n- `ByFileExtension` (default): CSN files (.csn or .csn.json) will be included in validation and workspace symbols\n- `InspectJson`: additionally looks into .json files if they are valid CSN. This will take considerably more time at scanning\n- `Off`: will not scan for CSN files at all";
+            case "cds.workspace.scanDependentModules": return "Scan first level dependencies in node_modules. This may increase start-up time. Enable if you want code completions for global identifiers and import paths, or want to see definitions of dependencies in workspace symbols";
+            case "cds.workspaceSymbols.caseInsensitive": return "_Workspace Symbols_ will show symbols containing the given query, independent of character casings";
+            case "cds.workspaceSymbols.lazy": return "_Workspace Symbols_ will show symbols that have the queried characters in the right order, but not necessarily consecutive";
+            case "cds.workspaceValidationMode": return "Specify which CDS files are validated:\n- `ActiveEditorOnly` (default): only the active editor is validated\n- `OpenEditorsOnly` additionally keeps other open editors' validation up-to-date";
+            default: return null;
+        }
+    }
+
     public static boolean hasEnumValues(String settingKey) {
         return getEnumValues(settingKey) != null;
     }
 
     public static String[] getEnumValues(String settingKey) {
         switch (settingKey) {
-            case "cds.diagnosticsSeverity": return new String[]{"Error", "Warning", "Info", "Hint"};
+            case "cds.diagnosticsSeverity": return new String[]{"Error", "Warning", "Info", "Debug"};
             case "cds.workspace.fastDiagnosticsMode": return new String[]{"Clear", "Partial", "Full"};
-            case "cds.workspace.scanCsn": return new String[]{"BY_FILE_EXTENSION", "ALWAYS", "NEVER"};
-            case "cds.workspaceValidationMode": return new String[]{"OpenEditorsOnly", "ActiveEditorOnly", "All"};
+            case "cds.workspace.scanCsn": return new String[]{"Off", "ByFileExtension", "InspectJson"};
+            case "cds.workspaceValidationMode": return new String[]{"ActiveEditorOnly", "OpenEditorsOnly"};
             default: return null;
         }
-    }
-
-    public static Map<String, Object> getDefaults() {
-        Map<String, Object> defaults = new HashMap<>();
-        defaults.put("cds.codeLensStatistics.enabled", false);
-        defaults.put("cds.compiler.markMissingI18nDefault", false);
-        defaults.put("cds.compiler.showInternalErrors", false);
-        defaults.put("cds.completion.annotations.omitRedundantTypesInSnippets", false);
-        defaults.put("cds.completion.docFiles", "README.md");
-        defaults.put("cds.completion.formatSnippets", false);
-        defaults.put("cds.completion.showDocumentation", true);
-        defaults.put("cds.completion.workspaceSymbols.maxProposals", -1);
-        defaults.put("cds.completion.workspaceSymbols.minPrefixLength", -1);
-        defaults.put("cds.contributions.enablement.additionalAnalyticalAnnotations", false);
-        defaults.put("cds.contributions.enablement.odata", true);
-        defaults.put("cds.contributions.registry", "https://registry.npmjs.org/");
-        defaults.put("cds.diagnosticsSeverity", "Warning");
-        defaults.put("cds.outline.elements.associationComposition", true);
-        defaults.put("cds.outline.semantical", false);
-        defaults.put("cds.quickfix.importArtifact", false);
-        defaults.put("cds.refactoring.files.delete.enabled", true);
-        defaults.put("cds.refactoring.files.rename.enabled", true);
-        defaults.put("cds.semanticHighlighting.enabled", false);
-        defaults.put("cds.semanticHighlighting.odata.enabled", false);
-        defaults.put("cds.typeGenerator.command", "${typerBinary} \"${targetFile}\" --outputDirectory \"${outputDirectory}\"");
-        defaults.put("cds.typeGenerator.enabled", false);
-        defaults.put("cds.typeGenerator.localInstallationOnly", true);
-        defaults.put("cds.typeGenerator.outputPath", "./@cds-models");
-        defaults.put("cds.whereused.showGenericAnnotations", false);
-        defaults.put("cds.whereused.showStringConstants", false);
-        defaults.put("cds.workspace.debounceFastChanges", true);
-        defaults.put("cds.workspace.fastDiagnosticsMode", "Clear");
-        defaults.put("cds.workspace.scanCsn", "BY_FILE_EXTENSION");
-        defaults.put("cds.workspace.scanDependentModules", false);
-        defaults.put("cds.workspaceSymbols.caseInsensitive", false);
-        defaults.put("cds.workspaceSymbols.lazy", false);
-        defaults.put("cds.workspaceValidationMode", "OpenEditorsOnly");
-        return defaults;
     }
 
     public Map<String, Object> getSettings() {
@@ -115,5 +111,43 @@ public class CdsUserSettings {
             settings = getDefaults();
         }
         return settings;
+    }
+
+    public static Map<String, Object> getDefaults() {
+        Map<String, Object> defaults = new HashMap<>();
+        defaults.put("cds.codeLensStatistics.enabled", false);
+        defaults.put("cds.compiler.markMissingI18nDefault", false);
+        defaults.put("cds.compiler.showInternalErrors", true);
+        defaults.put("cds.completion.annotations.omitRedundantTypesInSnippets", false);
+        defaults.put("cds.completion.docFiles", "README.md");
+        defaults.put("cds.completion.formatSnippets", false);
+        defaults.put("cds.completion.showDocumentation", true);
+        defaults.put("cds.completion.workspaceSymbols.maxProposals", -1);
+        defaults.put("cds.completion.workspaceSymbols.minPrefixLength", -1);
+        defaults.put("cds.contributions.enablement.additionalAnalyticalAnnotations", false);
+        defaults.put("cds.contributions.enablement.odata", false);
+        defaults.put("cds.contributions.registry", "https://registry.npmjs.org");
+        defaults.put("cds.diagnosticsSeverity", "Warning");
+        defaults.put("cds.outline.elements.associationComposition", true);
+        defaults.put("cds.outline.semantical", true);
+        defaults.put("cds.quickfix.importArtifact", false);
+        defaults.put("cds.refactoring.files.delete.enabled", false);
+        defaults.put("cds.refactoring.files.rename.enabled", false);
+        defaults.put("cds.semanticHighlighting.enabled", false);
+        defaults.put("cds.semanticHighlighting.odata.enabled", false);
+        defaults.put("cds.typeGenerator.command", "node \"${typerBinary}\" \"${targetFile}\" --outputDirectory \"${outputDirectory}\"");
+        defaults.put("cds.typeGenerator.enabled", true);
+        defaults.put("cds.typeGenerator.localInstallationOnly", true);
+        defaults.put("cds.typeGenerator.outputPath", "@cds-models");
+        defaults.put("cds.whereused.showGenericAnnotations", false);
+        defaults.put("cds.whereused.showStringConstants", false);
+        defaults.put("cds.workspace.debounceFastChanges", true);
+        defaults.put("cds.workspace.fastDiagnosticsMode", "Clear");
+        defaults.put("cds.workspace.scanCsn", "ByFileExtension");
+        defaults.put("cds.workspace.scanDependentModules", false);
+        defaults.put("cds.workspaceSymbols.caseInsensitive", false);
+        defaults.put("cds.workspaceSymbols.lazy", false);
+        defaults.put("cds.workspaceValidationMode", "ActiveEditorOnly");
+        return defaults;
     }
 }
