@@ -10,7 +10,6 @@ import java.util.Map;
 public class CdsUserSettings {
 
     public static final String USER_SETTINGS_JSON = ".cds-lsp/.settings.json";
-    private static Map<String, Object> defaultSettings = getDefaults();
     private Map<String, Object> settings;
 
     public CdsUserSettings(Project project) {
@@ -73,7 +72,7 @@ public class CdsUserSettings {
         }
     }
 
-    private static Map<String, Object> getDefaults() {
+    public static Map<String, Object> getDefaults() {
         Map<String, Object> defaults = new HashMap<>();
         defaults.put("cds.codeLensStatistics.enabled", false);
         defaults.put("cds.compiler.markMissingI18nDefault", false);
@@ -113,12 +112,8 @@ public class CdsUserSettings {
 
     public Map<String, Object> getSettings() {
         if (settings == null) {
-            settings = getDefaultSettings();
+            settings = getDefaults();
         }
         return settings;
-    }
-
-    public Map<String, Object> getDefaultSettings() {
-        return defaultSettings;
     }
 }

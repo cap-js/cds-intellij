@@ -36,7 +36,7 @@ public class CdsUserSettingsComponent {
         }
 
         FormBuilder builder = FormBuilder.createFormBuilder();
-        Map<String, Object> allSettings = CdsUserSettings.getInstance(project).getDefaultSettings();
+        Map<String, Object> allSettings = CdsUserSettings.getInstance(project).getDefaults();
         Map<String, List<String>> categoryGroups = groupSettingsByCategory(allSettings);
 
         for (Map.Entry<String, List<String>> categoryEntry : categoryGroups.entrySet()) {
@@ -122,7 +122,7 @@ public class CdsUserSettingsComponent {
 
     private void loadCurrentSettings() {
         Map<String, Object> currentSettings = service.getSettings();
-        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaultSettings();
+        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaults();
 
         for (Map.Entry<String, JComponent> entry : controls.entrySet()) {
             String key = entry.getKey();
@@ -151,7 +151,7 @@ public class CdsUserSettingsComponent {
         if (!isValidProject()) return false;
 
         Map<String, Object> currentSettings = service.getSettings();
-        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaultSettings();
+        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaults();
 
         for (Map.Entry<String, JComponent> entry : controls.entrySet()) {
             String key = entry.getKey();
@@ -184,21 +184,14 @@ public class CdsUserSettingsComponent {
     public void apply() {
         if (!isValidProject()) return;
 
-        Map<String, Object> settings = new HashMap<>();
-        Map<String, Object> defaults = CdsUserSettings.getInstance(project).getDefaultSettings();
-
+        Map<String, Object> newUiState = new HashMap<>();
         for (Map.Entry<String, JComponent> entry : controls.entrySet()) {
             String key = entry.getKey();
             Object controlValue = getControlValue(entry.getValue());
-            Object defaultValue = defaults.get(key);
-
-            if (!java.util.Objects.equals(controlValue, defaultValue)) {
-                settings.put(key, controlValue);
-            }
+            newUiState.put(key, controlValue);
         }
 
-        service.jsonManager.saveSettingsToFile(settings);
-
+        service.updateSettings(newUiState);
         CdsLanguageServer.restart(project);
     }
 

@@ -58,22 +58,22 @@ let patchedTgt = tgt;
 
 // Replace method bodies using simplified lookbehind patterns
 patchedTgt = patchedTgt.replace(
-    /(?<=private\s+static\s+[^\n{]*\bgetDefaults\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
+    /(?<=static\s+[^\n{]*\bgetDefaults\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
     getDefaultsBody
 );
 
 patchedTgt = patchedTgt.replace(
-    /(?<=public\s+static\s+[^\n{]*\bgetLabel\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
+    /(?<=static\s+[^\n{]*\bgetLabel\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
     getLabelBody
 );
 
 patchedTgt = patchedTgt.replace(
-    /(?<=public\s+static\s+[^\n{]*\bgetEnumValues\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
+    /(?<=static\s+[^\n{]*\bgetEnumValues\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
     getEnumValuesBody
 );
 
 patchedTgt = patchedTgt.replace(
-    /(?<=public\s+static\s+[^\n{]*\bhasEnumValues\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
+    /(?<=static\s+[^\n{]*\bhasEnumValues\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
     hasEnumValuesBody
 );
 
