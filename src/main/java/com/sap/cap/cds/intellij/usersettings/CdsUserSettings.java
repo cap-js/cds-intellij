@@ -19,6 +19,7 @@ public class CdsUserSettings {
         return project.getService(CdsUserSettings.class);
     }
 
+    // Note: method body is generated
     public static String getLabel(String settingKey) {
         switch (settingKey) {
             case "cds.codeLensStatistics.enabled": return "Code Lens Statistics";
@@ -58,6 +59,7 @@ public class CdsUserSettings {
         }
     }
 
+    // Note: method body is generated
     public static String getDescription(String settingKey) {
         switch (settingKey) {
             case "cds.compiler.markMissingI18nDefault": return "Show warning problem markers for unresolved `i18n` references.\n\n**NOTE:** For huge models it may show performance degradations";
@@ -92,10 +94,12 @@ public class CdsUserSettings {
         }
     }
 
+    // Note: method body is generated
     public static boolean hasEnumValues(String settingKey) {
         return getEnumValues(settingKey) != null;
     }
 
+    // Note: method body is generated
     public static String[] getEnumValues(String settingKey) {
         switch (settingKey) {
             case "cds.diagnosticsSeverity": return new String[]{"Error", "Warning", "Info", "Debug"};
@@ -113,6 +117,7 @@ public class CdsUserSettings {
         return settings;
     }
 
+    // Note: method body is generated
     public static Map<String, Object> getDefaults() {
         Map<String, Object> defaults = new HashMap<>();
         defaults.put("cds.codeLensStatistics.enabled", false);
