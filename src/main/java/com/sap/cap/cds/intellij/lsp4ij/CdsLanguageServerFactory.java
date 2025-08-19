@@ -12,7 +12,7 @@ public class CdsLanguageServerFactory implements LanguageServerFactory { // TODO
 
     @Override
     public @NotNull StreamConnectionProvider createConnectionProvider(@NotNull Project project) {
-        return new CdsLanguageServer();
+        return new CdsLanguageServer(project);
     }
 
     @Override // If you need to provide client specific features

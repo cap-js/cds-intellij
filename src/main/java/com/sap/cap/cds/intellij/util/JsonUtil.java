@@ -1,11 +1,21 @@
 package com.sap.cap.cds.intellij.util;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class JsonUtil {
+
+    private static final Gson GSON_FOR_SETTINGS = new Gson();
 
     public static Object getPropertyAtPath(String json, String[] path) {
         JSONObject jsonObject = toJSONObject(json);
@@ -20,11 +30,9 @@ public class JsonUtil {
         return new JSONObject(json.isEmpty() ? "{}" : json);
     }
 
-    // JSONObject.toString() does not guarantee the order of keys
     public static String toSortedString(JSONObject jsonObject) {
         String string = jsonObject.toString(StringUtil.JSON_INDENT);
         if (string.trim().matches("\\{\\s*[^,]*}")) {
-            // 0 to 1 entries
             return string;
         }
         return "{\n" +
@@ -44,7 +52,65 @@ public class JsonUtil {
         if (json1.isEmpty() ^ json2.isEmpty()) {
             return false;
         }
-        return new JSONObject(json1).similar(new JSONObject(json2));
+        try {
+            return new JSONObject(json1).similar(new JSONObject(json2));
+        } catch (JSONException e) {
+            return false;
+        }
     }
 
+    public static JsonObject nest(@NotNull Map<String, Object> flatMap, @Nullable String topLevelKey) {
+        JsonObject root = new JsonObject();
+        JsonObject target = (topLevelKey != null && !topLevelKey.isEmpty()) ? new JsonObject() : root;
+        if (topLevelKey != null && !topLevelKey.isEmpty()) {
+            root.add(topLevelKey, target);
+        }
+
+        for (Map.Entry<String, Object> entry : flatMap.entrySet()) {
+            String[] parts = entry.getKey().split("\\.");
+            JsonObject current = target;
+            for (int i = 0; i < parts.length - 1; i++) {
+                String part = parts[i];
+                if (!current.has(part) || !current.get(part).isJsonObject()) {
+                    current.add(part, new JsonObject());
+                }
+                current = current.getAsJsonObject(part);
+            }
+            current.add(parts[parts.length - 1], GSON_FOR_SETTINGS.toJsonTree(entry.getValue()));
+        }
+        return root;
+    }
+
+    public static @NotNull Map<String, Object> flatten(@NotNull JsonObject jsonObject) {
+        Map<String, Object> flatMap = new HashMap<>();
+        flattenRecursively(jsonObject, "", flatMap);
+        return flatMap;
+    }
+
+    private static void flattenRecursively(@NotNull JsonObject json, @NotNull String prefix, @NotNull Map<String, Object> result) {
+        for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
+            String newKey = prefix.isEmpty() ? entry.getKey() : prefix + "." + entry.getKey();
+            JsonElement value = entry.getValue();
+
+            if (value.isJsonObject()) {
+                flattenRecursively(value.getAsJsonObject(), newKey, result);
+            } else if (value.isJsonPrimitive()) {
+                JsonPrimitive primitive = value.getAsJsonPrimitive();
+                if (primitive.isBoolean()) {
+                    result.put(newKey, primitive.getAsBoolean());
+                } else if (primitive.isString()) {
+                    result.put(newKey, primitive.getAsString());
+                } else if (primitive.isNumber()) {
+                    String numStr = primitive.getAsString();
+                    if (numStr.contains(".")) {
+                        result.put(newKey, primitive.getAsDouble());
+                    } else {
+                        result.put(newKey, primitive.getAsLong());
+                    }
+                }
+            } else if (value.isJsonArray()) {
+                result.put(newKey, value.toString());
+            }
+        }
+    }
 }

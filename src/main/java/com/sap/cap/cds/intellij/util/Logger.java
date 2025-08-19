@@ -3,6 +3,7 @@ package com.sap.cap.cds.intellij.util;
 import com.intellij.openapi.project.Project;
 import com.sap.cap.cds.intellij.CdsPlugin;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsProvider;
+import com.sap.cap.cds.intellij.lsp4ij.CdsLanguageServer;
 import com.sap.cap.cds.intellij.textmate.CdsTextMateBundle;
 
 import java.util.Map;
@@ -16,6 +17,8 @@ public class Logger {
     public static final com.intellij.openapi.diagnostic.Logger TM_BUNDLE = getInstance("%s/%s".formatted(CdsPlugin.LABEL, CdsTextMateBundle.LABEL));
 
     public static final com.intellij.openapi.diagnostic.Logger CODE_STYLE = getInstance("%s/%s".formatted(CdsPlugin.LABEL, CdsCodeStyleSettingsProvider.LABEL));
+
+    public static final com.intellij.openapi.diagnostic.Logger SERVER = getInstance("%s/%s".formatted(CdsPlugin.LABEL, CdsLanguageServer.LABEL));
 
     private static final Map<CacheKey, Logger> INSTANCES = new java.util.concurrent.ConcurrentHashMap<>();
 

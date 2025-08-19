@@ -138,6 +138,8 @@ const t = '    ';
 
 // START CLASS BODY
 const classBody = `
+${t}// Generated code - do not edit manually
+
 ${t}public static final String SAMPLE_SRC = """
 ${n = `${t}public static final String SAMPLE_SRC = `.length, sample.replace(/^/gm, ' '.repeat(n))}
                                             """;

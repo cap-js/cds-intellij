@@ -1,4 +1,4 @@
-package com.sap.cap.cds.intellij.codestyle;
+package com.sap.cap.cds.intellij.usersettings;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -7,19 +7,19 @@ import com.sap.cap.cds.intellij.util.LoggerScope;
 
 import java.util.function.Predicate;
 
-import static com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsService.PRETTIER_JSON;
-import static com.sap.cap.cds.intellij.util.LoggerScope.CODE_STYLE;
+import static com.sap.cap.cds.intellij.usersettings.CdsUserSettings.USER_SETTINGS_JSON;
+import static com.sap.cap.cds.intellij.util.LoggerScope.USER_SETTINGS;
 
-public class CdsPrettierJsonListener extends JsonSettingsFileListener {
+public class CdsUserSettingsListener extends JsonSettingsFileListener {
 
     @Override
     protected Predicate<VirtualFile> fileFilter() {
-        return file -> file.getName().equals(PRETTIER_JSON);
+        return file -> file.getPath().endsWith(".settings.json") && file.getPath().contains(".cds-lsp");
     }
 
     @Override
     protected void handleFileChange(Project project) {
-        CdsCodeStyleSettingsService service = project.getService(CdsCodeStyleSettingsService.class);
+        CdsUserSettingsService service = project.getService(CdsUserSettingsService.class);
         if (service.isSettingsFileChanged()) {
             service.updateProjectSettingsFromFile();
         }
@@ -27,11 +27,11 @@ public class CdsPrettierJsonListener extends JsonSettingsFileListener {
 
     @Override
     protected LoggerScope getLoggerScope() {
-        return CODE_STYLE;
+        return USER_SETTINGS;
     }
 
     @Override
     protected String getDebugMessage() {
-        return ".cdsprettier.json changed";
+        return "%s changed".formatted(USER_SETTINGS_JSON);
     }
 }

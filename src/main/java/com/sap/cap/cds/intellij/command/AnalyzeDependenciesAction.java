@@ -3,9 +3,9 @@ package com.sap.cap.cds.intellij.command;
 import com.google.gson.JsonObject;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.project.Project;
 import com.redhat.devtools.lsp4ij.commands.CommandExecutor;
 import com.redhat.devtools.lsp4ij.commands.LSPCommandContext;
+import com.sap.cap.cds.intellij.lsp4ij.CdsLanguageServer;
 import org.eclipse.lsp4j.Command;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +36,7 @@ public class AnalyzeDependenciesAction extends AnAction {
 
         Command command = new Command("Analyze Dependencies", "analyze-dependencies");
         LSPCommandContext commandContext = new LSPCommandContext(command, project);
-        commandContext.setPreferredLanguageServerId("cds");
+        commandContext.setPreferredLanguageServerId(CdsLanguageServer.ID);
         command.setArguments(Collections.singletonList(new JsonObject())); // TODO: Add IAnalyzeDependenciesParams
         CommandExecutor.executeCommand(commandContext)
                 .response()

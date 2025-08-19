@@ -51,15 +51,25 @@ The set of features will grow with future releases, aligned with the development
 <!--                           displayType="BALLOON"/>-->
 
         <vfs.asyncListener implementation="com.sap.cap.cds.intellij.codestyle.CdsPrettierJsonListener"/>
+        <vfs.asyncListener implementation="com.sap.cap.cds.intellij.usersettings.CdsUserSettingsListener"/>
         <postStartupActivity implementation="com.sap.cap.cds.intellij.lifecycle.ProjectLifecycleListener"/>
 
         <applicationService
                 serviceImplementation="com.sap.cap.cds.intellij.settings.AppSettings"/>
+        <projectService
+                serviceImplementation="com.sap.cap.cds.intellij.usersettings.CdsUserSettings"/>
+        <projectService
+                serviceImplementation="com.sap.cap.cds.intellij.usersettings.CdsUserSettingsService"/>
         <applicationConfigurable
                 parentId="language"
-                instance="com.sap.cap.cds.intellij.settings.AppSettingsConfigurable"
                 id="com.sap.cap.cds.intellij.settings.AppSettingsConfigurable"
+                instance="com.sap.cap.cds.intellij.settings.AppSettingsConfigurable"
                 displayName="CDS"/>
+        <projectConfigurable
+                parentId="com.sap.cap.cds.intellij.settings.AppSettingsConfigurable"
+                id="com.sap.cap.cds.intellij.usersettings.CdsUserSettingsConfigurable"
+                instance="com.sap.cap.cds.intellij.usersettings.CdsUserSettingsConfigurable"
+                displayName="Language Server"/>
 
     </extensions>
 
@@ -180,8 +190,9 @@ The set of features will grow with future releases, aligned with the development
         <li>On-the-fly Code Formatting (format block when finishing it with <code>}</code> or <code>;</code>)
         <li>Format Selected Code
     </ul>
-    <li>User settings:
+    <li>Plugin settings:
         <ul>
+            <li>User settings for language server
             <li>Node.js interpreter path (to modify result of automatic search)
             <li>Additional environment variables for CDS Language Server
         </ul>
@@ -209,5 +220,6 @@ The set of features will grow with future releases, aligned with the development
 <h3>Fixed</h3>
 <ul>
     <li>Correctly validate Node.js interpreter path when opening settings
+</ul>
 ]]></change-notes>
 </idea-plugin>
