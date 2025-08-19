@@ -87,33 +87,6 @@ public class JsonUtil {
         return flatMap;
     }
 
-    public static JSONObject toNestedJSONObject(@NotNull Map<String, Object> flatMap, @Nullable String topLevelKey) {
-        JSONObject root = new JSONObject();
-        JSONObject settingsRoot;
-        if (topLevelKey != null && !topLevelKey.isEmpty()) {
-            settingsRoot = new JSONObject();
-            root.put(topLevelKey, settingsRoot);
-        } else {
-            settingsRoot = root;
-        }
-
-        for (Map.Entry<String, Object> entry : flatMap.entrySet()) {
-            String[] parts = entry.getKey().split("\\.");
-            JSONObject current = settingsRoot;
-            for (int i = 0; i < parts.length - 1; i++) {
-                String part = parts[i];
-                if (!current.has(part)) {
-                    current.put(part, new JSONObject());
-                } else if (!(current.get(part) instanceof JSONObject)) {
-                    throw new JSONException("Key conflict: '" + part + "' is not an object.");
-                }
-                current = current.getJSONObject(part);
-            }
-            current.put(parts[parts.length - 1], entry.getValue());
-        }
-        return root;
-    }
-
     private static void flattenRecursively(@NotNull JsonObject json, @NotNull String prefix, @NotNull Map<String, Object> result) {
         for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
             String newKey = prefix.isEmpty() ? entry.getKey() : prefix + "." + entry.getKey();
