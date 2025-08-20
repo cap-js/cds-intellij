@@ -138,9 +138,6 @@ The set of features will grow with future releases, aligned with the development
 
         <!-- actions -->
         
-        <action id="cds.analyzeDependencies"
-                class="com.sap.cap.cds.intellij.command.AnalyzeDependenciesAction"/>
-
         <action id="com.sap.cap.cds.intellij.showLspServerLogs"
                 class="com.sap.cap.cds.intellij.lspServer.ShowLspServerLogsAction"
                 text="Show Log File"

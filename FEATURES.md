@@ -27,7 +27,6 @@ Known issues/open points:
 - Workspace Symbols: managed (common.cds) not shown in cap-cloud-samples repo 
 - `.cdsprettier.json` schema registration needed to support code completion in text editor
 - Maintain translation quickfix works in principal, but properties file is not saved and thus LSP won't get updated and still suggest quickfix
-- User settings not yet available in _Settings > Languages and Frameworks > CDS_
 - Change serverId to cap-cds-language-server
 
 ### Examples

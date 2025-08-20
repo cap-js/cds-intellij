@@ -50,7 +50,7 @@ To test and debug a local version of `@sap/cds-lsp` in the plugin:
 
 #### Debugging
 
-When LSP debugging is [enabled](./README.md#language-server-protocol-lsp-logs), the LSP server will start in debug mode,
+When LSP debugging is [enabled](./README.md#plugin-debug-mode), the LSP server will start in debug mode,
 ready for a debugger to attach.
 The server is bundled but features a source map enabling you to set breakpoints in the TypeScript code.
 
