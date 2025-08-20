@@ -31,18 +31,18 @@ const settings = Object.entries(settingsFromSchema)
 const t = '    ';
 
 // Generate method bodies
-const getDefaultsBody = `
+const staticInitializerBody = `
 ${t}${t}Map<String, Object> defaults = new HashMap<>();
 ${settings.map(s => `${t}${t}defaults.put("${s.key}", ${s.defaultValue});`).join('\n')}
-${t}${t}return defaults;`;
+${t}${t}DEFAULTS = Collections.unmodifiableMap(defaults);`;
 
 const getLabelBody = `
-${t}${t}switch (settingKey) {
+${t}${t}return switch (settingKey) {
 ${settings.filter(s => s.label).map(s =>
-    `${t}${t}${t}case "${s.key}": return "${s.label.replace(/"/g, '\\"')}";`
+    `${t}${t}${t}case "${s.key}" -> "${s.label.replace(/"/g, '\\"')}";`
 ).join('\n')}
-${t}${t}${t}default: return null;
-${t}${t}}`;
+${t}${t}${t}default -> null;
+${t}${t}};`;
 
 function formatJavaDescription(description) {
   if (!description) return 'null';
@@ -51,20 +51,20 @@ function formatJavaDescription(description) {
 }
 
 const getDescriptionBody = `
-${t}${t}switch (settingKey) {
+${t}${t}return switch (settingKey) {
 ${settings.filter(s => s.description).map(s =>
-    `${t}${t}${t}case "${s.key}": return ${formatJavaDescription(s.description)};`
+    `${t}${t}${t}case "${s.key}" -> ${formatJavaDescription(s.description)};`
 ).join('\n')}
-${t}${t}${t}default: return null;
-${t}${t}}`;
+${t}${t}${t}default -> null;
+${t}${t}};`;
 
 const getEnumValuesBody = `
-${t}${t}switch (settingKey) {
+${t}${t}return switch (settingKey) {
 ${settings.filter(s => s.enumValues).map(s =>
-    `${t}${t}${t}case "${s.key}": return new String[]{${s.enumValues.map(v => `"${v}"`).join(', ')}};`
+    `${t}${t}${t}case "${s.key}" -> new String[]{${s.enumValues.map(v => `"${v}"`).join(', ')}};`
 ).join('\n')}
-${t}${t}${t}default: return null;
-${t}${t}}`;
+${t}${t}${t}default -> null;
+${t}${t}};`;
 
 const hasEnumValuesBody = `
 ${t}${t}return getEnumValues(settingKey) != null;`;
@@ -73,27 +73,27 @@ let patchedTgt = tgt;
 
 // Replace method bodies using simplified lookbehind patterns
 patchedTgt = patchedTgt.replace(
-    /(?<=static\s+[^\n{]*\bgetDefaults\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
-    getDefaultsBody
+    /(?<=static\s*\{).*?(?=\n    })/sm,
+    staticInitializerBody
 );
 
 patchedTgt = patchedTgt.replace(
-    /(?<=static\s+[^\n{]*\bgetLabel\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
+    /(?<=\bgetLabel\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
     getLabelBody
 );
 
 patchedTgt = patchedTgt.replace(
-    /(?<=static\s+[^\n{]*\bgetDescription\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
+    /(?<=\bgetDescription\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
     getDescriptionBody
 );
 
 patchedTgt = patchedTgt.replace(
-    /(?<=static\s+[^\n{]*\bgetEnumValues\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
+    /(?<=\bgetEnumValues\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
     getEnumValuesBody
 );
 
 patchedTgt = patchedTgt.replace(
-    /(?<=static\s+[^\n{]*\bhasEnumValues\([^\n{]*\{\s*).*?(?=\n    }$)/sm,
+    /(?<=\bhasEnumValues\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
     hasEnumValuesBody
 );
 

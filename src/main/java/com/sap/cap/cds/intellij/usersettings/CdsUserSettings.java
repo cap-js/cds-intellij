@@ -3,6 +3,7 @@ package com.sap.cap.cds.intellij.usersettings;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.project.Project;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -117,8 +118,10 @@ public class CdsUserSettings {
         return settings;
     }
 
-    // Note: method body is generated
-    public static Map<String, Object> getDefaults() {
+    private static final Map<String, Object> DEFAULTS;
+
+    // Note: static initializer is generated
+    static {
         Map<String, Object> defaults = new HashMap<>();
         defaults.put("cds.codeLensStatistics.enabled", false);
         defaults.put("cds.compiler.markMissingI18nDefault", false);
@@ -153,6 +156,10 @@ public class CdsUserSettings {
         defaults.put("cds.workspaceSymbols.caseInsensitive", false);
         defaults.put("cds.workspaceSymbols.lazy", false);
         defaults.put("cds.workspaceValidationMode", "ActiveEditorOnly");
-        return defaults;
+        DEFAULTS = Collections.unmodifiableMap(defaults);
+    }
+
+    public static Map<String, Object> getDefaults() {
+        return DEFAULTS;
     }
 }
