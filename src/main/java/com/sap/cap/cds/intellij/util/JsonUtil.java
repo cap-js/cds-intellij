@@ -31,7 +31,7 @@ public class JsonUtil {
     }
 
     public static String toSortedString(JSONObject jsonObject) {
-        String string = jsonObject.toString(StringUtil.JSON_INDENT);
+        String string = jsonObject.toString(JsonUtil.JSON_INDENT);
         if (string.trim().matches("\\{\\s*[^,]*}")) {
             return string;
         }
@@ -113,4 +113,6 @@ public class JsonUtil {
             }
         }
     }
+
+    public static final int JSON_INDENT = 2;
 }
