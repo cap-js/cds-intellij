@@ -174,7 +174,6 @@ The set of features will grow with future releases, aligned with the development
 
 
     <change-notes><![CDATA[
-<h2>Changes since version 1.6.0</h2>
 <h3>Added</h3>
 <ul>
     <li>Support for <i>Community Editions</i> of IntelliJ IDEs
@@ -201,7 +200,7 @@ The set of features will grow with future releases, aligned with the development
 <h3>Changed</h3>
 <ul>
     <li>Search suitable Node.js interpreter on first start of plugin
-    <li>include @sap/cds-lsp 9.1.2 with the following changes since 9.1.0:
+    <li>include @sap/cds-lsp 9.2.1 with the following changes since 9.1.0:
         <ul>
             <li>Formatting:
                 <ul>
@@ -210,6 +209,10 @@ The set of features will grow with future releases, aligned with the development
                 </ul>
             </li>
             <li>Maximum log-file size can now be increased to at most 1 GB (default limit unchanged at 10 MB)
+            <li>Performance optimizations when updating dependency net of CDS file dependencies</li>
+            <li>fix: Using paths which end with a folder name were not resolved correctly</li>
+            <li>fix: Formatter support for <code>==</code> operator</li>
+            <li>fix: Goto implementation for NodeJS services, entities, events, actions and functions, services and entities for Java</li>
         </ul>
     </li>
     <li>Automatically fix invalid Node.js interpreter path in settings on plugin start or when opening settings
