@@ -57,7 +57,15 @@ Known issues/open points:
 
 #### Adjust the Code Style
 
+Changes in the Settings UI will synchronized with `.cdsprettier.json` in the workspace.
+
 ![Demo of Code Style Settings](.assets/code_style_settings.png)
+
+#### Configure the CDS Language Server
+
+Changes in the Settings UI will synchronized with `.cds-lsp/.settings.json` in the workspace.
+
+![Demo of CDS Language Server Settings](.assets/cds_language_server_settings.png)
 
 ### Upcoming
 
