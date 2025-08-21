@@ -3,6 +3,7 @@
 .intellijPlatform
 .kotlin
 .qodana
+.vscode
 
 local.properties
 
