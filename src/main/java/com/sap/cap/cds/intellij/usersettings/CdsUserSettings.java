@@ -113,7 +113,7 @@ public class CdsUserSettings {
 
     public Map<String, Object> getSettings() {
         if (settings == null) {
-            settings = getDefaults();
+            settings = new HashMap<>(getDefaults());
         }
         return settings;
     }
