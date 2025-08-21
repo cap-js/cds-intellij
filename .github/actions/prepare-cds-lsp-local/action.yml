@@ -42,7 +42,7 @@ runs:
     - uses: actions/setup-node@v4
       if: env.will_prepare == 'true'
       with:
-        node-version: 20
+        node-version: 22
 
     - shell: bash
       if: env.will_prepare == 'true'
