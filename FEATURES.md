@@ -74,11 +74,3 @@ Changes in the Settings UI will synchronized with `.cdsprettier.json` in the wor
 Changes in the Settings UI will synchronized with `.cds-lsp/.settings.json` in the workspace.
 
 ![Demo of CDS Language Server Settings](.assets/cds_language_server_settings.png)
-
-### Upcoming
-
-Depending on the LSP4IJ development roadmap, we expect to see more features available in the near future.
-These will enable *SAP CDS Language Support for IntelliJ* to provide:
-
-- Type generation with [CDS Typer](https://cap.cloud.sap/docs/tools/cds-typer) on save
-- and more…
