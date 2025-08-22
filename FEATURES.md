@@ -33,12 +33,6 @@ CDS Language Support for IntelliJ offers the following features based on the LSP
 | Outline              | ✔              |      ?      |       ✔        | textDocument/documentSymbol                         | both flat and hierarchical (IJ seems to only support hierarchical)                             | ✓ (hierarchical)                                         |
 | Workspace Symbols    | ✔              |      –      |       ✔        | workspace/symbol                                    | Workspace-wide symbol search                                                                   | ❌ (not displayed)                                        |
 
-Known issues/open points:
-
-- Maintain Translation quickfix works in principle, but properties file is not saved and thus LSP won't get updated and still suggests quickfix
-- Range Formatting not correctly treating first line of selection
-- Document Highlights not shown reliably
-
 ### Examples
 
 #### Syntax Highlighting, Code Completion, Diagnostics
@@ -76,3 +70,9 @@ Changes in the Settings UI will synchronized with `.cdsprettier.json` in the wor
 Changes in the Settings UI will synchronized with `.cds-lsp/.settings.json` in the workspace.
 
 ![Demo of CDS Language Server Settings](.assets/cds_language_server_settings.png)
+
+## Known Issues
+
+- Maintain Translation quickfix works in principle, but properties file is not saved and thus LSP won't get updated and still suggests quickfix
+- Range Formatting not correctly treating first line of selection
+- Document Highlights not shown reliably
