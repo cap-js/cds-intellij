@@ -55,13 +55,9 @@ Known issues/open points:
 
 ![Demo of Find References](.assets/find_references.png)
 
-#### Document Formatting: before…
+#### Document Formatting
 
-![Demo of Document Formatting (before)](.assets/document_formatting1.png)
-
-#### … and after
-
-![Demo of Document Formatting (after)](.assets/document_formatting2.png)
+![Demo of Document Formatting](.assets/document_formatting.gif)
 
 #### Adjust the Code Style
 
