@@ -1,33 +1,37 @@
 ## Features
 
-The [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-server-protocol.html#supported-features)
-already enables a set of useful language features:
+CDS Language Support for IntelliJ offers the following features based on the LSP4IJ plugin:
 
-| Feature                  | API Support | Server Support | LSP Request                     | Remarks                                                                                        |
-|--------------------------|:-----------:|:--------------:|---------------------------------|------------------------------------------------------------------------------------------------|
-| Syntax Highlighting      |     ✔✔      |       ✔        | (local, based on TextMate)      | TM Bundle is automatically registered on plugin installation (and disabled on uninstallation). |
-| Code Completion          |     ✔✔      |       ✔        | textDocument/completion         | Completing with global identifiers supported with completionItem/resolve (2024.2)              |
-| Goto Definition          |     ✔✔      |       ✔        | textDocument/definition         |                                                                                                |
-| Hover Documentation      |     ✔✔      |       ✔        | textDocument/hover              |                                                                                                |
-| Document Formatting      |     ✔✔      |       ✔        | textDocument/formatting         |                                                                                                |
-| Diagnostics              |     ✔✔      |       ✔        | textDocument/publishDiagnostics | Problems (errors, warnings).                                                                   |
-| Quick Fixes              |     ✔✔      |       ✔        | textDocument/codeAction         | Translation support only in 2.x                                                                |
-| Intention Actions        |     ✔✔      |       –        | textDocument/codeAction         | E.g. Refactoring or Organize Imports. No server support yet.                                   |
-| Find References          |     ✔✔      |       ✔        | textDocument/references         |                                                                                                |
-| Semantic Tokens          |     ✔✔      |       ✔        | textDocument/semanticTokens     | Improved highlighting: server dynamically assigns token semantics.                             |
-| Document Highlights etc. |     –✔      |       ✔        | (various)                       |                                                                                                |
-| DocumentLinks            |     –✔      |       ✔        |                                 |                                                                                                |
-| AnalyzeDependencies      |     –-      |       ✔        |                                 |                                                                                                |
-| Commands                 |     –-      |       ✔        |                                 |                                                                                                |
-| - Restart LSP            |    –(✔)     |                | via short cut                   |                                                                                                |
-| CodeLens                 |     -✔      |       ✔        |                                 |                                                                                                |
-| Outline                  |     ?✔      |       ✔        | textDocument/symbols            | both flat and hierarchical                                                                     |
-
-Known issues/open points:
-- Workspace Symbols: managed (common.cds) not shown in cap-cloud-samples repo 
-- `.cdsprettier.json` schema registration needed to support code completion in text editor
-- Maintain translation quickfix works in principal, but properties file is not saved and thus LSP won't get updated and still suggest quickfix
-- Change serverId to cap-cds-language-server
+| Feature              | LSP4IJ Support | Server Support | LSP Request                                         | Remarks                                                                                        | Tested Working                                           |
+|----------------------|----------------|:--------------:|-----------------------------------------------------|------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+| Syntax Highlighting  | ✔              |       ✔        | (local, based on TextMate)                          | TM Bundle is automatically registered on plugin installation (and disabled on uninstallation). | ✓                                                        |
+| Code Completion      | ✔              |       ✔        | textDocument/completion                             | Completing with global identifiers supported with completionItem/resolve                       | ✓ local, ❌ global identifiers                            |
+| Goto Definition      | ✔              |       ✔        | textDocument/definition                             |                                                                                                | ✓ *Go declaration or usages*, ❌ *Go to type declaration* |
+| Goto Declaration     | ✔              |       ✔        | textDocument/declaration                            |                                                                                                | ✓                                                        |
+| Goto Implementation  | ✔              |       ✔        | textDocument/implementation                         |                                                                                                | ✓                                                        |
+| Goto Type Definition | ✔              |       ✔        | textDocument/typeDefinition                         |                                                                                                | ❌                                                        |
+| Hover Documentation  | ✔              |       ✔        | textDocument/hover                                  |                                                                                                | ✓                                                        |
+| Signature Help       | ✔              |       ✔        | textDocument/signatureHelp                          | Parameter hints and documentation                                                              | ❌ *(Parameter info)*                                     |
+| Document Formatting  | ✔              |       ✔        | textDocument/formatting                             |                                                                                                | ✓                                                        |
+| Range Formatting     | ✔              |       ✔        | textDocument/rangeFormatting                        | Format selected text ranges                                                                    | ✓                                                        |
+| Diagnostics          | ✔              |       ✔        | textDocument/publishDiagnostics                     | Problems (errors, warnings).                                                                   | ✓                                                        |
+| Quick Fixes          | ✔              |       ✔        | textDocument/codeAction                             |                                                                                                | ✓                                                        |
+| Intention Actions    | ✔              |       –        | textDocument/codeAction                             | E.g. Refactoring or Organize Imports. No server support yet.                                   | n/a                                                      |
+| Find References      | ✔              |       ✔        | textDocument/references                             |                                                                                                | ✓                                                        |
+| Rename Symbol        | ✔              |       ✔        | textDocument/rename                                 | Symbol renaming with validation                                                                | ❌                                                        |
+| Prepare Rename       | ✔              |       ✔        | textDocument/prepareRename                          | Validate rename operation before execution                                                     | ?                                                        |
+| Selection Range      | ✔              |       ✔        | textDocument/selectionRange                         | Smart selection expansion                                                                      | ❌                                                        |
+| Code Folding         | ✔              |       ✔        | textDocument/foldingRange                           | Collapsible code sections                                                                      | ❌                                                        |
+| Call Hierarchy       | ✔              |       ✔        | textDocument/prepareCallHierarchy + callHierarchy/* |                                                                                                | ? (sample source?)                                       |
+| Type Hierarchy       | ✔              |       ✔        | textDocument/prepareTypeHierarchy + typeHierarchy/* |                                                                                                | ? (sample source?)                                       |
+| Semantic Tokens      | ✔              |       ✔        | textDocument/semanticTokens                         |                                                                                                | ?                                                        |
+| Document Highlights  | ✔              |       ✔        | textDocument/documentHighlight                      |                                                                                                | ✓                                                        |
+| DocumentLinks        | ✔              |       ✔        | textDocument/documentLink                           |                                                                                                | ✓                                                        |
+| AnalyzeDependencies  | ✔              |       ✔        |                                                     |                                                                                                | ? (how to trigger?)                                      |
+| Commands             | ✔              |       ✔        |                                                     |                                                                                                | (implicitly tested)                                      |
+| CodeLens             | ✔              |       ✔        | textDocument/codeLens                               |                                                                                                | ❌                                                        |
+| Outline              | ✔              |       ✔        | textDocument/documentSymbol                         | both flat and hierarchical (IJ seems to only support hierarchical)                             | ✓ (hierarchical)                                         |
+| Workspace Symbols    | ✔              |       ✔        | workspace/symbol                                    | Workspace-wide symbol search                                                                   | ❌ (not displayed)                                        |
 
 ### Examples
 
@@ -47,13 +51,13 @@ Known issues/open points:
 
 ![Demo of Find References](.assets/find_references.png)
 
-#### Document Formatting: before…
+#### Outline
 
-![Demo of Document Formatting (before)](.assets/document_formatting1.png)
+![Demo of Outline](.assets/outline.png)
 
-#### … and after
+#### Document Formatting
 
-![Demo of Document Formatting (after)](.assets/document_formatting2.png)
+![Demo of Document Formatting](.assets/document_formatting.gif)
 
 #### Adjust the Code Style
 
@@ -67,10 +71,8 @@ Changes in the Settings UI will synchronized with `.cds-lsp/.settings.json` in t
 
 ![Demo of CDS Language Server Settings](.assets/cds_language_server_settings.png)
 
-### Upcoming
+## Known Issues
 
-Depending on the LSP4IJ development roadmap, we expect to see more features available in the near future.
-These will enable *SAP CDS Language Support for IntelliJ* to provide:
-
-- Type generation with [CDS Typer](https://cap.cloud.sap/docs/tools/cds-typer) on save
-- and more…
+- Maintain Translation quickfix works in principle, but properties file is not saved and thus LSP won't get updated and still suggests quickfix
+- Range Formatting not correctly treating first line of selection
+- Document Highlights not shown reliably
