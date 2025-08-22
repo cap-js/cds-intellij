@@ -1,32 +1,33 @@
 ## Features
 
-The [IntelliJ LSP API](https://plugins.jetbrains.com/docs/intellij/language-server-protocol.html#supported-features)
-already enables a set of useful language features:
+CDS Language Support for IntelliJ offers the following features based on the LSP4IJ plugin:
 
-| Feature                  | API Support | Server Support | LSP Request                     | Remarks                                                                                        |
-|--------------------------|:-----------:|:--------------:|---------------------------------|------------------------------------------------------------------------------------------------|
-| Syntax Highlighting      |     ✔✔      |       ✔        | (local, based on TextMate)      | TM Bundle is automatically registered on plugin installation (and disabled on uninstallation). |
-| Code Completion          |     ✔✔      |       ✔        | textDocument/completion         | Completing with global identifiers supported with completionItem/resolve (2024.2)              |
-| Goto Definition          |     ✔✔      |       ✔        | textDocument/definition         |                                                                                                |
-| Hover Documentation      |     ✔✔      |       ✔        | textDocument/hover              |                                                                                                |
-| Document Formatting      |     ✔✔      |       ✔        | textDocument/formatting         |                                                                                                |
-| Diagnostics              |     ✔✔      |       ✔        | textDocument/publishDiagnostics | Problems (errors, warnings).                                                                   |
-| Quick Fixes              |     ✔✔      |       ✔        | textDocument/codeAction         | Translation support only in 2.x                                                                |
-| Intention Actions        |     ✔✔      |       –        | textDocument/codeAction         | E.g. Refactoring or Organize Imports. No server support yet.                                   |
-| Find References          |     ✔✔      |       ✔        | textDocument/references         |                                                                                                |
-| Semantic Tokens          |     ✔✔      |       ✔        | textDocument/semanticTokens     | Improved highlighting: server dynamically assigns token semantics.                             |
-| Document Highlights etc. |     –✔      |       ✔        | (various)                       |                                                                                                |
-| DocumentLinks            |     –✔      |       ✔        |                                 |                                                                                                |
-| AnalyzeDependencies      |     –-      |       ✔        |                                 |                                                                                                |
-| Commands                 |     –-      |       ✔        |                                 |                                                                                                |
-| - Restart LSP            |    –(✔)     |                | via short cut                   |                                                                                                |
-| CodeLens                 |     -✔      |       ✔        |                                 |                                                                                                |
-| Outline                  |     ?✔      |       ✔        | textDocument/symbols            | both flat and hierarchical                                                                     |
+| Feature                  | LSP4IJ Support | API Support | Server Support | LSP Request                     | Remarks                                                                                        |
+|--------------------------|----------------|:-----------:|:--------------:|---------------------------------|------------------------------------------------------------------------------------------------|
+| Syntax Highlighting      |                |     ✔      |       ✔        | (local, based on TextMate)      | TM Bundle is automatically registered on plugin installation (and disabled on uninstallation). |
+| Code Completion          |                |     ✔      |       ✔        | textDocument/completion         | Completing with global identifiers supported with completionItem/resolve (2024.2)              |
+| Goto Definition          |                |     ✔      |       ✔        | textDocument/definition         |                                                                                                |
+| Hover Documentation      |                |     ✔      |       ✔        | textDocument/hover              |                                                                                                |
+| Document Formatting      |                |     ✔      |       ✔        | textDocument/formatting         |                                                                                                |
+| Diagnostics              |                |     ✔      |       ✔        | textDocument/publishDiagnostics | Problems (errors, warnings).                                                                   |
+| Quick Fixes              |                |     ✔      |       ✔        | textDocument/codeAction         | Translation support only in 2.x                                                                |
+| Intention Actions        |                |     ✔      |       –        | textDocument/codeAction         | E.g. Refactoring or Organize Imports. No server support yet.                                   |
+| Find References          |                |     ✔      |       ✔        | textDocument/references         |                                                                                                |
+| Semantic Tokens          |                |     ✔      |       ✔        | textDocument/semanticTokens     | Improved highlighting: server dynamically assigns token semantics.                             |
+| Document Highlights etc. |                |     –      |       ✔        | (various)                       |                                                                                                |
+| DocumentLinks            |                |     –      |       ✔        |                                 |                                                                                                |
+| AnalyzeDependencies      |                |     –      |       ✔        |                                 |                                                                                                |
+| Commands                 |                |     –      |       ✔        |                                 |                                                                                                |
+| - Restart LSP            |                |     –      |                | via short cut                   |                                                                                                |
+| CodeLens                 |                |     ?      |       ✔        |                                 |                                                                                                |
+| Outline                  |                |     ?      |       ✔        | textDocument/symbols            | both flat and hierarchical                                                                     |
 
 Known issues/open points:
-- Workspace Symbols: managed (common.cds) not shown in cap-cloud-samples repo 
+
+- Workspace Symbols: managed (common.cds) not shown in cap-cloud-samples repo
 - `.cdsprettier.json` schema registration needed to support code completion in text editor
-- Maintain translation quickfix works in principal, but properties file is not saved and thus LSP won't get updated and still suggest quickfix
+- Maintain translation quickfix works in principal, but properties file is not saved and thus LSP won't get updated and
+  still suggest quickfix
 - Change serverId to cap-cds-language-server
 
 ### Examples
