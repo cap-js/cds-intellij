@@ -35,11 +35,7 @@ CDS Language Support for IntelliJ offers the following features based on the LSP
 
 Known issues/open points:
 
-- Workspace Symbols: managed (common.cds) not shown in cap-cloud-samples repo
-- `.cdsprettier.json` schema registration needed to support code completion in text editor
-- Maintain translation quickfix works in principal, but properties file is not saved and thus LSP won't get updated and
-  still suggest quickfix
-- Change serverId to cap-cds-language-server
+- Maintain translation quickfix works in principle, but properties file is not saved and thus LSP won't get updated and still suggests quickfix
 
 ### Examples
 
