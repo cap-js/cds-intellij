@@ -163,53 +163,65 @@ tasks {
 
 tasks.register('syncSandboxIdeConf', Copy) {
     onlyIf { hasLocalProperties.get() }
-    into "${tasks.named('prepareSandbox_runWebStorm').map { it.defaultDestinationDirectory }.get().get()}/../config"
+    outputs.upToDateWhen { false } // Always run
+    def fromDir = project.findProperty('local.ideConfDir')
+    def toDir = "${tasks.named('prepareSandbox_runWebStorm').map { it.defaultDestinationDirectory }.get().get()}/../config_runWebStorm"
+    into toDir
+    doFirst {
+        println "Syncing from [${fromDir}] to [${toDir}]"
+    }
     into('keymaps') {
-        from "${project.findProperty('local.ideConfDir')}/keymaps"
+        from "${fromDir}/keymaps"
     }
     into('options') {
-        from "${project.findProperty('local.ideConfDir')}/options/ide.general.xml"
+        from "${fromDir}/options/ide.general.xml"
     }
     into('options') {
-        from "${project.findProperty('local.ideConfDir')}/options/laf.xml"
+        from "${fromDir}/options/laf.xml"
     }
     into('options') {
-        from "${project.findProperty('local.ideConfDir')}/options/trusted-paths.xml"
+        from "${fromDir}/options/trusted-paths.xml"
     }
     into('options/linux') {
-        from "${project.findProperty('local.ideConfDir')}/options/linux"
+        from "${fromDir}/options/linux"
     }
     into('options/mac') {
-        from "${project.findProperty('local.ideConfDir')}/options/mac"
+        from "${fromDir}/options/mac"
     }
     into('options/windows') {
-        from "${project.findProperty('local.ideConfDir')}/options/windows"
+        from "${fromDir}/options/windows"
     }
 }
 
 tasks.register('syncSandboxIdeConfIC', Copy) {
     onlyIf { hasLocalProperties.get() }
-    into "${tasks.named('prepareSandbox_runIC').map { it.defaultDestinationDirectory }.get().get()}/../config"
+    outputs.upToDateWhen { false } // Always run
+    def fromDir = project.findProperty('local.ideConfDirIC')
+    def toDir = "${tasks.named('prepareSandbox_runIC').map { it.defaultDestinationDirectory }.get().get()}/../config_runIC"
+    into toDir
+    doFirst {
+        println "Syncing from [${fromDir}] to [${toDir}]"
+    }
     into('keymaps') {
-        from "${project.findProperty('local.ideConfDirIC')}/keymaps"
+        from "${fromDir}/keymaps"
     }
     into('options') {
-        from "${project.findProperty('local.ideConfDirIC')}/options/ide.general.xml"
+        from "${fromDir}/options/ide.general.xml"
     }
     into('options') {
-        from "${project.findProperty('local.ideConfDirIC')}/options/laf.xml"
+        from "${fromDir}/options/laf.xml"
     }
     into('options') {
-        from "${project.findProperty('local.ideConfDirIC')}/options/trusted-paths.xml"
+        from "${fromDir}/options/trusted-paths.xml"
     }
     into('options/linux') {
-        from "${project.findProperty('local.ideConfDirIC')}/options/linux"
+        from "${fromDir}/options/linux"
     }
     into('options/mac') {
-        from "${project.findProperty('local.ideConfDirIC')}/options/mac"
+        from "${fromDir}/options/mac"
     }
     into('options/windows') {
-        from "${project.findProperty('local.ideConfDirIC')}/options/windows"
+        from "${fromDir}/options/windows"
     }
 }
 
