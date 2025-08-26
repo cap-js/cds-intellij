@@ -67,7 +67,7 @@ SAP CDS Language Support for IntelliJ is based on the following components:
 |-------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|------------------------|
 | [CDS Language Server](https://www.npmjs.com/package/@sap/cds-lsp) (cds-lsp, running on Node.js) | SAP CDS Language Support                                                         | SAP                    |
 | CDS TextMate bundle                                                                             | CDS syntax highlighting                                                          | (shipped with cds-lsp) |
-| [LSP4IJ extension](https://plugins.jetbrains.com/plugin/23257-lsp4ij)                           | [LSP](https://microsoft.github.io/language-server-protocol/) support in IntelliJ | Red Hat                |
+| [LSP4IJ plugin](https://plugins.jetbrains.com/plugin/23257-lsp4ij)                              | [LSP](https://microsoft.github.io/language-server-protocol/) support in IntelliJ | Red Hat                |
 
 
 ### Known Issues
@@ -83,14 +83,18 @@ SAP CDS Language Support for IntelliJ is based on the following components:
 ### Logs
 
 To aid support, please include relevant log files in your report.
-Depending on the kind of problem encountered, you may want to include the logs from the **IDE**, the **LSP client**, the **Plugin**, the **client–server (stdio) communication**, and/or the **LSP server**.
+Depending on the kind of problem encountered, you may want to include the logs from the **IDE**, the **LSP4IJ plugin**, the **CDS Language Support Plugin**, the **LSP client–server (stdio) communication**, and/or the **LSP server**.
 
 #### IDE Logs
 
 Logs produced by the IDE can be found by opening the _Help_ menu and selecting *Show Log in <platform-dependent tool>*.
 See [Locating IDE log files](https://intellij-support.jetbrains.com/hc/en-us/articles/207241085-Locating-IDE-log-files) for more information.
 
-#### LSP Client and Plugin Logs
+#### LSP4IJ Plugin Logs and Stdio Communication
+
+To include any errors occurring in the LSP4IJ Plugin in the IDE logs, click *View > Tool Windows > Language Servers*. Click on *CDS Language Server*. On the right-hand side, open the *Debug* tab on the right and select *Error reporting: In log*. After selecting *Trace: Verbose*, you'll find the stdio communication after clicking on the language-server instance (below 'CDS Language Server' on the left) and opening the *Traces* tab on the right.
+
+#### CDS Language Support Plugin Logs
 
 To include debug logs produced by the SAP CDS Language Support for IntelliJ plugin, you need to enable the corresponding settings in the IDE:
 - Open the _Help_ menu and select _Diagnostic Tools > Debug Log Settings…_.
@@ -120,7 +124,7 @@ DEBUG=cds-lsp
 Restart the IDE to apply the changes.
 
 This setting will enable:
-- logging of the **stdio communication** between the LSP client and server (i.e., the protocol messages),
+- logging of the **stdio communication** between the LSP client and server (i.e., the LSP messages),
 - **tracing** for the LSP server (see below),
 - Node.js **debugging** for the LSP server, allowing you to attach a debugger.
 
