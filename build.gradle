@@ -51,7 +51,7 @@ dependencies {
                 'org.jetbrains.plugins.textmate'
         ])
 
-        plugin("com.redhat.devtools.lsp4ij:0.14.2")
+        plugin("com.redhat.devtools.lsp4ij:0.15.0")
 
         instrumentationTools()
         pluginVerifier()
