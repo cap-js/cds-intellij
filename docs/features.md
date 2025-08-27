@@ -17,10 +17,10 @@ CDS Language Support for IntelliJ offers the following features based on the LSP
 | Selection Range      | ✔              |  ✔             | textDocument/selectionRange                         | Smart selection expansion                                                                      | ❌                                                       |
 | Semantic Tokens      | ✔              |  ✔             | textDocument/semanticTokens                         |                                                                                                | ?                                                        |
 | Document Highlights  | ✔              |  ✔             | textDocument/documentHighlight                      |                                                                                                | ✓                                                        |
-| DocumentLinks        | ✔              |  ✔             | textDocument/documentLink                           |                                                                                                | ✓                                                        |
+| Document Links       | ✔              |  ✔             | textDocument/documentLink                           |                                                                                                | ✓                                                        |
 | AnalyzeDependencies  | ✔              |  ✔             |                                                     | Statistics for imported path                                                                   | ✓                                                        |
 | Commands             | ✔              |  ✔             | workspace/executeCommand                            |                                                                                                | (implicitly tested)                                      |
-| CodeLens             | ✔              | (✔)            | textDocument/codeLens                               | Only used to display statistics                                                                | ✓                                                        |
+| Code Lens            | ✔              | (✔)            | textDocument/codeLens                               | Only used to display statistics                                                                | ✓                                                        |
 | Outline              | ✔              |  ✔             | textDocument/documentSymbol                         | both flat and hierarchical (IJ seems to only support hierarchical)                             | ✓ (hierarchical)                                         |
 | Workspace Symbols    | ✔              |  ✔             | workspace/symbol                                    | Workspace-wide symbol search                                                                   | ✓                                                        |
 
@@ -29,6 +29,16 @@ CDS Language Support for IntelliJ offers the following features based on the LSP
 #### Syntax Highlighting, Code Completion, Diagnostics
 
 ![Demo of Syntax Highlighting, Code Completion, Diagnostics](.assets/syntax+completion+diagnostics.png)
+
+#### Goto Definition
+
+![Demo of Goto Definition](.assets/goto_definition.gif)
+
+#### Goto Implementation
+
+Navigate to the custom Node.js service implementation:
+
+![Demo of Goto Implementation](.assets/goto_implementation.gif)
 
 #### Quick Fix
 
