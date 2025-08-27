@@ -177,33 +177,9 @@
 
 
     <change-notes><![CDATA[
-<h3>Added</h3>
+<h3>Changed</h3>
 <ul>
-    <li>Support for <i>Community Editions</i> of IntelliJ IDEs
-        <br/>(The plugin is now based on the <i>LSP4IJ</i> plugin, which therefore gets installed in addition.)
-    <li>IDE features unlocked via LSP4IJ 0.15.0:
-    <ul>
-        <li>Go to Declaration and Implementation (navigate to symbol declarations and implementations)</li>
-        <li>Highlight Usages in File (highlights symbol usages)</li>
-        <li>Structure Tool Window (populates and updates the file structure panel)</li>
-        <li>On-the-fly Code Formatting (format block when finishing it with <code>}</code> or <code>;</code>)</li>
-        <li>Format Selected Code (range formatting)</li>
-        <li>Document Links (clickable links in documents)</li>
-        <li>Semantic Tokens (enhanced syntax highlighting)</li>
-        <li>Go to Symbol (find/list symbols in workspace)</li>
-        <li>Code Lens (inline statistics and information)</li>
-        <li>Dependency Analysis (statistics for imported paths)</li>
-    </ul>
-    <li>Plugin settings:
-        <ul>
-            <li>User settings for language server
-            <li>Node.js interpreter path (to modify result of automatic search)
-            <li>Additional environment variables for CDS Language Server
-        </ul>
-    </li>
-    <li>Intention to convert HTTP files to IntelliJ-compatible format (useful for .http files created with <code>cds add http</code>)
-    <li>Code-Style setting to put multiple parenthesized arguments or filters on a new line
-    <li>Actions to open or copy the paths of the log files for LSP stdio and server tracing, respectively
+    <li>Upgrade LSP4IJ to 0.15.0, fixing Workspace Symbols</li>
 </ul>
 ]]></change-notes>
 </idea-plugin>
