@@ -14,7 +14,6 @@ public class TestUtil {
     }
 
     public static void checkDiagnostics(CodeInsightTestFixtureImpl fixture, ExpectedHighlightingData expectation) {
-        // TODO: re-enable: see https://github.com/redhat-developer/lsp4ij/issues/949
         fixture.doHighlighting();
         fixture.collectAndCheckHighlighting(expectation);
     }
