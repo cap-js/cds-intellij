@@ -14,8 +14,12 @@
     <li>Document and range formatting</li>
     <li>Diagnostics (errors and warnings)</li>
     <li>Quick fixes</li>
-</ul>
-The set of features will grow with future releases, aligned with the development of the JetBrains IntelliJ LSP API.]]></description>
+    <li>Document links</li>
+    <li>Semantic Tokens</li>
+    <li>Workspace symbols</li>
+    <li>Code lens</li>
+    <li>Dependency analysis</li>
+</ul>]]></description>
 
     <depends>com.intellij.modules.platform</depends>
 <!--    <depends>com.intellij.modules.ultimate</depends>-->
@@ -182,9 +186,13 @@ The set of features will grow with future releases, aligned with the development
         <li>Go to Declaration and Implementation (navigate to symbol declarations and implementations)</li>
         <li>Highlight Usages in File (highlights symbol usages)</li>
         <li>Structure Tool Window (populates and updates the file structure panel)</li>
-        <li>Go to Symbol (find/list symbols in workspace)</li>
         <li>On-the-fly Code Formatting (format block when finishing it with <code>}</code> or <code>;</code>)</li>
         <li>Format Selected Code (range formatting)</li>
+        <li>Document Links (clickable links in documents)</li>
+        <li>Semantic Tokens (enhanced syntax highlighting)</li>
+        <li>Go to Symbol (find/list symbols in workspace)</li>
+        <li>Code Lens (inline statistics and information)</li>
+        <li>Dependency Analysis (statistics for imported paths)</li>
     </ul>
     <li>Plugin settings:
         <ul>
