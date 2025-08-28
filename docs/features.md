@@ -28,49 +28,49 @@ CDS Language Support for IntelliJ offers the following features based on the LSP
 
 #### Syntax Highlighting, Code Completion, Diagnostics
 
-![Demo of Syntax Highlighting, Code Completion, Diagnostics](.assets/syntax+completion+diagnostics.png)
+![Demo of Syntax Highlighting, Code Completion, Diagnostics](../.assets/syntax+completion+diagnostics.png)
 
 #### Goto Definition
 
-![Demo of Goto Definition](.assets/goto_definition.gif)
+![Demo of Goto Definition](../.assets/goto_definition.gif)
 
 #### Goto Implementation
 
 Navigate to the custom Node.js service implementation:
 
-![Demo of Goto Implementation](.assets/goto_implementation.gif)
+![Demo of Goto Implementation](../.assets/goto_implementation.gif)
 
 #### Quick Fix
 
-![Demo of Quick Fix](.assets/quick_fix.png)
+![Demo of Quick Fix](../.assets/quick_fix.png)
 
 #### Hover Documentation
 
-![Demo of Hover Documentation](.assets/hover_documentation.png)
+![Demo of Hover Documentation](../.assets/hover_documentation.png)
 
 #### Find References
 
-![Demo of Find References](.assets/find_references.png)
+![Demo of Find References](../.assets/find_references.png)
 
 #### Outline
 
-![Demo of Outline](.assets/outline.png)
+![Demo of Outline](../.assets/outline.png)
 
 #### Document Formatting
 
-![Demo of Document Formatting](.assets/document_formatting.gif)
+![Demo of Document Formatting](../.assets/document_formatting.gif)
 
 #### Adjust the Code Style
 
 Changes in the Settings UI will synchronized with `.cdsprettier.json` in the workspace.
 
-![Demo of Code Style Settings](.assets/code_style_settings.png)
+![Demo of Code Style Settings](../.assets/code_style_settings.png)
 
 #### Configure the CDS Language Server
 
 Changes in the Settings UI will synchronized with `.cds-lsp/.settings.json` in the workspace.
 
-![Demo of CDS Language Server Settings](.assets/cds_language_server_settings.png)
+![Demo of CDS Language Server Settings](../.assets/cds_language_server_settings.png)
 
 ## Known Issues
 
