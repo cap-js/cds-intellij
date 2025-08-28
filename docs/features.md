@@ -19,9 +19,9 @@ CDS Language Support for IntelliJ offers the following features based on the LSP
 | Document Highlights | ✔              |       ✔        | textDocument/documentHighlight   |                                                                                                | ✓                             |
 | Document Links      | ✔              |       ✔        | textDocument/documentLink        |                                                                                                | ✓                             |
 | AnalyzeDependencies | ✔              |       ✔        |                                  | Statistics for imported path                                                                   | ✓                             |
-| Commands            | ✔              |       ✔        | workspace/executeCommand         |                                                                                                | (implicitly tested)           |
+| Commands            | ✔              |       ✔        | workspace/executeCommand         |                                                                                                | ✓ (implicitly)                |
 | Code Lens           | ✔              |      (✔)       | textDocument/codeLens            | Only used to display statistics                                                                | ✓                             |
-| Outline             | ✔              |       ✔        | textDocument/documentSymbol      | both flat and hierarchical (IJ seems to only support hierarchical)                             | ✓ (hierarchical)              |
+| Outline             | ✔              |       ✔        | textDocument/documentSymbol      | both flat and hierarchical (IJ seems to only support hierarchical)                             | ✓ hierarchical                |
 | Workspace Symbols   | ✔              |       ✔        | workspace/symbol                 | Workspace-wide symbol search                                                                   | ✓                             |
 
 ### Examples
