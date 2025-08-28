@@ -26,6 +26,10 @@ CDS Language Support for IntelliJ offers the following features based on the LSP
 
 ### Examples
 
+#### Document Highlights, Hover Documentation, Outline
+
+![Demo of Document Highlights, Hover Documentation, Outline](../.assets/highlights+hover+outline.png)
+
 #### Syntax Highlighting, Code Completion, Diagnostics
 
 ![Demo of Syntax Highlighting, Code Completion, Diagnostics](../.assets/syntax+completion+diagnostics.png)
