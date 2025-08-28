@@ -6,17 +6,20 @@
 <ul>
     <li>Syntax highlighting</li>
     <li>Code completion</li>
-    <li>Goto definition</li>
+    <li>Go to definition, declaration, and implementation</li>
     <li>Find references</li>
     <li>Highlight usages in file</li>
     <li>Structure tool window (Outline)</li>
-    <li>Navigate Symbol... (symbols in workspace)</li>
     <li>Hover documentation</li>
-    <li>Document formatting</li>
-    <li>Diagnostics</li>
+    <li>Document and range formatting</li>
+    <li>Diagnostics (errors and warnings)</li>
     <li>Quick fixes</li>
-</ul>
-The set of features will grow with future releases, aligned with the development of the JetBrains IntelliJ LSP API.]]></description>
+    <li>Document links</li>
+    <li>Semantic Tokens</li>
+    <li>Workspace symbols</li>
+    <li>Code lens</li>
+    <li>Dependency analysis</li>
+</ul>]]></description>
 
     <depends>com.intellij.modules.platform</depends>
 <!--    <depends>com.intellij.modules.ultimate</depends>-->
@@ -141,7 +144,7 @@ The set of features will grow with future releases, aligned with the development
         <action id="com.sap.cap.cds.intellij.showLspServerLogs"
                 class="com.sap.cap.cds.intellij.lspServer.ShowLspServerLogsAction"
                 text="Show Log File"
-                description="Finds and opens the most recent CDS LSP server log file.">
+                description="Opens the most recent CDS LSP server log file.">
             <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.lspServer"
                           anchor="first"/>
         </action>
@@ -157,7 +160,7 @@ The set of features will grow with future releases, aligned with the development
         <action id="com.sap.cap.cds.intellij.showStdioLogs"
                 class="com.sap.cap.cds.intellij.lsp.ShowStdioLogsAction"
                 text="Show Log File"
-                description="Finds and opens the stdio log file.">
+                description="Opens the stdio log file.">
             <add-to-group group-id="com.sap.cap.cds.intellij.group.cds.logs.stdio"
                           anchor="first"/>
         </action>
