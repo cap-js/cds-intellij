@@ -70,14 +70,11 @@ SAP CDS Language Support for IntelliJ is based on the following components:
 | [LSP4IJ plugin](https://plugins.jetbrains.com/plugin/23257-lsp4ij)                              | [LSP](https://microsoft.github.io/language-server-protocol/) support in IntelliJ | Red Hat                |
 
 
-### Known Issues
-
-#### Installation and Compatibility
+### Known Compatibility Issues
 
 | Symptom                                                                                        | Solution                                                                                                                                                                                                           |
 |------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | SAP CDS Language Support for IntelliJ is not enabled in the IDE.                               | 1.x versions of the plugin are not compatible with the **free** IntelliJ **Community** Edition. Make sure you are using a version ≥ 2.x of the plugin.                                                             |
-| SAP CDS Language Support for IntelliJ version 7 or 8 cannot be updated to the current version. | The plugin version has been reset to 1.0.0 for the first JetBrains Marketplace release. Uninstall the previous version of the plugin. Install the latest version from the JetBrains Marketplace.                   |
 | CDS file icons are missing and/or no syntax highlighting                                       | Uninstall any previous versions of the plugin *(File > Settings > Plugins)*. Remove the 'cds' TextMate Bundle *(File > Settings > Editor > TextMate Bundles)*. Restart the IDE. Install the latest plugin version. |
 
 ### Logs
