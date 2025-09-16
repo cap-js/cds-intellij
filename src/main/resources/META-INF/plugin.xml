@@ -89,7 +89,7 @@
 
         </server>
 
-        <fileNamePatternMapping patterns="*.cds;*.json"
+        <fileNamePatternMapping patterns="*.cds"
                                 serverId="cds"
                                 languageId="cds"/>
 
