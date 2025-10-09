@@ -51,7 +51,7 @@ dependencies {
                 'org.jetbrains.plugins.textmate'
         ])
 
-        plugin("com.redhat.devtools.lsp4ij:0.17.0")
+        plugin("com.redhat.devtools.lsp4ij:0.17.1-20251009-082654@nightly")
 
         instrumentationTools()
         pluginVerifier()
@@ -102,7 +102,7 @@ intellijPlatformTesting.runIde {
             localPath = project.file(project.findProperty('local.ideDir'))
         }
         task {
-            dependsOn 'copyLsp_runWebStorm', 'syncSandboxIdeConf'
+            dependsOn 'copyLsp_runWebStorm'
         }
     }
     runIC {
@@ -111,7 +111,7 @@ intellijPlatformTesting.runIde {
             localPath = project.file(project.findProperty('local.ideDirIC'))
         }
         task {
-            dependsOn 'copyLsp_runIC', 'syncSandboxIdeConfIC'
+            dependsOn 'copyLsp_runIC'
         }
     }
 }
