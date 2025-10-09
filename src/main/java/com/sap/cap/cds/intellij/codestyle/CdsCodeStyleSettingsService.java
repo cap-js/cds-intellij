@@ -46,7 +46,7 @@ public final class CdsCodeStyleSettingsService extends JsonSettingsService<CdsCo
     }
 
     @Override
-    protected CdsCodeStyleSettings getSettings() {
+    public CdsCodeStyleSettings getSettings() {
         return CodeStyle.getSettings(project).getCustomSettings(CdsCodeStyleSettings.class);
     }
 
