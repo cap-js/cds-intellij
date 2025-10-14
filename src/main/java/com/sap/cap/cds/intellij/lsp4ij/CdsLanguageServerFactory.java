@@ -5,6 +5,7 @@ import com.redhat.devtools.lsp4ij.LanguageServerFactory;
 import com.redhat.devtools.lsp4ij.client.LanguageClientImpl;
 import com.redhat.devtools.lsp4ij.client.features.LSPClientFeatures;
 import com.redhat.devtools.lsp4ij.server.StreamConnectionProvider;
+import com.sap.cap.cds.intellij.lspServer.CdsLspServerDescriptor;
 import org.eclipse.lsp4j.services.LanguageServer;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +13,7 @@ public class CdsLanguageServerFactory implements LanguageServerFactory { // TODO
 
     @Override
     public @NotNull StreamConnectionProvider createConnectionProvider(@NotNull Project project) {
-        return new CdsLanguageServer(project);
+        return new CdsLanguageServer(project, CdsLspServerDescriptor::getServerCommandLine);
     }
 
     @Override // If you need to provide client specific features
