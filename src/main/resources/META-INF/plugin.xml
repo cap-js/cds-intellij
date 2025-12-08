@@ -180,6 +180,7 @@
 <h3>Fixed</h3>
 <ul>
     <li>Fix a race condition that could prevent the language server from starting.</li>
+    <li>Correctly use configured tab size even for the default value (2)</li>
 </ul>
 ]]></change-notes>
 </idea-plugin>
