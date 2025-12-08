@@ -5,7 +5,7 @@ import org.jetbrains.intellij.platform.gradle.tasks.VerifyPluginTask
 
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij.platform' version '2.10.2'
+    id 'org.jetbrains.intellij.platform' version '2.10.5'
     id 'org.jetbrains.kotlin.jvm' version '2.2.21'
 }
 
@@ -37,9 +37,9 @@ dependencies {
     implementation 'org.jetbrains:annotations:26.0.2-1'
     implementation 'org.json:json:20250517'
     implementation 'org.apache.maven:maven-artifact:3.9.11'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.0.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.0.1'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.1'
 
     intellijPlatform {
         String type = project.findProperty('platformType')
