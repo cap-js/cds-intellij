@@ -39,7 +39,7 @@
       "defaultRegistryUrlTemplate": "https://plugins.jetbrains.com/api/plugins/23257/updates",
       "format": "json",
       "transformTemplates": [
-        "{\"releases\": $map($$, function($v) { {\"version\": $v.version, \"releaseDate\": $v.date} })}"
+        "{\"releases\": $map($$, function($v) { {\"version\": $v.version, \"releaseDate\": $v.cdate} })}"
       ]
     }
   },
