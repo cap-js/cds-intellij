@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Reset change-notes in plugin.xml after release
-# Usage: ./scripts/reset-changelog.sh
+# Usage: reset-changelog.sh
 
 PLUGIN_XML="src/main/resources/META-INF/plugin.xml"
 

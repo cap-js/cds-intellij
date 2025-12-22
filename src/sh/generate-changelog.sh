@@ -2,7 +2,7 @@
 set -eo pipefail  # Removed -u to simplify array handling
 
 # Generate changelog HTML from conventional commits for plugin.xml
-# Usage: ./scripts/generate-changelog.sh [from-ref] [to-ref]
+# Usage: generate-changelog.sh [from-ref] [to-ref]
 #   from-ref: Start reference (default: last tag)
 #   to-ref: End reference (default: HEAD)
 
