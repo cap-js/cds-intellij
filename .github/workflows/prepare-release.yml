@@ -25,6 +25,10 @@ on:
           - 'major'
         default: 'auto'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   prepare:
     runs-on: ubuntu-latest
