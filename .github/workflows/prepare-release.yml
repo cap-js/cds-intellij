@@ -91,7 +91,7 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: release/v${{ steps.new_version.outputs.version }}
+          branch: prepare-release/v${{ steps.new_version.outputs.version }}
           title: 'chore(release): bump version to ${{ steps.new_version.outputs.version }}'
           body: |
             **Version:** ${{ steps.versions.outputs.current_plugin }} → ${{ steps.new_version.outputs.version }} (bump: ${{ steps.new_version.outputs.bump_level }})
