@@ -89,13 +89,16 @@ if [[ ${#commits_added[@]} -gt 0 ]]; then
   output+="</ul>"$'\n'
 fi
 
+# Always show Changed section (includes manual lsp4ij upgrade placeholder)
+has_content=true
+output+="<h4>Changed</h4>"$'\n'
+output+="<ul>"$'\n'
+# Placeholder for manual lsp4ij upgrade entry
+output+="    <!-- INSERT_LSP4IJ_CHANGES_HERE - Example: Upgrade LSP4IJ to X.Y.Z, fixing <feature> -->"$'\n'
 if [[ ${#commits_changed[@]} -gt 0 ]]; then
-  has_content=true
-  output+="<h4>Changed</h4>"$'\n'
-  output+="<ul>"$'\n'
   output_messages commits_changed
-  output+="</ul>"$'\n'
 fi
+output+="</ul>"$'\n'
 
 if [[ ${#commits_fixed[@]} -gt 0 ]]; then
   has_content=true
