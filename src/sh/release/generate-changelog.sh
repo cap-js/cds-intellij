@@ -57,6 +57,7 @@ while IFS= read -r line; do
 done < <(git log --oneline --no-merges --format="%s" "$FROM_REF..$TO_REF")
 
 # Generate HTML output - only show non-empty sections
+output=""
 has_content=false
 
 # Helper to output messages from an array
@@ -73,38 +74,44 @@ output_messages() {
     # Capitalize first letter
     clean_msg="$(echo "${clean_msg:0:1}" | tr '[:lower:]' '[:upper:]')${clean_msg:1}"
     
-    echo "    <li>$clean_msg</li>"
+    output+="    <li>$clean_msg</li>"$'\n'
   done
 }
 
 # Output sections in order: Added, Changed, Fixed
 if [[ ${#commits_added[@]} -gt 0 ]]; then
   has_content=true
-  echo "<h4>Added</h4>"
-  echo "<ul>"
+  output+="<h4>Added</h4>"$'\n'
+  output+="<ul>"$'\n'
   output_messages commits_added
-  echo "</ul>"
+  output+="</ul>"$'\n'
 fi
 
 if [[ ${#commits_changed[@]} -gt 0 ]]; then
   has_content=true
-  echo "<h4>Changed</h4>"
-  echo "<ul>"
+  output+="<h4>Changed</h4>"$'\n'
+  output+="<ul>"$'\n'
   output_messages commits_changed
-  echo "</ul>"
+  output+="</ul>"$'\n'
 fi
 
 if [[ ${#commits_fixed[@]} -gt 0 ]]; then
   has_content=true
-  echo "<h4>Fixed</h4>"
-  echo "<ul>"
+  output+="<h4>Fixed</h4>"$'\n'
+  output+="<ul>"$'\n'
   output_messages commits_fixed
-  echo "</ul>"
+  output+="</ul>"$'\n'
 fi
 
 if [[ "$has_content" == "false" ]]; then
-  echo "<p><em>No user-facing changes in this range.</em></p>"
+  output+="<p><em>No user-facing changes in this range.</em></p>"$'\n'
 fi
 
 # Add footer note
-echo "<p><em>For details see the <a href=\"https://github.com/cap-js/cds-intellij/compare/$FROM_REF...$TO_REF\">full changelog</a></em></p>"
+output+="<p><em>For details see the <a href=\"https://github.com/cap-js/cds-intellij/compare/$FROM_REF...$TO_REF\">full changelog</a></em></p>"$'\n'
+
+{
+  echo "changelog<<EOF"
+  echo -n "$output"
+  echo "EOF"
+} >> "$GITHUB_OUTPUT"
