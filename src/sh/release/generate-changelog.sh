@@ -2,12 +2,14 @@
 set -eo pipefail  # Removed -u to simplify array handling
 
 # Generate changelog HTML from conventional commits for plugin.xml
-# Usage: generate-changelog.sh [from-ref] [to-ref]
+# Usage: generate-changelog.sh [from-ref] [to-ref] [to-version]
 #   from-ref: Start reference (default: last tag)
 #   to-ref: End reference (default: HEAD)
+#   to-version: Target version for compare link (default: to-ref)
 
 FROM_REF="${1:-}"
 TO_REF="${2:-HEAD}"
+TO_VERSION="${3:-$TO_REF}"
 
 # Find last tag if not specified
 if [[ -z "$FROM_REF" ]]; then
@@ -108,7 +110,7 @@ if [[ "$has_content" == "false" ]]; then
 fi
 
 # Add footer note
-output+="<p><em>For details see the <a href=\"https://github.com/cap-js/cds-intellij/compare/$FROM_REF...$TO_REF\">full changelog</a></em></p>"$'\n'
+output+="<p><em>For details see the <a href=\"https://github.com/cap-js/cds-intellij/compare/$FROM_REF...$TO_VERSION\">full changelog</a></em></p>"$'\n'
 
 {
   echo "changelog<<EOF"
