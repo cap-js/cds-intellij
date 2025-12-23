@@ -179,15 +179,12 @@
     <change-notes><![CDATA[
 <h4>Added</h4>
 <ul>
-    <li>Add changelog generation and reset scripts</li>
 </ul>
 <h4>Fixed</h4>
 <ul>
-    <li>Change name of prepare-release branch</li>
     <li>Always use configured/default CDS tabSize</li>
-    <li>Add required permissions to prepare-release workflow</li>
     <li>Resolve race condition in language-server startup</li>
 </ul>
-<p><em>For details see the <a href=https://github.com/cap-js/cds-intellij/compare/2.0.1...HEAD>full changelog</a></em></p>
+<p><em>For details see the <a href=https://github.com/cap-js/cds-intellij/compare/2.0.1...2.1.0>full changelog</a></em></p>
 ]]></change-notes>
 </idea-plugin>
