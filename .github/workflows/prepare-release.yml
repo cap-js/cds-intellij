@@ -80,7 +80,7 @@ jobs:
       
       - name: Generate changelog
         id: changelog
-        run: bash -x src/sh/release/generate-changelog.sh "${{ steps.versions.outputs.last_tag }}" HEAD
+        run: bash -x src/sh/release/generate-changelog.sh "${{ steps.versions.outputs.last_tag }}" HEAD "${{ steps.new_version.outputs.version }}"
       
       - name: Update files
         run: |
