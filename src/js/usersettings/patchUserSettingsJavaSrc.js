@@ -19,7 +19,6 @@ function getDefaultValue(config) {
 }
 
 const settings = Object.entries(settingsFromSchema)
-  .sort(([key1], [key2]) => key1.localeCompare(key2))
   .map(([key, config]) => ({
     key,
     defaultValue: getDefaultValue(config),
