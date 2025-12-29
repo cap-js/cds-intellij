@@ -60,7 +60,33 @@ The [Internal Actions UI Submenu](https://plugins.jetbrains.com/docs/intellij/in
 tools to develop, debug, and test the plugin UI components.
 You may have to enable them in the installed IDE and/or the sandbox IDE.
 
-### Building and Testing with cds-lsp form git Branch
+### Updating cds-lsp User Settings
+
+The `lsp/schemas/user-settings.json` file defines the JSON schema for cds-lsp user settings exposed in the plugin.
+
+#### Updating from cds-lsp
+
+This schema is derived from the `UserSetting` enum in cds-lsp. To update:
+
+1. Consider changes in its source file between relevant versions
+
+2. Update `lsp/schemas/user-settings.json` accordingly:
+   - Add new settings from the `UserSetting` enum
+   - Remove obsolete settings
+   - Update descriptions and defaults to match
+
+3. Intentional omissions: Settings marked as internal should be excluded
+
+#### Generating the Java Source
+
+To generate the Java source for the user settings from the JSON schema, run:
+
+```bash
+node src/js/usersettings/patchUserSettingsJavaSrc.js
+```
+
+
+### Building and Testing with cds-lsp from git Branch
 
 To build and test the plugin with a version of `@sap/cds-lsp` from a git branch, create and push a branch of this repo, changing `lsp/package.json` to read:
 
