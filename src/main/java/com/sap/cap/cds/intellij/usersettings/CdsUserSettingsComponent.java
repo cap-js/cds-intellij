@@ -52,23 +52,36 @@ public class CdsUserSettingsComponent {
             JLabel categoryLabel = new JLabel("<html><b>" + category + "</b></html>");
             builder.addComponent(categoryLabel);
 
-            for (String settingKey : settingKeys) {
-                Object defaultValue = allSettings.get(settingKey);
-                JComponent control = createControlForSetting(settingKey, defaultValue);
-                controls.put(settingKey, control);
+            Map<String, List<String>> groupedSettings = groupSettingsByGroup(settingKeys);
 
-                String label = formatLabel(settingKey);
-                String description = getDescription(settingKey);
+            for (Map.Entry<String, List<String>> groupEntry : groupedSettings.entrySet()) {
+                String group = groupEntry.getKey();
+                List<String> groupSettingKeys = groupEntry.getValue();
 
-                if (control instanceof JBCheckBox) {
-                    ((JBCheckBox) control).setText(label);
-                    control.setToolTipText(description);
-                    builder.addComponent(control);
-                } else {
-                    JLabel labelComponent = new JLabel(label + ":");
-                    labelComponent.setToolTipText(description);
-                    control.setToolTipText(description);
-                    builder.addLabeledComponent(labelComponent, control);
+                if (!group.isEmpty()) {
+                    builder.addSeparator(3);
+                    JLabel groupLabel = new JLabel("<html><i>" + group + "</i></html>");
+                    builder.addComponent(groupLabel);
+                }
+
+                for (String settingKey : groupSettingKeys) {
+                    Object defaultValue = allSettings.get(settingKey);
+                    JComponent control = createControlForSetting(settingKey, defaultValue);
+                    controls.put(settingKey, control);
+
+                    String label = formatLabel(settingKey);
+                    String description = getDescription(settingKey);
+
+                    if (control instanceof JBCheckBox) {
+                        ((JBCheckBox) control).setText(label);
+                        control.setToolTipText(description);
+                        builder.addComponent(control);
+                    } else {
+                        JLabel labelComponent = new JLabel(label + ":");
+                        labelComponent.setToolTipText(description);
+                        control.setToolTipText(description);
+                        builder.addLabeledComponent(labelComponent, control);
+                    }
                 }
             }
         }
@@ -104,6 +117,18 @@ public class CdsUserSettingsComponent {
         return java.util.Arrays.stream(text.split("(?=[A-Z])"))
                 .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
                 .collect(Collectors.joining(" "));
+    }
+
+    private Map<String, List<String>> groupSettingsByGroup(List<String> settingKeys) {
+        Map<String, List<String>> groups = new LinkedHashMap<>();
+
+        for (String settingKey : settingKeys) {
+            String group = CdsUserSettings.getGroup(settingKey);
+            String groupKey = group != null ? group : "";
+            groups.computeIfAbsent(groupKey, k -> new ArrayList<>()).add(settingKey);
+        }
+
+        return groups;
     }
 
     private String formatLabel(String settingKey) {

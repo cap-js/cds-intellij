@@ -60,6 +60,7 @@
     },
     "cds.completion.showDocumentation": {
       "category": "Completion",
+      "group": "General",
       "label": "Show Documentation",
       "type": "boolean",
       "default": true,
@@ -67,6 +68,7 @@
     },
     "cds.completion.docFiles": {
       "category": "Completion",
+      "group": "General",
       "label": "Documentation Files",
       "type": "array",
       "items": {
@@ -79,6 +81,7 @@
     },
     "cds.completion.formatSnippets": {
       "category": "Completion",
+      "group": "General",
       "label": "Format Snippets",
       "type": "boolean",
       "default": false,
@@ -99,6 +102,7 @@
     },
     "cds.completion.workspaceSymbols.minPrefixLength": {
       "category": "Completion",
+      "group": "Workspace Symbols",
       "label": "Min Prefix Length",
       "type": "number",
       "default": -1,
@@ -106,6 +110,7 @@
     },
     "cds.completion.workspaceSymbols.maxProposals": {
       "category": "Completion",
+      "group": "Workspace Symbols",
       "label": "Max Proposals",
       "type": "number",
       "default": -1,
@@ -113,6 +118,7 @@
     },
     "cds.completion.workspaceSymbols.useShortname": {
       "category": "Completion",
+      "group": "Workspace Symbols",
       "label": "Use Short Name",
       "type": "boolean",
       "default": false,
@@ -120,6 +126,7 @@
     },
     "cds.completion.annotations.omitRedundantTypesInSnippets": {
       "category": "Completion",
+      "group": "Annotations",
       "label": "Omit Redundant Types in Snippets",
       "type": "boolean",
       "default": false,
@@ -245,6 +252,7 @@
     },
     "cds.workspace.persistency.enabled": {
       "category": "Workspace",
+      "group": "Persistency",
       "label": "Persistency Enabled",
       "type": "boolean",
       "default": false,
@@ -252,6 +260,7 @@
     },
     "cds.workspace.persistency.persistAfterSave": {
       "category": "Workspace",
+      "group": "Persistency",
       "label": "Persist After Save",
       "type": "boolean",
       "default": false,
@@ -259,6 +268,7 @@
     },
     "cds.workspace.persistency.persistAfterCompile": {
       "category": "Workspace",
+      "group": "Persistency",
       "label": "Persist After Compile",
       "type": "boolean",
       "default": false,
@@ -266,6 +276,7 @@
     },
     "cds.workspace.persistency.restoreBeforeCompile": {
       "category": "Workspace",
+      "group": "Persistency",
       "label": "Restore Before Compile",
       "type": "boolean",
       "default": false,
@@ -273,6 +284,7 @@
     },
     "cds.workspace.persistency.restoreAfterStartup": {
       "category": "Workspace",
+      "group": "Persistency",
       "label": "Restore After Startup",
       "type": "boolean",
       "default": false,
@@ -280,6 +292,7 @@
     },
     "cds.workspace.persistency.indexAllAfterStartup": {
       "category": "Workspace",
+      "group": "Persistency",
       "label": "Index All After Startup",
       "type": "boolean",
       "default": false,
@@ -287,6 +300,7 @@
     },
     "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterStartup": {
       "category": "Workspace",
+      "group": "Persistency",
       "label": "Garbage Collect After Startup",
       "type": "boolean",
       "default": false,
@@ -294,6 +308,7 @@
     },
     "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterNSaves": {
       "category": "Workspace",
+      "group": "Persistency",
       "label": "Garbage Collect After N Saves",
       "type": "number",
       "default": 0,
@@ -301,6 +316,7 @@
     },
     "cds.workspace.persistency.reindexAfterCompileIfRestored": {
       "category": "Workspace",
+      "group": "Persistency",
       "label": "Reindex After Compile If Restored",
       "type": "boolean",
       "default": false,
@@ -308,6 +324,7 @@
     },
     "cds.workspace.scanCsn": {
       "category": "Workspace",
+      "group": "Scanning",
       "label": "Scan CSN Files",
       "type": "string",
       "enum": [
@@ -320,6 +337,7 @@
     },
     "cds.workspace.scanDependentModules": {
       "category": "Workspace",
+      "group": "Scanning",
       "label": "Scan Dependent Modules",
       "type": "boolean",
       "default": false,
@@ -327,6 +345,7 @@
     },
     "cds.workspaceValidationMode": {
       "category": "Workspace",
+      "group": "Validation",
       "label": "Validation Mode",
       "type": "string",
       "enum": [
@@ -338,6 +357,7 @@
     },
     "cds.workspaceSymbols.lazy": {
       "category": "Workspace",
+      "group": "Workspace Symbols",
       "label": "Lazy Load Symbols",
       "type": "boolean",
       "default": false,
@@ -345,6 +365,7 @@
     },
     "cds.workspaceSymbols.caseInsensitive": {
       "category": "Workspace",
+      "group": "Workspace Symbols",
       "label": "Case-Insensitive Symbols",
       "type": "boolean",
       "default": false,

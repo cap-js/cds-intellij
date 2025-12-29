@@ -25,7 +25,8 @@ const settings = Object.entries(settingsFromSchema)
     defaultValue: getDefaultValue(config),
     enumValues: config.enum || null,
     label: config.label || null,
-    description: config.description || null
+    description: config.description || null,
+    group: config.group || null
   }));
 
 const t = '    ';
@@ -79,6 +80,14 @@ ${t}${t}};`;
 const hasEnumValuesBody = `
 ${t}${t}return getEnumValues(settingKey) != null;`;
 
+const getGroupBody = `
+${t}${t}return switch (settingKey) {
+${settings.filter(s => s.group).map(s =>
+    `${t}${t}${t}case "${s.key}" -> "${s.group.replace(/"/g, '\\"')}";`
+).join('\n')}
+${t}${t}${t}default -> null;
+${t}${t}};`;
+
 let patchedTgt = tgt;
 
 // Replace method bodies using simplified lookbehind patterns
@@ -105,6 +114,11 @@ patchedTgt = patchedTgt.replace(
 patchedTgt = patchedTgt.replace(
     /(?<=\bhasEnumValues\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
     hasEnumValuesBody
+);
+
+patchedTgt = patchedTgt.replace(
+    /(?<=\bgetGroup\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
+    getGroupBody
 );
 
 writeFileSync(tgtPath, patchedTgt, 'utf8');
