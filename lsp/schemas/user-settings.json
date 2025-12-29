@@ -4,12 +4,6 @@
   "type": "object",
   "description": "JSON schema representation for UserSettings.",
   "properties": {
-    "cds.codeLensStatistics.enabled": {
-      "category": "Editor",
-      "label": "Code Lens Statistics",
-      "type": "boolean",
-      "default": false
-    },
     "cds.compiler.markMissingI18nDefault": {
       "category": "Compiler",
       "label": "Mark Missing I18n Default",
@@ -24,17 +18,8 @@
       "default": true,
       "description": "Print internal compiler errors to the console"
     },
-    "cds.completion.annotations.omitRedundantTypesInSnippets": {
-      "category": "Completion",
-      "group": "Annotations",
-      "label": "Omit Redundant Types in Snippets",
-      "type": "boolean",
-      "default": false,
-      "description": "Omit redundant record types in suggested snippets"
-    },
     "cds.completion.docFiles": {
       "category": "Completion",
-      "group": "General",
       "label": "Documentation Files",
       "type": "array",
       "items": {
@@ -47,7 +32,6 @@
     },
     "cds.completion.formatSnippets": {
       "category": "Completion",
-      "group": "General",
       "label": "Format Snippets",
       "type": "boolean",
       "default": false,
@@ -55,11 +39,18 @@
     },
     "cds.completion.showDocumentation": {
       "category": "Completion",
-      "group": "General",
       "label": "Show Documentation",
       "type": "boolean",
       "default": true,
       "description": "Show documentation in code completion"
+    },
+    "cds.completion.annotations.omitRedundantTypesInSnippets": {
+      "category": "Completion",
+      "group": "Annotations",
+      "label": "Omit Redundant Types in Snippets",
+      "type": "boolean",
+      "default": false,
+      "description": "Omit redundant record types in suggested snippets"
     },
     "cds.completion.workspaceSymbols.maxProposals": {
       "category": "Completion",
@@ -92,13 +83,6 @@
       "default": false,
       "description": "Provide support for additional annotations used CAP Embedded Analytics\n\nSee [capire](https://cap.cloud.sap/docs) for details"
     },
-    "cds.contributions.enablement.odata": {
-      "category": "Contributions",
-      "label": "OData",
-      "type": "boolean",
-      "default": false,
-      "description": "Provide extended annotation support for OData"
-    },
     "cds.contributions.features.completion": {
       "category": "Contributions",
       "label": "Completion Support",
@@ -127,6 +111,13 @@
       "default": false,
       "description": "Enable index support from contributions"
     },
+    "cds.contributions.enablement.odata": {
+      "category": "Contributions",
+      "label": "OData",
+      "type": "boolean",
+      "default": false,
+      "description": "Provide extended annotation support for OData"
+    },
     "cds.contributions.features.quickFixes": {
       "category": "Contributions",
       "label": "Quick Fixes Support",
@@ -134,19 +125,19 @@
       "default": false,
       "description": "Enable quick fixes support from contributions"
     },
-    "cds.contributions.features.semanticHighlighting": {
-      "category": "Contributions",
-      "label": "Semantic Highlighting Support",
-      "type": "boolean",
-      "default": false,
-      "description": "Enable semantic highlighting support from contributions"
-    },
     "cds.contributions.registry": {
       "category": "Contributions",
       "label": "Registry",
       "type": "string",
       "default": "https://registry.npmjs.org",
       "description": "NPM registry to be used for installation/update of contributions (e.g. OData annotation support)"
+    },
+    "cds.contributions.features.semanticHighlighting": {
+      "category": "Contributions",
+      "label": "Semantic Highlighting Support",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable semantic highlighting support from contributions"
     },
     "cds.diagnosticsSeverity": {
       "category": "Diagnostics",
@@ -161,18 +152,25 @@
       "default": "Warning",
       "description": "Minimum severity of compiler messages to show in _Problems_ view"
     },
-    "cds.outline.elements.associationComposition": {
-      "category": "Outline",
-      "label": "Show Association/Composition",
+    "cds.codeLensStatistics.enabled": {
+      "category": "Editor",
+      "label": "Code Lens Statistics",
       "type": "boolean",
-      "default": true
+      "default": false
     },
-    "cds.outline.semantical": {
-      "category": "Outline",
-      "label": "Semantical",
+    "cds.semanticHighlighting.odata.enabled": {
+      "category": "Editor",
+      "label": "OData Semantic Highlighting",
       "type": "boolean",
-      "default": true,
-      "description": "Show a semantical outline structure as opposed to the (default) flat list"
+      "default": false,
+      "description": "Semantic highlighting for OData annotations"
+    },
+    "cds.semanticHighlighting.enabled": {
+      "category": "Editor",
+      "label": "Semantic Highlighting",
+      "type": "boolean",
+      "default": false,
+      "description": "Semantic highlighting of certain identifiers"
     },
     "cds.quickfix.importArtifact": {
       "category": "Editor",
@@ -181,6 +179,19 @@
       "type": "boolean",
       "default": false,
       "description": "Provide a _quick fix_ for artifacts not yet imported (default disabled - the feature is CPU intensive)"
+    },
+    "cds.outline.semantical": {
+      "category": "Outline",
+      "label": "Semantical",
+      "type": "boolean",
+      "default": true,
+      "description": "Show a semantical outline structure as opposed to the (default) flat list"
+    },
+    "cds.outline.elements.associationComposition": {
+      "category": "Outline",
+      "label": "Show Association/Composition",
+      "type": "boolean",
+      "default": true
     },
     "cds.refactoring.files.delete.enabled": {
       "category": "Refactoring",
@@ -196,19 +207,19 @@
       "default": false,
       "description": "Adapt `using` statements in other files when renaming CDS files"
     },
-    "cds.semanticHighlighting.enabled": {
-      "category": "Editor",
-      "label": "Semantic Highlighting",
+    "cds.whereused.showGenericAnnotations": {
+      "category": "Search",
+      "label": "Show Generic Annotations",
       "type": "boolean",
       "default": false,
-      "description": "Semantic highlighting of certain identifiers"
+      "description": "Find usages of same annotation names via _References_ command and explicit annotation definitions via _Definition_ command"
     },
-    "cds.semanticHighlighting.odata.enabled": {
-      "category": "Editor",
-      "label": "OData Semantic Highlighting",
+    "cds.whereused.showStringConstants": {
+      "category": "Search",
+      "label": "Show String Literals",
       "type": "boolean",
       "default": false,
-      "description": "Semantic highlighting for OData annotations"
+      "description": "Find same string constants via _References_ command"
     },
     "cds.typeGenerator.command": {
       "category": "Type Generator",
@@ -236,28 +247,6 @@
       "type": "string",
       "default": "@cds-models",
       "description": "Directory that serves as root for the generated type definitions. Relative to the project's root"
-    },
-    "cds.whereused.showGenericAnnotations": {
-      "category": "Search",
-      "label": "Show Generic Annotations",
-      "type": "boolean",
-      "default": false,
-      "description": "Find usages of same annotation names via _References_ command and explicit annotation definitions via _Definition_ command"
-    },
-    "cds.whereused.showStringConstants": {
-      "category": "Search",
-      "label": "Show String Literals",
-      "type": "boolean",
-      "default": false,
-      "description": "Find same string constants via _References_ command"
-    },
-    "cds.workspace.persistency.enabled": {
-      "category": "Workspace",
-      "group": "Persistency",
-      "label": "Persistency Enabled",
-      "type": "boolean",
-      "default": false,
-      "description": "Enable workspace index persistency"
     },
     "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterNSaves": {
       "category": "Workspace",
@@ -298,6 +287,14 @@
       "type": "boolean",
       "default": false,
       "description": "Persist workspace index after save"
+    },
+    "cds.workspace.persistency.enabled": {
+      "category": "Workspace",
+      "group": "Persistency",
+      "label": "Persistency Enabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable workspace index persistency"
     },
     "cds.workspace.persistency.reindexAfterCompileIfRestored": {
       "category": "Workspace",
@@ -344,6 +341,18 @@
       "default": false,
       "description": "Scan first level dependencies in node_modules. This may increase start-up time. Enable if you want code completions for global identifiers and import paths, or want to see definitions of dependencies in workspace symbols"
     },
+    "cds.workspaceValidationMode": {
+      "category": "Workspace",
+      "group": "Validation",
+      "label": "Validation Mode",
+      "type": "string",
+      "enum": [
+        "ActiveEditorOnly",
+        "OpenEditorsOnly"
+      ],
+      "default": "ActiveEditorOnly",
+      "description": "Specify which CDS files are validated:\n- `ActiveEditorOnly` (default): only the active editor is validated\n- `OpenEditorsOnly` additionally keeps other open editors' validation up-to-date"
+    },
     "cds.workspaceSymbols.caseInsensitive": {
       "category": "Workspace",
       "group": "Workspace Symbols",
@@ -359,18 +368,6 @@
       "type": "boolean",
       "default": false,
       "description": "_Workspace Symbols_ will show symbols that have the queried characters in the right order, but not necessarily consecutive"
-    },
-    "cds.workspaceValidationMode": {
-      "category": "Workspace",
-      "group": "Validation",
-      "label": "Validation Mode",
-      "type": "string",
-      "enum": [
-        "ActiveEditorOnly",
-        "OpenEditorsOnly"
-      ],
-      "default": "ActiveEditorOnly",
-      "description": "Specify which CDS files are validated:\n- `ActiveEditorOnly` (default): only the active editor is validated\n- `OpenEditorsOnly` additionally keeps other open editors' validation up-to-date"
     }
   }
 }
