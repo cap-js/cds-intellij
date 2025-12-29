@@ -4,7 +4,7 @@ import com.intellij.openapi.components.Service;
 import com.intellij.openapi.project.Project;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Service(Service.Level.PROJECT)
@@ -142,7 +142,7 @@ public class CdsUserSettings {
 
     public Map<String, Object> getSettings() {
         if (settings == null) {
-            settings = new HashMap<>(getDefaults());
+            settings = new LinkedHashMap<>(getDefaults());
         }
         return settings;
     }

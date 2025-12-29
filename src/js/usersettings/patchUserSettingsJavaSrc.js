@@ -32,7 +32,7 @@ const t = '    ';
 
 // Generate method bodies
 const staticInitializerBody = `
-${t}${t}Map<String, Object> defaults = new HashMap<>();
+${t}${t}Map<String, Object> defaults = new LinkedHashMap<>();
 ${settings.map(s => `${t}${t}defaults.put("${s.key}", ${s.defaultValue});`).join('\n')}
 ${t}${t}DEFAULTS = Collections.unmodifiableMap(defaults);`;
 
