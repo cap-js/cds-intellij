@@ -77,7 +77,7 @@ public class CdsUserSettings {
     // Note: method body is generated
     public static String getDescription(String settingKey) {
         return switch (settingKey) {
-            case "cds.compiler.markMissingI18nDefault" -> "Show warning problem markers for unresolved `i18n` references.\n\n**NOTE:** For huge models it may show performance degradations";
+            case "cds.compiler.markMissingI18nDefault" -> "Show warning problem markers for unresolved <code>i18n</code> references.<br><br><b>NOTE:</b> For huge models it may show performance degradations";
             case "cds.compiler.showInternalErrors" -> "Print internal compiler errors to the console";
             case "cds.completion.annotations.omitRedundantTypesInSnippets" -> "Omit redundant record types in suggested snippets";
             case "cds.completion.docFiles" -> "Potential names of files to show as documentation. This is an ordered list. The first filename that exists is used.";
@@ -86,7 +86,7 @@ public class CdsUserSettings {
             case "cds.completion.workspaceSymbols.maxProposals" -> "Maximum number of workspace symbols to suggest. Default is -1 (all)";
             case "cds.completion.workspaceSymbols.minPrefixLength" -> "Number of characters required to suggest (global) workspace symbols. Default is -1 (switched off - the feature may delay completion)";
             case "cds.completion.workspaceSymbols.useShortname" -> "Use short names for workspace symbols in completion";
-            case "cds.contributions.enablement.additionalAnalyticalAnnotations" -> "Provide support for additional annotations used CAP Embedded Analytics\n\nSee [capire](https://cap.cloud.sap/docs) for details";
+            case "cds.contributions.enablement.additionalAnalyticalAnnotations" -> "Provide support for additional annotations used CAP Embedded Analytics<br><br>See capire (https://cap.cloud.sap/docs) for details";
             case "cds.contributions.enablement.odata" -> "Provide extended annotation support for OData";
             case "cds.contributions.features.completion" -> "Enable completion support from contributions";
             case "cds.contributions.features.diagnostics" -> "Enable diagnostics support from contributions";
@@ -95,18 +95,18 @@ public class CdsUserSettings {
             case "cds.contributions.features.quickFixes" -> "Enable quick fixes support from contributions";
             case "cds.contributions.features.semanticHighlighting" -> "Enable semantic highlighting support from contributions";
             case "cds.contributions.registry" -> "NPM registry to be used for installation/update of contributions (e.g. OData annotation support)";
-            case "cds.diagnosticsSeverity" -> "Minimum severity of compiler messages to show in _Problems_ view";
+            case "cds.diagnosticsSeverity" -> "Minimum severity of compiler messages to show in <i>Problems</i> view";
             case "cds.outline.semantical" -> "Show a semantical outline structure as opposed to the (default) flat list";
-            case "cds.quickfix.importArtifact" -> "Provide a _quick fix_ for artifacts not yet imported (default disabled - the feature is CPU intensive)";
-            case "cds.refactoring.files.delete.enabled" -> "Adapt `using` statements in other files when deleting CDS files";
-            case "cds.refactoring.files.rename.enabled" -> "Adapt `using` statements in other files when renaming CDS files";
+            case "cds.quickfix.importArtifact" -> "Provide a <i>quick fix</i> for artifacts not yet imported (default disabled - the feature is CPU intensive)";
+            case "cds.refactoring.files.delete.enabled" -> "Adapt <code>using</code> statements in other files when deleting CDS files";
+            case "cds.refactoring.files.rename.enabled" -> "Adapt <code>using</code> statements in other files when renaming CDS files";
             case "cds.semanticHighlighting.enabled" -> "Semantic highlighting of certain identifiers";
             case "cds.semanticHighlighting.odata.enabled" -> "Semantic highlighting for OData annotations";
-            case "cds.typeGenerator.command" -> "The command that is executed when generating model types. You can use the following variables in your command template:\n\n- `${typerBinary}`: the binary\n- `${targetFile}`: the file that is being typed\n- `${outputDirectory}`: the directory into which the type information is generated";
-            case "cds.typeGenerator.enabled" -> "Generate type definitions.\nRequires `@cap-js/cds-typer` to be installed\n\n**NOTE:** This feature is still experimental (beta)";
+            case "cds.typeGenerator.command" -> "The command that is executed when generating model types. You can use the following variables in your command template:<br><br>- <code>${typerBinary}</code>: the binary<br>- <code>${targetFile}</code>: the file that is being typed<br>- <code>${outputDirectory}</code>: the directory into which the type information is generated";
+            case "cds.typeGenerator.enabled" -> "Generate type definitions.<br>Requires <code>@cap-js/cds-typer</code> to be installed<br><br><b>NOTE:</b> This feature is still experimental (beta)";
             case "cds.typeGenerator.outputPath" -> "Directory that serves as root for the generated type definitions. Relative to the project's root";
-            case "cds.whereused.showGenericAnnotations" -> "Find usages of same annotation names via _References_ command and explicit annotation definitions via _Definition_ command";
-            case "cds.whereused.showStringConstants" -> "Find same string constants via _References_ command";
+            case "cds.whereused.showGenericAnnotations" -> "Find usages of same annotation names via <i>References</i> command and explicit annotation definitions via <i>Definition</i> command";
+            case "cds.whereused.showStringConstants" -> "Find same string constants via <i>References</i> command";
             case "cds.workspace.persistency.enabled" -> "Enable workspace index persistency";
             case "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterNSaves" -> "Garbage collect orphaned indexes after N saves (0 = disabled)";
             case "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterStartup" -> "Garbage collect orphaned indexes after startup";
@@ -116,11 +116,11 @@ public class CdsUserSettings {
             case "cds.workspace.persistency.reindexAfterCompileIfRestored" -> "Reindex workspace after compilation if index was restored";
             case "cds.workspace.persistency.restoreAfterStartup" -> "Restore workspace index after startup";
             case "cds.workspace.persistency.restoreBeforeCompile" -> "Restore workspace index before compilation";
-            case "cds.workspace.scanCsn" -> "How CSN files are detected:\n- `ByFileExtension` (default): CSN files (.csn or .csn.json) will be included in validation and workspace symbols\n- `InspectJson`: additionally looks into .json files if they are valid CSN. This will take considerably more time at scanning\n- `Off`: will not scan for CSN files at all";
+            case "cds.workspace.scanCsn" -> "How CSN files are detected:<br>- <code>ByFileExtension</code> (default): CSN files (.csn or .csn.json) will be included in validation and workspace symbols<br>- <code>InspectJson</code>: additionally looks into .json files if they are valid CSN. This will take considerably more time at scanning<br>- <code>Off</code>: will not scan for CSN files at all";
             case "cds.workspace.scanDependentModules" -> "Scan first level dependencies in node_modules. This may increase start-up time. Enable if you want code completions for global identifiers and import paths, or want to see definitions of dependencies in workspace symbols";
-            case "cds.workspaceSymbols.caseInsensitive" -> "_Workspace Symbols_ will show symbols containing the given query, independent of character casings";
-            case "cds.workspaceSymbols.lazy" -> "_Workspace Symbols_ will show symbols that have the queried characters in the right order, but not necessarily consecutive";
-            case "cds.workspaceValidationMode" -> "Specify which CDS files are validated:\n- `ActiveEditorOnly` (default): only the active editor is validated\n- `OpenEditorsOnly` additionally keeps other open editors' validation up-to-date";
+            case "cds.workspaceSymbols.caseInsensitive" -> "<i>Workspace Symbols</i> will show symbols containing the given query, independent of character casings";
+            case "cds.workspaceSymbols.lazy" -> "<i>Workspace Symbols</i> will show symbols that have the queried characters in the right order, but not necessarily consecutive";
+            case "cds.workspaceValidationMode" -> "Specify which CDS files are validated:<br>- <code>ActiveEditorOnly</code> (default): only the active editor is validated<br>- <code>OpenEditorsOnly</code> additionally keeps other open editors' validation up-to-date";
             default -> null;
         };
     }
@@ -151,7 +151,7 @@ public class CdsUserSettings {
 
     // Note: static initializer is generated
     static {
-        Map<String, Object> defaults = new HashMap<>();
+        Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("cds.codeLensStatistics.enabled", false);
         defaults.put("cds.compiler.markMissingI18nDefault", false);
         defaults.put("cds.compiler.showInternalErrors", true);

@@ -44,9 +44,19 @@ ${settings.filter(s => s.label).map(s =>
 ${t}${t}${t}default -> null;
 ${t}${t}};`;
 
+function convertMarkdownToHtml(markdown) {
+  return markdown
+      .replace(/_([^_]+)_/g, '<i>$1</i>')
+      .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
+      .replace(/\n/g, '<br>');
+}
+
 function formatJavaDescription(description) {
   if (!description) return 'null';
-  const escaped = description.replace(/"/g, '\\"').replace(/\n/g, '\\n');
+  const htmlContent = convertMarkdownToHtml(description);
+  const escaped = htmlContent.replace(/"/g, '\\"');
   return `"${escaped}"`;
 }
 

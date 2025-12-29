@@ -12,6 +12,11 @@ import java.util.stream.Collectors;
 
 public class CdsUserSettingsComponent {
 
+    private static final String TOOLTIP_HTML_END = "</body></html>";
+    private static final String TOOLTIP_HTML_START = "<html><body style='width: 350px'>";
+    private static final String TOOLTIP_KEY_END = "</i></font>";
+    private static final String TOOLTIP_KEY_START = "<br><br><font color='gray'><i>";
+
     private final Project project;
     private final JPanel mainPanel;
     private final Map<String, JComponent> controls = new HashMap<>();
@@ -53,22 +58,16 @@ public class CdsUserSettingsComponent {
                 controls.put(settingKey, control);
 
                 String label = formatLabel(settingKey);
-                String description = CdsUserSettings.getDescription(settingKey);
-                String htmlDescription = description != null ?
-                    "<html>" + description.replace("\n", "<br>") + "</html>" : null;
+                String description = getDescription(settingKey);
 
                 if (control instanceof JBCheckBox) {
                     ((JBCheckBox) control).setText(label);
-                    if (htmlDescription != null) {
-                        control.setToolTipText(htmlDescription);
-                    }
+                    control.setToolTipText(description);
                     builder.addComponent(control);
                 } else {
                     JLabel labelComponent = new JLabel(label + ":");
-                    if (htmlDescription != null) {
-                        labelComponent.setToolTipText(htmlDescription);
-                        control.setToolTipText(htmlDescription);
-                    }
+                    labelComponent.setToolTipText(description);
+                    control.setToolTipText(description);
                     builder.addLabeledComponent(labelComponent, control);
                 }
             }
@@ -116,6 +115,22 @@ public class CdsUserSettingsComponent {
         // Fallback to generated label if not found in schema
         String[] parts = settingKey.split("\\.");
         return capitalizeWords(parts[parts.length - 1]);
+    }
+
+    private String getDescription(String settingKey) {
+        String description = CdsUserSettings.getDescription(settingKey);
+        StringBuilder tooltip = new StringBuilder(TOOLTIP_HTML_START);
+
+        if (description != null && !description.isEmpty()) {
+            tooltip.append(description);
+        }
+
+        tooltip.append(TOOLTIP_KEY_START)
+               .append(settingKey)
+               .append(TOOLTIP_KEY_END)
+               .append(TOOLTIP_HTML_END);
+
+        return tooltip.toString();
     }
 
     private JComponent createControlForSetting(String settingKey, Object defaultValue) {
