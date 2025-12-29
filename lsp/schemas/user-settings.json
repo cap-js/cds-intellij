@@ -15,7 +15,7 @@
       "category": "Compiler",
       "label": "Show Internal Errors",
       "type": "boolean",
-      "default": true,
+      "default": false,
       "description": "Print internal compiler errors to the console"
     },
     "cds.completion.docFiles": {
@@ -87,7 +87,7 @@
       "category": "Contributions",
       "label": "Completion Support",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Enable completion support from contributions"
     },
     "cds.contributions.features.diagnostics": {
@@ -101,7 +101,7 @@
       "category": "Contributions",
       "label": "Hover Support",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Enable hover support from contributions"
     },
     "cds.contributions.features.index": {
@@ -115,7 +115,7 @@
       "category": "Contributions",
       "label": "OData",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Provide extended annotation support for OData"
     },
     "cds.contributions.features.quickFixes": {
@@ -184,7 +184,7 @@
       "category": "Outline",
       "label": "Semantical",
       "type": "boolean",
-      "default": true,
+      "default": false,
       "description": "Show a semantical outline structure as opposed to the (default) flat list"
     },
     "cds.outline.elements.associationComposition": {
@@ -197,14 +197,14 @@
       "category": "Refactoring",
       "label": "Update Usings on Delete",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Adapt `using` statements in other files when deleting CDS files"
     },
     "cds.refactoring.files.rename.enabled": {
       "category": "Refactoring",
       "label": "Update Usings on Rename",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Adapt `using` statements in other files when renaming CDS files"
     },
     "cds.whereused.showGenericAnnotations": {
@@ -225,14 +225,14 @@
       "category": "Type Generator",
       "label": "Command",
       "type": "string",
-      "default": "node \"${typerBinary}\" \"${targetFile}\" --outputDirectory \"${outputDirectory}\"",
+      "default": "${typerBinary} \"${targetFile}\" --outputDirectory \"${outputDirectory}\"",
       "description": "The command that is executed when generating model types. You can use the following variables in your command template:\n\n- `${typerBinary}`: the binary\n- `${targetFile}`: the file that is being typed\n- `${outputDirectory}`: the directory into which the type information is generated"
     },
     "cds.typeGenerator.enabled": {
       "category": "Type Generator",
       "label": "Enabled",
       "type": "boolean",
-      "default": true,
+      "default": false,
       "description": "Generate type definitions.\nRequires `@cap-js/cds-typer` to be installed\n\n**NOTE:** This feature is still experimental (beta)"
     },
     "cds.typeGenerator.localInstallationOnly": {
@@ -253,7 +253,7 @@
       "group": "Persistency",
       "label": "Garbage Collect After N Saves",
       "type": "number",
-      "default": 0,
+      "default": 20,
       "description": "Garbage collect orphaned indexes after N saves (0 = disabled)"
     },
     "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterStartup": {
@@ -261,7 +261,7 @@
       "group": "Persistency",
       "label": "Garbage Collect After Startup",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Garbage collect orphaned indexes after startup"
     },
     "cds.workspace.persistency.indexAllAfterStartup": {
@@ -269,7 +269,7 @@
       "group": "Persistency",
       "label": "Index All After Startup",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Index all files after startup"
     },
     "cds.workspace.persistency.persistAfterCompile": {
@@ -277,7 +277,7 @@
       "group": "Persistency",
       "label": "Persist After Compile",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Persist workspace index after compilation"
     },
     "cds.workspace.persistency.persistAfterSave": {
@@ -285,7 +285,7 @@
       "group": "Persistency",
       "label": "Persist After Save",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Persist workspace index after save"
     },
     "cds.workspace.persistency.enabled": {
@@ -317,7 +317,7 @@
       "group": "Persistency",
       "label": "Restore Before Compile",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Restore workspace index before compilation"
     },
     "cds.workspace.scanCsn": {
@@ -350,8 +350,8 @@
         "ActiveEditorOnly",
         "OpenEditorsOnly"
       ],
-      "default": "ActiveEditorOnly",
-      "description": "Specify which CDS files are validated:\n- `ActiveEditorOnly` (default): only the active editor is validated\n- `OpenEditorsOnly` additionally keeps other open editors' validation up-to-date"
+      "default": "OpenEditorsOnly",
+      "description": "Specify which CDS files are validated:\n- `ActiveEditorOnly`: only the active editor is validated\n- `OpenEditorsOnly` (default): additionally keeps other open editors' validation up-to-date"
     },
     "cds.workspaceSymbols.caseInsensitive": {
       "category": "Workspace",
