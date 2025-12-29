@@ -111,6 +111,13 @@
       "default": -1,
       "description": "Maximum number of workspace symbols to suggest. Default is -1 (all)"
     },
+    "cds.completion.workspaceSymbols.useShortname": {
+      "category": "Completion",
+      "label": "Use Short Name",
+      "type": "boolean",
+      "default": false,
+      "description": "Use short names for workspace symbols in completion"
+    },
     "cds.completion.annotations.omitRedundantTypesInSnippets": {
       "category": "Completion",
       "label": "Omit Redundant Types in Snippets",
@@ -139,6 +146,48 @@
       "default": false,
       "description": "Provide extended annotation support for OData"
     },
+    "cds.contributions.features.hover": {
+      "category": "Contributions",
+      "label": "Hover Support",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable hover support from contributions"
+    },
+    "cds.contributions.features.index": {
+      "category": "Contributions",
+      "label": "Index Support",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable index support from contributions"
+    },
+    "cds.contributions.features.diagnostics": {
+      "category": "Contributions",
+      "label": "Diagnostics Support",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable diagnostics support from contributions"
+    },
+    "cds.contributions.features.completion": {
+      "category": "Contributions",
+      "label": "Completion Support",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable completion support from contributions"
+    },
+    "cds.contributions.features.semanticHighlighting": {
+      "category": "Contributions",
+      "label": "Semantic Highlighting Support",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable semantic highlighting support from contributions"
+    },
+    "cds.contributions.features.quickFixes": {
+      "category": "Contributions",
+      "label": "Quick Fixes Support",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable quick fixes support from contributions"
+    },
     "cds.quickfix.importArtifact": {
       "category": "Quick Fix",
       "label": "Import Artifact",
@@ -163,7 +212,8 @@
       "category": "Editor",
       "label": "OData Semantic Highlighting",
       "type": "boolean",
-      "default": false
+      "default": false,
+      "description": "Semantic highlighting for OData annotations"
     },
     "cds.refactoring.files.rename.enabled": {
       "category": "Refactoring",
@@ -193,23 +243,68 @@
       "default": false,
       "description": "Find same string constants via _References_ command"
     },
-    "cds.workspace.debounceFastChanges": {
+    "cds.workspace.persistency.enabled": {
       "category": "Workspace",
-      "label": "Debounce Fast Changes",
+      "label": "Persistency Enabled",
       "type": "boolean",
-      "default": true,
-      "description": "Consolidate workspace changes (e.g. by typing) to reduce the number of compilations, thus increasing performance. This is especially true for large models. Disable if you should see inconsistencies e.g. error markers not matching the corresponding identifier token"
+      "default": false,
+      "description": "Enable workspace index persistency"
     },
-    "cds.workspace.fastDiagnosticsMode": {
+    "cds.workspace.persistency.persistAfterSave": {
       "category": "Workspace",
-      "label": "Fast Diagnostics Mode",
-      "type": "string",
-      "enum": [
-        "Clear",
-        "Partial",
-        "Full"
-      ],
-      "default": "Clear"
+      "label": "Persist After Save",
+      "type": "boolean",
+      "default": false,
+      "description": "Persist workspace index after save"
+    },
+    "cds.workspace.persistency.persistAfterCompile": {
+      "category": "Workspace",
+      "label": "Persist After Compile",
+      "type": "boolean",
+      "default": false,
+      "description": "Persist workspace index after compilation"
+    },
+    "cds.workspace.persistency.restoreBeforeCompile": {
+      "category": "Workspace",
+      "label": "Restore Before Compile",
+      "type": "boolean",
+      "default": false,
+      "description": "Restore workspace index before compilation"
+    },
+    "cds.workspace.persistency.restoreAfterStartup": {
+      "category": "Workspace",
+      "label": "Restore After Startup",
+      "type": "boolean",
+      "default": false,
+      "description": "Restore workspace index after startup"
+    },
+    "cds.workspace.persistency.indexAllAfterStartup": {
+      "category": "Workspace",
+      "label": "Index All After Startup",
+      "type": "boolean",
+      "default": false,
+      "description": "Index all files after startup"
+    },
+    "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterStartup": {
+      "category": "Workspace",
+      "label": "Garbage Collect After Startup",
+      "type": "boolean",
+      "default": false,
+      "description": "Garbage collect orphaned indexes after startup"
+    },
+    "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterNSaves": {
+      "category": "Workspace",
+      "label": "Garbage Collect After N Saves",
+      "type": "number",
+      "default": 0,
+      "description": "Garbage collect orphaned indexes after N saves (0 = disabled)"
+    },
+    "cds.workspace.persistency.reindexAfterCompileIfRestored": {
+      "category": "Workspace",
+      "label": "Reindex After Compile If Restored",
+      "type": "boolean",
+      "default": false,
+      "description": "Reindex workspace after compilation if index was restored"
     },
     "cds.workspace.scanCsn": {
       "category": "Workspace",
