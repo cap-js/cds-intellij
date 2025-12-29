@@ -19,20 +19,21 @@ function getDefaultValue(config) {
 }
 
 const settings = Object.entries(settingsFromSchema)
-  .sort(([key1], [key2]) => key1.localeCompare(key2))
   .map(([key, config]) => ({
     key,
     defaultValue: getDefaultValue(config),
     enumValues: config.enum || null,
     label: config.label || null,
-    description: config.description || null
+    description: config.description || null,
+    category: config.category || null,
+    group: config.group || null
   }));
 
 const t = '    ';
 
 // Generate method bodies
 const staticInitializerBody = `
-${t}${t}Map<String, Object> defaults = new HashMap<>();
+${t}${t}Map<String, Object> defaults = new LinkedHashMap<>();
 ${settings.map(s => `${t}${t}defaults.put("${s.key}", ${s.defaultValue});`).join('\n')}
 ${t}${t}DEFAULTS = Collections.unmodifiableMap(defaults);`;
 
@@ -44,9 +45,19 @@ ${settings.filter(s => s.label).map(s =>
 ${t}${t}${t}default -> null;
 ${t}${t}};`;
 
+function convertMarkdownToHtml(markdown) {
+  return markdown
+      .replace(/_([^_]+)_/g, '<i>$1</i>')
+      .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
+      .replace(/\n/g, '<br>');
+}
+
 function formatJavaDescription(description) {
   if (!description) return 'null';
-  const escaped = description.replace(/"/g, '\\"').replace(/\n/g, '\\n');
+  const htmlContent = convertMarkdownToHtml(description);
+  const escaped = htmlContent.replace(/"/g, '\\"');
   return `"${escaped}"`;
 }
 
@@ -68,6 +79,22 @@ ${t}${t}};`;
 
 const hasEnumValuesBody = `
 ${t}${t}return getEnumValues(settingKey) != null;`;
+
+const getGroupBody = `
+${t}${t}return switch (settingKey) {
+${settings.filter(s => s.group).map(s =>
+    `${t}${t}${t}case "${s.key}" -> "${s.group.replace(/"/g, '\\"')}";`
+).join('\n')}
+${t}${t}${t}default -> null;
+${t}${t}};`;
+
+const getCategoryBody = `
+${t}${t}return switch (settingKey) {
+${settings.filter(s => s.category).map(s =>
+    `${t}${t}${t}case "${s.key}" -> "${s.category.replace(/"/g, '\\"')}";`
+).join('\n')}
+${t}${t}${t}default -> null;
+${t}${t}};`;
 
 let patchedTgt = tgt;
 
@@ -95,6 +122,16 @@ patchedTgt = patchedTgt.replace(
 patchedTgt = patchedTgt.replace(
     /(?<=\bhasEnumValues\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
     hasEnumValuesBody
+);
+
+patchedTgt = patchedTgt.replace(
+    /(?<=\bgetGroup\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
+    getGroupBody
+);
+
+patchedTgt = patchedTgt.replace(
+    /(?<=\bgetCategory\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
+    getCategoryBody
 );
 
 writeFileSync(tgtPath, patchedTgt, 'utf8');

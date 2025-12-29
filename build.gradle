@@ -248,13 +248,26 @@ tasks.register('installLsp', Exec) {
     }
 }
 
-tasks.register('patchJavaSrc', Exec) {
+tasks.register('patchCodeStyleJavaSrc', Exec) {
     dependsOn installLsp
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine 'cmd', '/c', 'node', 'src\\js\\codestyle\\patchJavaSrc.js'
     } else {
         commandLine 'sh', '-c', 'src/js/codestyle/patchJavaSrc.js'
     }
+}
+
+tasks.register('patchUserSettingsJavaSrc', Exec) {
+    dependsOn installLsp
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', 'node', 'src\\js\\usersettings\\patchUserSettingsJavaSrc.js'
+    } else {
+        commandLine 'sh', '-c', 'src/js/usersettings/patchUserSettingsJavaSrc.js'
+    }
+}
+
+tasks.register('patchJavaSrc') {
+    dependsOn patchCodeStyleJavaSrc, patchUserSettingsJavaSrc
 }
 
 tasks.register('copyLsp', Copy) {

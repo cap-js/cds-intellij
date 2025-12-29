@@ -4,46 +4,6 @@
   "type": "object",
   "description": "JSON schema representation for UserSettings.",
   "properties": {
-    "cds.typeGenerator.outputPath": {
-      "category": "Type Generator",
-      "label": "Output Path",
-      "type": "string",
-      "default": "@cds-models",
-      "description": "Directory that serves as root for the generated type definitions. Relative to the project's root"
-    },
-    "cds.typeGenerator.enabled": {
-      "category": "Type Generator",
-      "label": "Enabled",
-      "type": "boolean",
-      "default": true,
-      "description": "Generate type definitions.\nRequires `@cap-js/cds-typer` to be installed\n\n**NOTE:** This feature is still experimental (beta)"
-    },
-    "cds.typeGenerator.localInstallationOnly": {
-      "category": "Type Generator",
-      "label": "Local Installation Only",
-      "type": "boolean",
-      "default": true
-    },
-    "cds.typeGenerator.command": {
-      "category": "Type Generator",
-      "label": "Command",
-      "type": "string",
-      "default": "node \"${typerBinary}\" \"${targetFile}\" --outputDirectory \"${outputDirectory}\"",
-      "description": "The command that is executed when generating model types. You can use the following variables in your command template:\n\n- `${typerBinary}`: the binary\n- `${targetFile}`: the file that is being typed\n- `${outputDirectory}`: the directory into which the type information is generated"
-    },
-    "cds.diagnosticsSeverity": {
-      "category": "Diagnostics",
-      "label": "Severity Level",
-      "type": "string",
-      "enum": [
-        "Error",
-        "Warning",
-        "Info",
-        "Debug"
-      ],
-      "default": "Warning",
-      "description": "Minimum severity of compiler messages to show in _Problems_ view"
-    },
     "cds.compiler.markMissingI18nDefault": {
       "category": "Compiler",
       "label": "Mark Missing I18n Default",
@@ -55,15 +15,8 @@
       "category": "Compiler",
       "label": "Show Internal Errors",
       "type": "boolean",
-      "default": true,
+      "default": false,
       "description": "Print internal compiler errors to the console"
-    },
-    "cds.completion.showDocumentation": {
-      "category": "Completion",
-      "label": "Show Documentation",
-      "type": "boolean",
-      "default": true,
-      "description": "Show documentation in code completion"
     },
     "cds.completion.docFiles": {
       "category": "Completion",
@@ -84,46 +37,44 @@
       "default": false,
       "description": "Format snippets after applying in code completion"
     },
-    "cds.outline.semantical": {
-      "category": "Outline",
-      "label": "Semantical",
+    "cds.completion.showDocumentation": {
+      "category": "Completion",
+      "label": "Show Documentation",
       "type": "boolean",
       "default": true,
-      "description": "Show a semantical outline structure as opposed to the (default) flat list"
-    },
-    "cds.outline.elements.associationComposition": {
-      "category": "Outline",
-      "label": "Show Association/Composition",
-      "type": "boolean",
-      "default": true
-    },
-    "cds.completion.workspaceSymbols.minPrefixLength": {
-      "category": "Completion",
-      "label": "Min Prefix Length",
-      "type": "number",
-      "default": -1,
-      "description": "Number of characters required to suggest (global) workspace symbols. Default is -1 (switched off - the feature may delay completion)"
-    },
-    "cds.completion.workspaceSymbols.maxProposals": {
-      "category": "Completion",
-      "label": "Max Proposals",
-      "type": "number",
-      "default": -1,
-      "description": "Maximum number of workspace symbols to suggest. Default is -1 (all)"
+      "description": "Show documentation in code completion"
     },
     "cds.completion.annotations.omitRedundantTypesInSnippets": {
       "category": "Completion",
+      "group": "Annotations",
       "label": "Omit Redundant Types in Snippets",
       "type": "boolean",
       "default": false,
       "description": "Omit redundant record types in suggested snippets"
     },
-    "cds.contributions.registry": {
-      "category": "Contributions",
-      "label": "Registry",
-      "type": "string",
-      "default": "https://registry.npmjs.org",
-      "description": "NPM registry to be used for installation/update of contributions (e.g. OData annotation support)"
+    "cds.completion.workspaceSymbols.maxProposals": {
+      "category": "Completion",
+      "group": "Workspace Symbols",
+      "label": "Max Proposals",
+      "type": "number",
+      "default": -1,
+      "description": "Maximum number of workspace symbols to suggest. Default is -1 (all)"
+    },
+    "cds.completion.workspaceSymbols.minPrefixLength": {
+      "category": "Completion",
+      "group": "Workspace Symbols",
+      "label": "Min Prefix Length",
+      "type": "number",
+      "default": -1,
+      "description": "Number of characters required to suggest (global) workspace symbols. Default is -1 (switched off - the feature may delay completion)"
+    },
+    "cds.completion.workspaceSymbols.useShortname": {
+      "category": "Completion",
+      "group": "Workspace Symbols",
+      "label": "Use Short Name",
+      "type": "boolean",
+      "default": false,
+      "description": "Use short names for workspace symbols in completion"
     },
     "cds.contributions.enablement.additionalAnalyticalAnnotations": {
       "category": "Contributions",
@@ -132,25 +83,87 @@
       "default": false,
       "description": "Provide support for additional annotations used CAP Embedded Analytics\n\nSee [capire](https://cap.cloud.sap/docs) for details"
     },
+    "cds.contributions.features.completion": {
+      "category": "Contributions",
+      "label": "Completion Support",
+      "type": "boolean",
+      "default": true,
+      "description": "Enable completion support from contributions"
+    },
+    "cds.contributions.features.diagnostics": {
+      "category": "Contributions",
+      "label": "Diagnostics Support",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable diagnostics support from contributions"
+    },
+    "cds.contributions.features.hover": {
+      "category": "Contributions",
+      "label": "Hover Support",
+      "type": "boolean",
+      "default": true,
+      "description": "Enable hover support from contributions"
+    },
+    "cds.contributions.features.index": {
+      "category": "Contributions",
+      "label": "Index Support",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable index support from contributions"
+    },
     "cds.contributions.enablement.odata": {
       "category": "Contributions",
       "label": "OData",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Provide extended annotation support for OData"
     },
-    "cds.quickfix.importArtifact": {
-      "category": "Quick Fix",
-      "label": "Import Artifact",
+    "cds.contributions.features.quickFixes": {
+      "category": "Contributions",
+      "label": "Quick Fixes Support",
       "type": "boolean",
       "default": false,
-      "description": "Provide a _quick fix_ for artifacts not yet imported (default disabled - the feature is CPU intensive)"
+      "description": "Enable quick fixes support from contributions"
+    },
+    "cds.contributions.registry": {
+      "category": "Contributions",
+      "label": "Registry",
+      "type": "string",
+      "default": "https://registry.npmjs.org",
+      "description": "NPM registry to be used for installation/update of contributions (e.g. OData annotation support)"
+    },
+    "cds.contributions.features.semanticHighlighting": {
+      "category": "Contributions",
+      "label": "Semantic Highlighting Support",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable semantic highlighting support from contributions"
+    },
+    "cds.diagnosticsSeverity": {
+      "category": "Diagnostics",
+      "label": "Severity Level",
+      "type": "string",
+      "enum": [
+        "Error",
+        "Warning",
+        "Info",
+        "Debug"
+      ],
+      "default": "Warning",
+      "description": "Minimum severity of compiler messages to show in _Problems_ view"
     },
     "cds.codeLensStatistics.enabled": {
       "category": "Editor",
       "label": "Code Lens Statistics",
       "type": "boolean",
       "default": false
+    },
+    "cds.semanticHighlighting.odata.enabled": {
+      "category": "Editor",
+      "label": "OData Semantic Highlighting",
+      "type": "boolean",
+      "default": false,
+      "description": "Semantic highlighting for OData annotations"
     },
     "cds.semanticHighlighting.enabled": {
       "category": "Editor",
@@ -159,25 +172,40 @@
       "default": false,
       "description": "Semantic highlighting of certain identifiers"
     },
-    "cds.semanticHighlighting.odata.enabled": {
+    "cds.quickfix.importArtifact": {
       "category": "Editor",
-      "label": "OData Semantic Highlighting",
-      "type": "boolean",
-      "default": false
-    },
-    "cds.refactoring.files.rename.enabled": {
-      "category": "Refactoring",
-      "label": "Update Usings on Rename",
+      "group": "Quick Fix",
+      "label": "Import Artifact",
       "type": "boolean",
       "default": false,
-      "description": "Adapt `using` statements in other files when renaming CDS files"
+      "description": "Provide a _quick fix_ for artifacts not yet imported (default disabled - the feature is CPU intensive)"
+    },
+    "cds.outline.semantical": {
+      "category": "Outline",
+      "label": "Semantical",
+      "type": "boolean",
+      "default": false,
+      "description": "Show a semantical outline structure as opposed to the (default) flat list"
+    },
+    "cds.outline.elements.associationComposition": {
+      "category": "Outline",
+      "label": "Show Association/Composition",
+      "type": "boolean",
+      "default": true
     },
     "cds.refactoring.files.delete.enabled": {
       "category": "Refactoring",
       "label": "Update Usings on Delete",
       "type": "boolean",
-      "default": false,
+      "default": true,
       "description": "Adapt `using` statements in other files when deleting CDS files"
+    },
+    "cds.refactoring.files.rename.enabled": {
+      "category": "Refactoring",
+      "label": "Update Usings on Rename",
+      "type": "boolean",
+      "default": true,
+      "description": "Adapt `using` statements in other files when renaming CDS files"
     },
     "cds.whereused.showGenericAnnotations": {
       "category": "Search",
@@ -193,26 +221,108 @@
       "default": false,
       "description": "Find same string constants via _References_ command"
     },
-    "cds.workspace.debounceFastChanges": {
+    "cds.typeGenerator.command": {
+      "category": "Type Generator",
+      "label": "Command",
+      "type": "string",
+      "default": "${typerBinary} \"${targetFile}\" --outputDirectory \"${outputDirectory}\"",
+      "description": "The command that is executed when generating model types. You can use the following variables in your command template:\n\n- `${typerBinary}`: the binary\n- `${targetFile}`: the file that is being typed\n- `${outputDirectory}`: the directory into which the type information is generated"
+    },
+    "cds.typeGenerator.enabled": {
+      "category": "Type Generator",
+      "label": "Enabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Generate type definitions.\nRequires `@cap-js/cds-typer` to be installed\n\n**NOTE:** This feature is still experimental (beta)"
+    },
+    "cds.typeGenerator.localInstallationOnly": {
+      "category": "Type Generator",
+      "label": "Local Installation Only",
+      "type": "boolean",
+      "default": true
+    },
+    "cds.typeGenerator.outputPath": {
+      "category": "Type Generator",
+      "label": "Output Path",
+      "type": "string",
+      "default": "@cds-models",
+      "description": "Directory that serves as root for the generated type definitions. Relative to the project's root"
+    },
+    "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterNSaves": {
       "category": "Workspace",
-      "label": "Debounce Fast Changes",
+      "group": "Persistency",
+      "label": "Garbage Collect After N Saves",
+      "type": "number",
+      "default": 20,
+      "description": "Garbage collect orphaned indexes after N saves (0 = disabled)"
+    },
+    "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterStartup": {
+      "category": "Workspace",
+      "group": "Persistency",
+      "label": "Garbage Collect After Startup",
       "type": "boolean",
       "default": true,
-      "description": "Consolidate workspace changes (e.g. by typing) to reduce the number of compilations, thus increasing performance. This is especially true for large models. Disable if you should see inconsistencies e.g. error markers not matching the corresponding identifier token"
+      "description": "Garbage collect orphaned indexes after startup"
     },
-    "cds.workspace.fastDiagnosticsMode": {
+    "cds.workspace.persistency.indexAllAfterStartup": {
       "category": "Workspace",
-      "label": "Fast Diagnostics Mode",
-      "type": "string",
-      "enum": [
-        "Clear",
-        "Partial",
-        "Full"
-      ],
-      "default": "Clear"
+      "group": "Persistency",
+      "label": "Index All After Startup",
+      "type": "boolean",
+      "default": true,
+      "description": "Index all files after startup"
+    },
+    "cds.workspace.persistency.persistAfterCompile": {
+      "category": "Workspace",
+      "group": "Persistency",
+      "label": "Persist After Compile",
+      "type": "boolean",
+      "default": true,
+      "description": "Persist workspace index after compilation"
+    },
+    "cds.workspace.persistency.persistAfterSave": {
+      "category": "Workspace",
+      "group": "Persistency",
+      "label": "Persist After Save",
+      "type": "boolean",
+      "default": true,
+      "description": "Persist workspace index after save"
+    },
+    "cds.workspace.persistency.enabled": {
+      "category": "Workspace",
+      "group": "Persistency",
+      "label": "Persistency Enabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable workspace index persistency"
+    },
+    "cds.workspace.persistency.reindexAfterCompileIfRestored": {
+      "category": "Workspace",
+      "group": "Persistency",
+      "label": "Reindex After Compile If Restored",
+      "type": "boolean",
+      "default": false,
+      "description": "Reindex workspace after compilation if index was restored"
+    },
+    "cds.workspace.persistency.restoreAfterStartup": {
+      "category": "Workspace",
+      "group": "Persistency",
+      "label": "Restore After Startup",
+      "type": "boolean",
+      "default": false,
+      "description": "Restore workspace index after startup"
+    },
+    "cds.workspace.persistency.restoreBeforeCompile": {
+      "category": "Workspace",
+      "group": "Persistency",
+      "label": "Restore Before Compile",
+      "type": "boolean",
+      "default": true,
+      "description": "Restore workspace index before compilation"
     },
     "cds.workspace.scanCsn": {
       "category": "Workspace",
+      "group": "Scanning",
       "label": "Scan CSN Files",
       "type": "string",
       "enum": [
@@ -225,6 +335,7 @@
     },
     "cds.workspace.scanDependentModules": {
       "category": "Workspace",
+      "group": "Scanning",
       "label": "Scan Dependent Modules",
       "type": "boolean",
       "default": false,
@@ -232,28 +343,31 @@
     },
     "cds.workspaceValidationMode": {
       "category": "Workspace",
+      "group": "Validation",
       "label": "Validation Mode",
       "type": "string",
       "enum": [
         "ActiveEditorOnly",
         "OpenEditorsOnly"
       ],
-      "default": "ActiveEditorOnly",
-      "description": "Specify which CDS files are validated:\n- `ActiveEditorOnly` (default): only the active editor is validated\n- `OpenEditorsOnly` additionally keeps other open editors' validation up-to-date"
-    },
-    "cds.workspaceSymbols.lazy": {
-      "category": "Workspace",
-      "label": "Lazy Load Symbols",
-      "type": "boolean",
-      "default": false,
-      "description": "_Workspace Symbols_ will show symbols that have the queried characters in the right order, but not necessarily consecutive"
+      "default": "OpenEditorsOnly",
+      "description": "Specify which CDS files are validated:\n- `ActiveEditorOnly`: only the active editor is validated\n- `OpenEditorsOnly` (default): additionally keeps other open editors' validation up-to-date"
     },
     "cds.workspaceSymbols.caseInsensitive": {
       "category": "Workspace",
+      "group": "Workspace Symbols",
       "label": "Case-Insensitive Symbols",
       "type": "boolean",
       "default": false,
       "description": "_Workspace Symbols_ will show symbols containing the given query, independent of character casings"
+    },
+    "cds.workspaceSymbols.lazy": {
+      "category": "Workspace",
+      "group": "Workspace Symbols",
+      "label": "Lazy Load Symbols",
+      "type": "boolean",
+      "default": false,
+      "description": "_Workspace Symbols_ will show symbols that have the queried characters in the right order, but not necessarily consecutive"
     }
   }
 }

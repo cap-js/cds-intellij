@@ -12,6 +12,11 @@ import java.util.stream.Collectors;
 
 public class CdsUserSettingsComponent {
 
+    private static final String TOOLTIP_HTML_END = "</body></html>";
+    private static final String TOOLTIP_HTML_START = "<html><body style='width: 350px'>";
+    private static final String TOOLTIP_KEY_END = "</i></font>";
+    private static final String TOOLTIP_KEY_START = "<br><br><font color='gray'><i>";
+
     private final Project project;
     private final JPanel mainPanel;
     private final Map<String, JComponent> controls = new HashMap<>();
@@ -39,37 +44,49 @@ public class CdsUserSettingsComponent {
         Map<String, Object> allSettings = CdsUserSettings.getDefaults();
         Map<String, List<String>> categoryGroups = groupSettingsByCategory(allSettings);
 
+        boolean firstCategory = true;
         for (Map.Entry<String, List<String>> categoryEntry : categoryGroups.entrySet()) {
             String category = categoryEntry.getKey();
             List<String> settingKeys = categoryEntry.getValue();
 
-            builder.addSeparator(5);
+            if (!firstCategory) {
+                builder.addSeparator(10);
+            }
+            firstCategory = false;
+            
             JLabel categoryLabel = new JLabel("<html><b>" + category + "</b></html>");
             builder.addComponent(categoryLabel);
 
-            for (String settingKey : settingKeys) {
-                Object defaultValue = allSettings.get(settingKey);
-                JComponent control = createControlForSetting(settingKey, defaultValue);
-                controls.put(settingKey, control);
+            Map<String, List<String>> groupedSettings = groupSettingsByGroup(settingKeys);
 
-                String label = formatLabel(settingKey);
-                String description = CdsUserSettings.getDescription(settingKey);
-                String htmlDescription = description != null ?
-                    "<html>" + description.replace("\n", "<br>") + "</html>" : null;
+            for (Map.Entry<String, List<String>> groupEntry : groupedSettings.entrySet()) {
+                String group = groupEntry.getKey();
+                List<String> groupSettingKeys = groupEntry.getValue();
 
-                if (control instanceof JBCheckBox) {
-                    ((JBCheckBox) control).setText(label);
-                    if (htmlDescription != null) {
-                        control.setToolTipText(htmlDescription);
+                if (!group.isEmpty()) {
+                    builder.addSeparator(3);
+                    JLabel groupLabel = new JLabel("<html><i>" + group + "</i></html>");
+                    builder.addComponent(groupLabel);
+                }
+
+                for (String settingKey : groupSettingKeys) {
+                    Object defaultValue = allSettings.get(settingKey);
+                    JComponent control = createControlForSetting(settingKey, defaultValue);
+                    controls.put(settingKey, control);
+
+                    String label = formatLabel(settingKey);
+                    String description = getDescription(settingKey);
+
+                    if (control instanceof JBCheckBox) {
+                        ((JBCheckBox) control).setText(label);
+                        control.setToolTipText(description);
+                        builder.addComponent(control);
+                    } else {
+                        JLabel labelComponent = new JLabel(label + ":");
+                        labelComponent.setToolTipText(description);
+                        control.setToolTipText(description);
+                        builder.addLabeledComponent(labelComponent, control);
                     }
-                    builder.addComponent(control);
-                } else {
-                    JLabel labelComponent = new JLabel(label + ":");
-                    if (htmlDescription != null) {
-                        labelComponent.setToolTipText(htmlDescription);
-                        control.setToolTipText(htmlDescription);
-                    }
-                    builder.addLabeledComponent(labelComponent, control);
                 }
             }
         }
@@ -86,7 +103,10 @@ public class CdsUserSettingsComponent {
         Map<String, List<String>> groups = new LinkedHashMap<>();
 
         for (String settingKey : allSettings.keySet()) {
-            String category = extractCategory(settingKey);
+            String category = CdsUserSettings.getCategory(settingKey);
+            if (category == null) {
+                category = extractCategory(settingKey);
+            }
             groups.computeIfAbsent(category, k -> new ArrayList<>()).add(settingKey);
         }
 
@@ -107,6 +127,18 @@ public class CdsUserSettingsComponent {
                 .collect(Collectors.joining(" "));
     }
 
+    private Map<String, List<String>> groupSettingsByGroup(List<String> settingKeys) {
+        Map<String, List<String>> groups = new LinkedHashMap<>();
+
+        for (String settingKey : settingKeys) {
+            String group = CdsUserSettings.getGroup(settingKey);
+            String groupKey = group != null ? group : "";
+            groups.computeIfAbsent(groupKey, k -> new ArrayList<>()).add(settingKey);
+        }
+
+        return groups;
+    }
+
     private String formatLabel(String settingKey) {
         String schemaLabel = CdsUserSettings.getLabel(settingKey);
         if (schemaLabel != null) {
@@ -116,6 +148,22 @@ public class CdsUserSettingsComponent {
         // Fallback to generated label if not found in schema
         String[] parts = settingKey.split("\\.");
         return capitalizeWords(parts[parts.length - 1]);
+    }
+
+    private String getDescription(String settingKey) {
+        String description = CdsUserSettings.getDescription(settingKey);
+        StringBuilder tooltip = new StringBuilder(TOOLTIP_HTML_START);
+
+        if (description != null && !description.isEmpty()) {
+            tooltip.append(description);
+        }
+
+        tooltip.append(TOOLTIP_KEY_START)
+               .append(settingKey)
+               .append(TOOLTIP_KEY_END)
+               .append(TOOLTIP_HTML_END);
+
+        return tooltip.toString();
     }
 
     private JComponent createControlForSetting(String settingKey, Object defaultValue) {
