@@ -98,7 +98,10 @@ public class CdsUserSettingsComponent {
         Map<String, List<String>> groups = new LinkedHashMap<>();
 
         for (String settingKey : allSettings.keySet()) {
-            String category = extractCategory(settingKey);
+            String category = CdsUserSettings.getCategory(settingKey);
+            if (category == null) {
+                category = extractCategory(settingKey);
+            }
             groups.computeIfAbsent(category, k -> new ArrayList<>()).add(settingKey);
         }
 

@@ -25,6 +25,7 @@ const settings = Object.entries(settingsFromSchema)
     enumValues: config.enum || null,
     label: config.label || null,
     description: config.description || null,
+    category: config.category || null,
     group: config.group || null
   }));
 
@@ -87,6 +88,14 @@ ${settings.filter(s => s.group).map(s =>
 ${t}${t}${t}default -> null;
 ${t}${t}};`;
 
+const getCategoryBody = `
+${t}${t}return switch (settingKey) {
+${settings.filter(s => s.category).map(s =>
+    `${t}${t}${t}case "${s.key}" -> "${s.category.replace(/"/g, '\\"')}";`
+).join('\n')}
+${t}${t}${t}default -> null;
+${t}${t}};`;
+
 let patchedTgt = tgt;
 
 // Replace method bodies using simplified lookbehind patterns
@@ -118,6 +127,11 @@ patchedTgt = patchedTgt.replace(
 patchedTgt = patchedTgt.replace(
     /(?<=\bgetGroup\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
     getGroupBody
+);
+
+patchedTgt = patchedTgt.replace(
+    /(?<=\bgetCategory\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
+    getCategoryBody
 );
 
 writeFileSync(tgtPath, patchedTgt, 'utf8');
