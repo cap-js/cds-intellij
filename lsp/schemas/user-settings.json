@@ -175,7 +175,8 @@
       "description": "Show a semantical outline structure as opposed to the (default) flat list"
     },
     "cds.quickfix.importArtifact": {
-      "category": "Quick Fix",
+      "category": "Editor",
+      "group": "Quick Fix",
       "label": "Import Artifact",
       "type": "boolean",
       "default": false,
