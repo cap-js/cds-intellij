@@ -44,11 +44,16 @@ public class CdsUserSettingsComponent {
         Map<String, Object> allSettings = CdsUserSettings.getDefaults();
         Map<String, List<String>> categoryGroups = groupSettingsByCategory(allSettings);
 
+        boolean firstCategory = true;
         for (Map.Entry<String, List<String>> categoryEntry : categoryGroups.entrySet()) {
             String category = categoryEntry.getKey();
             List<String> settingKeys = categoryEntry.getValue();
 
-            builder.addSeparator(5);
+            if (!firstCategory) {
+                builder.addSeparator(10);
+            }
+            firstCategory = false;
+            
             JLabel categoryLabel = new JLabel("<html><b>" + category + "</b></html>");
             builder.addComponent(categoryLabel);
 
