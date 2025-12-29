@@ -66,16 +66,19 @@ The `lsp/schemas/user-settings.json` file defines the JSON schema for cds-lsp us
 
 #### Updating from cds-lsp
 
-This schema is derived from the `UserSetting` enum in cds-lsp. To update:
+This schema is derived from the `UserSetting` enum and the `userSettingDefaults` map in cds-lsp. To update:
 
-1. Consider changes in its source file between relevant versions
+1. Consider changes in the corresponding source files between relevant versions
 
 2. Update `lsp/schemas/user-settings.json` accordingly:
    - Add new settings from the `UserSetting` enum
    - Remove obsolete settings
-   - Update descriptions and defaults to match
+   - Omit settings marked as internal
 
-3. Intentional omissions: Settings marked as internal should be excluded
+3. Properties to pay particular attention to:
+  - `default`
+  - `category`: normally derived from 2nd segment of key, but can be adjusted to include a setting in a different category
+  - `group`: optionally used to group semantically related settings below a given category
 
 #### Generating the Java Source
 
