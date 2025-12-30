@@ -376,6 +376,13 @@
       "type": "boolean",
       "default": false,
       "description": "_Workspace Symbols_ will show symbols that have the queried characters in the right order, but not necessarily consecutive"
+    },
+    "sapbas.telemetryEnabled": {
+      "category": "Telemetry",
+      "label": "Enable Telemetry",
+      "type": "boolean",
+      "default": true,
+      "description": "Enable sending telemetry data in accordance with the Privacy Statement (https://www.sap.com/about/legal/privacy.html)"
     }
   }
 }

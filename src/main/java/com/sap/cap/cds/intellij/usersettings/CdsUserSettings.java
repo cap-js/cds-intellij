@@ -70,6 +70,7 @@ public class CdsUserSettings {
             case "cds.workspaceValidationMode" -> "Validation Mode";
             case "cds.workspaceSymbols.caseInsensitive" -> "Case-Insensitive Symbols";
             case "cds.workspaceSymbols.lazy" -> "Lazy Load Symbols";
+            case "sapbas.telemetryEnabled" -> "Enable Telemetry";
             default -> null;
         };
     }
@@ -121,6 +122,7 @@ public class CdsUserSettings {
             case "cds.workspaceValidationMode" -> "Specify which CDS files are validated:<br>- <code>ActiveEditorOnly</code>: only the active editor is validated<br>- <code>OpenEditorsOnly</code> (default): additionally keeps other open editors' validation up-to-date";
             case "cds.workspaceSymbols.caseInsensitive" -> "<i>Workspace Symbols</i> will show symbols containing the given query, independent of character casings";
             case "cds.workspaceSymbols.lazy" -> "<i>Workspace Symbols</i> will show symbols that have the queried characters in the right order, but not necessarily consecutive";
+            case "sapbas.telemetryEnabled" -> "Enable sending telemetry data in accordance with the Privacy Statement (https://www.sap.com/about/legal/privacy.html)";
             default -> null;
         };
     }
@@ -224,6 +226,7 @@ public class CdsUserSettings {
             case "cds.workspaceValidationMode" -> "Workspace";
             case "cds.workspaceSymbols.caseInsensitive" -> "Workspace";
             case "cds.workspaceSymbols.lazy" -> "Workspace";
+            case "sapbas.telemetryEnabled" -> "Telemetry";
             default -> null;
         };
     }
@@ -287,6 +290,7 @@ public class CdsUserSettings {
         defaults.put("cds.workspaceValidationMode", "OpenEditorsOnly");
         defaults.put("cds.workspaceSymbols.caseInsensitive", false);
         defaults.put("cds.workspaceSymbols.lazy", false);
+        defaults.put("sapbas.telemetryEnabled", true);
         DEFAULTS = Collections.unmodifiableMap(defaults);
     }
 
