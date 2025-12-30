@@ -162,7 +162,7 @@ If you wish to contribute code, offer fixes or improvements, please send a pull 
 
 This plugin collects usage data to help improve SAP products and enhance the user experience. The collected data is sent to SAP in accordance with our [Privacy Statement](https://www.sap.com/about/legal/privacy.html).
 
-If you prefer not to share usage data, you can disable telemetry by setting `sapbas.telemetryEnabled` to false in your IDE settings: *File > Settings > Languages & Frameworks > CDS > Language Server*.
+If you prefer not to share usage data, you can disable telemetry by setting `sapbas.telemetryEnabled` to false in your IDE settings: *File > Settings > Languages & Frameworks > CDS > Language Server > Telemetry*.
 
 
 ## License
