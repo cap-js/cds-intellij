@@ -76,55 +76,6 @@
       "default": false,
       "description": "Use short names for workspace symbols in completion"
     },
-    "cds.contributions.enablement.additionalAnalyticalAnnotations": {
-      "category": "Contributions",
-      "label": "Additional Analytical Annotations",
-      "type": "boolean",
-      "default": false,
-      "description": "Provide support for additional annotations used CAP Embedded Analytics\n\nSee [capire](https://cap.cloud.sap/docs) for details"
-    },
-    "cds.contributions.features.completion": {
-      "category": "Contributions",
-      "label": "Completion Support",
-      "type": "boolean",
-      "default": true,
-      "description": "Enable completion support from contributions"
-    },
-    "cds.contributions.features.diagnostics": {
-      "category": "Contributions",
-      "label": "Diagnostics Support",
-      "type": "boolean",
-      "default": false,
-      "description": "Enable diagnostics support from contributions"
-    },
-    "cds.contributions.features.hover": {
-      "category": "Contributions",
-      "label": "Hover Support",
-      "type": "boolean",
-      "default": true,
-      "description": "Enable hover support from contributions"
-    },
-    "cds.contributions.features.index": {
-      "category": "Contributions",
-      "label": "Index Support",
-      "type": "boolean",
-      "default": false,
-      "description": "Enable index support from contributions"
-    },
-    "cds.contributions.enablement.odata": {
-      "category": "Contributions",
-      "label": "OData",
-      "type": "boolean",
-      "default": true,
-      "description": "Provide extended annotation support for OData"
-    },
-    "cds.contributions.features.quickFixes": {
-      "category": "Contributions",
-      "label": "Quick Fixes Support",
-      "type": "boolean",
-      "default": false,
-      "description": "Enable quick fixes support from contributions"
-    },
     "cds.contributions.registry": {
       "category": "Contributions",
       "label": "Registry",
@@ -132,9 +83,66 @@
       "default": "https://registry.npmjs.org",
       "description": "NPM registry to be used for installation/update of contributions (e.g. OData annotation support)"
     },
+    "cds.contributions.enablement.additionalAnalyticalAnnotations": {
+      "category": "Contributions",
+      "group": "Features",
+      "label": "Additional Analytical Annotations",
+      "type": "boolean",
+      "default": false,
+      "description": "Provide support for additional annotations used CAP Embedded Analytics\n\nSee [capire](https://cap.cloud.sap/docs) for details"
+    },
+    "cds.contributions.features.completion": {
+      "category": "Contributions",
+      "group": "Features",
+      "label": "Completion",
+      "type": "boolean",
+      "default": true,
+      "description": "Enable completion support from contributions"
+    },
+    "cds.contributions.features.diagnostics": {
+      "category": "Contributions",
+      "group": "Features",
+      "label": "Diagnostics",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable diagnostics support from contributions"
+    },
+    "cds.contributions.features.hover": {
+      "category": "Contributions",
+      "group": "Features",
+      "label": "Hover",
+      "type": "boolean",
+      "default": true,
+      "description": "Enable hover support from contributions"
+    },
+    "cds.contributions.features.index": {
+      "category": "Contributions",
+      "group": "Features",
+      "label": "Index",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable index support from contributions"
+    },
+    "cds.contributions.enablement.odata": {
+      "category": "Contributions",
+      "group": "Features",
+      "label": "OData",
+      "type": "boolean",
+      "default": true,
+      "description": "Provide extended annotation support for OData"
+    },
+    "cds.contributions.features.quickFixes": {
+      "category": "Contributions",
+      "group": "Features",
+      "label": "Quick Fixes",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable quick fixes support from contributions"
+    },
     "cds.contributions.features.semanticHighlighting": {
       "category": "Contributions",
-      "label": "Semantic Highlighting Support",
+      "group": "Features",
+      "label": "Semantic Highlighting",
       "type": "boolean",
       "default": false,
       "description": "Enable semantic highlighting support from contributions"

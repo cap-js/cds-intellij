@@ -32,15 +32,15 @@ public class CdsUserSettings {
             case "cds.completion.workspaceSymbols.maxProposals" -> "Max Proposals";
             case "cds.completion.workspaceSymbols.minPrefixLength" -> "Min Prefix Length";
             case "cds.completion.workspaceSymbols.useShortname" -> "Use Short Name";
-            case "cds.contributions.enablement.additionalAnalyticalAnnotations" -> "Additional Analytical Annotations";
-            case "cds.contributions.features.completion" -> "Completion Support";
-            case "cds.contributions.features.diagnostics" -> "Diagnostics Support";
-            case "cds.contributions.features.hover" -> "Hover Support";
-            case "cds.contributions.features.index" -> "Index Support";
-            case "cds.contributions.enablement.odata" -> "OData";
-            case "cds.contributions.features.quickFixes" -> "Quick Fixes Support";
             case "cds.contributions.registry" -> "Registry";
-            case "cds.contributions.features.semanticHighlighting" -> "Semantic Highlighting Support";
+            case "cds.contributions.enablement.additionalAnalyticalAnnotations" -> "Additional Analytical Annotations";
+            case "cds.contributions.features.completion" -> "Completion";
+            case "cds.contributions.features.diagnostics" -> "Diagnostics";
+            case "cds.contributions.features.hover" -> "Hover";
+            case "cds.contributions.features.index" -> "Index";
+            case "cds.contributions.enablement.odata" -> "OData";
+            case "cds.contributions.features.quickFixes" -> "Quick Fixes";
+            case "cds.contributions.features.semanticHighlighting" -> "Semantic Highlighting";
             case "cds.diagnosticsSeverity" -> "Severity Level";
             case "cds.codeLensStatistics.enabled" -> "Code Lens Statistics";
             case "cds.semanticHighlighting.odata.enabled" -> "OData Semantic Highlighting";
@@ -86,6 +86,7 @@ public class CdsUserSettings {
             case "cds.completion.workspaceSymbols.maxProposals" -> "Maximum number of workspace symbols to suggest. Default is -1 (all)";
             case "cds.completion.workspaceSymbols.minPrefixLength" -> "Number of characters required to suggest (global) workspace symbols. Default is -1 (switched off - the feature may delay completion)";
             case "cds.completion.workspaceSymbols.useShortname" -> "Use short names for workspace symbols in completion";
+            case "cds.contributions.registry" -> "NPM registry to be used for installation/update of contributions (e.g. OData annotation support)";
             case "cds.contributions.enablement.additionalAnalyticalAnnotations" -> "Provide support for additional annotations used CAP Embedded Analytics<br><br>See capire (https://cap.cloud.sap/docs) for details";
             case "cds.contributions.features.completion" -> "Enable completion support from contributions";
             case "cds.contributions.features.diagnostics" -> "Enable diagnostics support from contributions";
@@ -93,7 +94,6 @@ public class CdsUserSettings {
             case "cds.contributions.features.index" -> "Enable index support from contributions";
             case "cds.contributions.enablement.odata" -> "Provide extended annotation support for OData";
             case "cds.contributions.features.quickFixes" -> "Enable quick fixes support from contributions";
-            case "cds.contributions.registry" -> "NPM registry to be used for installation/update of contributions (e.g. OData annotation support)";
             case "cds.contributions.features.semanticHighlighting" -> "Enable semantic highlighting support from contributions";
             case "cds.diagnosticsSeverity" -> "Minimum severity of compiler messages to show in <i>Problems</i> view";
             case "cds.semanticHighlighting.odata.enabled" -> "Semantic highlighting for OData annotations";
@@ -147,6 +147,14 @@ public class CdsUserSettings {
             case "cds.completion.workspaceSymbols.maxProposals" -> "Workspace Symbols";
             case "cds.completion.workspaceSymbols.minPrefixLength" -> "Workspace Symbols";
             case "cds.completion.workspaceSymbols.useShortname" -> "Workspace Symbols";
+            case "cds.contributions.enablement.additionalAnalyticalAnnotations" -> "Features";
+            case "cds.contributions.features.completion" -> "Features";
+            case "cds.contributions.features.diagnostics" -> "Features";
+            case "cds.contributions.features.hover" -> "Features";
+            case "cds.contributions.features.index" -> "Features";
+            case "cds.contributions.enablement.odata" -> "Features";
+            case "cds.contributions.features.quickFixes" -> "Features";
+            case "cds.contributions.features.semanticHighlighting" -> "Features";
             case "cds.quickfix.importArtifact" -> "Quick Fix";
             case "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterNSaves" -> "Persistency";
             case "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterStartup" -> "Persistency";
@@ -178,6 +186,7 @@ public class CdsUserSettings {
             case "cds.completion.workspaceSymbols.maxProposals" -> "Completion";
             case "cds.completion.workspaceSymbols.minPrefixLength" -> "Completion";
             case "cds.completion.workspaceSymbols.useShortname" -> "Completion";
+            case "cds.contributions.registry" -> "Contributions";
             case "cds.contributions.enablement.additionalAnalyticalAnnotations" -> "Contributions";
             case "cds.contributions.features.completion" -> "Contributions";
             case "cds.contributions.features.diagnostics" -> "Contributions";
@@ -185,7 +194,6 @@ public class CdsUserSettings {
             case "cds.contributions.features.index" -> "Contributions";
             case "cds.contributions.enablement.odata" -> "Contributions";
             case "cds.contributions.features.quickFixes" -> "Contributions";
-            case "cds.contributions.registry" -> "Contributions";
             case "cds.contributions.features.semanticHighlighting" -> "Contributions";
             case "cds.diagnosticsSeverity" -> "Diagnostics";
             case "cds.codeLensStatistics.enabled" -> "Editor";
@@ -241,6 +249,7 @@ public class CdsUserSettings {
         defaults.put("cds.completion.workspaceSymbols.maxProposals", -1);
         defaults.put("cds.completion.workspaceSymbols.minPrefixLength", -1);
         defaults.put("cds.completion.workspaceSymbols.useShortname", false);
+        defaults.put("cds.contributions.registry", "https://registry.npmjs.org");
         defaults.put("cds.contributions.enablement.additionalAnalyticalAnnotations", false);
         defaults.put("cds.contributions.features.completion", true);
         defaults.put("cds.contributions.features.diagnostics", false);
@@ -248,7 +257,6 @@ public class CdsUserSettings {
         defaults.put("cds.contributions.features.index", false);
         defaults.put("cds.contributions.enablement.odata", true);
         defaults.put("cds.contributions.features.quickFixes", false);
-        defaults.put("cds.contributions.registry", "https://registry.npmjs.org");
         defaults.put("cds.contributions.features.semanticHighlighting", false);
         defaults.put("cds.diagnosticsSeverity", "Warning");
         defaults.put("cds.codeLensStatistics.enabled", false);
