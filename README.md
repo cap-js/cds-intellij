@@ -158,6 +158,13 @@ Note that for large projects, more verbose tracing may significantly inflate log
 If you wish to contribute code, offer fixes or improvements, please send a pull request. Due to legal reasons, contributors will be asked to accept a DCO when they create the first pull request to this project. This happens in an automated fashion during the submission process. SAP uses [the standard DCO text of the Linux Foundation](https://developercertificate.org/).
 
 
+## Telemetry and Data Collection
+
+This plugin collects usage data to help improve SAP products and enhance the user experience. The collected data is sent to SAP in accordance with our [Privacy Statement](https://www.sap.com/about/legal/privacy.html).
+
+If you prefer not to share usage data, you can disable telemetry by setting `sapbas.telemetryEnabled` to false in your IDE settings: *File > Settings > Languages & Frameworks > CDS > Language Server > Telemetry*.
+
+
 ## License
 
 Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file.
