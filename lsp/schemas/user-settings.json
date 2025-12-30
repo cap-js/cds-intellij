@@ -166,19 +166,19 @@
       "type": "boolean",
       "default": false
     },
-    "cds.semanticHighlighting.odata.enabled": {
-      "category": "Editor",
-      "label": "OData Semantic Highlighting",
-      "type": "boolean",
-      "default": false,
-      "description": "Semantic highlighting for OData annotations"
-    },
     "cds.semanticHighlighting.enabled": {
       "category": "Editor",
       "label": "Semantic Highlighting",
       "type": "boolean",
       "default": false,
       "description": "Semantic highlighting of certain identifiers"
+    },
+    "cds.semanticHighlighting.odata.enabled": {
+      "category": "Editor",
+      "label": "OData Semantic Highlighting",
+      "type": "boolean",
+      "default": false,
+      "description": "Semantic highlighting for OData annotations"
     },
     "cds.quickfix.importArtifact": {
       "category": "Editor",
@@ -229,13 +229,6 @@
       "default": false,
       "description": "Find same string constants via _References_ command"
     },
-    "cds.typeGenerator.command": {
-      "category": "Type Generator",
-      "label": "Command",
-      "type": "string",
-      "default": "${typerBinary} \"${targetFile}\" --outputDirectory \"${outputDirectory}\"",
-      "description": "The command that is executed when generating model types. You can use the following variables in your command template:\n\n- `${typerBinary}`: the binary\n- `${targetFile}`: the file that is being typed\n- `${outputDirectory}`: the directory into which the type information is generated"
-    },
     "cds.typeGenerator.enabled": {
       "category": "Type Generator",
       "label": "Enabled",
@@ -249,6 +242,13 @@
       "type": "boolean",
       "default": true
     },
+    "cds.typeGenerator.command": {
+      "category": "Type Generator",
+      "label": "Command",
+      "type": "string",
+      "default": "${typerBinary} \"${targetFile}\" --outputDirectory \"${outputDirectory}\"",
+      "description": "The command that is executed when generating model types. You can use the following variables in your command template:\n\n- `${typerBinary}`: the binary\n- `${targetFile}`: the file that is being typed\n- `${outputDirectory}`: the directory into which the type information is generated"
+    },
     "cds.typeGenerator.outputPath": {
       "category": "Type Generator",
       "label": "Output Path",
@@ -256,29 +256,29 @@
       "default": "@cds-models",
       "description": "Directory that serves as root for the generated type definitions. Relative to the project's root"
     },
-    "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterNSaves": {
+    "cds.workspace.persistency.enabled": {
       "category": "Workspace",
       "group": "Persistency",
-      "label": "Garbage Collect After N Saves",
-      "type": "number",
-      "default": 20,
-      "description": "Garbage collect orphaned indexes after N saves (0 = disabled)"
+      "label": "Persistency Enabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Enable workspace index persistency"
     },
-    "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterStartup": {
+    "cds.workspace.persistency.restoreAfterStartup": {
       "category": "Workspace",
       "group": "Persistency",
-      "label": "Garbage Collect After Startup",
+      "label": "Restore After Startup",
+      "type": "boolean",
+      "default": false,
+      "description": "Restore workspace index after startup"
+    },
+    "cds.workspace.persistency.restoreBeforeCompile": {
+      "category": "Workspace",
+      "group": "Persistency",
+      "label": "Restore Before Compile",
       "type": "boolean",
       "default": true,
-      "description": "Garbage collect orphaned indexes after startup"
-    },
-    "cds.workspace.persistency.indexAllAfterStartup": {
-      "category": "Workspace",
-      "group": "Persistency",
-      "label": "Index All After Startup",
-      "type": "boolean",
-      "default": true,
-      "description": "Index all files after startup"
+      "description": "Restore workspace index before compilation"
     },
     "cds.workspace.persistency.persistAfterCompile": {
       "category": "Workspace",
@@ -296,13 +296,13 @@
       "default": true,
       "description": "Persist workspace index after save"
     },
-    "cds.workspace.persistency.enabled": {
+    "cds.workspace.persistency.indexAllAfterStartup": {
       "category": "Workspace",
       "group": "Persistency",
-      "label": "Persistency Enabled",
+      "label": "Index All After Startup",
       "type": "boolean",
-      "default": false,
-      "description": "Enable workspace index persistency"
+      "default": true,
+      "description": "Index all files after startup"
     },
     "cds.workspace.persistency.reindexAfterCompileIfRestored": {
       "category": "Workspace",
@@ -312,21 +312,21 @@
       "default": false,
       "description": "Reindex workspace after compilation if index was restored"
     },
-    "cds.workspace.persistency.restoreAfterStartup": {
+    "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterStartup": {
       "category": "Workspace",
       "group": "Persistency",
-      "label": "Restore After Startup",
-      "type": "boolean",
-      "default": false,
-      "description": "Restore workspace index after startup"
-    },
-    "cds.workspace.persistency.restoreBeforeCompile": {
-      "category": "Workspace",
-      "group": "Persistency",
-      "label": "Restore Before Compile",
+      "label": "Garbage Collect After Startup",
       "type": "boolean",
       "default": true,
-      "description": "Restore workspace index before compilation"
+      "description": "Garbage collect orphaned indexes after startup"
+    },
+    "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterNSaves": {
+      "category": "Workspace",
+      "group": "Persistency",
+      "label": "Garbage Collect After N Saves",
+      "type": "number",
+      "default": 20,
+      "description": "Garbage collect orphaned indexes after N saves (0 = disabled)"
     },
     "cds.workspace.scanCsn": {
       "category": "Workspace",
