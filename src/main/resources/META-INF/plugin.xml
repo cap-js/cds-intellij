@@ -177,10 +177,30 @@
 
 
     <change-notes><![CDATA[
-<h3>Fixed</h3>
+<h4>Added</h4>
 <ul>
-    <li>Fix a race condition that could prevent the language server from starting.</li>
-    <li>Correctly use configured tab size even for the default value (2)</li>
+    <li>Enable telemetry by default (disabled via user setting <code>sapbas.telemetryEnabled</code>)</li>
 </ul>
+<h4>Changed</h4>
+<ul>
+    <li>Upgrade LSP4IJ to 0.19.1, fixing CDS language support in WSL workspaces and tab-size configuration</li>
+    <li>Upgrade cds-lsp to 9.6.2 with the following changes since 9.4.0:
+        <ul>
+            <li>Telemetry support independent from client</li>
+            <li>Fixed syntax highlighting in bracketed expressions and <code>annotate</code> statements with constraints containing function calls</li>
+            <li><code>*.json</code> files are no longer scanned and parsed heuristically if they contain CSN. Those files need to be used from a CDS file to be seen e.g. in <code>Workspace Symbols</code>. However, files ending with <code>.csn.json</code> or <code>.csn</code> are still considered as CSN files.</li>
+            <li>Removed user setting <code>cds.workspace.debounceFastChanges</code>, now always enabled</li>
+            <li>(Experimental) persistency of where-used index (enabled via user setting <code>cds.workspace.persistency.enabled</code> with more fine-tuning settings available)</li>
+            <li>Compatibility with <code>@sap/cds 9.5</code></li>
+        </ul>
+    </li>
+    <li>Update cds-lsp user settings and defaults, improve UX</li>
+</ul>
+<h4>Fixed</h4>
+<ul>
+    <li>Always use configured/default CDS tabSize</li>
+    <li>Resolve race condition in language-server startup</li>
+</ul>
+<p><em>For details see the <a href=https://github.com/cap-js/cds-intellij/compare/2.0.1...2.1.0>full changelog</a></em></p>
 ]]></change-notes>
 </idea-plugin>
