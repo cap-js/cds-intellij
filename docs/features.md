@@ -66,9 +66,14 @@ Navigate to the custom Node.js service implementation:
 
 #### Adjust the Code Style
 
-Changes in the Settings UI will synchronized with `.cdsprettier.json` in the workspace.
+Changes in the Settings UI will be synchronized with `.cdsprettier.json` in the workspace.
 
-![Demo of Code Style Settings](../.assets/code_style_settings.png)
+> **Note on Code-Style Schemes:** The presence of a `.cdsprettier.json` file is designed to enforce consistent formatting for all developers working on a project. To achieve this, the plugin makes this file the single source of truth for all CDS-related code-style settings.
+>
+> When this file is present and its content changes, the plugin will automatically switch the project's code style to the **Project** scheme. This scheme is then populated exclusively from the settings defined in `.cdsprettier.json`, taking precedence over any other code-style settings. This behavior is intentional to guarantee that the project's defined formatting rules are always applied.
+
+
+![Demo of Code-Style Settings](../.assets/code_style_settings.png)
 
 #### Configure the CDS Language Server
 
