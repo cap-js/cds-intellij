@@ -3,12 +3,7 @@
 const path = require('path');
 const { readFileSync, writeFileSync, existsSync, realpathSync } = require('node:fs');
 
-let cdsLspSchemaPath = path.resolve(__dirname, '../../../../cds-lsp/schemas/user-settings.json');
-if (!existsSync(cdsLspSchemaPath)) {
-  cdsLspSchemaPath = realpathSync(path.resolve(__dirname, '../../../..')) + '/cds-lsp/schemas/user-settings.json';
-}
-
-const schemaPath = path.resolve(__dirname, '../../../lsp/schemas/user-settings.json');
+const cdsLspSchemaPath = path.resolve(__dirname, '../../../lsp/node_modules/@sap/cds-lsp/schemas/user-settings.json');
 const metadataPath = path.resolve(__dirname, 'userSettingsMetadata.json');
 
 if (!existsSync(cdsLspSchemaPath)) {
@@ -77,17 +72,8 @@ for (const key of orderedKeys) {
     }
   }
   
-  if (property.markdownDescription) {
-    augmentedProperty.description = property.markdownDescription;
-    delete augmentedProperty.markdownDescription;
-  }
-  
   augmentedSchema.properties[key] = augmentedProperty;
 }
-
-writeFileSync(schemaPath, JSON.stringify(augmentedSchema, null, 2), 'utf-8');
-console.log(`Augmented schema written to ${schemaPath}`);
-console.log(`Total properties: ${Object.keys(augmentedSchema.properties).length}`);
 
 const schema = augmentedSchema;
 const settingsFromSchema = schema.properties;
@@ -109,7 +95,7 @@ const settings = Object.entries(settingsFromSchema)
     defaultValue: getDefaultValue(config),
     enumValues: config.enum || null,
     label: config.label || null,
-    description: config.description || null,
+    description: config.markdownDescription || null,
     category: config.category || null,
     group: config.group || null
   }));
