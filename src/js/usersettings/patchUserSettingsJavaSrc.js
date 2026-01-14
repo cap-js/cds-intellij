@@ -52,7 +52,7 @@ const augmentedSchema = {
   properties: {}
 };
 
-const orderedKeys = [...metadataKeys.filter(k => cdsLspKeys.includes(k)), ...cdsLspKeys.filter(k => !metadataKeys.includes(k))];
+const orderedKeys = metadataKeys.filter(k => cdsLspKeys.includes(k));
 
 for (const key of orderedKeys) {
   const property = cdsLspSchema.properties[key];
