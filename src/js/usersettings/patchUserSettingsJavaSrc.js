@@ -1,81 +1,10 @@
 #!/usr/bin/env node
 
 const path = require('path');
-const { readFileSync, writeFileSync, existsSync, realpathSync } = require('node:fs');
+const { readFileSync, writeFileSync } = require('node:fs');
 
-const cdsLspSchemaPath = path.resolve(__dirname, '../../../lsp/node_modules/@sap/cds-lsp/schemas/user-settings.json');
-const metadataPath = path.resolve(__dirname, 'userSettingsMetadata.json');
-
-if (!existsSync(cdsLspSchemaPath)) {
-  console.error(`Source schema not found at ${cdsLspSchemaPath}`);
-  console.error('Make sure to run schema generation in cds-lsp first');
-  process.exit(1);
-}
-
-if (!existsSync(metadataPath)) {
-  console.error(`Metadata file not found at ${metadataPath}`);
-  process.exit(1);
-}
-
-const cdsLspSchema = JSON.parse(readFileSync(cdsLspSchemaPath, 'utf-8'));
-const metadata = JSON.parse(readFileSync(metadataPath, 'utf-8'));
-
-const cdsLspKeys = Object.keys(cdsLspSchema.properties || {});
-const metadataKeys = Object.keys(metadata);
-
-const newKeysInUpstream = cdsLspKeys.filter(key => !metadataKeys.includes(key));
-if (newKeysInUpstream.length > 0) {
-  console.error('\nERROR: New properties found in cds-lsp schema that are not in userSettingsMetadata.json:');
-  newKeysInUpstream.forEach(key => console.error(`  - ${key}`));
-  console.error('\nPlease add these properties to userSettingsMetadata.json with appropriate category, label, and optional group.');
-  process.exit(1);
-}
-
-const labelMapping = {
-  'Annotation Support': 'Contributions',
-  'Code Completion': 'Completion',
-  'Where-used': 'Search',
-  'Symbols': 'Outline',
-  'Type Generation': 'Type Generator',
-  'Telemetry': 'Telemetry',
-  'Validation': 'Diagnostics',
-  'Misc': 'Editor'
-};
-
-const augmentedSchema = {
-  ...cdsLspSchema,
-  properties: {}
-};
-
-const orderedKeys = metadataKeys.filter(k => cdsLspKeys.includes(k));
-
-for (const key of orderedKeys) {
-  const property = cdsLspSchema.properties[key];
-  if (!property) continue;
-  
-  const augmentedProperty = { ...property };
-  
-  const meta = metadata[key];
-  if (meta) {
-    if (meta.category) {
-      augmentedProperty.category = meta.category;
-    }
-    if (meta.group) {
-      augmentedProperty.group = meta.group;
-    }
-    if (meta.label) {
-      augmentedProperty.label = meta.label;
-    }
-  } else {
-    if (property.category && labelMapping[property.category]) {
-      augmentedProperty.category = labelMapping[property.category];
-    }
-  }
-  
-  augmentedSchema.properties[key] = augmentedProperty;
-}
-
-const schema = augmentedSchema;
+const schemaPath = path.resolve(__dirname, '../../../lsp/node_modules/@sap/cds-lsp/schemas/user-settings.json');
+const schema = require(schemaPath);
 const settingsFromSchema = schema.properties;
 
 const tgtPath = path.resolve(__dirname, '../../../src/main/java/com/sap/cap/cds/intellij/usersettings/CdsUserSettings.java');
@@ -94,10 +23,8 @@ const settings = Object.entries(settingsFromSchema)
     key,
     defaultValue: getDefaultValue(config),
     enumValues: config.enum || null,
-    label: config.label || null,
-    description: config.markdownDescription || null,
-    category: config.category || null,
-    group: config.group || null
+    markdownDescription: config.markdownDescription || null,
+    category: config.category || null
   }));
 
 const t = '    ';
@@ -108,14 +35,6 @@ ${t}${t}Map<String, Object> defaults = new LinkedHashMap<>();
 ${settings.map(s => `${t}${t}defaults.put("${s.key}", ${s.defaultValue});`).join('\n')}
 ${t}${t}DEFAULTS = Collections.unmodifiableMap(defaults);`;
 
-const getLabelBody = `
-${t}${t}return switch (settingKey) {
-${settings.filter(s => s.label).map(s =>
-    `${t}${t}${t}case "${s.key}" -> "${s.label.replace(/"/g, '\\"')}";`
-).join('\n')}
-${t}${t}${t}default -> null;
-${t}${t}};`;
-
 function convertMarkdownToHtml(markdown) {
   return markdown
       .replace(/_([^_]+)_/g, '<i>$1</i>')
@@ -125,17 +44,17 @@ function convertMarkdownToHtml(markdown) {
       .replace(/\n/g, '<br>');
 }
 
-function formatJavaDescription(description) {
-  if (!description) return 'null';
-  const htmlContent = convertMarkdownToHtml(description);
+function formatJavaDescription(markdownDescription) {
+  if (!markdownDescription) return 'null';
+  const htmlContent = convertMarkdownToHtml(markdownDescription.replace(/\n+/, '\n'));
   const escaped = htmlContent.replace(/"/g, '\\"');
   return `"${escaped}"`;
 }
 
 const getDescriptionBody = `
 ${t}${t}return switch (settingKey) {
-${settings.filter(s => s.description).map(s =>
-    `${t}${t}${t}case "${s.key}" -> ${formatJavaDescription(s.description)};`
+${settings.filter(s => s.markdownDescription).map(s =>
+    `${t}${t}${t}case "${s.key}" -> ${formatJavaDescription(s.markdownDescription)};`
 ).join('\n')}
 ${t}${t}${t}default -> null;
 ${t}${t}};`;
@@ -150,14 +69,6 @@ ${t}${t}};`;
 
 const hasEnumValuesBody = `
 ${t}${t}return getEnumValues(settingKey) != null;`;
-
-const getGroupBody = `
-${t}${t}return switch (settingKey) {
-${settings.filter(s => s.group).map(s =>
-    `${t}${t}${t}case "${s.key}" -> "${s.group.replace(/"/g, '\\"')}";`
-).join('\n')}
-${t}${t}${t}default -> null;
-${t}${t}};`;
 
 const getCategoryBody = `
 ${t}${t}return switch (settingKey) {
@@ -176,11 +87,6 @@ patchedTgt = patchedTgt.replace(
 );
 
 patchedTgt = patchedTgt.replace(
-    /(?<=\bgetLabel\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
-    getLabelBody
-);
-
-patchedTgt = patchedTgt.replace(
     /(?<=\bgetDescription\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
     getDescriptionBody
 );
@@ -195,9 +101,10 @@ patchedTgt = patchedTgt.replace(
     hasEnumValuesBody
 );
 
+// Remove getGroup method completely
 patchedTgt = patchedTgt.replace(
-    /(?<=\bgetGroup\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
-    getGroupBody
+    /\n\s*\/\/ Note: method body is generated\s*\n\s*public static String getGroup\([^)]*\)\s*\{[^}]*\n\s*\}/sm,
+    ''
 );
 
 patchedTgt = patchedTgt.replace(
