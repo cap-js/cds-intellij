@@ -3,7 +3,7 @@
 const path = require('path');
 const { readFileSync, writeFileSync } = require('node:fs');
 
-const schemaPath = path.resolve(__dirname, '../../../lsp/schemas/user-settings.json');
+const schemaPath = path.resolve(__dirname, '../../../lsp/node_modules/@sap/cds-lsp/schemas/user-settings.json');
 const schema = require(schemaPath);
 const settingsFromSchema = schema.properties;
 
@@ -23,10 +23,8 @@ const settings = Object.entries(settingsFromSchema)
     key,
     defaultValue: getDefaultValue(config),
     enumValues: config.enum || null,
-    label: config.label || null,
-    description: config.description || null,
-    category: config.category || null,
-    group: config.group || null
+    markdownDescription: config.markdownDescription || null,
+    category: config.category || null
   }));
 
 const t = '    ';
@@ -37,14 +35,6 @@ ${t}${t}Map<String, Object> defaults = new LinkedHashMap<>();
 ${settings.map(s => `${t}${t}defaults.put("${s.key}", ${s.defaultValue});`).join('\n')}
 ${t}${t}DEFAULTS = Collections.unmodifiableMap(defaults);`;
 
-const getLabelBody = `
-${t}${t}return switch (settingKey) {
-${settings.filter(s => s.label).map(s =>
-    `${t}${t}${t}case "${s.key}" -> "${s.label.replace(/"/g, '\\"')}";`
-).join('\n')}
-${t}${t}${t}default -> null;
-${t}${t}};`;
-
 function convertMarkdownToHtml(markdown) {
   return markdown
       .replace(/_([^_]+)_/g, '<i>$1</i>')
@@ -54,17 +44,17 @@ function convertMarkdownToHtml(markdown) {
       .replace(/\n/g, '<br>');
 }
 
-function formatJavaDescription(description) {
-  if (!description) return 'null';
-  const htmlContent = convertMarkdownToHtml(description);
+function formatJavaDescription(markdownDescription) {
+  if (!markdownDescription) return 'null';
+  const htmlContent = convertMarkdownToHtml(markdownDescription.replace(/\n+/, '\n'));
   const escaped = htmlContent.replace(/"/g, '\\"');
   return `"${escaped}"`;
 }
 
 const getDescriptionBody = `
 ${t}${t}return switch (settingKey) {
-${settings.filter(s => s.description).map(s =>
-    `${t}${t}${t}case "${s.key}" -> ${formatJavaDescription(s.description)};`
+${settings.filter(s => s.markdownDescription).map(s =>
+    `${t}${t}${t}case "${s.key}" -> ${formatJavaDescription(s.markdownDescription)};`
 ).join('\n')}
 ${t}${t}${t}default -> null;
 ${t}${t}};`;
@@ -79,14 +69,6 @@ ${t}${t}};`;
 
 const hasEnumValuesBody = `
 ${t}${t}return getEnumValues(settingKey) != null;`;
-
-const getGroupBody = `
-${t}${t}return switch (settingKey) {
-${settings.filter(s => s.group).map(s =>
-    `${t}${t}${t}case "${s.key}" -> "${s.group.replace(/"/g, '\\"')}";`
-).join('\n')}
-${t}${t}${t}default -> null;
-${t}${t}};`;
 
 const getCategoryBody = `
 ${t}${t}return switch (settingKey) {
@@ -105,11 +87,6 @@ patchedTgt = patchedTgt.replace(
 );
 
 patchedTgt = patchedTgt.replace(
-    /(?<=\bgetLabel\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
-    getLabelBody
-);
-
-patchedTgt = patchedTgt.replace(
     /(?<=\bgetDescription\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
     getDescriptionBody
 );
@@ -124,9 +101,10 @@ patchedTgt = patchedTgt.replace(
     hasEnumValuesBody
 );
 
+// Remove getGroup method completely
 patchedTgt = patchedTgt.replace(
-    /(?<=\bgetGroup\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
-    getGroupBody
+    /\n\s*\/\/ Note: method body is generated\s*\n\s*public static String getGroup\([^)]*\)\s*\{[^}]*\n\s*\}/sm,
+    ''
 );
 
 patchedTgt = patchedTgt.replace(
