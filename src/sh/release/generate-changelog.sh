@@ -2,14 +2,20 @@
 set -eo pipefail  # Removed -u to simplify array handling
 
 # Generate changelog HTML from conventional commits for plugin.xml
-# Usage: generate-changelog.sh [from-ref] [to-ref] [to-version]
+# Usage: generate-changelog.sh [from-ref] [to-ref] [to-version] [old-lsp] [new-lsp]
 #   from-ref: Start reference (default: last tag)
 #   to-ref: End reference (default: HEAD)
 #   to-version: Target version for compare link (default: to-ref)
+#   old-lsp: Previous @sap/cds-lsp version (optional)
+#   new-lsp: Current @sap/cds-lsp version (optional)
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 FROM_REF="${1:-}"
 TO_REF="${2:-HEAD}"
 TO_VERSION="${3:-$TO_REF}"
+OLD_LSP="${4:-}"
+NEW_LSP="${5:-}"
 
 # Find last tag if not specified
 if [[ -z "$FROM_REF" ]]; then
@@ -48,8 +54,9 @@ while IFS= read -r line; do
         commits_changed["$message"]=1
         ;;
       chore)
-        # Only include user-facing chores (lsp4ij upgrades, @sap/cds-lsp upgrades)
-        if [[ $message =~ (lsp4ij|cds-lsp) ]]; then
+        # Only include user-facing chores (lsp4ij upgrades)
+        # Note: cds-lsp upgrades are handled separately with detailed changelog
+        if [[ $message =~ lsp4ij ]]; then
           commits_changed["$message"]=1
         fi
         ;;
@@ -89,16 +96,29 @@ if [[ ${#commits_added[@]} -gt 0 ]]; then
   output+="</ul>"$'\n'
 fi
 
-# Always show Changed section (includes manual lsp4ij upgrade placeholder)
-has_content=true
-output+="<h4>Changed</h4>"$'\n'
-output+="<ul>"$'\n'
-# Placeholder for manual lsp4ij upgrade entry
-output+="    <!-- INSERT_LSP4IJ_CHANGES_HERE - Example: Upgrade LSP4IJ to X.Y.Z, fixing <feature> -->"$'\n'
-if [[ ${#commits_changed[@]} -gt 0 ]]; then
-  output_messages commits_changed
+# Changed section - only show if there's content
+lsp_changelog=""
+if [[ -n "$OLD_LSP" && -n "$NEW_LSP" && "$OLD_LSP" != "$NEW_LSP" ]]; then
+  lsp_changelog=$("$SCRIPT_DIR/extract-lsp-changelog.sh" "$OLD_LSP" "$NEW_LSP" 2>/dev/null || true)
 fi
-output+="</ul>"$'\n'
+
+if [[ -n "$lsp_changelog" || ${#commits_changed[@]} -gt 0 ]]; then
+  has_content=true
+  output+="<h4>Changed</h4>"$'\n'
+  output+="<ul>"$'\n'
+  
+  # Insert LSP changelog if versions changed
+  if [[ -n "$lsp_changelog" ]]; then
+    output+="    <li>Upgrade @sap/cds-lsp from $OLD_LSP to $NEW_LSP with the following additions and changes:"$'\n'
+    output+="$lsp_changelog"$'\n'
+    output+="    </li>"$'\n'
+  fi
+  
+  if [[ ${#commits_changed[@]} -gt 0 ]]; then
+    output_messages commits_changed
+  fi
+  output+="</ul>"$'\n'
+fi
 
 if [[ ${#commits_fixed[@]} -gt 0 ]]; then
   has_content=true
