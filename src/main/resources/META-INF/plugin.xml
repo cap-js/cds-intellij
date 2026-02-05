@@ -177,30 +177,20 @@
 
 
     <change-notes><![CDATA[
-<h4>Added</h4>
-<ul>
-    <li>Enable telemetry by default (disabled via user setting <code>sapbas.telemetryEnabled</code>)</li>
-</ul>
 <h4>Changed</h4>
 <ul>
-    <li>Upgrade LSP4IJ to 0.19.1, fixing CDS language support in WSL workspaces and tab-size configuration</li>
-    <li>Upgrade cds-lsp to 9.6.2 with the following changes since 9.4.0:
+    <li>Renewed user-settings page in line with the VSCode extension</li>
+    <li>Upgrade @sap/cds-lsp from 9.6.2 to 9.7.0 with the following additions and changes:
         <ul>
-            <li>Telemetry support independent from client</li>
-            <li>Fixed syntax highlighting in bracketed expressions and <code>annotate</code> statements with constraints containing function calls</li>
-            <li><code>*.json</code> files are no longer scanned and parsed heuristically if they contain CSN. Those files need to be used from a CDS file to be seen e.g. in <code>Workspace Symbols</code>. However, files ending with <code>.csn.json</code> or <code>.csn</code> are still considered as CSN files.</li>
-            <li>Removed user setting <code>cds.workspace.debounceFastChanges</code>, now always enabled</li>
-            <li>(Experimental) persistency of where-used index (enabled via user setting <code>cds.workspace.persistency.enabled</code> with more fine-tuning settings available)</li>
-            <li>Compatibility with <code>@sap/cds 9.5</code></li>
+            <li>Support for multi-cursor range expansion/shrinking</li>
+            <li>Support folding ranges, especially for consecutive  statements</li>
+            <li>JSON schema for user settings</li>
+            <li>Progress reporting for persistency operations</li>
+            <li>Disable type generation for current session when preconditions not fulfilled after first try</li>
+            <li>Fixed: Formatter: align element names after  keyword only</li>
         </ul>
     </li>
-    <li>Update cds-lsp user settings and defaults, improve UX</li>
 </ul>
-<h4>Fixed</h4>
-<ul>
-    <li>Always use configured/default CDS tabSize</li>
-    <li>Resolve race condition in language-server startup</li>
-</ul>
-<p><em>For details see the <a href=https://github.com/cap-js/cds-intellij/compare/2.0.1...2.1.0>full changelog</a></em></p>
+<p><em>For details see the <a href=https://github.com/cap-js/cds-intellij/compare/2.1.0...2.2.0>full changelog</a></em></p>
 ]]></change-notes>
 </idea-plugin>
