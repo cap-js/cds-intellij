@@ -29,6 +29,10 @@ runs:
         distribution: zulu
         java-version: 21
 
+    - name: Make gradlew executable
+      shell: bash
+      run: chmod +x gradlew
+
     - name: Test
       if: ${{ contains(inputs.steps, 'test') }}
       shell: bash
