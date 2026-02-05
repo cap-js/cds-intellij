@@ -177,12 +177,9 @@
 
 
     <change-notes><![CDATA[
-<h4>Added</h4>
-<ul>
-    <li>Enhance changelog generation with entries from cds-lsp</li>
-</ul>
 <h4>Changed</h4>
 <ul>
+    <li>Renewed user-settings page in line with the VSCode extension</li>
     <li>Upgrade @sap/cds-lsp from 9.6.2 to 9.7.0 with the following additions and changes:
         <ul>
             <li>Support for multi-cursor range expansion/shrinking</li>
@@ -191,7 +188,6 @@
             <li>Progress reporting for persistency operations</li>
             <li>Disable type generation for current session when preconditions not fulfilled after first try</li>
             <li>Fixed: Formatter: align element names after  keyword only</li>
-            <li>Fixed: Element formatting: align names after  keyword only</li>
         </ul>
     </li>
 </ul>
