@@ -2,7 +2,6 @@ package com.sap.cap.cds.intellij.lifecycle;
 
 import com.intellij.ide.plugins.DynamicPluginListener;
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
-import com.sap.cap.cds.intellij.CdsPlugin;
 import com.sap.cap.cds.intellij.textmate.CdsTextMateBundleService;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,15 +11,9 @@ public class PluginLifecycleListener implements DynamicPluginListener {
 
     @Override
     public void pluginLoaded(@NotNull IdeaPluginDescriptor pluginDescriptor) {
-        getApplication().getService(CdsTextMateBundleService.class).registerBundle();
+        getApplication().getService(CdsTextMateBundleService.class).cleanupLegacyBundles();
     }
 
-    @Override
-    public void beforePluginUnload(@NotNull IdeaPluginDescriptor pluginDescriptor, boolean isUpdate) {
-        if (!CdsPlugin.ID.equals(pluginDescriptor.getPluginId().toString())) {
-            return;
-        }
-        getApplication().getService(CdsTextMateBundleService.class).unregisterBundle();
-    }
-
+    // Note: beforePluginUnload is not called for this plugin because it's not
+    // unload-safe (uses non-dynamic LSP4IJ extension point).
 }

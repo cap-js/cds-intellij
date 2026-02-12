@@ -28,6 +28,9 @@
 
 
     <extensions defaultExtensionNs="com.intellij">
+        <textmate.bundleProvider
+                implementation="com.sap.cap.cds.intellij.textmate.CdsTextMateBundleProvider"/>
+
         <fileType
                 name="cds"
                 implementationClass="com.sap.cap.cds.intellij.CdsFileType"
@@ -177,6 +180,10 @@
 
 
     <change-notes><![CDATA[
+<h4>Fixed</h4>
+<ul>
+    <li>TextMate bundle error appearing after plugin uninstall</li>
+</ul>
 <h4>Changed</h4>
 <ul>
     <li>Renewed user-settings page in line with the VSCode extension</li>
