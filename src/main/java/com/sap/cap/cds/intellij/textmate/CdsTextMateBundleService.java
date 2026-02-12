@@ -60,7 +60,7 @@ public final class CdsTextMateBundleService {
     public void unregisterBundle() {
         TextMateUserBundlesSettings settings = getBundlesSettings();
         logBundlePresent(settings);
-        settings.disableBundle(getBundlePath());
+        settings.removeBundle(getBundlePath());
         TextMateServiceImpl.getInstance().reloadEnabledBundles();
     }
 }
