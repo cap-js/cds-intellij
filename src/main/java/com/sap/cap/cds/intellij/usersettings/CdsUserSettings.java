@@ -41,7 +41,7 @@ public class CdsUserSettings {
             case "cds.completion.workspaceSymbols.useShortname" -> "When using workspace symbols proposals, only match the short name (last name segment) instead of the fully qualified name";
             case "cds.whereused.showGenericAnnotations" -> "Find usages of same annotation names via <i>References</i> command and explicit annotation definitions via <i>Definition</i> command";
             case "cds.whereused.showStringConstants" -> "Find same string constants via <i>References</i> command";
-            case "cds.workspace.persistency.enabled" -> "(Experimental) Enable persistency of where-used indexes for faster access of references and workspace symbols";
+            case "cds.workspace.persistency.enabled" -> "(Beta) Enable persistency of where-used indexes for faster access of references and workspace symbols";
             case "cds.workspace.persistency.persistAfterSave" -> "Persist where-used index of a CDS model file after save";
             case "cds.workspace.persistency.persistAfterCompile" -> "Persist where-used indexes after a compile e.g. when changing a file";
             case "cds.workspace.persistency.restoreBeforeCompile" -> "When compiling a model reuse persisted where-used indexes of dependent models";
