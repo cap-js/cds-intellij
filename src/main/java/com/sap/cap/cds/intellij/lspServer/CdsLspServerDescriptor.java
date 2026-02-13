@@ -23,8 +23,6 @@ public class CdsLspServerDescriptor {
     private static final String RELATIVE_FORMAT_CLI_PATH = RELATIVE_SERVER_BASE_PATH + "scripts/formatCli.js";
     private static final String RELATIVE_SERVER_PKG_PATH = RELATIVE_SERVER_BASE_PATH + "package.json";
     public static final ComparableVersion REQUIRED_NODEJS_VERSION = getRequiredNodejsVersion();
-    private static final String RELATIVE_MITM_PATH = "cds-lsp/mitm.js";
-    private static final String RELATIVE_LOG_PATH = "cds-lsp/stdio.json";
     private static final CommandLineKind SERVER_COMMAND_LINE_KIND = getServerCommandLineKind();
 
     private static ComparableVersion getRequiredNodejsVersion() {
@@ -60,9 +58,6 @@ public class CdsLspServerDescriptor {
                     .withCharset(UTF_8);
 
             case SERVER_DEBUG -> new GeneralCommandLine(
-                    nodeInterpreterPath,
-                    resolve(RELATIVE_MITM_PATH),
-                    resolve(RELATIVE_LOG_PATH),
                     nodeInterpreterPath,
                     "--enable-source-maps",
                     "--inspect",
