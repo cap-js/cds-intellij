@@ -121,25 +121,22 @@ DEBUG=cds-lsp
 Restart the IDE to apply the changes.
 
 This setting will enable:
-- logging of the **stdio communication** between the LSP client and server (i.e., the LSP messages),
 - **tracing** for the LSP server (see below),
 - Node.js **debugging** for the LSP server, allowing you to attach a debugger.
 
 ##### Stdio Logs
 
-Open the stdio logs by going to *Tools > CDS > LSP Stdio Logs > Show Log File* in your IDE. Alternatively, copy the file path by going to *Tools > CDS > LSP Stdio Logs > Copy Log File Path*.
+Open the stdio logs by going to *View > Tool Windows > Language Servers*, selecting the CDS Language Server, and viewing the *Traces* tab.
 
 Alternatively, find the log file in the [plugin directory](https://intellij-support.jetbrains.com/hc/en-us/articles/206544519-Directories-used-by-the-IDE-to-store-settings-caches-plugins-and-logs), at `lib/cds-lsp/stdio.json`.
 
 ##### LSP Server Logs and Tracing
 
-Open the LSP server logs by going to *Tools > CDS > LSP Server Logs > Show Log File* in your IDE. Alternatively, copy the file path by going to *Tools > CDS > LSP Server Logs > Copy Log File Path*.
+Open the LSP server logs by going to *Help > Find Action > CDS > LSP Server Logs > Show Log File* in your IDE. Alternatively, copy the file path by going to *Tools > CDS > LSP Server Logs > Copy Log File Path*.
 
-Alternatively, find the log file in your system temporary directory, sub-folder `cdxlsp`.
-
-###### Local Logs
-
-Alternatively, if your project has a subfolder `.cds-lsp` with a file `.settings.json` inside, the LSP server will log to that folder instead.
+The log file will be located:
+- in your system temporary directory, sub-folder `cdxlsp`, by default;
+- in a subfolder `.cds-lsp` of your project, if that subfolder contains a `.settings.json` file.
 
 ###### Trace Level
 
