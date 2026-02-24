@@ -41,7 +41,8 @@ final class AppSettingsConfigurable implements Configurable {
     public boolean isModified() {
         AppSettings.State state = Objects.requireNonNull(AppSettings.getInstance().getState());
         return !(mySettingsComponent.getNodeJsPathText().equals(state.nodeJsPath) &&
-                mySettingsComponent.getCdsLspEnvText().equals(state.cdsLspEnv));
+                mySettingsComponent.getCdsLspEnvText().equals(state.cdsLspEnv) &&
+                mySettingsComponent.isEnableOnTypeFormatting() == state.enableOnTypeFormatting);
 
     }
 
@@ -53,6 +54,7 @@ final class AppSettingsConfigurable implements Configurable {
                 ? getInterpreterFromPathOrRegistered()
                 : text;
         state.cdsLspEnv = mySettingsComponent.getCdsLspEnvText();
+        state.enableOnTypeFormatting = mySettingsComponent.isEnableOnTypeFormatting();
     }
 
     @Override
@@ -60,6 +62,7 @@ final class AppSettingsConfigurable implements Configurable {
         AppSettings.State state = Objects.requireNonNull(AppSettings.getInstance().getState());
         mySettingsComponent.setNodeJsPathText(state.nodeJsPath);
         mySettingsComponent.setCdsLspEnvText(state.cdsLspEnv);
+        mySettingsComponent.setEnableOnTypeFormatting(state.enableOnTypeFormatting);
         mySettingsComponent.validateAndUpdateNodeJsPath();
         mySettingsComponent.validateAndUpdateEnvMap();
     }
