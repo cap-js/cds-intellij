@@ -6,8 +6,11 @@ import com.intellij.psi.PsiFile;
 import com.redhat.devtools.lsp4ij.client.features.LSPFormattingFeature;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettings;
 import com.sap.cap.cds.intellij.codestyle.CdsCodeStyleSettingsService;
+import com.sap.cap.cds.intellij.settings.AppSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public class CdsFormattingFeature extends LSPFormattingFeature {
 
@@ -25,7 +28,7 @@ public class CdsFormattingFeature extends LSPFormattingFeature {
 
     @Override
     public boolean isFormatOnCloseBrace(@NotNull PsiFile file) {
-        return true;
+        return Objects.requireNonNull(AppSettings.getInstance().getState()).enableOnTypeFormatting;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class CdsFormattingFeature extends LSPFormattingFeature {
 
     @Override
     public boolean isFormatOnStatementTerminator(@NotNull PsiFile file) {
-        return true;
+        return Objects.requireNonNull(AppSettings.getInstance().getState()).enableOnTypeFormatting;
     }
 
     // CODE_BLOCK: nearest brace pair. STATEMENT would be ideal but (due to lsp4ij's logic) requires

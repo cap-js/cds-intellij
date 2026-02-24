@@ -1,6 +1,7 @@
 package com.sap.cap.cds.intellij.settings;
 
 import com.intellij.ui.JBColor;
+import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.FormBuilder;
@@ -23,11 +24,13 @@ public class AppSettingsComponent {
     private final JPanel myMainPanel;
     private final JBTextField nodeJsPathText = new JBTextField();
     private final JBTextField cdsLspEnvText = new JBTextField();
+    private final JBCheckBox enableOnTypeFormattingCheckBox = new JBCheckBox("<html>Enable on-type formatting (format on <code>}</code> and <code>;</code>)</html>");
 
     public AppSettingsComponent() {
         myMainPanel = FormBuilder.createFormBuilder()
                 .addLabeledComponent(new JBLabel("Path to Node.js executable"), nodeJsPathText, 1, false)
                 .addLabeledComponent(new JBLabel("Additional env for LSP server"), cdsLspEnvText, 10, false)
+                .addComponent(enableOnTypeFormattingCheckBox)
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
 
@@ -98,5 +101,13 @@ public class AppSettingsComponent {
     private void cdsLspEnvStateHint(String state, JBColor color) {
         cdsLspEnvText.setToolTipText("Env setting " + state);
         cdsLspEnvText.setBackground(color);
+    }
+
+    public boolean isEnableOnTypeFormatting() {
+        return enableOnTypeFormattingCheckBox.isSelected();
+    }
+
+    public void setEnableOnTypeFormatting(boolean value) {
+        enableOnTypeFormattingCheckBox.setSelected(value);
     }
 }
