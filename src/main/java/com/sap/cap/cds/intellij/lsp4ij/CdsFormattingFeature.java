@@ -11,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class CdsFormattingFeature extends LSPFormattingFeature {
 
+    // Disable server-side onTypeFormatting: requests may arrive before didChange is synced.
+    // Use client-side formatting instead (isFormatOnCloseBrace, isFormatOnStatementTerminator).
     @Override
     public boolean isOnTypeFormattingEnabled(@NotNull PsiFile file) {
         return false;
@@ -36,6 +38,8 @@ public class CdsFormattingFeature extends LSPFormattingFeature {
         return true;
     }
 
+    // CODE_BLOCK: nearest brace pair. STATEMENT would be ideal but (due to lsp4ij's logic) requires
+    // selectionRange to start at column 0, which CDS server doesn't provide (it starts after indentation).
     @Override
     public @NotNull FormattingScope getFormatOnStatementTerminatorScope(@NotNull PsiFile file) {
         return FormattingScope.CODE_BLOCK;

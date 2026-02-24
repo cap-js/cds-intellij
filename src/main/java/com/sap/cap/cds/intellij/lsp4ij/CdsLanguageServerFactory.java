@@ -36,7 +36,6 @@ public class CdsLanguageServerFactory implements LanguageServerFactory { // TODO
                 .setProgressFeature(new CdsProgressFeature())
                 .setHoverFeature(new CdsHoverFeature())
                 .setFormattingFeature(new CdsFormattingFeature())
-                .setOnTypeFormattingFeature(new CdsOnTypeFormattingFeature())
                 .setFoldingRangeFeature(new CdsFoldingRangeFeature())
                 .setDiagnosticFeature(new CdsDiagnosticFeature())
                 .setCodeActionFeature(new CdsCodeActionFeature());

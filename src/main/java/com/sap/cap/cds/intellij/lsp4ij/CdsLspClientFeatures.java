@@ -62,6 +62,7 @@ public class CdsLspClientFeatures extends LSPClientFeatures {
         return super.isCaseSensitive(file);
     }
 
+    // Required for client-side on-type formatting on semicolon (see CdsFormattingFeature)
     @Override
     public @NotNull String getStatementTerminatorCharacters(@NotNull PsiFile file) {
         return ";";
