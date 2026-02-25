@@ -3,7 +3,7 @@
 const path = require('path');
 const { readFileSync, writeFileSync } = require('node:fs');
 
-const schemaPath = path.resolve(__dirname, '../../../lsp/schemas/user-settings.json');
+const schemaPath = path.resolve(__dirname, '../../../lsp/node_modules/@sap/cds-lsp/schemas/user-settings.json');
 const schema = require(schemaPath);
 const settingsFromSchema = schema.properties;
 
@@ -19,41 +19,42 @@ function getDefaultValue(config) {
 }
 
 const settings = Object.entries(settingsFromSchema)
-  .sort(([key1], [key2]) => key1.localeCompare(key2))
   .map(([key, config]) => ({
     key,
     defaultValue: getDefaultValue(config),
     enumValues: config.enum || null,
-    label: config.label || null,
-    description: config.description || null
+    markdownDescription: config.markdownDescription || null,
+    category: config.category || null
   }));
 
 const t = '    ';
 
 // Generate method bodies
 const staticInitializerBody = `
-${t}${t}Map<String, Object> defaults = new HashMap<>();
+${t}${t}Map<String, Object> defaults = new LinkedHashMap<>();
 ${settings.map(s => `${t}${t}defaults.put("${s.key}", ${s.defaultValue});`).join('\n')}
 ${t}${t}DEFAULTS = Collections.unmodifiableMap(defaults);`;
 
-const getLabelBody = `
-${t}${t}return switch (settingKey) {
-${settings.filter(s => s.label).map(s =>
-    `${t}${t}${t}case "${s.key}" -> "${s.label.replace(/"/g, '\\"')}";`
-).join('\n')}
-${t}${t}${t}default -> null;
-${t}${t}};`;
+function convertMarkdownToHtml(markdown) {
+  return markdown
+      .replace(/_([^_]+)_/g, '<i>$1</i>')
+      .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ($2)')
+      .replace(/\n/g, '<br>');
+}
 
-function formatJavaDescription(description) {
-  if (!description) return 'null';
-  const escaped = description.replace(/"/g, '\\"').replace(/\n/g, '\\n');
+function formatJavaDescription(markdownDescription) {
+  if (!markdownDescription) return 'null';
+  const htmlContent = convertMarkdownToHtml(markdownDescription.replace(/\n+/, '\n'));
+  const escaped = htmlContent.replace(/"/g, '\\"');
   return `"${escaped}"`;
 }
 
 const getDescriptionBody = `
 ${t}${t}return switch (settingKey) {
-${settings.filter(s => s.description).map(s =>
-    `${t}${t}${t}case "${s.key}" -> ${formatJavaDescription(s.description)};`
+${settings.filter(s => s.markdownDescription).map(s =>
+    `${t}${t}${t}case "${s.key}" -> ${formatJavaDescription(s.markdownDescription)};`
 ).join('\n')}
 ${t}${t}${t}default -> null;
 ${t}${t}};`;
@@ -69,17 +70,20 @@ ${t}${t}};`;
 const hasEnumValuesBody = `
 ${t}${t}return getEnumValues(settingKey) != null;`;
 
+const getCategoryBody = `
+${t}${t}return switch (settingKey) {
+${settings.filter(s => s.category).map(s =>
+    `${t}${t}${t}case "${s.key}" -> "${s.category.replace(/"/g, '\\"')}";`
+).join('\n')}
+${t}${t}${t}default -> null;
+${t}${t}};`;
+
 let patchedTgt = tgt;
 
 // Replace method bodies using simplified lookbehind patterns
 patchedTgt = patchedTgt.replace(
     /(?<=static\s*\{).*?(?=\n    })/sm,
     staticInitializerBody
-);
-
-patchedTgt = patchedTgt.replace(
-    /(?<=\bgetLabel\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
-    getLabelBody
 );
 
 patchedTgt = patchedTgt.replace(
@@ -95,6 +99,17 @@ patchedTgt = patchedTgt.replace(
 patchedTgt = patchedTgt.replace(
     /(?<=\bhasEnumValues\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
     hasEnumValuesBody
+);
+
+// Remove getGroup method completely
+patchedTgt = patchedTgt.replace(
+    /\n\s*\/\/ Note: method body is generated\s*\n\s*public static String getGroup\([^)]*\)\s*\{[^}]*\n\s*\}/sm,
+    ''
+);
+
+patchedTgt = patchedTgt.replace(
+    /(?<=\bgetCategory\s*\([^)]*\)\s*\{).*?(?=\n    })/sm,
+    getCategoryBody
 );
 
 writeFileSync(tgtPath, patchedTgt, 'utf8');

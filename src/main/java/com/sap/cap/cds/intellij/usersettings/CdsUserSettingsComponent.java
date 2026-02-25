@@ -12,6 +12,11 @@ import java.util.stream.Collectors;
 
 public class CdsUserSettingsComponent {
 
+    private static final String TOOLTIP_HTML_END = "</body></html>";
+    private static final String TOOLTIP_HTML_START = "<html><body style='width: 350px'>";
+    private static final String TOOLTIP_KEY_END = "</i></font>";
+    private static final String TOOLTIP_KEY_START = "<br><br><font color='gray'><i>";
+
     private final Project project;
     private final JPanel mainPanel;
     private final Map<String, JComponent> controls = new HashMap<>();
@@ -39,13 +44,19 @@ public class CdsUserSettingsComponent {
         Map<String, Object> allSettings = CdsUserSettings.getDefaults();
         Map<String, List<String>> categoryGroups = groupSettingsByCategory(allSettings);
 
+        boolean firstCategory = true;
         for (Map.Entry<String, List<String>> categoryEntry : categoryGroups.entrySet()) {
             String category = categoryEntry.getKey();
             List<String> settingKeys = categoryEntry.getValue();
 
-            builder.addSeparator(5);
-            JLabel categoryLabel = new JLabel("<html><b>" + category + "</b></html>");
+            if (!firstCategory) {
+                builder.addSeparator(15);
+            }
+            firstCategory = false;
+            
+            JLabel categoryLabel = new JLabel("<html><span style='font-size:110%'><b>" + category + "</b></span></html>");
             builder.addComponent(categoryLabel);
+            builder.addVerticalGap(8);
 
             for (String settingKey : settingKeys) {
                 Object defaultValue = allSettings.get(settingKey);
@@ -53,24 +64,31 @@ public class CdsUserSettingsComponent {
                 controls.put(settingKey, control);
 
                 String label = formatLabel(settingKey);
-                String description = CdsUserSettings.getDescription(settingKey);
-                String htmlDescription = description != null ?
-                    "<html>" + description.replace("\n", "<br>") + "</html>" : null;
+                String description = getDescription(settingKey);
 
+                // Add label on top
+                JLabel labelComponent = new JLabel(label);
+                builder.addComponent(labelComponent);
+                
                 if (control instanceof JBCheckBox) {
-                    ((JBCheckBox) control).setText(label);
-                    if (htmlDescription != null) {
-                        control.setToolTipText(htmlDescription);
+                    // Checkbox next to description (checkbox has no text)
+                    if (description != null && !description.isEmpty()) {
+                        JLabel descLabel = new JLabel("<html><font color='gray' style='font-size:90%'>" + description + "</font></html>");
+                        builder.addLabeledComponent(control, descLabel);
+                    } else {
+                        builder.addComponent(control);
                     }
-                    builder.addComponent(control);
                 } else {
-                    JLabel labelComponent = new JLabel(label + ":");
-                    if (htmlDescription != null) {
-                        labelComponent.setToolTipText(htmlDescription);
-                        control.setToolTipText(htmlDescription);
+                    // Add description below label if available
+                    if (description != null && !description.isEmpty()) {
+                        JLabel descLabel = new JLabel("<html><font color='gray' style='font-size:90%'>" + description + "</font></html>");
+                        builder.addComponent(descLabel);
                     }
-                    builder.addLabeledComponent(labelComponent, control);
+                    // Add control below description
+                    builder.addComponent(control);
                 }
+
+                builder.addVerticalGap(8);
             }
         }
 
@@ -86,7 +104,10 @@ public class CdsUserSettingsComponent {
         Map<String, List<String>> groups = new LinkedHashMap<>();
 
         for (String settingKey : allSettings.keySet()) {
-            String category = extractCategory(settingKey);
+            String category = CdsUserSettings.getCategory(settingKey);
+            if (category == null) {
+                category = extractCategory(settingKey);
+            }
             groups.computeIfAbsent(category, k -> new ArrayList<>()).add(settingKey);
         }
 
@@ -108,14 +129,36 @@ public class CdsUserSettingsComponent {
     }
 
     private String formatLabel(String settingKey) {
-        String schemaLabel = CdsUserSettings.getLabel(settingKey);
-        if (schemaLabel != null) {
-            return schemaLabel;
+        // Generate label from key in VS Code style: "cds.typeGenerator.enabled" -> "Type Generator: Enabled"
+        String[] parts = settingKey.split("\\.");
+        if (parts.length < 2) {
+            return settingKey;
         }
 
-        // Fallback to generated label if not found in schema
-        String[] parts = settingKey.split("\\.");
-        return capitalizeWords(parts[parts.length - 1]);
+        // Skip the first part (cds or sapbas)
+        StringBuilder label = new StringBuilder("<html>");
+        for (int i = 1; i < parts.length; i++) {
+            if (i > 1) {
+                if (i == parts.length - 1) {
+                    label.append(": ");
+                } else {
+                    label.append(" › ");
+                }
+            }
+            // Make only the last part bold
+            if (i == parts.length - 1) {
+                label.append("<b>").append(capitalizeWords(parts[i])).append("</b>");
+            } else {
+                label.append(capitalizeWords(parts[i]));
+            }
+        }
+        label.append("</html>");
+
+        return label.toString();
+    }
+
+    private String getDescription(String settingKey) {
+        return CdsUserSettings.getDescription(settingKey);
     }
 
     private JComponent createControlForSetting(String settingKey, Object defaultValue) {
@@ -126,10 +169,14 @@ public class CdsUserSettingsComponent {
         // Check if this setting has enum values
         if (CdsUserSettings.hasEnumValues(settingKey)) {
             String[] enumValues = CdsUserSettings.getEnumValues(settingKey);
-            return new JComboBox<String>(enumValues);
+            JComboBox<String> comboBox = new JComboBox<>(enumValues);
+            comboBox.setPreferredSize(new java.awt.Dimension(500, comboBox.getPreferredSize().height));
+            return comboBox;
         }
 
-        return new JBTextField();
+        JBTextField textField = new JBTextField();
+        textField.setColumns(45);
+        return textField;
     }
 
     private void loadCurrentSettings() {

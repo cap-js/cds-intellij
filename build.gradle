@@ -5,8 +5,8 @@ import org.jetbrains.intellij.platform.gradle.tasks.VerifyPluginTask
 
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij.platform' version '2.10.5'
-    id 'org.jetbrains.kotlin.jvm' version '2.3.0'
+    id 'org.jetbrains.intellij.platform' version '2.11.0'
+    id 'org.jetbrains.kotlin.jvm' version '2.3.10'
 }
 
 def hasLocalProperties = provider {
@@ -34,12 +34,12 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation 'org.jetbrains:annotations:26.0.2-1'
-    implementation 'org.json:json:20250517'
+    implementation 'org.jetbrains:annotations:26.1.0'
+    implementation 'org.json:json:20251224'
     implementation 'org.apache.maven:maven-artifact:3.9.12'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.0.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.0.3'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.3'
 
     intellijPlatform {
         String type = project.findProperty('platformType')
@@ -51,7 +51,7 @@ dependencies {
                 'org.jetbrains.plugins.textmate'
         ])
 
-        plugin("com.redhat.devtools.lsp4ij:0.19.0")
+        plugin("com.redhat.devtools.lsp4ij:0.19.2")
 
         instrumentationTools()
         pluginVerifier()
@@ -248,13 +248,26 @@ tasks.register('installLsp', Exec) {
     }
 }
 
-tasks.register('patchJavaSrc', Exec) {
+tasks.register('patchCodeStyleJavaSrc', Exec) {
     dependsOn installLsp
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine 'cmd', '/c', 'node', 'src\\js\\codestyle\\patchJavaSrc.js'
     } else {
         commandLine 'sh', '-c', 'src/js/codestyle/patchJavaSrc.js'
     }
+}
+
+tasks.register('patchUserSettingsJavaSrc', Exec) {
+    dependsOn installLsp
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', 'node', 'src\\js\\usersettings\\patchUserSettingsJavaSrc.js'
+    } else {
+        commandLine 'sh', '-c', 'src/js/usersettings/patchUserSettingsJavaSrc.js'
+    }
+}
+
+tasks.register('patchJavaSrc') {
+    dependsOn patchCodeStyleJavaSrc, patchUserSettingsJavaSrc
 }
 
 tasks.register('copyLsp', Copy) {

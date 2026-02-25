@@ -46,6 +46,7 @@ public final class AppSettings
         @NonNls @NotNull
         public String nodeJsPath = getInterpreterFromPathOrRegistered(); // on first plugin start
         public String cdsLspEnv = "";
+        public boolean enableOnTypeFormatting = true;
     }
 
 }

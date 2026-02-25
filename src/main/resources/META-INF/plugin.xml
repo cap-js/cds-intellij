@@ -28,6 +28,9 @@
 
 
     <extensions defaultExtensionNs="com.intellij">
+        <textmate.bundleProvider
+                implementation="com.sap.cap.cds.intellij.textmate.CdsTextMateBundleProvider"/>
+
         <fileType
                 name="cds"
                 implementationClass="com.sap.cap.cds.intellij.CdsFileType"
@@ -177,10 +180,16 @@
 
 
     <change-notes><![CDATA[
-<h3>Fixed</h3>
+<h4>Added</h4>
 <ul>
-    <li>Fix a race condition that could prevent the language server from starting.</li>
-    <li>Correctly use configured tab size even for the default value (2)</li>
+    <li>Add setting to disable on-type formatting</li>
 </ul>
+<h4>Fixed</h4>
+<ul>
+    <li>Add viewBox attribute to repair SVG icons</li>
+    <li>Declaratively enable TextMate bundle and remove legacy entries</li>
+    <li>Use client-side on-type formatting</li>
+</ul>
+<p><em>For details see the <a href=https://github.com/cap-js/cds-intellij/compare/2.2.0...2.3.0>full changelog</a></em></p>
 ]]></change-notes>
 </idea-plugin>

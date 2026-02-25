@@ -62,12 +62,17 @@ public class CdsLspClientFeatures extends LSPClientFeatures {
         return super.isCaseSensitive(file);
     }
 
+    // Required for client-side on-type formatting on semicolon (see CdsFormattingFeature)
+    @Override
+    public @NotNull String getStatementTerminatorCharacters(@NotNull PsiFile file) {
+        return ";";
+    }
+
     // Idea:
     /*
     String getLineCommentPrefix(PsiFile file)	Returns the language grammar line comment prefix for the file.
 String getBlockCommentPrefix(PsiFile file)	Returns the language grammar block comment prefix for the file.
 String getBlockCommentSuffix(PsiFile file)	Returns the language grammar block comment suffix for the file.
-String getStatementTerminatorCharacters(PsiFile file)	Returns the language grammar statement terminator characters for the file.
      */
     
 }

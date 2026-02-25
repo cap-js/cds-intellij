@@ -9,6 +9,7 @@ on:
       - gradle.properties
       - local.properties
       - .github/**
+      - gradle/wrapper/gradle-wrapper.properties
   workflow_dispatch:
 
 concurrency:

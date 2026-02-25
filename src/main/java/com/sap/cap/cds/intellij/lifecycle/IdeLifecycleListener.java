@@ -11,6 +11,6 @@ import static com.intellij.openapi.application.ApplicationManager.getApplication
 public class IdeLifecycleListener implements AppLifecycleListener {
     @Override
     public void appFrameCreated(@NotNull List<String> commandLineArgs) {
-        getApplication().getService(CdsTextMateBundleService.class).registerBundle();
+        getApplication().getService(CdsTextMateBundleService.class).cleanupLegacyBundles();
     }
 }
