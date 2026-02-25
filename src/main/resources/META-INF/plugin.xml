@@ -180,24 +180,16 @@
 
 
     <change-notes><![CDATA[
+<h4>Added</h4>
+<ul>
+    <li>Add setting to disable on-type formatting</li>
+</ul>
 <h4>Fixed</h4>
 <ul>
-    <li>TextMate bundle error appearing after plugin uninstall</li>
+    <li>Add viewBox attribute to repair SVG icons</li>
+    <li>Declaratively enable TextMate bundle and remove legacy entries</li>
+    <li>Use client-side on-type formatting</li>
 </ul>
-<h4>Changed</h4>
-<ul>
-    <li>Renewed user-settings page in line with the VSCode extension</li>
-    <li>Upgrade @sap/cds-lsp from 9.6.2 to 9.7.0 with the following additions and changes:
-        <ul>
-            <li>Support for multi-cursor range expansion/shrinking</li>
-            <li>Support folding ranges, especially for consecutive  statements</li>
-            <li>JSON schema for user settings</li>
-            <li>Progress reporting for persistency operations</li>
-            <li>Disable type generation for current session when preconditions not fulfilled after first try</li>
-            <li>Fixed: Formatter: align element names after  keyword only</li>
-        </ul>
-    </li>
-</ul>
-<p><em>For details see the <a href=https://github.com/cap-js/cds-intellij/compare/2.1.0...2.2.0>full changelog</a></em></p>
+<p><em>For details see the <a href=https://github.com/cap-js/cds-intellij/compare/2.2.0...2.3.0>full changelog</a></em></p>
 ]]></change-notes>
 </idea-plugin>
