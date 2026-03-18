@@ -5,7 +5,7 @@ import org.jetbrains.intellij.platform.gradle.tasks.VerifyPluginTask
 
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij.platform' version '2.11.0'
+    id 'org.jetbrains.intellij.platform' version '2.13.1'
     id 'org.jetbrains.kotlin.jvm' version '2.3.10'
 }
 
@@ -53,7 +53,6 @@ dependencies {
 
         plugin("com.redhat.devtools.lsp4ij:0.19.2")
 
-        instrumentationTools()
         pluginVerifier()
         testFramework(TestFrameworkType.Platform.INSTANCE)
         testFramework(TestFrameworkType.Plugin.Java.INSTANCE)
@@ -79,7 +78,7 @@ intellijPlatform {
         ides {
             String type = project.findProperty('platformType')
             String version = project.findProperty('platformVersion')
-            ide(type, version)
+            create(type, version)
         }
         failureLevel = [
                 VerifyPluginTask.FailureLevel.INTERNAL_API_USAGES,
