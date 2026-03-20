@@ -182,14 +182,17 @@
     <change-notes><![CDATA[
 <h4>Added</h4>
 <ul>
-    <li>Add setting to disable on-type formatting</li>
+    <li>Add pr bot</li>
 </ul>
-<h4>Fixed</h4>
+<h4>Changed</h4>
 <ul>
-    <li>Add viewBox attribute to repair SVG icons</li>
-    <li>Declaratively enable TextMate bundle and remove legacy entries</li>
-    <li>Use client-side on-type formatting</li>
+    <li>Upgrade @sap/cds-lsp from 9.7.0 to 9.8.0 with the following additions and changes:
+        <ul>
+            <li>Fixed: Running CDS Typer in WSL projects</li>
+            <li>Fixed: Indentation of annotations to entities with annotated actions</li>
+        </ul>
+    </li>
 </ul>
-<p><em>For details see the <a href=https://github.com/cap-js/cds-intellij/compare/2.2.0...2.3.0>full changelog</a></em></p>
+<p><em>For details see the <a href=https://github.com/cap-js/cds-intellij/compare/2.3.0...2.4.0>full changelog</a></em></p>
 ]]></change-notes>
 </idea-plugin>
