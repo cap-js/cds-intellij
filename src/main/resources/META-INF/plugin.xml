@@ -182,13 +182,16 @@
     <change-notes><![CDATA[
 <h4>Changed</h4>
 <ul>
-    <li>Upgrade @sap/cds-lsp from 9.7.0 to 9.8.0 with the following additions and changes:
+    <li>Upgrade @sap/cds-lsp from 9.8.0 to 9.9.0 with the following additions and changes:
         <ul>
-            <li>Fixed: Running CDS Typer in WSL projects</li>
-            <li>Fixed: Indentation of annotations to entities with annotated actions</li>
+            <li>WorkspaceSymbols: also include models defined in build tasks</li>
+            <li>Fixed: Support lookup dirs defined in subfolders e.g. pom.xml (resolve cds env per project root instead of workspace root)</li>
+            <li>Fixed: WorkspaceSymbols: NodeJS V8 crashed for very large workspaces</li>
+            <li>Fixed: WorkspaceSymbols: filter out symbols from ignored files</li>
+            <li>Fixed: Add quotes around the binary in the default cds-typer command to support paths with non-alphanumeric characters</li>
         </ul>
     </li>
 </ul>
-<p><em>For details see the <a href=https://github.com/cap-js/cds-intellij/compare/2.3.0...2.3.1>full changelog</a></em></p>
+<p><em>For details see the <a href=https://github.com/cap-js/cds-intellij/compare/2.3.1...2.4.0>full changelog</a></em></p>
 ]]></change-notes>
 </idea-plugin>
