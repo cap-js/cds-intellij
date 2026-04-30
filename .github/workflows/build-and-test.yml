@@ -20,7 +20,7 @@ jobs:
 
       - uses: ./.github/actions/prepare-cds-lsp-local
         with:
-          gh_pat: ${{ secrets.GH_PAT_READ_PUBLIC_REPOS }}
+          gh_pat: ${{ secrets.GH_TOKEN_TOOLS_LSP }}
 
       - uses: ./.github/actions/gradle-run
         with:
