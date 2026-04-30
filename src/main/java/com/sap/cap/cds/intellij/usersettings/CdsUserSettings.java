@@ -184,7 +184,7 @@ public class CdsUserSettings {
         defaults.put("cds.workspaceSymbols.caseInsensitive", false);
         defaults.put("cds.typeGenerator.enabled", false);
         defaults.put("cds.typeGenerator.outputPath", "./@cds-models");
-        defaults.put("cds.typeGenerator.command", "${typerBinary} \"${targetFile}\" --outputDirectory \"${outputDirectory}\"");
+        defaults.put("cds.typeGenerator.command", "\"${typerBinary}\" \"${targetFile}\" --outputDirectory \"${outputDirectory}\"");
         defaults.put("sapbas.telemetryEnabled", true);
         defaults.put("cds.diagnosticsSeverity", "Warning");
         defaults.put("cds.compiler.markMissingI18nDefault", false);
