@@ -184,7 +184,6 @@
 <ul>
     <li>Upgrade @sap/cds-lsp from 9.8.0 to 9.9.0 with the following additions and changes:
         <ul>
-            <li>WorkspaceSymbols API:  to get index flags</li>
             <li>WorkspaceSymbols: also include models defined in build tasks</li>
             <li>Fixed: Support lookup dirs defined in subfolders e.g. pom.xml (resolve cds env per project root instead of workspace root)</li>
             <li>Fixed: WorkspaceSymbols: NodeJS V8 crashed for very large workspaces</li>
