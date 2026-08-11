@@ -1,5 +1,7 @@
 package com.sap.cap.cds.intellij;
 
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
+import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.testFramework.ExpectedHighlightingData;
@@ -12,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static java.nio.file.Files.readString;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -40,24 +43,45 @@ public class TestUtil {
     }
     
     private static void waitForLspDiagnostics(@NotNull CodeInsightTestFixture fixture) {
-        boolean serverReady = false;
-        long deadline = System.currentTimeMillis() + SECONDS.toMillis(10);
         var project = fixture.getProject();
-        
-        while (System.currentTimeMillis() < deadline && !serverReady) {
+        long deadline = System.currentTimeMillis() + SECONDS.toMillis(60);
+
+        while (System.currentTimeMillis() < deadline) {
             try {
-                var serverFuture = LanguageServerManager.getInstance(project)
-                    .getLanguageServer(CdsLanguageServer.ID);
-                if (serverFuture.get(100, MILLISECONDS) != null) {
-                    serverReady = true;
-                    // Allow for diagnostics to be sent and processed
-                    Thread.sleep(500);
-                    return;
+                var server = LanguageServerManager.getInstance(project)
+                    .getLanguageServer(CdsLanguageServer.ID)
+                    .get(100, MILLISECONDS);
+                if (server != null) {
+                    break;
                 }
-                Thread.sleep(100);
             } catch (Exception e) {
-                // Ignore and retry
+                // retry until deadline
             }
+            sleep(100);
+        }
+
+        // The server object exists before it has finished indexing and
+        // published diagnostics; startup cost varies with machine speed, so
+        // poll for the diagnostics to arrive rather than waiting a fixed delay.
+        while (System.currentTimeMillis() < deadline) {
+            if (hasErrorDiagnostics(fixture)) {
+                return;
+            }
+            sleep(250);
+        }
+    }
+
+    private static boolean hasErrorDiagnostics(@NotNull CodeInsightTestFixture fixture) {
+        List<HighlightInfo> highlights = fixture.doHighlighting();
+        return highlights.stream()
+            .anyMatch(info -> info.getSeverity() == HighlightSeverity.ERROR);
+    }
+
+    private static void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 }
