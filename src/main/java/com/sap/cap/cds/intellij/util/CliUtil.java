@@ -11,7 +11,7 @@ import java.util.Optional;
 public class CliUtil {
     public static Optional<String> executeCli(String... args) {
         try {
-            Process process = new GeneralCommandLine(args).createProcess();
+            Process process = new GeneralCommandLine(args).withRedirectErrorStream(true).createProcess();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                 return Optional.ofNullable(reader.readLine());
             }
