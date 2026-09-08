@@ -8,6 +8,7 @@ import com.intellij.testFramework.ExpectedHighlightingData;
 import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
 import com.intellij.testFramework.fixtures.impl.CodeInsightTestFixtureImpl;
 import com.redhat.devtools.lsp4ij.LanguageServerManager;
+import com.redhat.devtools.lsp4ij.ServerStatus;
 import com.sap.cap.cds.intellij.lsp4ij.CdsLanguageServer;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +18,6 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static java.nio.file.Files.readString;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class TestUtil {
@@ -46,23 +46,20 @@ public class TestUtil {
         var project = fixture.getProject();
         long deadline = System.currentTimeMillis() + SECONDS.toMillis(60);
 
+        // Wait for the server to reach 'started' status before calling doHighlighting().
+        // With lsp4ij >= 0.21.0 the feature support uses awaitWithCheckCanceled (no safety
+        // timeout), so triggering highlighting before the server is ready causes an indefinite
+        // hang in the test JVM.
         while (System.currentTimeMillis() < deadline) {
-            try {
-                var server = LanguageServerManager.getInstance(project)
-                    .getLanguageServer(CdsLanguageServer.ID)
-                    .get(100, MILLISECONDS);
-                if (server != null) {
-                    break;
-                }
-            } catch (Exception e) {
-                // retry until deadline
+            ServerStatus status = LanguageServerManager.getInstance(project)
+                    .getServerStatus(CdsLanguageServer.ID);
+            if (status == ServerStatus.started) {
+                break;
             }
             sleep(100);
         }
 
-        // The server object exists before it has finished indexing and
-        // published diagnostics; startup cost varies with machine speed, so
-        // poll for the diagnostics to arrive rather than waiting a fixed delay.
+        // Poll for diagnostics to arrive (server may still be indexing after started).
         while (System.currentTimeMillis() < deadline) {
             if (hasErrorDiagnostics(fixture)) {
                 return;
