@@ -2,7 +2,6 @@ package com.sap.cap.cds.intellij.codestyle;
 
 import com.intellij.application.options.codeStyle.CustomizableLanguageCodeStylePanel;
 import com.intellij.application.options.codeStyle.SpeedSearchHelper;
-import com.intellij.lang.LangBundle;
 import com.intellij.openapi.application.ApplicationBundle;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.ConfigurationException;
@@ -327,7 +326,7 @@ public abstract class CdsCodeStyleTabularPanelBase extends CustomizableLanguageC
     public void apply(@NotNull CodeStyleSettings settings) throws ConfigurationException {
         TableCellEditor editor = myTreeTable.getCellEditor();
         if (editor != null && !editor.stopCellEditing()) {
-            throw new ConfigurationException(LangBundle.message("dialog.message.editing.cannot.be.stopped"));
+            throw new ConfigurationException("Editing cannot be stopped");
         }
         TreeModel treeModel = myTreeTable.getTree().getModel();
         TreeNode root = (TreeNode) treeModel.getRoot();
