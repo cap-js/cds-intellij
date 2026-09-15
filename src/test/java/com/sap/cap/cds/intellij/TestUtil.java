@@ -1,17 +1,15 @@
 package com.sap.cap.cds.intellij;
 
-import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
-import com.intellij.codeInsight.daemon.impl.DaemonCodeAnalyzerImpl;
-import com.intellij.codeInsight.daemon.impl.HighlightInfo;
-import com.intellij.lang.annotation.HighlightSeverity;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ReadAction;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiFile;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
+import com.redhat.devtools.lsp4ij.LSPIJUtils;
+import com.redhat.devtools.lsp4ij.LanguageServerItem;
 import com.redhat.devtools.lsp4ij.LanguageServerManager;
+import com.redhat.devtools.lsp4ij.OpenedDocument;
 import com.sap.cap.cds.intellij.lsp4ij.CdsLanguageServer;
+import org.eclipse.lsp4j.Diagnostic;
+import org.eclipse.lsp4j.DiagnosticSeverity;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -33,7 +31,7 @@ public class TestUtil {
             int expectedCount = countExpectedErrors(expectedContent);
             List<String> expectedDescriptions = extractExpectedErrorDescriptions(expectedContent);
 
-            List<HighlightInfo> errors = awaitErrorDiagnostics(fixture, expectedCount);
+            List<Diagnostic> errors = awaitErrorDiagnostics(fixture, expectedCount);
             assertMatches(expectedCount, expectedDescriptions, errors);
         } catch (IOException e) {
             throw new RuntimeException("Failed to read expected file for diagnostics: " + fixture.getFile().getName(), e);
@@ -52,57 +50,44 @@ public class TestUtil {
                 .toList();
     }
 
-    private static List<HighlightInfo> awaitErrorDiagnostics(@NotNull CodeInsightTestFixture fixture, int expectedCount) {
-        Project project = fixture.getProject();
-        PsiFile file = fixture.getFile();
-        Document document = fixture.getEditor().getDocument();
-
-        startLanguageServer(project);
-        // write the diagnostics into the markup (not using doHighlighting(), which blocks the EDT under lsp4ij 0.21.0)
-        restartDaemon(project, file);
+    private static List<Diagnostic> awaitErrorDiagnostics(@NotNull CodeInsightTestFixture fixture, int expectedCount) {
+        LanguageServerItem server = startLanguageServer(fixture.getProject());
+        VirtualFile file = fixture.getFile().getVirtualFile();
 
         long deadline = System.currentTimeMillis() + SECONDS.toMillis(60);
-        List<HighlightInfo> errors = readErrorDiagnostics(project, document);
+        List<Diagnostic> errors = readErrorDiagnostics(server, file);
         while (errors.size() < expectedCount && System.currentTimeMillis() < deadline) {
             sleep(500);
-            errors = readErrorDiagnostics(project, document);
+            errors = readErrorDiagnostics(server, file);
         }
-        // wait to allow late or duplicate diagnostics to arrive
+        // settle: let late or duplicate diagnostic publishes surface before asserting the count
         sleep(1000);
-        return readErrorDiagnostics(project, document);
+        return readErrorDiagnostics(server, file);
     }
 
-    private static void startLanguageServer(@NotNull Project project) {
+    private static LanguageServerItem startLanguageServer(@NotNull Project project) {
         try {
             LanguageServerManager manager = LanguageServerManager.getInstance(project);
             manager.start(CdsLanguageServer.ID, new LanguageServerManager.StartOptions().setForceStart(true));
-            manager.getLanguageServer(CdsLanguageServer.ID).get(60, SECONDS);
+            return manager.getLanguageServer(CdsLanguageServer.ID).get(60, SECONDS);
         } catch (Exception e) {
             throw new AssertionError("Language server did not start within 60 seconds", e);
         }
     }
 
-    private static void restartDaemon(@NotNull Project project, @NotNull PsiFile file) {
-        ApplicationManager.getApplication().invokeAndWait(() ->
-                DaemonCodeAnalyzer.getInstance(project).restart(file));
-    }
-
-    private static List<HighlightInfo> readErrorDiagnostics(@NotNull Project project, @NotNull Document document) {
-        return ReadAction.compute(() -> DaemonCodeAnalyzerImpl.getHighlights(document, HighlightSeverity.ERROR, project));
-    }
-
-    private static void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+    // read the diagnostics lsp4ij holds for the file, bypassing doHighlighting() which blocks the EDT under lsp4ij 0.21.0
+    private static List<Diagnostic> readErrorDiagnostics(@NotNull LanguageServerItem server, @NotNull VirtualFile file) {
+        OpenedDocument document = server.getServerWrapper().getOpenedDocument(LSPIJUtils.toUri(file));
+        if (document == null) {
+            return List.of();
         }
+        return document.getDiagnostics().stream()
+                .filter(diagnostic -> diagnostic.getSeverity() == DiagnosticSeverity.Error)
+                .toList();
     }
 
-    private static void assertMatches(int expectedCount, @NotNull List<String> expectedDescriptions, @NotNull List<HighlightInfo> errors) {
-        List<String> actualDescriptions = errors.stream()
-                .map(HighlightInfo::getDescription)
-                .toList();
+    private static void assertMatches(int expectedCount, @NotNull List<String> expectedDescriptions, @NotNull List<Diagnostic> errors) {
+        List<String> actualDescriptions = errors.stream().map(TestUtil::messageOf).toList();
         if (errors.size() != expectedCount) {
             throw new AssertionError("Expected %d error diagnostics but got %d: %s"
                     .formatted(expectedCount, errors.size(), actualDescriptions));
@@ -112,6 +97,19 @@ public class TestUtil {
                 throw new AssertionError("Missing expected error diagnostic \"%s\" in %s"
                         .formatted(expected, actualDescriptions));
             }
+        }
+    }
+
+    private static String messageOf(@NotNull Diagnostic diagnostic) {
+        var message = diagnostic.getMessage();
+        return message.isLeft() ? message.getLeft() : message.getRight().getValue();
+    }
+
+    private static void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 }
