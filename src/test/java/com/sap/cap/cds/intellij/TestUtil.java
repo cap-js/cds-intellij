@@ -87,7 +87,7 @@ public class TestUtil {
     }
 
     private static void assertMatches(int expectedCount, @NotNull List<String> expectedDescriptions, @NotNull List<Diagnostic> errors) {
-        List<String> actualDescriptions = errors.stream().map(TestUtil::messageOf).toList();
+        List<String> actualDescriptions = errors.stream().map(Diagnostic::getMessage).toList();
         if (errors.size() != expectedCount) {
             throw new AssertionError("Expected %d error diagnostics but got %d: %s"
                     .formatted(expectedCount, errors.size(), actualDescriptions));
@@ -98,11 +98,6 @@ public class TestUtil {
                         .formatted(expected, actualDescriptions));
             }
         }
-    }
-
-    private static String messageOf(@NotNull Diagnostic diagnostic) {
-        var message = diagnostic.getMessage();
-        return message.isLeft() ? message.getLeft() : message.getRight().getValue();
     }
 
     private static void sleep(long millis) {
