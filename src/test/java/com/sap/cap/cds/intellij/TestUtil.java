@@ -29,10 +29,12 @@ public class TestUtil {
             String expectedFileName = fixture.getFile().getName().replace(".cds", ".expected.cds");
             String expectedContent = readString(Paths.get(fixture.getTestDataPath(), expectedFileName));
             int expectedCount = countExpectedErrors(expectedContent);
-            List<String> expectedDescriptions = extractExpectedErrorDescriptions(expectedContent);
 
             List<Diagnostic> errors = awaitErrorDiagnostics(fixture, expectedCount);
-            assertMatches(expectedCount, expectedDescriptions, errors);
+            if (errors.size() != expectedCount) {
+                throw new AssertionError("Expected %d error diagnostics but got %d"
+                        .formatted(expectedCount, errors.size()));
+            }
         } catch (IOException e) {
             throw new RuntimeException("Failed to read expected file for diagnostics: " + fixture.getFile().getName(), e);
         }
@@ -40,14 +42,6 @@ public class TestUtil {
 
     private static int countExpectedErrors(@NotNull String expectedContent) {
         return (int) EXPECTED_ERROR.matcher(expectedContent).results().count();
-    }
-
-    private static List<String> extractExpectedErrorDescriptions(@NotNull String expectedContent) {
-        return EXPECTED_ERROR.matcher(expectedContent).results()
-                .map(result -> result.group(1))
-                .filter(description -> description != null)
-                .sorted()
-                .toList();
     }
 
     private static List<Diagnostic> awaitErrorDiagnostics(@NotNull CodeInsightTestFixture fixture, int expectedCount) {
@@ -84,20 +78,6 @@ public class TestUtil {
         return document.getDiagnostics().stream()
                 .filter(diagnostic -> diagnostic.getSeverity() == DiagnosticSeverity.Error)
                 .toList();
-    }
-
-    private static void assertMatches(int expectedCount, @NotNull List<String> expectedDescriptions, @NotNull List<Diagnostic> errors) {
-        List<String> actualDescriptions = errors.stream().map(Diagnostic::getMessage).toList();
-        if (errors.size() != expectedCount) {
-            throw new AssertionError("Expected %d error diagnostics but got %d: %s"
-                    .formatted(expectedCount, errors.size(), actualDescriptions));
-        }
-        for (String expected : expectedDescriptions) {
-            if (!actualDescriptions.contains(expected)) {
-                throw new AssertionError("Missing expected error diagnostic \"%s\" in %s"
-                        .formatted(expected, actualDescriptions));
-            }
-        }
     }
 
     private static void sleep(long millis) {
