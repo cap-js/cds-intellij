@@ -13,6 +13,15 @@ echo "old_lsp=$OLD_LSP" >> "$GITHUB_OUTPUT"
 CURRENT_LSP=$(jq -r '.dependencies["@sap/cds-lsp"]' lsp/package.json)
 echo "current_lsp=$CURRENT_LSP" >> "$GITHUB_OUTPUT"
 
+lsp4ij_version() {
+  grep -oE 'com\.redhat\.devtools\.lsp4ij:[0-9][^"]*' | cut -d: -f2
+}
+OLD_LSP4IJ=$(git show "$LAST_TAG:build.gradle" | lsp4ij_version)
+echo "old_lsp4ij=$OLD_LSP4IJ" >> "$GITHUB_OUTPUT"
+
+CURRENT_LSP4IJ=$(lsp4ij_version < build.gradle)
+echo "current_lsp4ij=$CURRENT_LSP4IJ" >> "$GITHUB_OUTPUT"
+
 INPUT_LSP="${1:-auto}"
 if [ "$INPUT_LSP" = "auto" ]; then
   if [ "$OLD_LSP" = "$CURRENT_LSP" ]; then
