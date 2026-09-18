@@ -14,7 +14,7 @@ CURRENT_LSP=$(jq -r '.dependencies["@sap/cds-lsp"]' lsp/package.json)
 echo "current_lsp=$CURRENT_LSP" >> "$GITHUB_OUTPUT"
 
 lsp4ij_version() {
-  grep -oE 'com\.redhat\.devtools\.lsp4ij:[0-9][^"]*' | cut -d: -f2
+  grep -oE "com\.redhat\.devtools\.lsp4ij:[0-9][^\"'[:space:])]*" | head -n1 | cut -d: -f2 || true
 }
 OLD_LSP4IJ=$(git show "$LAST_TAG:build.gradle" | lsp4ij_version)
 echo "old_lsp4ij=$OLD_LSP4IJ" >> "$GITHUB_OUTPUT"
