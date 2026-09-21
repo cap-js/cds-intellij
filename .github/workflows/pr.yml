@@ -2,14 +2,6 @@ name: PR
 
 on:
   pull_request:
-    paths:
-      - src/**
-      - lsp/**
-      - build.gradle
-      - gradle.properties
-      - local.properties
-      - .github/**
-      - gradle/wrapper/gradle-wrapper.properties
   workflow_dispatch:
 
 concurrency:
