@@ -83,9 +83,11 @@ jobs:
         run: bash -x src/sh/release/generate-changelog.sh "${{ steps.versions.outputs.last_tag }}" HEAD "${{ steps.new_version.outputs.version }}" "${{ steps.versions.outputs.old_lsp }}" "${{ steps.versions.outputs.current_lsp }}" "${{ steps.versions.outputs.old_lsp4ij }}" "${{ steps.versions.outputs.current_lsp4ij }}"
       
       - name: Update files
+        env:
+          CHANGELOG: ${{ steps.changelog.outputs.changelog }}
         run: |
           bash -x src/sh/release/update-gradle-version.sh "${{ steps.new_version.outputs.version }}"
-          bash -x src/sh/release/update-plugin-xml-changelog.sh "${{ steps.changelog.outputs.changelog }}"
+          bash -x src/sh/release/update-plugin-xml-changelog.sh "$CHANGELOG"
       
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
