@@ -172,6 +172,11 @@ render_items() {
       pending="$text"
     else
       if [[ "$child_open" != "true" ]]; then
+        # A nested bullet without a preceding top-level one becomes top-level.
+        if [[ -z "$pending" ]]; then
+          echo "            <li>$text</li>"
+          continue
+        fi
         echo "            <li>$pending"
         pending=""
         echo "                <ul>"
