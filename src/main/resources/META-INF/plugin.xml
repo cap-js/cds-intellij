@@ -187,7 +187,7 @@
             <li>Formatting: new option <code>maxAlignmentWhitespace</code> to disable an alignment that would leave more than the configured number of blanks before any of its members, counting the mandatory separating blank</li>
             <li>User setting to compile as many model files as possible in one compilation. To enable set <code>cds.workspace.compileFilesSeparately</code> to <code>false</code>.</li>
             <li>Important: minimum required NodeJS version is now 24.16.0</li>
-            <li>Workspace/symbols:
+            <li>Project Explorer:
                 <ul>
                     <li>nested entities e.g. "texts" now include parent entity's short name in its own short name</li>
                     <li>ignoring "last-dev" and "test" folders by default</li>
@@ -196,16 +196,16 @@
             <li>Fixed: Syntax highlighting: delimited and quoted identifiers in <code>using</code>, <code>namespace</code>, <code>context</code> and <code>extend</code></li>
             <li>Fixed: Syntax highlighting: multiple <code>;</code>-separated elements or enum values on a single line</li>
             <li>Fixed: Syntax highlighting: first segment of a qualified type path (<code>Foo:bar</code>)</li>
-            <li>Fixed: Workspace/symbols:
+            <li>Fixed: Project Explorer:
                 <ul>
-                    <li>files which were picked up by the compiler during indexing are now considered (refresh problem in Project Explorer)</li>
-                    <li>pure annotation files are now included under service containerName</li>
+                    <li>files picked up by the compiler during indexing are now shown (refresh problem)</li>
+                    <li>pure annotation files now appear under their service</li>
                 </ul>
             </li>
-            <li>Fixed: Cds-typer settings containing spaces no longer trips up LSP on Windows</li>
+            <li>Fixed: cds-typer settings containing spaces no longer break the language server on Windows</li>
         </ul>
     </li>
-    <li>Upgrade LSP4IJ to 0.21.0</li>
+    <li>Upgrade LSP4IJ to 0.21.0, fixing compatibility with IntelliJ 2026.2 and reducing IDE freezes and errors</li>
 </ul>
 <h4>Fixed</h4>
 <ul>
