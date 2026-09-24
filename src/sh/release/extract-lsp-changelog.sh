@@ -85,7 +85,7 @@ to_html() {
   # (bash 5.2+ default) so & is not taken as the matched text.
   local restore_patsub=0
   shopt -q patsub_replacement && restore_patsub=1
-  shopt -u patsub_replacement
+  shopt -u patsub_replacement 2>/dev/null || true
 
   local us=$'\x1f'
   local -a code_spans=()
