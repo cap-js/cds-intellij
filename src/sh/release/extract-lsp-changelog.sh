@@ -82,7 +82,7 @@ to_html() {
   text="$(printf '%s' "$text" | sed -E \
     -e 's/`([^`]*)`/<code>\1<\/code>/g' \
     -e 's/\*\*([^*]+)\*\*/<strong>\1<\/strong>/g' \
-    -e 's/_([^_]+)_/<em>\1<\/em>/g')"
+    -e 's/(^|[[:space:]])_([^_]+)_([[:space:].,;:!?)]|$)/\1<em>\2<\/em>\3/g')"
   printf '%s' "$text"
 }
 
