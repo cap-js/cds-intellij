@@ -182,7 +182,7 @@
     <change-notes><![CDATA[
 <h4>Changed</h4>
 <ul>
-    <li>Upgrade @sap/cds-lsp from 10.0.1 to 10.1.0 with the following additions and changes:
+    <li>Upgrade @sap/cds-lsp from 10.0.1 to 10.1.1 with the following additions and changes:
         <ul>
             <li>Formatting: new option <code>maxAlignmentWhitespace</code> to disable an alignment that would leave more than the configured number of blanks before any of its members, counting the mandatory separating blank</li>
             <li>User setting to compile as many model files as possible in one compilation. To enable set <code>cds.workspace.compileFilesSeparately</code> to <code>false</code>.
@@ -194,6 +194,10 @@
             <li>Fixed: Syntax highlighting: multiple <code>;</code>-separated elements or enum values on a single line</li>
             <li>Fixed: Syntax highlighting: first segment of a qualified type path (<code>Foo:bar</code>)</li>
             <li>Fixed: cds-typer settings containing spaces no longer break the language server on Windows</li>
+            <li>Fixed: Formatting: no longer inserts whitespace after the colon of a colon-prefixed variable (e.g. <code>:config</code>) when aligning expressions and conditions</li>
+            <li>Fixed: support for CDS files with >65k lines</li>
+            <li>Fixed: JSON configs with null values</li>
+            <li>Fixed: indexing of CSN files</li>
         </ul>
     </li>
     <li>Upgrade LSP4IJ to 0.21.0, fixing compatibility with IntelliJ 2026.2 and reducing IDE freezes and errors</li>
