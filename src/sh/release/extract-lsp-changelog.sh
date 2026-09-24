@@ -72,17 +72,42 @@ compare_versions() {
   echo "0"
 }
 
-# Escape HTML-special characters, then turn Markdown spans into HTML tags:
-# `code`, **strong**, _emphasis_.
+# Escape HTML, then convert Markdown spans (`code`, **strong**, _emphasis_) to tags.
 to_html() {
   local text="$1"
   text="${text//&/\&amp;}"
   text="${text//</\&lt;}"
   text="${text//>/\&gt;}"
+
+  # Convert code spans first, behind a US-delimited (0x1f, absent from changelog
+  # text) index sentinel, so literal ** or _ inside them is left alone. The
+  # restore loop's replacement carries & (from &lt;/&gt;); disable patsub_replacement
+  # (bash 5.2+ default) so & is not taken as the matched text.
+  local restore_patsub=0
+  shopt -q patsub_replacement && restore_patsub=1
+  shopt -u patsub_replacement 2>/dev/null || true
+
+  local us=$'\x1f'
+  local -a code_spans=()
+  while [[ $text =~ \`([^\`]*)\` ]]; do
+    code_spans+=("<code>${BASH_REMATCH[1]}</code>")
+    local placeholder="${us}${#code_spans[@]}${us}"
+    text="${text/"\`${BASH_REMATCH[1]}\`"/$placeholder}"
+  done
+
+  # Emphasis runs twice: each pass consumes its trailing boundary char, which
+  # would otherwise swallow the leading boundary of an adjacent _italic_.
   text="$(printf '%s' "$text" | sed -E \
-    -e 's/`([^`]*)`/<code>\1<\/code>/g' \
     -e 's/\*\*([^*]+)\*\*/<strong>\1<\/strong>/g' \
+    -e 's/(^|[[:space:]])_([^_]+)_([[:space:].,;:!?)]|$)/\1<em>\2<\/em>\3/g' \
     -e 's/(^|[[:space:]])_([^_]+)_([[:space:].,;:!?)]|$)/\1<em>\2<\/em>\3/g')"
+
+  local i
+  for (( i = 1; i <= ${#code_spans[@]}; i++ )); do
+    text="${text/"${us}${i}${us}"/${code_spans[i-1]}}"
+  done
+
+  (( restore_patsub )) && shopt -s patsub_replacement
   printf '%s' "$text"
 }
 
@@ -155,8 +180,10 @@ while IFS= read -r line; do
         ;;
     esac
   elif [[ -n "${last_item_array:-}" && -n "${line//[[:space:]]/}" ]]; then
-    # Continuation line (no leading bullet): append to the previous item,
-    # collapsing surrounding whitespace to a single space.
+    # Continuation line (no leading bullet): append to the previous item.
+    # Blank lines are skipped, not terminators: an item and its indented
+    # description paragraph are blank-separated (e.g. 9.6.0 persistency) yet
+    # belong together.
     continuation="$(printf '%s' "$line" | sed -E 's/^[[:space:]]+//;s/[[:space:]]+$//')"
     declare -n items_ref="$last_item_array"
     last_idx=$(( ${#items_ref[@]} - 1 ))
