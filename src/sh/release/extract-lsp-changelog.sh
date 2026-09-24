@@ -72,13 +72,17 @@ compare_versions() {
   echo "0"
 }
 
-# Escape HTML-special characters, then turn backtick spans into <code> tags.
+# Escape HTML-special characters, then turn Markdown spans into HTML tags:
+# `code`, **strong**, _emphasis_.
 to_html() {
   local text="$1"
   text="${text//&/\&amp;}"
   text="${text//</\&lt;}"
   text="${text//>/\&gt;}"
-  text="$(printf '%s' "$text" | sed -E 's/`([^`]*)`/<code>\1<\/code>/g')"
+  text="$(printf '%s' "$text" | sed -E \
+    -e 's/`([^`]*)`/<code>\1<\/code>/g' \
+    -e 's/\*\*([^*]+)\*\*/<strong>\1<\/strong>/g' \
+    -e 's/_([^_]+)_/<em>\1<\/em>/g')"
   printf '%s' "$text"
 }
 
@@ -105,6 +109,7 @@ while IFS= read -r line; do
 
     if [[ "$cmp_to" == "0" || "$cmp_to" == "-1" ]]; then
       in_range=true
+      last_item_array=""
       continue
     fi
   fi
@@ -115,6 +120,7 @@ while IFS= read -r line; do
 
   if [[ $line =~ ^###\ (.+) ]]; then
     current_section="${BASH_REMATCH[1]}"
+    last_item_array=""
     continue
   fi
 
@@ -130,12 +136,14 @@ while IFS= read -r line; do
           text="$(capitalize "$text")"
         fi
         added_items+=("$depth"$'\t'"$(to_html "$text")")
+        last_item_array=added_items
         ;;
       Removed)
         if [[ $depth -eq 0 ]]; then
           text="Removed: $(capitalize "$text")"
         fi
         removed_items+=("$depth"$'\t'"$(to_html "$text")")
+        last_item_array=removed_items
         ;;
       Fixed)
         if [[ $depth -eq 0 ]]; then
@@ -143,8 +151,17 @@ while IFS= read -r line; do
           text="Fixed: $(capitalize "$text")"
         fi
         fixed_items+=("$depth"$'\t'"$(to_html "$text")")
+        last_item_array=fixed_items
         ;;
     esac
+  elif [[ -n "${last_item_array:-}" && -n "${line//[[:space:]]/}" ]]; then
+    # Continuation line (no leading bullet): append to the previous item,
+    # collapsing surrounding whitespace to a single space.
+    continuation="$(printf '%s' "$line" | sed -E 's/^[[:space:]]+//;s/[[:space:]]+$//')"
+    declare -n items_ref="$last_item_array"
+    last_idx=$(( ${#items_ref[@]} - 1 ))
+    items_ref[last_idx]="${items_ref[last_idx]} $(to_html "$continuation")"
+    unset -n items_ref
   fi
 done <<< "$CHANGELOG_CONTENT"
 
