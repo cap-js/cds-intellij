@@ -50,6 +50,7 @@ public class CdsUserSettings {
             case "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterStartup" -> "At startup remove outdated where-used index files";
             case "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterNSaves" -> "Remove outdated where-used index files when a certain number of saves are done";
             case "cds.workspace.persistency.reindexAfterCompileIfRestored" -> "Ignore a persisted where-used index and reindex at compile even if the source content has not changed";
+            case "cds.whereused.considerIgnoredFilesInReferences" -> "consider ignored files (e.g. tests) in references - this can be expensive";
             case "cds.outline.semantical" -> "Show a semantical outline structure as opposed to the (default) flat list";
             case "cds.outline.elements.associationComposition" -> "Use specific icons for <i>Association</i> and <i>Composition</i> elements in <i>Outline</i>";
             case "cds.workspaceSymbols.lazy" -> "<i>Workspace Symbols</i> will show symbols that have the queried characters in the right order, but not necessarily consecutive";
@@ -61,6 +62,8 @@ public class CdsUserSettings {
             case "cds.diagnosticsSeverity" -> "Minimum severity of compiler messages to show in <i>Problems</i> view";
             case "cds.compiler.markMissingI18nDefault" -> "Show warning problem markers for unresolved <code>i18n</code> references.<br><b>NOTE:</b> For huge models it may show performance degradations";
             case "cds.quickfix.importArtifact" -> "Provide a <i>quick fix</i> for artifacts not yet imported (default disabled - the feature is CPU intensive)";
+            case "cds.workspace.compileFilesSeparately" -> "compile model file by file (conservative)";
+            case "cds.workspace.additionalIgnorePatterns" -> "additional gitignore patterns";
             case "cds.workspace.scanDependentModules" -> "Scan first level dependencies in node_modules. This may increase start-up time. Enable if you want code completions for global identifiers and import paths, or want to see definitions of dependencies in workspace symbols";
             case "cds.workspaceValidationMode" -> "Specify which CDS files are validated:<br>- <code>ActiveEditorOnly</code> (default): only the active editor is validated<br>- <code>OpenEditorsOnly</code> additionally keeps other open editors' validation up-to-date";
             case "cds.workspace.scanCsn" -> "How CSN files are detected:<br>- <code>ByFileExtension</code> (default): CSN files (.csn or .csn.json) will be included in validation and workspace symbols<br>- <code>InspectJson</code>: additionally looks into .json files if they are valid CSN. This will take considerably more time at scanning<br>- <code>Off</code>: will not scan for CSN files at all";
@@ -117,6 +120,7 @@ public class CdsUserSettings {
             case "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterStartup" -> "Where-used";
             case "cds.workspace.persistency.garbageCollectOrphanedIndexesAfterNSaves" -> "Where-used";
             case "cds.workspace.persistency.reindexAfterCompileIfRestored" -> "Where-used";
+            case "cds.whereused.considerIgnoredFilesInReferences" -> "Where-used";
             case "cds.outline.semantical" -> "Symbols";
             case "cds.outline.elements.associationComposition" -> "Symbols";
             case "cds.workspaceSymbols.lazy" -> "Symbols";
@@ -128,6 +132,8 @@ public class CdsUserSettings {
             case "cds.diagnosticsSeverity" -> "Validation";
             case "cds.compiler.markMissingI18nDefault" -> "Validation";
             case "cds.quickfix.importArtifact" -> "Validation";
+            case "cds.workspace.compileFilesSeparately" -> "Validation";
+            case "cds.workspace.additionalIgnorePatterns" -> "Validation";
             case "cds.workspace.scanDependentModules" -> "Validation";
             case "cds.workspaceValidationMode" -> "Validation";
             case "cds.workspace.scanCsn" -> "Validation";
@@ -178,6 +184,7 @@ public class CdsUserSettings {
         defaults.put("cds.workspace.persistency.garbageCollectOrphanedIndexesAfterStartup", true);
         defaults.put("cds.workspace.persistency.garbageCollectOrphanedIndexesAfterNSaves", 20);
         defaults.put("cds.workspace.persistency.reindexAfterCompileIfRestored", false);
+        defaults.put("cds.whereused.considerIgnoredFilesInReferences", false);
         defaults.put("cds.outline.semantical", false);
         defaults.put("cds.outline.elements.associationComposition", true);
         defaults.put("cds.workspaceSymbols.lazy", false);
@@ -189,6 +196,8 @@ public class CdsUserSettings {
         defaults.put("cds.diagnosticsSeverity", "Warning");
         defaults.put("cds.compiler.markMissingI18nDefault", false);
         defaults.put("cds.quickfix.importArtifact", false);
+        defaults.put("cds.workspace.compileFilesSeparately", true);
+        defaults.put("cds.workspace.additionalIgnorePatterns", "test*/**/*.cds");
         defaults.put("cds.workspace.scanDependentModules", false);
         defaults.put("cds.workspaceValidationMode", "OpenEditorsOnly");
         defaults.put("cds.workspace.scanCsn", "ByFileExtension");

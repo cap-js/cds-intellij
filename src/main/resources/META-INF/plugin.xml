@@ -182,23 +182,30 @@
     <change-notes><![CDATA[
 <h4>Changed</h4>
 <ul>
-    <li>Upgrade @sap/cds-lsp from 9.8.0 to 10.0.1 with the following additions and changes:
+    <li>Upgrade @sap/cds-lsp from 10.0.1 to 10.1.1 with the following additions and changes:
         <ul>
-            <li>Formatting: new option <code>annotationInNewLine</code> to start elements on a new line after their annotation in <code>annotate</code> blocks</li>
-            <li>Formatting: new option <code>asProjectionInNewLine</code> to start <code>as projection on</code> / <code>as select from</code> in a new line (indented)</li>
-            <li>Formatting: new option <code>conditionInNewLine</code> to put ON conditions on a separate line</li>
-            <li>WorkspaceSymbols: also include models defined in build tasks</li>
-            <li>index persistency is enabled by default, can be switched off via user setting <code>cds.workspace.persistency.enabled</code></li>
-            <li>Fixed: Formatting: align post-annotations (e.g. <code>@mandatory</code>) in parameter lists</li>
-            <li>Fixed: Formatting: align <code>virtual</code> and <code>element</code> keyword modifiers with element name if <code>alignAfterKey</code> is set</li>
-            <li>Fixed: Support lookup dirs defined in subfolders e.g. pom.xml (resolve cds env per project root instead of workspace root)</li>
-            <li>Fixed: WorkspaceSymbols: NodeJS V8 crashed for very large workspaces</li>
-            <li>Fixed: WorkspaceSymbols: filter out symbols from ignored files</li>
-            <li>Fixed: Add quotes around the binary in the default cds-typer command to support paths with non-alphanumeric characters</li>
+            <li>Formatting: new option <code>maxAlignmentWhitespace</code> to disable an alignment that would leave more than the configured number of blanks before any of its members, counting the mandatory separating blank</li>
+            <li>User setting to compile as many model files as possible in one compilation. To enable set <code>cds.workspace.compileFilesSeparately</code> to <code>false</code>.
+                This will <strong>boost performance</strong> for many larger models. In case <code>duplicate definition</code> diagnostics appear check
+                the files involved, and in case some files should not be picked up, add the glob patterns to <code>cds.workspace.additionalIgnorePatterns</code>
+                (as <em>workspace</em> setting).</li>
+            <li>Important: minimum required NodeJS version is now 24.16.0</li>
+            <li>Fixed: Syntax highlighting: delimited and quoted identifiers in <code>using</code>, <code>namespace</code>, <code>context</code> and <code>extend</code></li>
+            <li>Fixed: Syntax highlighting: multiple <code>;</code>-separated elements or enum values on a single line</li>
+            <li>Fixed: Syntax highlighting: first segment of a qualified type path (<code>Foo:bar</code>)</li>
+            <li>Fixed: cds-typer settings containing spaces no longer break the language server on Windows</li>
+            <li>Fixed: Formatting: no longer inserts whitespace after the colon of a colon-prefixed variable (e.g. <code>:config</code>) when aligning expressions and conditions</li>
+            <li>Fixed: support for CDS files with >65k lines</li>
+            <li>Fixed: JSON configs with null values</li>
+            <li>Fixed: indexing of CSN files</li>
         </ul>
     </li>
-    <li>Upgrade LSP4IJ to 0.20.1, fixing memory leaks, editor-thread (EDT) errors, and code-action consistency</li>
+    <li>Upgrade LSP4IJ to 0.21.0, fixing compatibility with IntelliJ 2026.2 and reducing IDE freezes and errors</li>
 </ul>
-<p><em>For details see the <a href=https://github.com/cap-js/cds-intellij/compare/2.3.1...3.0.0>full changelog</a></em></p>
+<h4>Fixed</h4>
+<ul>
+    <li>Correct changelog extraction of code spans and nested items</li>
+</ul>
+<p><em>For details see the <a href="https://github.com/cap-js/cds-intellij/compare/3.0.1...3.1.0">full changelog</a></em></p>
 ]]></change-notes>
 </idea-plugin>
