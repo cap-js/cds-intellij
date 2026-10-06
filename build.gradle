@@ -35,11 +35,11 @@ repositories {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation 'org.jetbrains:annotations:26.1.0'
-    implementation 'org.json:json:20251224'
+    implementation 'org.json:json:20260522'
     implementation 'org.apache.maven:maven-artifact:3.9.16'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.0.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.1.0'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.1.0'
 
     intellijPlatform {
         String type = project.findProperty('platformType')
@@ -51,7 +51,7 @@ dependencies {
                 'org.jetbrains.plugins.textmate'
         ])
 
-        plugin("com.redhat.devtools.lsp4ij:0.19.2")
+        plugin("com.redhat.devtools.lsp4ij:0.21.0")
 
         pluginVerifier()
         testFramework(TestFrameworkType.Platform.INSTANCE)
