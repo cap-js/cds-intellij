@@ -27,6 +27,16 @@ public class CdsLanguageServer extends OSProcessStreamConnectionProvider {
         super.setCommandLine(commandLineSupplier.get());
     }
 
+    @Override
+    public void start() throws CannotStartProcessException {
+        GeneralCommandLine commandLine = commandLineSupplier.get();
+        if (commandLine.getExePath().isBlank()) {
+            throw new CannotStartProcessException("No suitable Node.js interpreter found for the CDS language server. Please set its full path at File > Settings > Languages & Frameworks > CDS.");
+        }
+        setCommandLine(commandLine);
+        super.start();
+    }
+
     public static void restart(@NotNull Project project) {
         Logger.SERVER.debug("Restarting CDS Language Server for project: " + project.getName());
         LanguageServerManager lspManager = LanguageServerManager.getInstance(project);

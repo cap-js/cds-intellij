@@ -72,67 +72,173 @@ compare_versions() {
   echo "0"
 }
 
+# Escape HTML, then convert Markdown spans (`code`, **strong**, _emphasis_) to tags.
+to_html() {
+  local text="$1"
+  text="${text//&/\&amp;}"
+  text="${text//</\&lt;}"
+  text="${text//>/\&gt;}"
+
+  # Convert code spans first, behind a US-delimited (0x1f, absent from changelog
+  # text) index sentinel, so literal ** or _ inside them is left alone. The
+  # restore loop's replacement carries & (from &lt;/&gt;); disable patsub_replacement
+  # (bash 5.2+ default) so & is not taken as the matched text.
+  local restore_patsub=0
+  shopt -q patsub_replacement && restore_patsub=1
+  shopt -u patsub_replacement 2>/dev/null || true
+
+  local us=$'\x1f'
+  local -a code_spans=()
+  while [[ $text =~ \`([^\`]*)\` ]]; do
+    code_spans+=("<code>${BASH_REMATCH[1]}</code>")
+    local placeholder="${us}${#code_spans[@]}${us}"
+    text="${text/"\`${BASH_REMATCH[1]}\`"/$placeholder}"
+  done
+
+  # Emphasis runs twice: each pass consumes its trailing boundary char, which
+  # would otherwise swallow the leading boundary of an adjacent _italic_.
+  text="$(printf '%s' "$text" | sed -E \
+    -e 's/\*\*([^*]+)\*\*/<strong>\1<\/strong>/g' \
+    -e 's/(^|[[:space:]])_([^_]+)_([[:space:].,;:!?)]|$)/\1<em>\2<\/em>\3/g' \
+    -e 's/(^|[[:space:]])_([^_]+)_([[:space:].,;:!?)]|$)/\1<em>\2<\/em>\3/g')"
+
+  local i
+  for (( i = 1; i <= ${#code_spans[@]}; i++ )); do
+    text="${text/"${us}${i}${us}"/${code_spans[i-1]}}"
+  done
+
+  (( restore_patsub )) && shopt -s patsub_replacement
+  printf '%s' "$text"
+}
+
+capitalize() {
+  local text="$1"
+  printf '%s%s' "$(printf '%s' "${text:0:1}" | tr '[:lower:]' '[:upper:]')" "${text:1}"
+}
+
 in_range=false
 current_section=""
-declare -a changed_items added_items removed_items fixed_items
+# Each item is stored as "depth<TAB>html-text". depth 0 = top-level, 1 = nested.
+declare -a added_items removed_items fixed_items
 
 while IFS= read -r line; do
   if [[ $line =~ ^##\ ([0-9]+\.[0-9]+\.[0-9]+) ]]; then
     version="${BASH_REMATCH[1]}"
-    
+
     cmp_to=$(compare_versions "$version" "$TO_VERSION")
     cmp_from=$(compare_versions "$version" "$FROM_VERSION")
-    
+
     if [[ "$cmp_from" == "0" || "$cmp_from" == "-1" ]]; then
       break
     fi
-    
+
     if [[ "$cmp_to" == "0" || "$cmp_to" == "-1" ]]; then
       in_range=true
+      last_item_array=""
       continue
     fi
   fi
-  
-  if [[ "$in_range" == "true" ]]; then
-    if [[ $line =~ ^###\ (.+) ]]; then
-      current_section="${BASH_REMATCH[1]}"
-    elif [[ $line =~ ^-\ (.+) ]]; then
-      text="${BASH_REMATCH[1]}"
-      text="$(echo "${text:0:1}" | tr '[:lower:]' '[:upper:]')${text:1}"
-      
-      case "$current_section" in
-        Added|Changed)
-          added_items+=("$text")
-          ;;
-        Removed)
-          removed_items+=("Removed: $text")
-          ;;
-        Fixed)
-          text="$(echo "$text" | sed -nE 's/^ *fixed[: ]*//I;p')"
-          text="$(echo "${text:0:1}" | tr '[:lower:]' '[:upper:]')${text:1}"
-          fixed_items+=("Fixed: $text")
-          ;;
-      esac
-    fi
+
+  if [[ "$in_range" != "true" ]]; then
+    continue
+  fi
+
+  if [[ $line =~ ^###\ (.+) ]]; then
+    current_section="${BASH_REMATCH[1]}"
+    last_item_array=""
+    continue
+  fi
+
+  if [[ $line =~ ^([[:space:]]*)[-+][[:space:]](.+) ]]; then
+    indent="${BASH_REMATCH[1]}"
+    text="${BASH_REMATCH[2]}"
+    depth=0
+    [[ -n "$indent" ]] && depth=1
+
+    case "$current_section" in
+      Added|Changed)
+        if [[ $depth -eq 0 ]]; then
+          text="$(capitalize "$text")"
+        fi
+        added_items+=("$depth"$'\t'"$(to_html "$text")")
+        last_item_array=added_items
+        ;;
+      Removed)
+        if [[ $depth -eq 0 ]]; then
+          text="Removed: $(capitalize "$text")"
+        fi
+        removed_items+=("$depth"$'\t'"$(to_html "$text")")
+        last_item_array=removed_items
+        ;;
+      Fixed)
+        if [[ $depth -eq 0 ]]; then
+          text="$(printf '%s' "$text" | sed -nE 's/^ *fixed[: ]*//I;p')"
+          text="Fixed: $(capitalize "$text")"
+        fi
+        fixed_items+=("$depth"$'\t'"$(to_html "$text")")
+        last_item_array=fixed_items
+        ;;
+    esac
+  elif [[ -n "${last_item_array:-}" && -n "${line//[[:space:]]/}" ]]; then
+    # Continuation line (no leading bullet): append to the previous item.
+    # Blank lines are skipped, not terminators: an item and its indented
+    # description paragraph are blank-separated (e.g. 9.6.0 persistency) yet
+    # belong together.
+    continuation="$(printf '%s' "$line" | sed -E 's/^[[:space:]]+//;s/[[:space:]]+$//')"
+    declare -n items_ref="$last_item_array"
+    last_idx=$(( ${#items_ref[@]} - 1 ))
+    items_ref[last_idx]="${items_ref[last_idx]} $(to_html "$continuation")"
+    unset -n items_ref
   fi
 done <<< "$CHANGELOG_CONTENT"
 
+# A top-level <li> is held back until we know whether nested children follow.
+render_items() {
+  local -n items=$1
+  local pending=""
+  local child_open=false
+  local depth text
+  flush_pending() {
+    [[ -n "$pending" ]] && echo "            <li>$pending</li>"
+    pending=""
+  }
+  for entry in "${items[@]}"; do
+    depth="${entry%%$'\t'*}"
+    text="${entry#*$'\t'}"
+    if [[ "$depth" -eq 0 ]]; then
+      if [[ "$child_open" == "true" ]]; then
+        echo "                </ul>"
+        echo "            </li>"
+        child_open=false
+      else
+        flush_pending
+      fi
+      pending="$text"
+    else
+      if [[ "$child_open" != "true" ]]; then
+        # A nested bullet without a preceding top-level one becomes top-level.
+        if [[ -z "$pending" ]]; then
+          echo "            <li>$text</li>"
+          continue
+        fi
+        echo "            <li>$pending"
+        pending=""
+        echo "                <ul>"
+        child_open=true
+      fi
+      echo "                    <li>$text</li>"
+    fi
+  done
+  if [[ "$child_open" == "true" ]]; then
+    echo "                </ul>"
+    echo "            </li>"
+  else
+    flush_pending
+  fi
+}
+
 echo "        <ul>"
-
-for item in "${added_items[@]}"; do
-  echo "            <li>$item</li>"
-done
-
-for item in "${changed_items[@]}"; do
-  echo "            <li>$item</li>"
-done
-
-for item in "${removed_items[@]}"; do
-  echo "            <li>$item</li>"
-done
-
-for item in "${fixed_items[@]}"; do
-  echo "            <li>$item</li>"
-done
-
+render_items added_items
+render_items removed_items
+render_items fixed_items
 echo "        </ul>"
