@@ -180,10 +180,15 @@
 
 
     <change-notes><![CDATA[
-<h4>Fixed</h4>
+<h4>Changed</h4>
 <ul>
-    <li>Guard blank Node.js interpreter before starting the language server</li>
+    <li>Upgrade @sap/cds-lsp from 10.1.1 to 10.2.1 with the following additions and changes:
+        <ul>
+            <li>Formatting: new option <code>maxUsingImportsInSameLine</code> to adjust when <code>using { … }</code> imports are wrapped to separate lines (default is 2; 0 turns off wrapping)</li>
+            <li>Formatting: option <code>conditionInNewLine</code> now also applies to <code>join</code> and <code>redirected to</code> ON conditions</li>
+        </ul>
+    </li>
 </ul>
-<p><em>For details see the <a href="https://github.com/cap-js/cds-intellij/compare/3.1.0...3.1.1">full changelog</a></em></p>
+<p><em>For details see the <a href="https://github.com/cap-js/cds-intellij/compare/3.1.1...3.2.0">full changelog</a></em></p>
 ]]></change-notes>
 </idea-plugin>
